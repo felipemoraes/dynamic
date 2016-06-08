@@ -1,0 +1,7 @@
+.ignore
+.DS_Store
+.gradle
+.project
+.settings
+.class
+.metadata
