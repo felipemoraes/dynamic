@@ -1,0 +1,24 @@
+apply plugin: 'application'
+
+dependencies {
+    compile 'log4j:log4j:1.2.17'
+    compile group: 'org.elasticsearch', name: 'elasticsearch', version: '2.3.3'
+    compile group: 'org.python', name: 'jython-standalone', version: '2.7.1b3'
+    compile project(':searcher')
+}
+
+mainClassName = 'br.ufmg.dcc.latin.simulator.UserSimulator'
+
+task copyLicense {
+    outputs.file new File("$buildDir/LICENSE")
+    doLast {
+        copy {
+            from "LICENSE"
+            into "$buildDir"
+        }
+    }
+}
+
+applicationDistribution.from(copyLicense) {
+    into ""
+}
