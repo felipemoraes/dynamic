@@ -1,7 +1,9 @@
+.idea
+.classpath
 .ignore
 .DS_Store
 .gradle
 .project
 .settings
-.class
+*.class
 .metadata
