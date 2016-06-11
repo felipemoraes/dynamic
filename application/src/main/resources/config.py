@@ -1,18 +1,38 @@
 import xmltodict
 import sys
+import xml.etree.ElementTree as ET
 
-f_truth = open(sys.argv[1])
-truth_data = xmltodict.parse(f_truth.read())
+
+
+tree = ET.parse(sys.argv[1])
+root = tree.getroot()
+
 
 f = open('truth_data.txt','w')
-for domain in truth_data['trec_dd']['domain']:
-    for topic in domain["topic"]:
-        for subtopic in topic["subtopic"]:
-            try:
-                for passage in subtopic["passage"]:
-                    f.write("%s,%s,%s,%s,%s\n" %  (passage["docno"] ,topic["@id"], subtopic["@id"], passage["rating"], passage["text"].replace("\n","")))
-            except Exception as e:
-                pass
+
+domain_nodes = root.findall('.//domain')
+
+for domain_node in domain_nodes:
+    did = int(domain_node.get('id'))
+    topic_nodes = domain_node.findall('./topic')
+    for topic_node in topic_nodes:
+        tid = topic_node.get('id')
+        subtopics = ""
+        subtopic_nodes = topic_node.findall('./subtopic')
+        for subtopic_node in subtopic_nodes:
+            sid = subtopic_node.get('id')
+            passages = subtopic_node.findall('./passage')
+            subtopics += sid + '\t'
+            for passage in passages:
+                pid = passage.get('id')
+                docno = passage.find('./docno').text
+                text = passage.find('./text').text
+                rating = int(passage.find('./rating').text)
+                type = passage.find('./type').text
+                if type == 'MATCHED':
+                    score == float(passage.find('./score').text)
+                else:
+                    score = None
+                f.write( "%s,%s,%s,%d,%s\n"  % (docno, tid, sid, rating, text.encode("utf8")))
 
 f.close()
-

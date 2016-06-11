@@ -12,8 +12,8 @@ import sqlite3
 import click
 import json
 
-truth_data_path = 'jig/truth.db'
-
+truth_data_path = os.path.abspath('src/main/resources/trecdd/jig/truth.db')
+print (truth_data_path)
 
 def step(runid, topic_id, results):
     if not os.path.exists(truth_data_path):
@@ -23,7 +23,7 @@ def step(runid, topic_id, results):
     cur = con.cursor()
 
     # iteration count for this run_id
-    cur.execute('SELECT iteration_ct FROM topic_status WHERE run_id=?', [str(runid)])
+    cur.execute('SELECT iteration_ct FROM topic_status WHERE run_id=? AND topic_id=?', [str(runid),topic_id])
     tmp = cur.fetchone()
     if not tmp:
         cur.execute('INSERT INTO topic_status VALUES(?, ?, ?)', [topic_id, runid, 0])
@@ -58,7 +58,7 @@ def step(runid, topic_id, results):
         f.write(wline)
         f.write('\n')
     # print(rlist)
-    cur.execute('UPDATE topic_status SET iteration_ct=?  WHERE run_id=?', [ct+1, str(runid)])
+    cur.execute('UPDATE topic_status SET iteration_ct=?  WHERE run_id=? AND topic_id=?', [ct+1, str(runid),topic_id])
     con.commit()
 
     return rlist
