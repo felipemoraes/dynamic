@@ -119,8 +119,7 @@ public class EbolaAdHocSearcher extends AdHocSearcher implements Searcher {
 		                .setPostFilter(QueryBuilders.idsQuery().addIds(ids))
 		                .execute()
 		                .actionGet();
-			    end = start;
-			    start += 1000;
+			    
 	
 			        
 		        for (SearchHit hit : response.getHits()) {
