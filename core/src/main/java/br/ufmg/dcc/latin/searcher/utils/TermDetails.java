@@ -10,7 +10,13 @@ import java.util.HashMap;
  *
  */
 public class TermDetails {
+	
+	
 	private HashMap<String,Double> termDetails;
+	
+	public TermDetails(){
+		termDetails = new HashMap<String,Double>();
+	}
 
 	public HashMap<String,Double> getTermDetails() {
 		return termDetails;

@@ -19,4 +19,6 @@ public interface Searcher {
 	public ResultSet search(String query, Set<String> ids);
 	
 	public ResultSet search(String query, Set<String> ids, WeightingModel weightingModel);
+
+	public ResultSet search(String query, Integer max, WeightingModel weightingModel);
 }

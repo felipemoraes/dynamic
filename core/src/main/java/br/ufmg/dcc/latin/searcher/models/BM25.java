@@ -56,7 +56,6 @@ public class BM25 implements WeightingModel {
 		lists.put("ADL", new ArrayList<Double>());
 		
 		computeDetailsBM25(explanation,lists, terms);
-		
 		for (int i = 0; i < terms.size(); i++) {
 			propertyDetails.getPropertyDetails().get("IDF").getTermDetails().put(terms.get(i), lists.get("IDF").get(i));
 			propertyDetails.getPropertyDetails().get("TF").getTermDetails().put(terms.get(i), lists.get("TF").get(i));

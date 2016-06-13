@@ -142,4 +142,13 @@ public class LocalPoliticsAdHocSearcher extends AdHocSearcher implements Searche
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	/* (non-Javadoc)
+	 * @see br.ufmg.dcc.latin.searcher.Searcher#search(java.lang.String, int, br.ufmg.dcc.latin.searcher.models.WeightingModel)
+	 */
+	@Override
+	public ResultSet search(String query, Integer max, WeightingModel weightingModel) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

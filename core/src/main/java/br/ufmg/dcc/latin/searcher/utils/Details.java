@@ -12,13 +12,18 @@ import java.util.HashMap;
 public class Details {
 	// DocId, PropertyDetails
 	private HashMap<String, PropertyDetails> docsDetails;
+	
+	public Details(){
+		docsDetails = new HashMap<String, PropertyDetails>();
+	}
 
-	public HashMap<String, PropertyDetails> getDetails() {
+	public HashMap<String, PropertyDetails> getDocsDetails() {
 		return docsDetails;
 	}
 
-	public void setDetails(HashMap<String, PropertyDetails> details) {
-		this.docsDetails = details;
+	public void setDocsDetails(HashMap<String, PropertyDetails> docsDetails) {
+		this.docsDetails = docsDetails;
 	}
+
 
 }

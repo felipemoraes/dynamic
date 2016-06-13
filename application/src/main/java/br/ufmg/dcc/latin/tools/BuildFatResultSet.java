@@ -51,6 +51,7 @@ public class BuildFatResultSet {
 		    
 		    FatResultSet fatResultSet = new FatResultSet();
 		    fatResultSet.build(queryInfos);
+		    fatResultSet.dump();
 		    
 		} catch (IOException e) {
 				// TODO Auto-generated catch block
