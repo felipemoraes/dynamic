@@ -34,9 +34,9 @@ public class BuildFatResultSet {
 	        	if (indexName.equals("Ebola")) {
 	        		indexName = "ebola_2015";
 				} else if (indexName.equals("Local_Politics")){
-					indexName = "local_politics";
+					indexName = "local_politics_2015";
 				} else if (indexName.equals("Illicit_Goods")){
-					indexName = "illicit_goods";
+					indexName = "illicit_goods_2015";
 				}
 	        	
 	        	String topicId = splitLine[1];

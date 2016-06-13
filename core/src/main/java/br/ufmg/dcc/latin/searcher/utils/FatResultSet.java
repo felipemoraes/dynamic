@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -18,8 +20,8 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 
-import br.ufmg.dcc.latin.searcher.AdHocSearcherFactory;
-import br.ufmg.dcc.latin.searcher.Searcher;
+import br.ufmg.dcc.latin.searcher.AdHocSearcher;
+import br.ufmg.dcc.latin.searcher.WeightingModule;
 import br.ufmg.dcc.latin.searcher.models.*;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
@@ -35,7 +37,7 @@ public class FatResultSet {
 	private HashMap<String,  HashMap<String, FatSet > > fatResultSet;
 	
 	// model, details 
-	private HashMap< String, Details> fatSetFetails;
+	private HashMap< String, Details> fatSetDetails;
 	
 	private String initialModel;
 
@@ -52,7 +54,7 @@ public class FatResultSet {
 		String[] normalizations = {"no", "h1", "h2", "h3", "z"};
 		
 		models = new HashMap<String,WeightingModel>();
-		fatSetFetails = new HashMap< String, Details>();
+		fatSetDetails = new HashMap< String, Details>();
 		models.put("TFIDF", new Default());
 		models.put("LMDirichlet", new LMDirichlet(2500.0));
 		models.put("LMJelinekMercer", new LMJelinekMercer(0.25));
@@ -86,18 +88,25 @@ public class FatResultSet {
 
 	public void build(List<QueryInfo> queries) throws UnknownHostException{
 		System.out.println("Started initial ranking.");
-
-		AdHocSearcherFactory adHocSearcherFactory = new AdHocSearcherFactory(models.get(initialModel));
+		Set<String> indicesName = new HashSet<String>();
+		for (QueryInfo query : queries) {
+			indicesName.add(query.getIndexName());
+		}
+		WeightingModule weightingModule = new WeightingModule();
+		weightingModule.changeWeightingModel(indicesName, models.get(initialModel));
+		AdHocSearcher adHocSearcher = new AdHocSearcher();
 		for (QueryInfo queryInfo : queries) {
-			Searcher adHocSearcher = adHocSearcherFactory.getAdHocSearcher(queryInfo.getIndexName());
+			System.out.println(queryInfo.getId());
 			ResultSet resultSet = null;
 			if (initialModel == "BM25" || initialModel == "LMDirichlet" ) {
-				resultSet = adHocSearcher.search(queryInfo.getText(), 5, models.get(initialModel));
+				resultSet = adHocSearcher.
+						searchWithDetails(queryInfo.getIndexName(), queryInfo.getText(), 1000, models.get(initialModel));
+				
 				if (resultSet.getDetails() != null){
-					fatSetFetails.put(initialModel, resultSet.getDetails());
+					fatSetDetails.put(initialModel, resultSet.getDetails());
 				}
 			} else {
-				resultSet = adHocSearcher.search(queryInfo.getText(), 5);
+				resultSet = adHocSearcher.initialSearch(queryInfo.getIndexName(), queryInfo.getText(), 1000);
 			}
 			
 			HashMap<String, FatSet > initialRanking = new HashMap<String, FatSet >();
@@ -111,48 +120,59 @@ public class FatResultSet {
 		System.out.println("Ended initial ranking.");
 		
 		for (Entry<String, FatSet> doc: fatResultSet.get("DD15-49").entrySet()) {
-			System.out.println(doc.getKey() + " - " + doc.getValue().toString());
+			//System.out.println(doc.getKey());
 		}
 		
 		
 	
-		expand(queries);
+		expand(queries, indicesName);
 	}
 
 	/**
 	 * 
 	 */
-	private void expand(List<QueryInfo> queries)
+	private void expand(List<QueryInfo> queries, Set<String> indicesName)
 			throws UnknownHostException {
 		System.out.println("Expanding...");
-		AdHocSearcherFactory adHocSearcherFactory;
+		AdHocSearcher adHocSearcher = new AdHocSearcher();
+		WeightingModule weightingModule = new WeightingModule();
 		
 		for (Entry<String, WeightingModel> model : models.entrySet() ){
-			System.out.println("Model: " + model.getKey());
-			adHocSearcherFactory = new AdHocSearcherFactory(model.getValue());
+			
+	
+			weightingModule.changeWeightingModel(indicesName, model.getValue());
 			if (!model.getKey().equals(initialModel) && 
 					(model.getKey().equals("BM25") || model.getKey().equals("LMDirichlet") )){
-				for (QueryInfo queryInfo : queries) {
-					Searcher adHocSearcher = adHocSearcherFactory.getAdHocSearcher(queryInfo.getIndexName());
-					ResultSet resultSet = adHocSearcher.search(queryInfo.getText(), 
-							fatResultSet.get(queryInfo.getId()).keySet(), model.getValue());
-					if (resultSet.getDetails() != null){
-						fatSetFetails.put(model.getKey(), resultSet.getDetails());
-					}
-					for (Entry<String, Double> result : resultSet.getResultSet().entrySet()) {
-						fatResultSet.get(queryInfo.getId()).get(result.getKey()).getModels().put(model.getKey(), result.getValue());
-					}
-				}
-			} else {
 				
 				for (QueryInfo queryInfo : queries) {
-					Searcher adHocSearcher = adHocSearcherFactory.getAdHocSearcher(queryInfo.getIndexName());
-					ResultSet resultSet = adHocSearcher.search(queryInfo.getText(), 
-							fatResultSet.get(queryInfo.getId()).keySet());
-					System.out.println(resultSet.getResultSet().size());
-					for (Entry<String, Double> result : resultSet.getResultSet().entrySet()) {
-						fatResultSet.get(queryInfo.getId()).get(result.getKey()).getModels().put(model.getKey(), result.getValue());
+					ResultSet resultSet = adHocSearcher.
+							searchAndFilterWithDetails(queryInfo.getIndexName(), queryInfo.getText(), 
+							fatResultSet.get(queryInfo.getId()).keySet(), model.getValue());
+					
+					if (resultSet.getDetails() != null){
+						fatSetDetails.put(model.getKey(), resultSet.getDetails());
 					}
+					
+					for (Entry<String, Double> result : resultSet.getResultSet().entrySet()) {
+						fatResultSet.get(queryInfo.getId()).get(result.getKey())
+							.getModels().put(model.getKey(), result.getValue());
+						
+					}
+					System.out.println( model.getKey() +" "+ resultSet.getResultSet().size());
+				}
+			} else if (!model.getKey().equals(initialModel)) {
+				
+				for (QueryInfo queryInfo : queries) {
+					
+					ResultSet resultSet = adHocSearcher
+							.searchAndFilter(queryInfo.getIndexName(), 
+									queryInfo.getText(), fatResultSet.get(queryInfo.getId()).keySet());
+					
+					for (Entry<String, Double> result : resultSet.getResultSet().entrySet()) {
+						fatResultSet.get(queryInfo.getId()).get(result.getKey())
+							.getModels().put(model.getKey(), result.getValue());
+					}
+					System.out.println( model.getKey() +" "+ resultSet.getResultSet().size());
 				}
 				
 			} 
@@ -224,12 +244,12 @@ public class FatResultSet {
 
 
 
-	public HashMap< String, Details> getFatSetFetails() {
-		return fatSetFetails;
+	public HashMap< String, Details> getFatSetDetails() {
+		return fatSetDetails;
 	}
 
-	public void setFatSetFetails(HashMap< String, Details> fatSetFetails) {
-		this.fatSetFetails = fatSetFetails;
+	public void setFatSetDetails(HashMap< String, Details> fatSetDetails) {
+		this.fatSetDetails = fatSetDetails;
 	}
 
 

@@ -25,18 +25,18 @@ public class FatSet {
 		
 		setModels(new HashMap<String,Double>());
 		
-		getModels().put("BM25", null);
-		getModels().put("TFIDF", null);
-		getModels().put("LMDirichlet", null);
-		getModels().put("LMJelinekMercer", null);
+		getModels().put("BM25", 0.0);
+		getModels().put("TFIDF", 0.0);
+		getModels().put("LMDirichlet", 0.0);
+		getModels().put("LMJelinekMercer", 0.0);
 		for (String independence : independences) {
-			getModels().put("DFI_" + independence, null);
+			getModels().put("DFI_" + independence, 0.0);
 		}		
 		for (String basicModel : basicModels) {
 			for (String afterEffect : afterEffects) {
 				for (String normalization : normalizations) {
 					getModels().put("DFR_" + basicModel + "_" 
-							+ afterEffect + "_" + normalization, null);
+							+ afterEffect + "_" + normalization, 0.0);
 				}
 			}
 		}
@@ -44,14 +44,14 @@ public class FatSet {
 		for (String lambda : lambdas) {
 			for (String distribution : distributions) {
 				for (String normalization : normalizations) {
-					getModels().put("IB_" + distribution + "_" + lambda + "_" + normalization, null);
+					getModels().put("IB_" + distribution + "_" + lambda + "_" + normalization, 0.0);
 				}
 			}
 		}
 		
-		getModels().put("TF", null);
-		getModels().put("IDF", null);
-		getModels().put("DL", null);
+		getModels().put("TF", 0.0);
+		getModels().put("IDF", 0.0);
+		getModels().put("DL", 0.0);
 	}
 
 	public HashMap<String,Double> getModels() {
