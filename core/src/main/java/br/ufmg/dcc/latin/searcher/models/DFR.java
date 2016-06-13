@@ -1,16 +1,19 @@
-package br.ufmg.dcc.latin.searcher.similarity;
+package br.ufmg.dcc.latin.searcher.models;
 
+import java.util.HashMap;
+
+import org.apache.lucene.search.Explanation;
 import org.elasticsearch.common.settings.Settings;
 
-public class DFRSimilarity implements Similarity{
+public class DFR implements WeightingModel{
 
-	public DFRSimilarity(){
+	public DFR(){
 		
 	}
 	private String basicModel;
 	private String afterEffect;
 	private String normalization;
-	public DFRSimilarity(String basicModel, String afterEffect, String normalization){
+	public DFR(String basicModel, String afterEffect, String normalization){
 		this.basicModel = basicModel;
 		this.afterEffect = afterEffect;
 		this.normalization  = normalization;
@@ -24,6 +27,14 @@ public class DFRSimilarity implements Similarity{
             .put("index.similarity.default.normalization", this.normalization)
             .build();
 		return settings;
+	}
+	/* (non-Javadoc)
+	 * @see br.ufmg.dcc.latin.searcher.models.WeightingModel#computeDetails(org.apache.lucene.search.Explanation)
+	 */
+	@Override
+	public HashMap<String, HashMap<String, Double>> getDetails(Explanation explanation) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

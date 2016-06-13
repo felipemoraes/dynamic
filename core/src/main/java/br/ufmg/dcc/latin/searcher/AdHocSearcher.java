@@ -4,12 +4,13 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.ufmg.dcc.latin.searcher.similarity.Similarity;
+import br.ufmg.dcc.latin.searcher.models.WeightingModel;
+import br.ufmg.dcc.latin.searcher.utils.ResultSet;
 
 public abstract class AdHocSearcher {
 	
 	protected String indexName;
-	protected List<String> searchPool;
+	protected List<DocScorePair> searchPool;
 	private Integer counter;
 	
 	public Integer getCounter() {
@@ -19,12 +20,12 @@ public abstract class AdHocSearcher {
 		this.counter = counter;
 	}
 
-	private Similarity similarity;
+	private WeightingModel similarity;
 	
-	public Similarity getSimilarity() {
+	public WeightingModel getSimilarity() {
 		return similarity;
 	}
-	public void setSimilarity(Similarity similarity) {
+	public void setSimilarity(WeightingModel similarity) {
 		this.similarity = similarity;
 	}
 	public String getIndexName() {
@@ -33,24 +34,24 @@ public abstract class AdHocSearcher {
 	public void setIndexName(String indexName) {
 		this.indexName = indexName;
 	}
-	public AdHocSearcher(String indexName, Similarity similarity) throws UnknownHostException {
+	public AdHocSearcher(String indexName, WeightingModel similarity) throws UnknownHostException {
 		this.indexName = indexName;
 		this.counter = 0;
 		this.similarity = similarity;
-		searchPool = new ArrayList<String>();
-		SimilarityModule similarityModule = new SimilarityModule();
-		similarityModule.changeSimilarityModule(this.indexName, this.similarity);
+		searchPool = new ArrayList<DocScorePair>();
+		WeightingModule similarityModule = new WeightingModule();
+		similarityModule.changeWeightingModel(this.indexName, this.similarity);
 	}
 	
 	public abstract void search(String query);
 	
-	public String getNextResults(){
-		String result = "";
+	public ResultSet getNextResults(){
 		if (searchPool.size() == counter){
 			return null;
 		}
+		ResultSet result = new ResultSet();
 		for (int i = counter; i < counter + 5; i++) {
-			result += searchPool.get(i) + " ";
+			result.putResult(searchPool.get(i).getDocId(),searchPool.get(i).getScore());
 		}
 		counter += 5;
 		return result;

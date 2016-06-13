@@ -18,6 +18,12 @@ public class DDFeedbackSignals extends FeedbackSignals {
 	public DDFeedbackSignals() {
 		this.ddFeedbackSet = new HashSet<DDFeedback>();
 	}
+	/**
+	 * @param feedback
+	 */
+	public DDFeedbackSignals(String feedback) {
+		// TODO Auto-generated constructor stub
+	}
 	public Set<DDFeedback> getDdFeedbackSet() {
 		return ddFeedbackSet;
 	}

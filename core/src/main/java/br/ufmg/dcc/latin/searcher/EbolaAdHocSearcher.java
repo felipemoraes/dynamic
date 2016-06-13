@@ -2,6 +2,11 @@ package br.ufmg.dcc.latin.searcher;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import org.apache.lucene.search.Explanation;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
@@ -11,12 +16,13 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 
-import br.ufmg.dcc.latin.searcher.similarity.Similarity;
+import br.ufmg.dcc.latin.searcher.models.WeightingModel;
+import br.ufmg.dcc.latin.searcher.utils.ResultSet;
 
 public class EbolaAdHocSearcher extends AdHocSearcher implements Searcher {
 	
 	
-	public EbolaAdHocSearcher(String indexName, Similarity similarity) throws UnknownHostException {
+	public EbolaAdHocSearcher(String indexName, WeightingModel similarity) throws UnknownHostException {
 		super(indexName,similarity);
 	}
 	
@@ -37,12 +43,12 @@ public class EbolaAdHocSearcher extends AdHocSearcher implements Searcher {
 	                .setTypes("doc")
 	                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 	                .setQuery(QueryBuilders.queryStringQuery(query).field("body"))                 
-	                .setFrom(0).setSize(1000)
+	                .setFrom(0).setSize(10)
 	                .execute()
 	                .actionGet();
 	        searchPool.clear();
 	        for (SearchHit hit : response.getHits()) {
-	        	searchPool.add(hit.getId() + ":" + hit.getScore());
+	        	searchPool.add(new DocScorePair(hit.getId(), (double) hit.getScore()));
 			}	
 	        client.close();
 		} catch (UnknownHostException e) {
@@ -51,6 +57,142 @@ public class EbolaAdHocSearcher extends AdHocSearcher implements Searcher {
 		}
 
     
+	}
+
+
+	/* (non-Javadoc)
+	 * @see br.ufmg.dcc.latin.searcher.Searcher#search(java.lang.String, java.lang.Integer)
+	 */
+	@Override
+	public ResultSet search(String query, Integer max) {
+		ResultSet resultSet = new ResultSet();
+    	try {
+	    	Settings settings = Settings.settingsBuilder()
+	    			.put("cluster.name", "latin_elasticsearch").build();
+	        Client client;
+			
+				client = TransportClient.builder().settings(settings).build().
+				        addTransportAddress(new InetSocketTransportAddress(
+				           InetAddress.getByName("localhost"), 9300));
+			
+	        SearchResponse response = client.prepareSearch(indexName)
+	                .setTypes("body")
+	                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+	                .setQuery(QueryBuilders.queryStringQuery(query).field("text"))                 
+	                .setFrom(0).setSize(max)
+	                .execute()
+	                .actionGet();
+	        for (SearchHit hit : response.getHits()) {
+	        	resultSet.getResultSet().put(hit.getId(), (double) hit.getScore());
+			}	
+	        client.close();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+		return resultSet;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see br.ufmg.dcc.latin.searcher.Searcher#search(java.lang.String, java.util.List)
+	 */
+	@Override
+	public ResultSet search(String query, Set<String> ids) {
+		
+		ResultSet resultSet = new ResultSet();
+    	try {
+	    	Settings settings = Settings.settingsBuilder()
+	    			.put("cluster.name", "latin_elasticsearch").build();
+	        Client client;
+			
+				client = TransportClient.builder().settings(settings).build().
+				        addTransportAddress(new InetSocketTransportAddress(
+				           InetAddress.getByName("localhost"), 9300));
+
+	        SearchResponse response = client.prepareSearch(indexName)
+	                .setTypes("body")
+	                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+	                .setQuery(QueryBuilders.queryStringQuery(query).field("text"))    
+	                .setPostFilter(QueryBuilders.idsQuery().addIds(ids))
+	                .execute()
+	                .actionGet();
+		        			
+
+		        
+	        for (SearchHit hit : response.getHits()) {
+	        	if (ids.contains(hit.getId())) {
+	        		resultSet.getResultSet().put(hit.getId(), (double) hit.getScore());
+	        	} 
+			}
+	 
+			
+
+	        client.close();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+		return resultSet;
+	}
+
+	
+
+
+	/* (non-Javadoc)
+	 * @see br.ufmg.dcc.latin.searcher.Searcher#search(java.lang.String, java.util.Set, java.lang.Boolean)
+	 */
+	@Override
+	public ResultSet search(String query, Set<String> ids, WeightingModel model) {
+		ResultSet resultSet = new ResultSet();
+    	try {
+	    	Settings settings = Settings.settingsBuilder()
+	    			.put("cluster.name", "latin_elasticsearch").build();
+	        Client client;
+			
+				client = TransportClient.builder().settings(settings).build().
+				        addTransportAddress(new InetSocketTransportAddress(
+				           InetAddress.getByName("localhost"), 9300));
+
+	        SearchResponse response = client.prepareSearch(indexName)
+	                .setTypes("body")
+	                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+	                .setQuery(QueryBuilders.queryStringQuery(query).field("text"))    
+	                .setPostFilter(QueryBuilders.idsQuery().addIds(ids))
+	                .setExplain(true)
+	                .execute()
+	                .actionGet();
+		        			
+
+		        
+	        for (SearchHit hit : response.getHits()) {
+	        	if (ids.contains(hit.getId())) {
+	        		//System.out.println(hit.getExplanation());
+	        	
+	        		HashMap<String, HashMap<String,Double>> details = model.getDetails(hit.getExplanation());
+	        		for (Entry<String, HashMap<String,Double>> termDetail : details.entrySet()) {
+	        			for (Entry<String,Double> detail : termDetail.getValue().entrySet()) {
+	        				System.out.println(termDetail.getKey() + "- " + detail.getKey() + " - " + detail.getValue());
+	        			}
+	        			
+					}
+	        		System.out.println("A -----");
+	        		//resultSet.getDetails().put(hit.getId(), details);
+	        		resultSet.getResultSet().put(hit.getId(), (double) hit.getScore());
+	        	} 
+			}
+	 
+			
+
+	        client.close();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+		return resultSet;
 	}
 
 }

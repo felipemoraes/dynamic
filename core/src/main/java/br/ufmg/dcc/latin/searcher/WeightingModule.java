@@ -8,20 +8,18 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.QueryBuilders;
 
-
-import br.ufmg.dcc.latin.searcher.similarity.Similarity;
-import br.ufmg.dcc.latin.searcher.similarity.*;
-public class SimilarityModule {
+import br.ufmg.dcc.latin.searcher.models.*;
+public class WeightingModule {
 	
-	public SimilarityModule(String indexName) throws UnknownHostException{
-		DefaultSimilarity defaultSimilarity = null;
-		changeSimilarityModule(indexName, defaultSimilarity);
+	public WeightingModule(String indexName) throws UnknownHostException{
+		Default defaultSimilarity = null;
+		changeWeightingModel(indexName, defaultSimilarity);
 	}
 	
-	public SimilarityModule(){
+	public WeightingModule(){
 	}
 	
-	public void changeSimilarityModule(String indexName, Similarity similarity) throws UnknownHostException{
+	public void changeWeightingModel(String indexName, WeightingModel similarity) throws UnknownHostException{
 		Settings settings = Settings.settingsBuilder()
     			.put("cluster.name", "latin_elasticsearch").build();
 		

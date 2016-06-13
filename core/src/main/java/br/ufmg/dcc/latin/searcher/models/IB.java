@@ -1,18 +1,21 @@
-package br.ufmg.dcc.latin.searcher.similarity;
+package br.ufmg.dcc.latin.searcher.models;
 
+import java.util.HashMap;
+
+import org.apache.lucene.search.Explanation;
 import org.elasticsearch.common.settings.Settings;
 
-public class IBSimilarity implements Similarity {
+public class IB implements WeightingModel {
 
 	private String distribution;
 	private String lambda;
 	private String normalization;
 	
 	
-	public IBSimilarity() {
+	public IB() {
 		
 	}
-	public IBSimilarity(String distribution, String lambda, String normalization) {
+	public IB(String distribution, String lambda, String normalization) {
 		this.distribution = distribution;
 		this.lambda = lambda;
 		this.normalization = normalization;
@@ -28,6 +31,14 @@ public class IBSimilarity implements Similarity {
             .put("index.similarity.default.normalization",this.normalization)
             .build();
 		return settings;
+	}
+	/* (non-Javadoc)
+	 * @see br.ufmg.dcc.latin.searcher.models.WeightingModel#computeDetails(org.apache.lucene.search.Explanation)
+	 */
+	@Override
+	public HashMap<String, HashMap<String, Double>> getDetails(Explanation explanation) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

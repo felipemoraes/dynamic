@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import br.ufmg.dcc.latin.searcher.AdHocSearcherFactory;
 import br.ufmg.dcc.latin.searcher.Searcher;
-import br.ufmg.dcc.latin.searcher.similarity.LMDirichletSimilarity;
+import br.ufmg.dcc.latin.searcher.models.LMDirichlet;
 import br.ufmg.dcc.latin.searcher.utils.ResultSet;
 import br.ufmg.dcc.latin.simulator.dd.DDSimulator;
 
@@ -22,7 +22,7 @@ public class UserSimulator {
     	String topicsFile = "src/main/resources/sample_topics_domain.txt";
 
     		
-		LMDirichletSimilarity lmSimilarity = new LMDirichletSimilarity(1800.0);
+		LMDirichlet lmSimilarity = new LMDirichlet(1800.0);
 		AdHocSearcherFactory adHocSearcherFactory = new AdHocSearcherFactory(lmSimilarity);
 		
 		DDSimulator simulator = new DDSimulator("src/main/resources/truth_data.txt");
@@ -47,7 +47,7 @@ public class UserSimulator {
 	    		
 	    		System.out.println(topicId);
 	        
-	        	Searcher adHocSearcher = adHocSearcherFactory.getAdHocSearcher(indexName,lmSimilarity);
+	        	Searcher adHocSearcher = adHocSearcherFactory.getAdHocSearcher(indexName);
 	        	adHocSearcher.search(query);
 	        	for (int i = 0; i < 2; i++) {
 	        		ResultSet resultSet = adHocSearcher.getNextResults();
