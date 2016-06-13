@@ -20,6 +20,9 @@ public class FatResultSet {
 	
 	private HashMap<String,  HashMap<String, FatSet > > fatResultSet;
 	
+	// docId, details 
+	private HashMap< String, Details> details;
+	
 	private String initialModel;
 
 	/**
@@ -35,6 +38,7 @@ public class FatResultSet {
 		String[] normalizations = {"no", "h1", "h2", "h3", "z"};
 		
 		models = new HashMap<String,WeightingModel>();
+		setDetails(new HashMap< String, Details>());
 		models.put("BM25", new BM25(0.75,1.2));
 		models.put("TFIDF", new Default());
 		models.put("LMDirichlet", new LMDirichlet(2500.0));
@@ -98,10 +102,20 @@ public class FatResultSet {
 			throws UnknownHostException {
 		System.out.println("Expanding...");
 		AdHocSearcherFactory adHocSearcherFactory;
+		// Computing first BM25 to get tf,idf,doc length
 		adHocSearcherFactory = new AdHocSearcherFactory(models.get("BM25"));
 		for (QueryInfo queryInfo : queries) {
 			Searcher adHocSearcher = adHocSearcherFactory.getAdHocSearcher(queryInfo.getIndexName());
-			ResultSet resultSet = adHocSearcher.search(queryInfo.getText(), fatResultSet.get(queryInfo.getId()).keySet(), models.get("BM25"));
+			ResultSet resultSet = adHocSearcher.search(queryInfo.getText(), 
+					fatResultSet.get(queryInfo.getId()).keySet(), models.get("BM25"));
+			
+			for (Entry<String, Double> result : resultSet.getResultSet().entrySet()) {
+				fatResultSet.get(queryInfo.getId()).get(result.getKey()).getModels().put("BM25", result.getValue());
+			}
+			
+			if (resultSet.getDetails() != null){
+				getDetails().put("BM25", resultSet.getDetails());
+			}
 
 		}
 		/*
@@ -149,4 +163,14 @@ public class FatResultSet {
 	public void setInitialModel(String initialModel) {
 		this.initialModel = initialModel;
 	}
+
+	public HashMap< String, Details> getDetails() {
+		return details;
+	}
+
+	public void setDetails(HashMap< String, Details> details) {
+		this.details = details;
+	}
+
+
 }

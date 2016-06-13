@@ -1,12 +1,12 @@
 package br.ufmg.dcc.latin.searcher.models;
 
-import java.util.HashMap;
-
 import org.apache.lucene.search.Explanation;
 import org.elasticsearch.common.settings.Settings;
 
+import br.ufmg.dcc.latin.searcher.utils.PropertyDetails;
+
 public interface WeightingModel {
 	public Settings getSettings();
-	public HashMap<String, HashMap<String, Double>> getDetails(Explanation explanation);
+	public PropertyDetails getDetails(Explanation explanation);
 
 }

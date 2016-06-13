@@ -13,7 +13,7 @@ import java.util.Map.Entry;
 public class FatSet {
 	
 	private HashMap<String,Double> models;
-	private HashMap<String, HashMap<String, Double>> details;
+	
 	
 	public FatSet(){
 		String[] independences = {"standardized", "saturated", "chisquared"};
@@ -24,7 +24,7 @@ public class FatSet {
 		String[] normalizations = {"no", "h1", "h2", "h3", "z"};
 		
 		setModels(new HashMap<String,Double>());
-		setDetails( new HashMap<String, HashMap<String, Double>>());
+		
 		getModels().put("BM25", null);
 		getModels().put("TFIDF", null);
 		getModels().put("LMDirichlet", null);
@@ -73,12 +73,5 @@ public class FatSet {
 		
 	}
 
-	public HashMap<String, HashMap<String, Double>> getDetails() {
-		return details;
-	}
-
-	public void setDetails(HashMap<String, HashMap<String, Double>> details) {
-		this.details = details;
-	}
 
 }

@@ -2,11 +2,8 @@ package br.ufmg.dcc.latin.searcher;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.lucene.search.Explanation;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
@@ -17,6 +14,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 
 import br.ufmg.dcc.latin.searcher.models.WeightingModel;
+import br.ufmg.dcc.latin.searcher.utils.PropertyDetails;
 import br.ufmg.dcc.latin.searcher.utils.ResultSet;
 
 public class EbolaAdHocSearcher extends AdHocSearcher implements Searcher {
@@ -166,20 +164,15 @@ public class EbolaAdHocSearcher extends AdHocSearcher implements Searcher {
 	                .actionGet();
 		        			
 
+	        
 		        
 	        for (SearchHit hit : response.getHits()) {
 	        	if (ids.contains(hit.getId())) {
-	        		//System.out.println(hit.getExplanation());
-	        	
-	        		HashMap<String, HashMap<String,Double>> details = model.getDetails(hit.getExplanation());
-	        		for (Entry<String, HashMap<String,Double>> termDetail : details.entrySet()) {
-	        			for (Entry<String,Double> detail : termDetail.getValue().entrySet()) {
-	        				System.out.println(termDetail.getKey() + "- " + detail.getKey() + " - " + detail.getValue());
-	        			}
-	        			
+	        		PropertyDetails propertyDetails = model.getDetails(hit.getExplanation());
+	        		if (propertyDetails != null) {
+	        			resultSet.getDetails().getDetails().put(hit.getId(), propertyDetails);
 					}
-	        		System.out.println("A -----");
-	        		//resultSet.getDetails().put(hit.getId(), details);
+	        		
 	        		resultSet.getResultSet().put(hit.getId(), (double) hit.getScore());
 	        	} 
 			}

@@ -6,11 +6,12 @@ import java.util.Map.Entry;
 public class ResultSet {
 	
 	private HashMap<String,Double> resultSet;
-	private HashMap<String,HashMap<String, Double>> details;
+	
+	private Details details;
 	
 	public ResultSet(){
 		this.resultSet = new HashMap<String,Double>();
-		this.setDetails(new HashMap<String,HashMap<String, Double>>());
+		this.setDetails(new Details());
 	}
 	
 	public ResultSet(HashMap<String,Double> resultSet){
@@ -37,13 +38,17 @@ public class ResultSet {
 		return str;
 	}
 
-	public HashMap<String,HashMap<String, Double>> getDetails() {
+	public Details getDetails() {
 		return details;
 	}
 
-	public void setDetails(HashMap<String,HashMap<String, Double>> details) {
+	public void setDetails(Details details) {
 		this.details = details;
 	}
+
+
+
+
 }
 	
 

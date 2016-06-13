@@ -1,9 +1,9 @@
 package br.ufmg.dcc.latin.searcher.models;
 
-import java.util.HashMap;
-
 import org.apache.lucene.search.Explanation;
 import org.elasticsearch.common.settings.Settings;
+
+import br.ufmg.dcc.latin.searcher.utils.PropertyDetails;
 
 public class LMJelinekMercer implements WeightingModel {
 
@@ -30,7 +30,7 @@ public class LMJelinekMercer implements WeightingModel {
 	 * @see br.ufmg.dcc.latin.searcher.models.WeightingModel#computeDetails(org.apache.lucene.search.Explanation)
 	 */
 	@Override
-	public HashMap<String, HashMap<String, Double>> getDetails(Explanation explanation) {
+	public PropertyDetails getDetails(Explanation explanation) {
 		// TODO Auto-generated method stub
 		return null;
 	}
