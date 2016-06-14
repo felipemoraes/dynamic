@@ -13,7 +13,7 @@ It contains several retrieval mechanims as suport for learning approaches such a
 ## Compilation
 
 ```bash
-gradle buuld
+gradle build
 ```
 
 ## Dynamic User Simulator
