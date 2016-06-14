@@ -25,13 +25,15 @@ public class WeightingModule {
         Client client = TransportClient.builder().settings(settings).build().
                 addTransportAddress(new InetSocketTransportAddress(
                    InetAddress.getByName("localhost"), 9300));
+        
         for (String indexName : indicesName) {
+        	client.admin().cluster().prepareHealth().setWaitForYellowStatus().get();
             client.admin().indices().prepareClose(indexName).execute().actionGet();
             client.admin().indices().prepareUpdateSettings(indexName).setSettings(simSettings).execute().actionGet();
             client.admin().indices().prepareOpen(indexName).execute().actionGet();
             client.admin().cluster().prepareHealth().setWaitForYellowStatus().get();
-    		client.close();
 		}
+        client.close();
 	}
 	
 	public void changeWeightingModel(String indexName, WeightingModel weightingModel) throws UnknownHostException{

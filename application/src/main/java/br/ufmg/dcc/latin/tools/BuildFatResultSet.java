@@ -9,6 +9,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+
 import br.ufmg.dcc.latin.searcher.utils.FatResultSet;
 import br.ufmg.dcc.latin.searcher.utils.QueryInfo;
 
@@ -23,7 +29,27 @@ public class BuildFatResultSet {
 	 */
 	public static void main(String[] args) {
 		
-		String topicsFile = "src/main/resources/sample_topics_domain.txt";
+		
+		Options options = new Options();
+		options.addOption("t", "topic", true, "Topics file.");
+		options.addOption("r", "ranking", true, "Initial ranking model.");
+		CommandLine cmd = null;
+		CommandLineParser parser = new DefaultParser();
+		String topicsFile = null;
+		String initialRanking = "LMDirichlet";
+		try {
+			cmd = parser.parse(options, args);
+			if (cmd.hasOption("t")) {
+				topicsFile = cmd.getOptionValue("t");
+			}
+			if (cmd.hasOption("i")) {
+				initialRanking = cmd.getOptionValue("i");
+			}
+		} catch (ParseException e) {
+			System.err.println("Failed to parse comand line properties");
+			System.exit(0);
+		}
+		
 		List<QueryInfo> queryInfos = new ArrayList<QueryInfo>();
 		try (BufferedReader br = new BufferedReader(new FileReader(topicsFile))) {
 		    String line;
@@ -49,7 +75,7 @@ public class BuildFatResultSet {
 	    		queryInfos.add(queryInfo);
 		    }
 		    
-		    FatResultSet fatResultSet = new FatResultSet();
+		    FatResultSet fatResultSet = new FatResultSet(initialRanking);
 		    fatResultSet.build(queryInfos);
 		    fatResultSet.dump();
 		    

@@ -279,7 +279,6 @@ public class AdHocSearcher {
 		        			
 		        
 	        for (SearchHit hit : response.getHits()) {
-	        	System.out.println(hit.getId());
         		PropertyDetails propertyDetails = weightingModel.getDetails(hit.getExplanation());
         		if (propertyDetails != null) {
         			resultSet.getDetails().getDocsDetails().put(hit.getId(), propertyDetails);

@@ -1,5 +1,7 @@
 apply plugin: 'application'
 
+
+
 dependencies {
     compile 'log4j:log4j:1.2.17'
     compile group: 'org.elasticsearch', name: 'elasticsearch', version: '2.3.3'
@@ -18,6 +20,39 @@ task copyLicense {
         }
     }
 }
+
+
+
+task FatResultSet(type: Jar) {
+
+    doFirst {
+        def serviceDir = file("$buildDir/META-INF/services")
+        serviceDir.deleteDir()
+        serviceDir.mkdirs()
+
+        // copy all service files from deps to buildDir
+        for(file in configurations.runtime) {
+            zipTree(file).matching{ include 'META-INF/services/*' }.each { f ->
+                new File(serviceDir, f.name) << f.getText("UTF-8")
+            }
+        }
+    }
+    
+	manifest {
+        attributes 'Description': 'Gradle Jar File Example',  
+        	'Main-Class': 'br.ufmg.dcc.latin.tools.BuildFatResultSet'
+    }
+    baseName = 'FatResultSet'
+    with jar
+    from(configurations.runtime.collect{ it.isDirectory() ? it : zipTree(it) }) {
+        exclude 'META-INF/**' // Don't let Gradle merge service files
+    }
+
+    // include service files from the buildDir
+    from fileTree(buildDir).matching{ include 'META-INF/services/*' }
+    
+}
+
 
 applicationDistribution.from(copyLicense) {
     into ""

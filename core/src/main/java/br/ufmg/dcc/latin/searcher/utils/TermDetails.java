@@ -5,6 +5,7 @@ package br.ufmg.dcc.latin.searcher.utils;
 
 import java.util.HashMap;
 
+
 /**
  * @author Felipe Moraes
  *
