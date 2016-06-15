@@ -104,6 +104,7 @@ public class AdHocSearcher {
 	                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 	                .setQuery(QueryBuilders.queryStringQuery(query).field("text"))                 
 	                .setFrom(0).setSize(max)
+	                .setNoFields()
 	                .execute()
 	                .actionGet();
 	        for (SearchHit hit : response.getHits()) {
@@ -139,29 +140,35 @@ public class AdHocSearcher {
 	                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 	                .setQuery(QueryBuilders.queryStringQuery(query).field("text"))
 	                .setSize(0)
-	                .setPostFilter(QueryBuilders.idsQuery().addIds(ids))
+	                //.setPostFilter(QueryBuilders.idsQuery().addIds(ids))
 	                .execute()
 	                .actionGet();
+	        
 			Integer total = (int) response.getHits().getTotalHits();
-			
+			System.out.println(total);
 	        response = client.prepareSearch(indexName)
 	                .setTypes("doc")
 	                .addSort(SortParseElement.SCORE_FIELD_NAME, SortOrder.DESC)
 	                .setScroll(new TimeValue(60000))
 	                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 	                .setQuery(QueryBuilders.queryStringQuery(query).field("text"))
-	                .setPostFilter(QueryBuilders.idsQuery().addIds(ids))
-	                .setSize(total)
+	                .setNoFields()
+	                //.setPostFilter(QueryBuilders.idsQuery().addIds(ids))
+	                .setSize(1000)
 	                .execute()
 	                .actionGet();
 	        
 	        
-			while (resultSet.getResultSet().size() < ids.size()) {
-				
+			//while (resultSet.getResultSet().size() < ids.size()) {
+	        Integer count = 0;
+			while (count<20000) {	
 		        for (SearchHit hit : response.getHits()) {
-		        	if (ids.contains(hit.getId())) {
+		        	//System.out.println(hit.getId() + " " + (double) hit.getScore());
+		        	//if (ids.contains(hit.getId())) {
 		        		resultSet.getResultSet().put(hit.getId(), (double) hit.getScore());
-		        	} 
+		        	//	if
+		        		count++;
+		        	//} 
 				}
 		        response = client.prepareSearchScroll(response.getScrollId()).
 		        	setScroll(new TimeValue(60000)).execute().actionGet();
@@ -169,6 +176,7 @@ public class AdHocSearcher {
 		        	client.close();
 		            break;
 		        }
+			//}
 			}
 			
 		} catch (UnknownHostException e) {
