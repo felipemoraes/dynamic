@@ -10,20 +10,18 @@ import java.util.HashMap;
  *
  */
 public class Details {
-	// DocId, PropertyDetails
-	private HashMap<String, PropertyDetails> docsDetails;
+	private HashMap<String, TermDetails> terms;
 	
 	public Details(){
-		docsDetails = new HashMap<String, PropertyDetails>();
+		this.setTerms(new HashMap<String, TermDetails>());
 	}
 
-	public HashMap<String, PropertyDetails> getDocsDetails() {
-		return docsDetails;
+	public HashMap<String, TermDetails> getTerms() {
+		return terms;
 	}
 
-	public void setDocsDetails(HashMap<String, PropertyDetails> docsDetails) {
-		this.docsDetails = docsDetails;
+	public void setTerms(HashMap<String, TermDetails> terms) {
+		this.terms = terms;
 	}
-
 
 }

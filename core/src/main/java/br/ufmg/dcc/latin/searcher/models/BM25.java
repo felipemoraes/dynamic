@@ -7,7 +7,7 @@ import org.apache.lucene.search.Explanation;
 import org.elasticsearch.common.settings.Settings;
 
 import br.ufmg.dcc.latin.searcher.models.WeightingModel;
-import br.ufmg.dcc.latin.searcher.utils.PropertyDetails;
+import br.ufmg.dcc.latin.searcher.utils.Details;
 import br.ufmg.dcc.latin.searcher.utils.TermDetails;
 
 public class BM25 implements WeightingModel {	
@@ -39,15 +39,15 @@ public class BM25 implements WeightingModel {
 	 * @see br.ufmg.dcc.latin.searcher.models.WeightingModel#computeDetails(org.apache.lucene.search.Explanation)
 	 */
 	@Override
-	public PropertyDetails getDetails(Explanation explanation) {
-		PropertyDetails propertyDetails = new PropertyDetails();
+	public Details getDetails(Explanation explanation) {
+		Details propertyDetails = new Details();
 		HashMap<String, List<Double>> lists = new HashMap<String, List<Double>>();
 		List<String> terms = new ArrayList<String>();
 		
-		propertyDetails.getPropertyDetails().put("IDF", new TermDetails());
-		propertyDetails.getPropertyDetails().put("TF", new TermDetails());
-		propertyDetails.getPropertyDetails().put("DL", new TermDetails());
-		propertyDetails.getPropertyDetails().put("ADL", new TermDetails());
+		propertyDetails.getTerms().put("IDF", new TermDetails());
+		propertyDetails.getTerms().put("TF", new TermDetails());
+		propertyDetails.getTerms().put("DL", new TermDetails());
+		propertyDetails.getTerms().put("ADL", new TermDetails());
 
 		
 		lists.put("IDF", new ArrayList<Double>());
@@ -57,10 +57,10 @@ public class BM25 implements WeightingModel {
 		
 		computeDetailsBM25(explanation,lists, terms);
 		for (int i = 0; i < terms.size(); i++) {
-			propertyDetails.getPropertyDetails().get("IDF").getTermDetails().put(terms.get(i), lists.get("IDF").get(i));
-			propertyDetails.getPropertyDetails().get("TF").getTermDetails().put(terms.get(i), lists.get("TF").get(i));
-			propertyDetails.getPropertyDetails().get("DL").getTermDetails().put(terms.get(i), lists.get("DL").get(i));
-			propertyDetails.getPropertyDetails().get("ADL").getTermDetails().put(terms.get(i), lists.get("ADL").get(i));
+			propertyDetails.getTerms().get("IDF").getTermDetails().put(terms.get(i), lists.get("IDF").get(i));
+			propertyDetails.getTerms().get("TF").getTermDetails().put(terms.get(i), lists.get("TF").get(i));
+			propertyDetails.getTerms().get("DL").getTermDetails().put(terms.get(i), lists.get("DL").get(i));
+			propertyDetails.getTerms().get("ADL").getTermDetails().put(terms.get(i), lists.get("ADL").get(i));
 
 		}
 		

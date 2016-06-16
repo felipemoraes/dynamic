@@ -3,7 +3,7 @@ package br.ufmg.dcc.latin.searcher.models;
 import org.apache.lucene.search.Explanation;
 import org.elasticsearch.common.settings.Settings;
 
-import br.ufmg.dcc.latin.searcher.utils.PropertyDetails;
+import br.ufmg.dcc.latin.searcher.utils.Details;
 
 public class DFR implements WeightingModel{
 
@@ -32,7 +32,7 @@ public class DFR implements WeightingModel{
 	 * @see br.ufmg.dcc.latin.searcher.models.WeightingModel#computeDetails(org.apache.lucene.search.Explanation)
 	 */
 	@Override
-	public PropertyDetails getDetails(Explanation explanation) {
+	public Details getDetails(Explanation explanation) {
 		// TODO Auto-generated method stub
 		return null;
 	}

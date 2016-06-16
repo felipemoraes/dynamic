@@ -35,7 +35,7 @@ public class BuildFatResultSet {
 		options.addOption("r", "ranking", true, "Initial ranking model.");
 		CommandLine cmd = null;
 		CommandLineParser parser = new DefaultParser();
-		String topicsFile = null;
+		String topicsFile = "src/main/resources/sample_topics_domain.txt";
 		String initialRanking = "LMDirichlet";
 		try {
 			cmd = parser.parse(options, args);
@@ -77,7 +77,7 @@ public class BuildFatResultSet {
 		    
 		    FatResultSet fatResultSet = new FatResultSet(initialRanking);
 		    fatResultSet.build(queryInfos);
-		    fatResultSet.dump();
+		   
 		    
 		} catch (IOException e) {
 				// TODO Auto-generated catch block

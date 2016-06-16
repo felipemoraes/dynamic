@@ -118,6 +118,7 @@ public class InitialRankingAnalysis {
 				weightingModule.changeWeightingModel(indicesName, model.getValue());
 				long estimatedTime = System.nanoTime() - startTime;
 				System.out.println("Elapsed time: " + estimatedTime/1000000000 );
+				/*
 				for (QueryInfo queryInfo : queryInfos) {
 					ResultSet resultSet = adHocSearcher
 							.initialSearch(queryInfo.getIndexName(), queryInfo.getText(), 10000);
@@ -128,7 +129,7 @@ public class InitialRankingAnalysis {
 					}
 	
 
-				}
+				}*/
 				estimatedTime = System.nanoTime() - startTime;
 				System.out.println("Elapsed time: " + estimatedTime/1000000000 );
 			} 

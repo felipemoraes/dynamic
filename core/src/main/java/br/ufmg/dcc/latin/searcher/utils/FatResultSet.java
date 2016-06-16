@@ -3,12 +3,15 @@
  */
 package br.ufmg.dcc.latin.searcher.utils;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -35,10 +38,8 @@ public class FatResultSet {
 	static Logger log = Logger.getLogger("dynamic");
 	private HashMap<String,WeightingModel> models;
 	// topicId, docId, fatSet
-	private HashMap<String,  HashMap<String, FatSet > > fatResultSet;
+	private HashMap<String, Set<String>> initialRanking;
 	
-	// topicId, model, details 
-	private HashMap<String, HashMap< String, Details >> fatSetDetails;
 	
 	private String initialModel;
 
@@ -57,7 +58,6 @@ public class FatResultSet {
 		String[] normalizations = {"no", "h1", "h2", "h3", "z"};
 		
 		models = new HashMap<String,WeightingModel>();
-		fatSetDetails = new HashMap<String, HashMap< String, Details >>();
 		models.put("TFIDF", new Default());
 		models.put("LMDirichlet", new LMDirichlet(2500.0));
 		models.put("LMJelinekMercer", new LMJelinekMercer(0.25));
@@ -83,7 +83,7 @@ public class FatResultSet {
 			}
 		}
 		this.initialModel = initialModel;
-		fatResultSet = new HashMap<String, HashMap<String, FatSet> >();
+		initialRanking = new HashMap<String, Set<String>>();
 		
 	}
 
@@ -98,29 +98,20 @@ public class FatResultSet {
 		weightingModule.changeWeightingModel(indicesName, models.get(initialModel));
 		AdHocSearcher adHocSearcher = new AdHocSearcher();
 		for (QueryInfo queryInfo : queries) {
-			fatSetDetails.put(queryInfo.getId(), new HashMap<String,Details>());
-			ResultSet resultSet = null;
-			if (initialModel == "BM25" || initialModel == "LMDirichlet" ) {
-				resultSet = adHocSearcher.
-						searchWithDetails(queryInfo.getIndexName(), queryInfo.getText(), 1000, models.get(initialModel));
-				
-				if (resultSet.getDetails() != null){
-					fatSetDetails.get(queryInfo.getId()).put(initialModel, resultSet.getDetails());
+			System.out.println(queryInfo.getId());
+			Map<String, Double> resultSet = adHocSearcher
+					.initialSearch(queryInfo.getIndexName(), queryInfo.getText(), 1000);
+			initialRanking.put(queryInfo.getId(),resultSet.keySet());
+			try {
+				BufferedWriter out = new BufferedWriter(new FileWriter(queryInfo.getId()));
+				for (Entry<String, Double> entry : resultSet.entrySet()) {
+					out.write(entry.getKey() + " " + initialModel +" " +entry.getValue() + "\n");
 				}
-				if (initialModel == "BM25"){
-					computeDetailsBM25(queryInfo);
-				}
-			} else {
-				resultSet = adHocSearcher.initialSearch(queryInfo.getIndexName(), queryInfo.getText(), 1000);
+				out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			
-			HashMap<String, FatSet > initialRanking = new HashMap<String, FatSet >();
-			for (Entry<String, Double> result : resultSet.getResultSet().entrySet()) {
-				FatSet tempSet = new FatSet();
-				tempSet.getModels().put(initialModel, result.getValue());
-				initialRanking.put(result.getKey(), tempSet);
-			}
-			fatResultSet.put(queryInfo.getId(),initialRanking);
 		}
 		
 		
@@ -128,13 +119,105 @@ public class FatResultSet {
 		expand(queries, indicesName);
 	}
 	
+	private void expand(List<QueryInfo> queries, Set<String> indicesName)
+			throws UnknownHostException {
+		
+		AdHocSearcher adHocSearcher = new AdHocSearcher();
+		WeightingModule weightingModule = new WeightingModule();
+		/*
+		for (Entry<String, WeightingModel> model : models.entrySet() ){
+			if (model.getKey().equals(initialModel)) {
+				continue;
+			}
+			weightingModule.changeWeightingModel(indicesName, model.getValue());
+			log.info("Processing " + model.getKey());
+			
+			for (QueryInfo queryInfo : queries) {
+				
+				Map<String,Double> resultSet = adHocSearcher
+						.searchAndFilter(queryInfo.getIndexName(), 
+								queryInfo.getText(), initialRanking.get(queryInfo.getId()));
+				System.out.println(resultSet.size());
+				try {
+					BufferedWriter out;
+					out = new BufferedWriter(new FileWriter(queryInfo.getId(),true));
+					for (Entry<String, Double> entry : resultSet.entrySet()) {
+						out.write(entry.getKey() + " " + model.getKey() +" " +entry.getValue() + "\n");
+					}
+					out.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+			}
+		}
+		*/
+
+		weightingModule.changeWeightingModel(indicesName, models.get("BM25"));
+		
+		for (QueryInfo queryInfo : queries) {
+			BufferedWriter out;
+			try {
+				out = new BufferedWriter(new FileWriter(queryInfo.getId()+"_details"));
+
+				HashMap<String,Details> details = adHocSearcher.
+						searchDetails(queryInfo.getIndexName(), queryInfo.getText(), 
+						initialRanking.get(queryInfo.getId()), models.get("BM25"));
+				for (Entry<String, Details> docDetails : details.entrySet()) {
+					for (Entry<String, TermDetails> termsDetails : docDetails.getValue().getTerms().entrySet()) {
+						for (Entry<String, Double>  termValue: termsDetails.getValue().getTermDetails().entrySet()) {
+							out.write(docDetails.getKey() + " BM25 " + 
+								termsDetails.getKey() +  " " + termValue.getKey() +" "+ termValue.getValue() + "\n" );
+						}
+						
+					}
+				}
+				if (details != null){
+					computeDetailsBM25(queryInfo,details);
+				}
+			}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		weightingModule.changeWeightingModel(indicesName, models.get("LMDirichlet"));
+		
+		for (QueryInfo queryInfo : queries) {
+			BufferedWriter out;
+			try {
+				out = new BufferedWriter(new FileWriter(queryInfo.getId()+"_details"));
+
+				HashMap<String,Details> details = adHocSearcher.
+						searchDetails(queryInfo.getIndexName(), queryInfo.getText(), 
+						initialRanking.get(queryInfo.getId()), models.get("LMDirichlet"));
+				for (Entry<String, Details> docDetails : details.entrySet()) {
+					for (Entry<String, TermDetails> termsDetails : docDetails.getValue().getTerms().entrySet()) {
+						for (Entry<String, Double>  termValue: termsDetails.getValue().getTermDetails().entrySet()) {
+							out.write(docDetails.getKey() + " LMDirichlet " + 
+								termsDetails.getKey() +  " " + termValue.getKey() +" "+ termValue.getValue() + "\n" );
+						}
+						
+					}
+				}
+			}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
 	
-	public ResultSet getTermFrequency(HashMap<String, PropertyDetails> details){
-		ResultSet resultSet = new ResultSet();
-		for (Entry<String, PropertyDetails> propertyDetails : details.entrySet()) {
+	
+	public Map<String,Double> getTermFrequency(HashMap<String, Details> details){
+		Map<String,Double> resultSet = new HashMap<String,Double>();
+		for (Entry<String, Details> propertyDetails : details.entrySet()) {
 			Double score = 0.0;
 			Integer count = 0;
-			for (Entry<String, TermDetails> termDetails : propertyDetails.getValue().getPropertyDetails().entrySet()) {
+			for (Entry<String, TermDetails> termDetails : propertyDetails.getValue().getTerms().entrySet()) {
 				for (Entry<String, Double> term : termDetails.getValue().getTermDetails().entrySet()) {
 					if (termDetails.getKey().equals("TF")) {
 						score += term.getValue();
@@ -145,20 +228,20 @@ public class FatResultSet {
 				
 			}
 			if (count > 0 && score > 0) {
-				resultSet.putResult(propertyDetails.getKey(), score/count);
+				resultSet.put(propertyDetails.getKey(), score/count);
 			} else {
-				resultSet.putResult(propertyDetails.getKey(), 0.0);
+				resultSet.put(propertyDetails.getKey(), 0.0);
 			}
 		}
 		return resultSet;
 	}
 	
-	public ResultSet getInverseDocFrequency(HashMap<String, PropertyDetails> details){
-		ResultSet resultSet = new ResultSet();
-		for (Entry<String, PropertyDetails> propertyDetails : details.entrySet()) {
+	public Map<String,Double> getInverseDocFrequency(HashMap<String, Details> details){
+		Map<String,Double> resultSet = new HashMap<String,Double>();
+		for (Entry<String, Details> propertyDetails : details.entrySet()) {
 			Double score = 0.0;
 			Integer count = 0;
-			for (Entry<String, TermDetails> termDetails : propertyDetails.getValue().getPropertyDetails().entrySet()) {
+			for (Entry<String, TermDetails> termDetails : propertyDetails.getValue().getTerms().entrySet()) {
 				for (Entry<String, Double> term : termDetails.getValue().getTermDetails().entrySet()) {
 					if (termDetails.getKey().equals("IDF")) {
 						score += term.getValue();
@@ -169,21 +252,21 @@ public class FatResultSet {
 				
 			}
 			if (count > 0 && score > 0) {
-				resultSet.putResult(propertyDetails.getKey(), score/count);
+				resultSet.put(propertyDetails.getKey(), score/count);
 			} else {
-				resultSet.putResult(propertyDetails.getKey(), 0.0);
+				resultSet.put(propertyDetails.getKey(), 0.0);
 			}
 		}
 		return resultSet;
 		
 	}
 	
-	public ResultSet getDocLength(HashMap<String, PropertyDetails> details){
-		ResultSet resultSet = new ResultSet();
-		for (Entry<String, PropertyDetails> propertyDetails : details.entrySet()) {
+	public Map<String,Double> getDocLength(HashMap<String, Details> details){
+		Map<String,Double> resultSet = new HashMap<String,Double>();
+		for (Entry<String, Details> propertyDetails : details.entrySet()) {
 			Double score = 0.0;
 			Integer count = 0;
-			for (Entry<String, TermDetails> termDetails : propertyDetails.getValue().getPropertyDetails().entrySet()) {
+			for (Entry<String, TermDetails> termDetails : propertyDetails.getValue().getTerms().entrySet()) {
 				for (Entry<String, Double> term : termDetails.getValue().getTermDetails().entrySet()) {
 					if (termDetails.getKey().equals("DL")) {
 						score += term.getValue();
@@ -193,9 +276,9 @@ public class FatResultSet {
 				
 			}
 			if (count > 0 && score > 0) {
-				resultSet.putResult(propertyDetails.getKey(), score/count);
+				resultSet.put(propertyDetails.getKey(), score/count);
 			} else {
-				resultSet.putResult(propertyDetails.getKey(), 0.0);
+				resultSet.put(propertyDetails.getKey(), 0.0);
 			}
 		}
 		return resultSet;
@@ -207,82 +290,48 @@ public class FatResultSet {
 	/**
 	 * 
 	 */
-	private void expand(List<QueryInfo> queries, Set<String> indicesName)
-			throws UnknownHostException {
-		
-		AdHocSearcher adHocSearcher = new AdHocSearcher();
-		WeightingModule weightingModule = new WeightingModule();
-		
-		for (Entry<String, WeightingModel> model : models.entrySet() ){
-			weightingModule.changeWeightingModel(indicesName, model.getValue());
-			log.info("Processing " + model.getKey());
-			if (!model.getKey().equals(initialModel) && 
-					(model.getKey().equals("BM25") || model.getKey().equals("LMDirichlet") )){
-				
-				for (QueryInfo queryInfo : queries) {
-					ResultSet resultSet = adHocSearcher.
-							searchAndFilterWithDetails(queryInfo.getIndexName(), queryInfo.getText(), 
-							fatResultSet.get(queryInfo.getId()).keySet(), model.getValue());
-					
-					if (resultSet.getDetails() != null){
-						fatSetDetails.get(queryInfo.getId()).put(model.getKey(), resultSet.getDetails());
-					}
-					
-					for (Entry<String, Double> result : resultSet.getResultSet().entrySet()) {
-						fatResultSet.get(queryInfo.getId()).get(result.getKey())
-							.getModels().put(model.getKey(), result.getValue());
-						
-					}
-					
-					if (model.getKey().equals("BM25")) {
-						computeDetailsBM25(queryInfo);
-					}
-				}
-			} else if (!model.getKey().equals(initialModel)) {
-				
-				for (QueryInfo queryInfo : queries) {
-					
-					ResultSet resultSet = adHocSearcher
-							.searchAndFilter(queryInfo.getIndexName(), 
-									queryInfo.getText(), fatResultSet.get(queryInfo.getId()).keySet());
-					
-					for (Entry<String, Double> result : resultSet.getResultSet().entrySet()) {
-						fatResultSet.get(queryInfo.getId()).get(result.getKey())
-							.getModels().put(model.getKey(), result.getValue());
-					}
-					
-				}
-				
-			} 
+	private void computeDetailsBM25(QueryInfo queryInfo, HashMap<String,Details> details) {
+		Map<String,Double> resultSet = getTermFrequency(details);
 			
+		try {
+			BufferedWriter out;
+			out = new BufferedWriter(new FileWriter(queryInfo.getId(),true));
+			for (Entry<String, Double> entry : resultSet.entrySet()) {
+				out.write(entry.getKey() + " TF " +  +entry.getValue() + "\n");
+			}
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-	}
-	
-	/**
-	 * 
-	 */
-	private void computeDetailsBM25(QueryInfo queryInfo) {
-		ResultSet tfResultSet = getTermFrequency(fatSetDetails.get(queryInfo.getId()).get("BM25").getDocsDetails());
-		ResultSet idfResultSet = getInverseDocFrequency(fatSetDetails.get(queryInfo.getId()).get("BM25").getDocsDetails());
-		ResultSet dlResultSet = getDocLength(fatSetDetails.get(queryInfo.getId()).get("BM25").getDocsDetails());
-		for (Entry<String, Double> result : tfResultSet.getResultSet().entrySet()) {
-			fatResultSet.get(queryInfo.getId()).get(result.getKey())
-				.getModels().put("TF", result.getValue());
-			
-		}
-		for (Entry<String, Double> result : idfResultSet.getResultSet().entrySet()) {
-			fatResultSet.get(queryInfo.getId()).get(result.getKey())
-				.getModels().put("IDF", result.getValue());
-			
-		}
-		for (Entry<String, Double> result : dlResultSet.getResultSet().entrySet()) {
-			fatResultSet.get(queryInfo.getId()).get(result.getKey())
-				.getModels().put("DL", result.getValue());
-			
-		}
-		
-	}
 
+		resultSet = getInverseDocFrequency(details);
+		try {
+			BufferedWriter out;
+			out = new BufferedWriter(new FileWriter(queryInfo.getId(),true));
+			for (Entry<String, Double> entry : resultSet.entrySet()) {
+				out.write(entry.getKey() + " IDF " +  +entry.getValue() + "\n");
+			}
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		resultSet = getDocLength(details);
+		try {
+			BufferedWriter out;
+			out = new BufferedWriter(new FileWriter(queryInfo.getId(),true));
+			for (Entry<String, Double> entry : resultSet.entrySet()) {
+				out.write(entry.getKey() + " DL " +  +entry.getValue() + "\n");
+			}
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	/*
 	public void dump(){
 		Integer counter = 0;
 		try {
@@ -343,7 +392,7 @@ public class FatResultSet {
 				e.printStackTrace();
 			}
 			
-	}
+	}*/
 	
 	
 	public HashMap<String,WeightingModel> getModels() {
