@@ -12,7 +12,7 @@ import java.util.Map.Entry;
  */
 public class FatSet {
 	
-	private HashMap<String,Double> models;
+	private HashMap<String,Float> models;
 	
 	
 	public FatSet(){
@@ -23,20 +23,20 @@ public class FatSet {
 		String[] afterEffects = {"no", "b" ,"l"};
 		String[] normalizations = {"no", "h1", "h2", "h3", "z"};
 		
-		setModels(new HashMap<String,Double>());
+		models = new HashMap<String,Float>();
 		
-		getModels().put("BM25", 0.0);
-		getModels().put("TFIDF", 0.0);
-		getModels().put("LMDirichlet", 0.0);
-		getModels().put("LMJelinekMercer", 0.0);
+		models.put("BM25", 0F);
+		models.put("TFIDF", 0F);
+		models.put("LMDirichlet", 0F);
+		models.put("LMJelinekMercer", 0F);
 		for (String independence : independences) {
-			getModels().put("DFI_" + independence, 0.0);
+			models.put("DFI_" + independence, 0F);
 		}		
 		for (String basicModel : basicModels) {
 			for (String afterEffect : afterEffects) {
 				for (String normalization : normalizations) {
-					getModels().put("DFR_" + basicModel + "_" 
-							+ afterEffect + "_" + normalization, 0.0);
+					models.put("DFR_" + basicModel + "_" 
+							+ afterEffect + "_" + normalization, 0F);
 				}
 			}
 		}
@@ -44,33 +44,39 @@ public class FatSet {
 		for (String lambda : lambdas) {
 			for (String distribution : distributions) {
 				for (String normalization : normalizations) {
-					getModels().put("IB_" + distribution + "_" + lambda + "_" + normalization, 0.0);
+					models.put("IB_" + distribution + "_" + lambda + "_" + normalization, 0F);
 				}
 			}
 		}
 		
-		getModels().put("TF", 0.0);
-		getModels().put("IDF", 0.0);
-		getModels().put("DL", 0.0);
+		models.put("TF", 0F);
+		models.put("IDF", 0F);
+		models.put("DL", 0F);
 	}
 
-	public HashMap<String,Double> getModels() {
-		return models;
-	}
 
-	public void setModels(HashMap<String,Double> models) {
-		this.models = models;
-	}
 	
 	public String toString(){
 		String str = "";
-		for ( Entry<String, Double> model : models.entrySet()) {
+		for ( Entry<String, Float> model : models.entrySet()) {
 			if (model.getValue() != null) {
 				str += model.getKey() + ":" + model.getValue().toString() + " ";
 			}
 		}
 		return str;
 		
+	}
+
+
+
+	public HashMap<String,Float> getModels() {
+		return models;
+	}
+
+
+
+	public void setModels(HashMap<String,Float> models) {
+		this.models = models;
 	}
 
 

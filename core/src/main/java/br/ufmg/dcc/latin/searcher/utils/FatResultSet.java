@@ -94,15 +94,26 @@ public class FatResultSet {
 			indicesName.add(query.getIndexName());
 		}
 		
-		WeightingModule weightingModule = new WeightingModule();
-		weightingModule.changeWeightingModel(indicesName, models.get(initialModel));
+		//WeightingModule weightingModule = new WeightingModule();
+		//weightingModule.changeWeightingModel(indicesName, models.get(initialModel));
 		AdHocSearcher adHocSearcher = new AdHocSearcher();
+		CollectionCandidates collection = new CollectionCandidates();
 		for (QueryInfo queryInfo : queries) {
 			System.out.println(queryInfo.getId());
 			Map<String, Double> resultSet = adHocSearcher
-					.initialSearch(queryInfo.getIndexName(), queryInfo.getText(), 1000);
+					.initialSearch(queryInfo.getIndexName(), queryInfo.getText(), 5);
 			initialRanking.put(queryInfo.getId(),resultSet.keySet());
-			try {
+			
+			for (String docId : resultSet.keySet()) {
+				try {
+					System.out.println(queryInfo.getIndexName() +  " text " +  " doc " +  docId);
+					collection.putDocCandidate(queryInfo.getIndexName(), "text", "doc", docId);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			/*try {
 				BufferedWriter out = new BufferedWriter(new FileWriter(queryInfo.getId()));
 				for (Entry<String, Double> entry : resultSet.entrySet()) {
 					out.write(entry.getKey() + " " + initialModel +" " +entry.getValue() + "\n");
@@ -111,12 +122,12 @@ public class FatResultSet {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 		}
 		
 		
 	
-		expand(queries, indicesName);
+		//expand(queries, indicesName);
 	}
 	
 	private void expand(List<QueryInfo> queries, Set<String> indicesName)

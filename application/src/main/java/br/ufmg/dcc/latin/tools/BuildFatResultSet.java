@@ -35,7 +35,7 @@ public class BuildFatResultSet {
 		options.addOption("r", "ranking", true, "Initial ranking model.");
 		CommandLine cmd = null;
 		CommandLineParser parser = new DefaultParser();
-		String topicsFile = "src/main/resources/sample_topics_domain.txt";
+		String topicsFile = "src/main/resources/topics_domain.txt";
 		String initialRanking = "LMDirichlet";
 		try {
 			cmd = parser.parse(options, args);
