@@ -9,13 +9,13 @@ package br.ufmg.dcc.latin.searcher;
  */
 public class DocScorePair {
 	private String docId;
-	private Double score;
+	private Float score;
 	
 	/**
 	 * @param id
 	 * @param score2
 	 */
-	public DocScorePair(String docId, Double score) {
+	public DocScorePair(String docId, Float score) {
 		this.docId = docId;
 		this.score = score;
 	}
@@ -25,10 +25,10 @@ public class DocScorePair {
 	public void setDocId(String docId) {
 		this.docId = docId;
 	}
-	public Double getScore() {
+	public Float getScore() {
 		return score;
 	}
-	public void setScore(Double score) {
+	public void setScore(Float score) {
 		this.score = score;
 	}
 }

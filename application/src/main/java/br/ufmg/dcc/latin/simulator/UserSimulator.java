@@ -4,9 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Map;
 
 import br.ufmg.dcc.latin.searcher.AdHocSearcher;
-import br.ufmg.dcc.latin.searcher.utils.ResultSet;
 import br.ufmg.dcc.latin.simulator.dd.DDSimulator;
 
 /**
@@ -47,7 +47,7 @@ public class UserSimulator {
 	    		System.out.println(topicId);
 	        	adHocSearcher.search(indexName, query);
 	        	for (int i = 0; i < 2; i++) {
-	        		ResultSet resultSet = adHocSearcher.getNextResults();
+	        		Map<String,Float> resultSet = adHocSearcher.getNextResults();
 	        		simulator.performStep(runId, topicId, resultSet);
 				}
 		    }

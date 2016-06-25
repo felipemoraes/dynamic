@@ -8,14 +8,14 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import br.ufmg.dcc.latin.searcher.models.*;
+
+import br.ufmg.dcc.latin.searcher.es.models.*;
 public class WeightingModule {
 	
 
-	public WeightingModule(){
-	}
+
 	
-	public void changeWeightingModel(Set<String> indicesName, WeightingModel weightingModel) throws UnknownHostException{
+	public static void changeWeightingModel(Set<String> indicesName, WeightingModel weightingModel) throws UnknownHostException{
 		Settings settings = Settings.settingsBuilder()
     			.put("cluster.name", "latin_elasticsearch").build();
 		
@@ -36,7 +36,7 @@ public class WeightingModule {
         client.close();
 	}
 	
-	public void changeWeightingModel(String indexName, WeightingModel weightingModel) throws UnknownHostException{
+	public static void changeWeightingModel(String indexName, WeightingModel weightingModel) throws UnknownHostException{
 		Settings settings = Settings.settingsBuilder()
     			.put("cluster.name", "latin_elasticsearch").build();
 		

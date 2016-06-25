@@ -1,10 +1,11 @@
 package br.ufmg.dcc.latin.simulator;
 
-import br.ufmg.dcc.latin.searcher.utils.FeedbackSignals;
-import br.ufmg.dcc.latin.searcher.utils.ResultSet;
+import java.util.Map;
+
+import br.ufmg.dcc.latin.simulator.FeedbackSignals;
 
 public interface Simulator {
 	
-	public FeedbackSignals performStep(String runId, String topicId, ResultSet resultSet);
+	public FeedbackSignals performStep(String runId, String topicId, Map<String,Float> resultSet);
 
 }

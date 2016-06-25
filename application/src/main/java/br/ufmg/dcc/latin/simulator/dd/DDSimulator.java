@@ -11,14 +11,15 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
-import br.ufmg.dcc.latin.searcher.utils.DDFeedback;
-import br.ufmg.dcc.latin.searcher.utils.DDFeedbackSignals;
-import br.ufmg.dcc.latin.searcher.utils.FeedbackSignals;
-import br.ufmg.dcc.latin.searcher.utils.ResultSet;
-import br.ufmg.dcc.latin.searcher.utils.Subtopic;
+import br.ufmg.dcc.latin.features.FeaturedResultSet;
+import br.ufmg.dcc.latin.simulator.DDFeedback;
+import br.ufmg.dcc.latin.simulator.DDFeedbackSignals;
+import br.ufmg.dcc.latin.simulator.FeedbackSignals;
 import br.ufmg.dcc.latin.simulator.Simulator;
+import br.ufmg.dcc.latin.simulator.Subtopic;
 
 public class DDSimulator implements Simulator {
 
@@ -54,7 +55,7 @@ public class DDSimulator implements Simulator {
 		
 	}
 	
-	public FeedbackSignals performStepWithJig(String runId, String topicId, ResultSet resultSet) {
+	public FeedbackSignals performStepWithJig(String runId, String topicId, FeaturedResultSet resultSet) {
 	
    		String cmd = "python";
 		cmd += " src/main/resources/trecdd/jig/jig.py";
@@ -85,7 +86,7 @@ public class DDSimulator implements Simulator {
 	
 	
 	@Override
-	public FeedbackSignals performStep(String runId, String topicId, ResultSet resultSet) {
+	public FeedbackSignals performStep(String runId, String topicId, Map<String, Float> resultSet) {
 		// Get 
 		
 		if (!runs.containsKey(runId)) {
@@ -97,7 +98,7 @@ public class DDSimulator implements Simulator {
 				 BufferedWriter bw = new BufferedWriter(fw);
 				 PrintWriter out = new PrintWriter(bw))
 		{
-			for (Entry<String, Double> result: resultSet.getResultSet().entrySet()) {
+			for (Entry<String, Float> result: resultSet.entrySet()) {
 				DDFeedback dDFeedback = new DDFeedback();
 				dDFeedback.setDocId(result.getKey());
 				dDFeedback.setRankingScore(result.getValue());
