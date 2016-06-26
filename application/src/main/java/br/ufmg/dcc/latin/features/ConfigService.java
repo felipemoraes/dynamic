@@ -31,7 +31,7 @@ public class ConfigService {
 		String param = splitLine[1];
 		switch (config) {
 		case "QUERY_INDEPENDENT_FILENAME":
-			ApplicationSetup.QUERY_INDEPENDENT_FILENAME = param;
+			Config.QUERY_INDEPENDENT_FILENAME = param;
 			break;
 			
 		case "INITIAL_RANKING_MODEL":
@@ -39,7 +39,7 @@ public class ConfigService {
 			try {
 				act = Class.forName("br.ufmg.dcc.latin.searcher.es.models." + param);
 	
-				ApplicationSetup.INITIAL_RANKING_MODEL = (WeightingModel) act.newInstance();
+				Config.INITIAL_RANKING_MODEL = (WeightingModel) act.newInstance();
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -47,14 +47,14 @@ public class ConfigService {
 			
 			break;
 		case "ES_INDEX_NAME":
-			ApplicationSetup.ES_INDEX_NAME = param;
+			Config.ES_INDEX_NAME = param;
 			break;
 		case "ES_INDEX_TYPE":
-			ApplicationSetup.ES_INDEX_TYPE = param;
+			Config.ES_INDEX_TYPE = param;
 			break;
 			
 		case "OUTPUT_FILENAME":
-			ApplicationSetup.OUTPUT_FILENAME = param;
+			Config.OUTPUT_FILENAME = param;
 			break;
 		default:
 			break;

@@ -2,7 +2,7 @@ package br.ufmg.dcc.latin.features;
 
 import br.ufmg.dcc.latin.searcher.es.models.WeightingModel;
 
-public final class ApplicationSetup {
+public final class Config {
 	
 	public static String QUERY_INDEPENDENT_FILENAME;
 	public static WeightingModel INITIAL_RANKING_MODEL;

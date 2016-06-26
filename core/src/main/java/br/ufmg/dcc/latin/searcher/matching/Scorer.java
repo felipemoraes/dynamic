@@ -4,6 +4,6 @@ import org.apache.lucene.search.similarities.BasicStats;
 
 public interface Scorer {
 	
-	public float totalScore(BasicStats[] basicStats, long[] termFreq, long docLen, int termCount);
+	public float totalScore(BasicStats[] basicStats, int[] termFreq, long docLen, int termCount);
 
 }

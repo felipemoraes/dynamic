@@ -26,14 +26,11 @@ public class IBScorer extends IBSimilarity implements Scorer {
 	}
 
 	@Override
-	public float totalScore(BasicStats[] basicStats, long[] termFreq, long docLen, int termCount) {
+	public float totalScore(BasicStats[] basicStats, int[] termFreq, long docLen, int termCount) {
 		float s = 0;
 	
 		for (int i = 0; i < termCount; i++) {
-			if (basicStats[i]==null) {
-				System.out.println("te achei " + i);
-			}
-			// we need to encode a normalization as lucene does that too
+			// we need to encode a normalization as lucene does that too	
 			s += score(basicStats[i], termFreq[i], decodeNormValue(this.encodeNormValue(1, docLen)));
 		}
 		return s;

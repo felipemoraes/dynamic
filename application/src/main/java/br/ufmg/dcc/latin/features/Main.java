@@ -7,19 +7,21 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import br.ufmg.dcc.latin.searcher.ResultSet;
+import br.ufmg.dcc.latin.searcher.SearchService;
+
 
 /**
  * @author Felipe Moraes
  *
  */
-public class BuildFeaturedResultSet {
+public class Main {
 
 	/**
 	 * 
@@ -47,10 +49,28 @@ public class BuildFeaturedResultSet {
 			System.exit(0);
 		}
 		
+		
+		/*
+		try {
+			WeightingModule.changeWeightingModel(ApplicationSetup.ES_INDEX_NAME, ApplicationSetup.INITIAL_RANKING_MODEL);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
 		ConfigService configService = new ConfigService();
 		configService.config(configFilePath);
-		float startTime = System.nanoTime();    
-		FeaturedResultSet resultSet = new FeaturedResultSet();
+		
+		float startTime = System.nanoTime();
+		
+		SearchService searchService = new SearchService(Config.ES_INDEX_NAME, Config.ES_INDEX_TYPE,"doc");
+		
+
+		// QueryIndependentFeatures queryIndependentFeatures;
+		
+		FeaturesService featuresService = new FeaturesService();
+		//LETOROutputFormat letorOutputFormat = new LETOROutputFormat(Config.OUTPUT_FILENAME);
+		
 		try (BufferedReader br = new BufferedReader(new FileReader(topicsFile))) {
 		    String line;
 		    while ((line = br.readLine()) != null) {
@@ -58,7 +78,12 @@ public class BuildFeaturedResultSet {
 	        	int queryId = Integer.parseInt(splitLine[0]);
 	    		String query = splitLine[1];
 	    		
-	    		resultSet.process(queryId,query);
+	    		ResultSet resultSet = searchService.search(query, 1000);
+	    		
+	    		FeaturedResultSet featuredResultSet = new FeaturedResultSet(resultSet,featuresService);
+	    		
+	    		//letorOutputFormat.write(queryId, featuredResultSet.getScores(), featuredResultSet.getDocIds());
+	    		
 		    }
 		    
 		    

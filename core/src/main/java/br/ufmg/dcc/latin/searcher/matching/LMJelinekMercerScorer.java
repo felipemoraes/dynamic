@@ -22,7 +22,7 @@ public class LMJelinekMercerScorer extends LMJelinekMercerSimilarity implements 
 	}
 
 	@Override
-	public float totalScore(BasicStats[] basicStats, long[] termFreq, long docLen, int termCount) {
+	public float totalScore(BasicStats[] basicStats, int[] termFreq, long docLen, int termCount) {
 		float s = 0;
 		for (int i = 0; i < termCount; i++) {
 			LMStats lmStats = new LMStats("lm");

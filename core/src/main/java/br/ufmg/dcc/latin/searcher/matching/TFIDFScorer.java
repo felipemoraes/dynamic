@@ -32,7 +32,7 @@ public class TFIDFScorer implements Scorer {
 		  }
 
 	@Override
-	public float totalScore(BasicStats[] basicStats, long[] termFreq, long docLen, int termCount) {
+	public float totalScore(BasicStats[] basicStats, int[] termFreq, long docLen, int termCount) {
 		float s = 0;
 		float sumOfSquaredWeights = 0;
 		for (int i = 0; i < termCount; i++) {

@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
 
-import br.ufmg.dcc.latin.searcher.AdHocSearcher;
+import br.ufmg.dcc.latin.searcher.SearchService;
 import br.ufmg.dcc.latin.simulator.dd.DDSimulator;
 
 /**
@@ -22,7 +22,7 @@ public class UserSimulator {
 
     		
 		
-		AdHocSearcher adHocSearcher = new AdHocSearcher();
+		SearchService adHocSearcher = new SearchService();
 		
 		DDSimulator simulator = new DDSimulator("src/main/resources/truth_data.txt");
 		//DDSimulator simulator = new DDSimulator();

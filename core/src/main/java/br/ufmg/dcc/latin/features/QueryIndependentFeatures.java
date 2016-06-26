@@ -4,18 +4,18 @@ package br.ufmg.dcc.latin.features;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-public class QIFeaturesBuilder {
+public class QueryIndependentFeatures {
 	
 	private float[][] features;
 	
-	public QIFeaturesBuilder(){
+	//TODO handles names
+	
+	public QueryIndependentFeatures(String featuresFilename){
 		features = new float[500000][];
 	
 		
-		try (BufferedReader br = new BufferedReader(new FileReader(ApplicationSetup.QUERY_INDEPENDENT_FILENAME))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(featuresFilename))) {
 		    String line;
 		    while ((line = br.readLine()) != null) {
 				String[] splitLine = line.split(" ");
