@@ -1,5 +1,7 @@
 package br.ufmg.dcc.latin.searcher;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -8,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequest;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -189,6 +194,23 @@ public class SearchService {
 		return listTerms;
 	}
 	
+	private int getDocLen(String doc){
+		int n = 0;
+		try {
+			Analyzer analyzer = new StandardAnalyzer();
+			TokenStream stream  = analyzer.tokenStream(null, new StringReader(doc));
+			stream.reset();
+		    while (stream.incrementToken()) {
+		        n++;
+		    }
+		    analyzer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return n;
+	}
+	
 	public ResultSet search(String query, int size) {
 		ResultSet resultSet = new ResultSet();
 		String terms = getQueryTerms(query);
@@ -196,11 +218,12 @@ public class SearchService {
 		SearchRequestBuilder request = client.prepareSearch(indexName)
 				.setTypes("doc")
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-				.setQuery(QueryBuilders.queryStringQuery(query).field("text")).setExplain(true)            
+				.setQuery(QueryBuilders.queryStringQuery(query).field("text"))
+				.addFields("text")
 				.setFrom(0).setSize(size);
 		
 
-		request.addScriptField("doc_len", new Script(buildDocLenScript("text")));
+
 		request.addScriptField("sum_tff", new Script(buildSumTtfScript("text")));
 		request.addScriptField("doc_count", new Script(buildDocCountScript("text")));
 		request.addScriptField("tf", new Script(buildTfScript("text",terms)));
@@ -215,8 +238,8 @@ public class SearchService {
     	Posting[] postings = new Posting[size];
 		for (SearchHit hit : response.getHits()) {
 			
-			
-			int docLen = (int) hit.getFields().get("doc_len").getValues().get(0);
+			String doc = (String) hit.getFields().get("text").getValues().get(0);
+			int docLen = getDocLen(doc);
 			long sumTff = (long) hit.getFields().get("sum_tff").getValues().get(0);
 			long docCount =  (long) hit.getFields().get("doc_count").getValues().get(0);
 			
