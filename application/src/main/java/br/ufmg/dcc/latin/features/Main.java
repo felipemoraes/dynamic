@@ -6,6 +6,7 @@ package br.ufmg.dcc.latin.features;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -15,6 +16,8 @@ import org.apache.commons.cli.ParseException;
 
 import br.ufmg.dcc.latin.searcher.ResultSet;
 import br.ufmg.dcc.latin.searcher.SearchService;
+import br.ufmg.dcc.latin.searcher.WeightingModule;
+
 
 
 /**
@@ -49,21 +52,24 @@ public class Main {
 			System.exit(0);
 		}
 		
+
 		
-		/*
-		try {
-			WeightingModule.changeWeightingModel(ApplicationSetup.ES_INDEX_NAME, ApplicationSetup.INITIAL_RANKING_MODEL);
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
 		ConfigService configService = new ConfigService();
 		configService.config(configFilePath);
 		
+		/*
+		
+		try {
+			WeightingModule.changeWeightingModel(Config.ES_INDEX_NAME, Config.INITIAL_RANKING_MODEL);
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}*/
+	
+		
 		float startTime = System.nanoTime();
 		
-		SearchService searchService = new SearchService(Config.ES_INDEX_NAME, Config.ES_INDEX_TYPE,"doc");
+		SearchService searchService = new SearchService(Config.ES_INDEX_NAME, "text", Config.ES_INDEX_TYPE);
 		
 
 		// QueryIndependentFeatures queryIndependentFeatures;
@@ -78,7 +84,7 @@ public class Main {
 	        	int queryId = Integer.parseInt(splitLine[0]);
 	    		String query = splitLine[1];
 	    		
-	    		ResultSet resultSet = searchService.search(query, 1000);
+	    		ResultSet resultSet = searchService.search(query, 2);
 	    		
 	    		FeaturedResultSet featuredResultSet = new FeaturedResultSet(resultSet,featuresService);
 	    		

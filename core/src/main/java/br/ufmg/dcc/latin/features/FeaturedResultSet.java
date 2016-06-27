@@ -63,14 +63,16 @@ public class FeaturedResultSet {
 			}
 			
 			int j = 0;
+			System.out.println("docId " + docIds[i]);
 			for (Entry<String, Scorer> scorer : featuresService.getScorers().entrySet()) { 
 				float s = scorer.getValue()
 						.totalScore(basicStats, termFrequency, docLen, n);
+				System.out.println(resultSet.getScores()[i] + " " +s);
 				scores[i][j] = s;
 				j++;
 			}
-			
-			
+			System.out.println();
+			System.out.println();
 			for (int k = 0; k < qiFeatures.length; k++) {
 				scores[i][j+k] = qiFeatures[k];
 			}

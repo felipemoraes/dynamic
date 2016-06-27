@@ -102,10 +102,11 @@ public class FeaturesService {
 		normalizations.put("h3", new NormalizationH3());
 		normalizations.put("z", new NormalizationZ());
 	
-		
+		scorers.put("LMDirichlet", new LMDirichletScorer(2000));
+		/*
 		scorers.put("BM25", new BM25Scorer());
 		scorers.put("TFIDF", new TFIDFScorer());
-		scorers.put("LMDirichlet", new LMDirichletScorer(2500));
+		
 		scorers.put("LMJelinekMercer", new LMJelinekMercerScorer( 0.1F));
 		for (Entry<String,Independence> independence : independences.entrySet()) {
 			scorers.put("DFI_" + independence.getKey(), new DFIScorer(independence.getValue()));
@@ -129,7 +130,7 @@ public class FeaturesService {
 				    		normalization.getValue()));
 				}
 			}
-		}
+		}*/
 	}
 	
 }

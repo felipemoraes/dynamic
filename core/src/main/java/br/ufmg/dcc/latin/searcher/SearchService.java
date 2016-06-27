@@ -13,6 +13,9 @@ import java.util.Map.Entry;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.standard.StandardTokenizer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.util.AttributeFactory;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequest;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -196,14 +199,20 @@ public class SearchService {
 	
 	private int getDocLen(String doc){
 		int n = 0;
+		AttributeFactory factory = AttributeFactory.DEFAULT_ATTRIBUTE_FACTORY;
+		
 		try {
-			Analyzer analyzer = new StandardAnalyzer();
-			TokenStream stream  = analyzer.tokenStream(null, new StringReader(doc));
-			stream.reset();
-		    while (stream.incrementToken()) {
+			
+			StandardTokenizer tokenizer = new StandardTokenizer(factory);
+			tokenizer.setReader(new StringReader(doc));
+			tokenizer.reset();
+			// CharTermAttribute attr = tokenizer.addAttribute(CharTermAttribute.class);
+			
+		    while (tokenizer.incrementToken()) {
 		        n++;
 		    }
-		    analyzer.close();
+		    tokenizer.close();
+		    
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -216,19 +225,20 @@ public class SearchService {
 		String terms = getQueryTerms(query);
 		
 		SearchRequestBuilder request = client.prepareSearch(indexName)
-				.setTypes("doc")
+				.setTypes(docType)
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-				.setQuery(QueryBuilders.queryStringQuery(query).field("text"))
-				.addFields("text")
+				.setQuery(QueryBuilders.queryStringQuery(query).field(field))
+				.setExplain(true)
+				.addFields(field)
 				.setFrom(0).setSize(size);
 		
 
 
-		request.addScriptField("sum_tff", new Script(buildSumTtfScript("text")));
-		request.addScriptField("doc_count", new Script(buildDocCountScript("text")));
-		request.addScriptField("tf", new Script(buildTfScript("text",terms)));
-		request.addScriptField("df", new Script(buildDfScript("text",terms)));
-		request.addScriptField("ttf", new Script(buildTtfScript("text",terms)));
+		request.addScriptField("sum_tff", new Script(buildSumTtfScript(field)));
+		request.addScriptField("doc_count", new Script(buildDocCountScript(field)));
+		request.addScriptField("tf", new Script(buildTfScript(field,terms)));
+		request.addScriptField("df", new Script(buildDfScript(field,terms)));
+		request.addScriptField("ttf", new Script(buildTtfScript(field,terms)));
 		
 		
     	SearchResponse response = request.execute().actionGet();
@@ -237,7 +247,7 @@ public class SearchService {
     	float[] scores = new float[size];
     	Posting[] postings = new Posting[size];
 		for (SearchHit hit : response.getHits()) {
-			
+			System.out.println(hit.getExplanation());
 			String doc = (String) hit.getFields().get("text").getValues().get(0);
 			int docLen = getDocLen(doc);
 			long sumTff = (long) hit.getFields().get("sum_tff").getValues().get(0);
@@ -245,6 +255,7 @@ public class SearchService {
 			
 			@SuppressWarnings("unchecked")
 			Map<String,Integer> tf = (Map<String, Integer>) hit.getFields().get("tf").getValues().get(0);
+			System.out.println(hit.getFields().get("tf").getValues().get(0));
 			@SuppressWarnings("unchecked")
 			Map<String,Long> df = (Map<String, Long>) hit.getFields().get("df").getValues().get(0);
 			@SuppressWarnings("unchecked")
