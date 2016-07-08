@@ -10,17 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
-import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.util.AttributeFactory;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequest;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
@@ -41,7 +36,7 @@ public class SearchService {
 	private List<DocScorePair> searchPool;
 	
 	private String indexName;
-	private String field;
+
 	private String docType;
 	
 	public SearchService(String indexName, String field, String docType){
@@ -49,8 +44,8 @@ public class SearchService {
 		searchPool = new ArrayList<DocScorePair>();
 		
 		this.indexName = indexName;
-		this.field = field;
 		this.docType = docType;
+		
     	Settings settings = Settings.settingsBuilder()
     			.put("cluster.name", "latin_elasticsearch").build();
 		
@@ -100,10 +95,11 @@ public class SearchService {
 	}
 	
 	public void search(String indexName, String query) {
-		this.setCounter(0);
+		this.counter = 0;
     	try {
 	    	Settings settings = Settings.settingsBuilder()
-	    			.put("script.inline",true)
+	    			.put("client.transport.ping_timeout", "30s")
+	    			.put("client.transport.nodes_sampler_interval","30s")
 	    			.put("cluster.name", "latin_elasticsearch").build();
 	        Client client;
 			
@@ -220,56 +216,63 @@ public class SearchService {
 		return n;
 	}
 	
-	public ResultSet search(String query, int size) {
+	public ResultSet search(String query, String[] fields, int size) {
 		ResultSet resultSet = new ResultSet();
 		String terms = getQueryTerms(query);
 		
 		SearchRequestBuilder request = client.prepareSearch(indexName)
 				.setTypes(docType)
-				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-				.setQuery(QueryBuilders.queryStringQuery(query).field(field))
-				.setExplain(true)
-				.addFields(field)
+				.setQuery(QueryBuilders.queryStringQuery(query).field(fields[0]))
+				.addFields(fields)
+				.addField("docno")
+				.addField("docid")
 				.setFrom(0).setSize(size);
 		
 
+		for (int i = 0; i < fields.length; i++) {
+			request.addScriptField("sum_tff_" + fields[i], new Script(buildSumTtfScript(fields[i])));
+			request.addScriptField("doc_count_" + fields[i], new Script(buildDocCountScript(fields[i])));
+			request.addScriptField("tf_" + fields[i], new Script(buildTfScript(fields[i],terms)));
+			request.addScriptField("df_" + fields[i], new Script(buildDfScript(fields[i],terms)));
+			request.addScriptField("ttf_" + fields[i], new Script(buildTtfScript(fields[i],terms)));
+		}
 
-		request.addScriptField("sum_tff", new Script(buildSumTtfScript(field)));
-		request.addScriptField("doc_count", new Script(buildDocCountScript(field)));
-		request.addScriptField("tf", new Script(buildTfScript(field,terms)));
-		request.addScriptField("df", new Script(buildDfScript(field,terms)));
-		request.addScriptField("ttf", new Script(buildTtfScript(field,terms)));
-		
 		
     	SearchResponse response = request.execute().actionGet();
     	int i = 0;
     	int[] docIds = new int[size];
+    	String[] docNos = new String[size];
     	float[] scores = new float[size];
-    	Posting[] postings = new Posting[size];
+    	Posting[][] postings = new Posting[size][];
 		for (SearchHit hit : response.getHits()) {
-			System.out.println(hit.getExplanation());
-			String doc = (String) hit.getFields().get("text").getValues().get(0);
-			int docLen = getDocLen(doc);
-			long sumTff = (long) hit.getFields().get("sum_tff").getValues().get(0);
-			long docCount =  (long) hit.getFields().get("doc_count").getValues().get(0);
-			
-			@SuppressWarnings("unchecked")
-			Map<String,Integer> tf = (Map<String, Integer>) hit.getFields().get("tf").getValues().get(0);
-			System.out.println(hit.getFields().get("tf").getValues().get(0));
-			@SuppressWarnings("unchecked")
-			Map<String,Long> df = (Map<String, Long>) hit.getFields().get("df").getValues().get(0);
-			@SuppressWarnings("unchecked")
-			Map<String,Long> ttf = (Map<String, Long>) hit.getFields().get("ttf").getValues().get(0);
 			
 			docIds[i] =  Integer.parseInt(hit.getId());
+			docNos[i] =  hit.getFields().get("docno").getValue();
 			scores[i] = hit.getScore();
-			postings[i] = buildPosting(docLen, sumTff, docCount, tf, df, ttf);
-			i++;
+			postings[i] = new Posting[fields.length];
+
+			for (int j = 0; j < fields.length; j++) {
+				String doc = (String) hit.getFields().get(fields[j]).getValues().get(0);
+				int docLen = getDocLen(doc);
+				long sumTff = (long) hit.getFields().get("sum_tff_" + fields[j] ).getValues().get(0);
+				long docCount =  (long) hit.getFields().get("doc_count_" + fields[j]).getValues().get(0);
+				@SuppressWarnings("unchecked")
+				Map<String,Integer> tf = (Map<String, Integer>) hit.getFields().get("tf_" + fields[j]).getValues().get(0);
+				@SuppressWarnings("unchecked")
+				Map<String,Long> df = (Map<String, Long>) hit.getFields().get("df_" + fields[j]).getValues().get(0);
+				@SuppressWarnings("unchecked")
+				Map<String,Long> ttf = (Map<String, Long>) hit.getFields().get("ttf_" + fields[j]).getValues().get(0);
+				
+				postings[i][j] = buildPosting(docLen, sumTff, docCount, tf, df, ttf);
+							
+			}
+			i++;	
 		}	
 		
 		resultSet.setDocIds(docIds);
 		resultSet.setScores(scores);
 		resultSet.setPostings(postings);
+		resultSet.setDocNos(docNos);
 		
 		return resultSet;
 	}
@@ -312,36 +315,6 @@ public class SearchService {
 		posting.setTotalTermFrequency(totalTermFrequency);
 		return posting;
 	}
-
-
-	/* (non-Javadoc)
-	 * @see br.ufmg.dcc.latin.searcher.Searcher#search(java.lang.String, java.util.List)
-	 */
-
-
-
-	public Integer getCounter() {
-		return counter;
-	}
-
-
-	public void setCounter(Integer counter) {
-		this.counter = counter;
-	}
-	public String getField() {
-		return field;
-	}
-	public void setField(String field) {
-		this.field = field;
-	}
-	public String getDocType() {
-		return docType;
-	}
-	public void setDocType(String docType) {
-		this.docType = docType;
-	}
-
-
 
 
 }

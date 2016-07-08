@@ -20,17 +20,26 @@ gradle build
 
 --
 
-## FatResultSet
+## FeaturedResultSet
 
-Generate rankings and parameter combination of all available Lucene similarity modules based on an initial module.
+Build a featured set of query and document. It construct query dependent features (several ranking scores from ranking models) and query independent features (given as an indenpendent file). 
+You'll need to run with Gradle Scripts like this:
 ```bash
-gradle FatResultSet
-java -jar application/build/libs/FatResultSet.jar -t [topicsFile] -r [initial ranking similarity function]
+gradle FeaturedResultSet -PXargs="-t [topicsFile] -c [configFIle]"
+
 ```
 
-#### topics file format
+### topics file format
 
 ```bash
-indexName topicId Text
+topicId<integer> Text<String>
 ```
 
+### config file example:
+INITIAL_RANKING_MODEL LMDirichlet
+INDEPENDENT_FEATURES queryIndependentFile.txt
+DEPENDENT_FEATURES dependentFeatures.txt
+ES_FIELDS text;title
+ES_INDEX_NAME ebola_2015
+ES_DOC_TYPE doc
+OUTPUT_FILENAME output.txt

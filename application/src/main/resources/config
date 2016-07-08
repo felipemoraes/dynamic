@@ -1,5 +1,0 @@
-INITIAL_RANKING_MODEL LMDirichlet
-QUERY_INDEPENDENT_FILENAME /home/felipemoraes/queryIndependentFile.txt
-ES_INDEX_NAME ebola_2015
-ES_INDEX_TYPE doc
-OUTPUT_FILENAME /home/felipemoraes/test.txt

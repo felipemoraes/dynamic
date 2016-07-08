@@ -30,10 +30,13 @@ public class ConfigService {
 		String config = splitLine[0];
 		String param = splitLine[1];
 		switch (config) {
-		case "QUERY_INDEPENDENT_FILENAME":
+		case "INDEPENDENT_FEATURES":
 			Config.QUERY_INDEPENDENT_FILENAME = param;
 			break;
 			
+		case "DEPENDENT_FEATURES":
+			Config.QUERY_DEPENDENT_FILENAME = param;
+			break;
 		case "INITIAL_RANKING_MODEL":
 			Class<?> act;
 			try {
@@ -49,13 +52,18 @@ public class ConfigService {
 		case "ES_INDEX_NAME":
 			Config.ES_INDEX_NAME = param;
 			break;
-		case "ES_INDEX_TYPE":
-			Config.ES_INDEX_TYPE = param;
+			
+		case "ES_DOC_TYPE":
+			Config.ES_DOC_TYPE = param;
 			break;
 			
+		case "ES_FIELDS":
+			Config.ES_FIELDS = param.split(";");
+			break;
 		case "OUTPUT_FILENAME":
 			Config.OUTPUT_FILENAME = param;
 			break;
+		
 		default:
 			break;
 		}

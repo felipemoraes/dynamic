@@ -9,10 +9,11 @@ package br.ufmg.dcc.latin.searcher;
  */
 public class ResultSet {
 	private int[] docIds;
+	private String[] docNos;
 	private float[] scores;
 	//Optional
 	
-	private Posting[] postings;
+	private Posting[][] postings;
 	public int[] getDocIds() {
 		return docIds;
 	}
@@ -25,10 +26,16 @@ public class ResultSet {
 	public void setScores(float[] scores) {
 		this.scores = scores;
 	}
-	public Posting[] getPostings() {
+	public Posting[][] getPostings() {
 		return postings;
 	}
-	public void setPostings(Posting[] postings) {
+	public void setPostings(Posting[][] postings) {
 		this.postings = postings;
+	}
+	public String[] getDocNos() {
+		return docNos;
+	}
+	public void setDocNos(String[] docNos) {
+		this.docNos = docNos;
 	}
 }

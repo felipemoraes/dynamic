@@ -3,9 +3,13 @@
  */
 package br.ufmg.dcc.latin.features;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.lucene.search.similarities.AfterEffect;
 import org.apache.lucene.search.similarities.AfterEffectB;
@@ -61,11 +65,14 @@ public class FeaturesService {
 		return features;
 	}
 	
-	public FeaturesService() {
+	public FeaturesService(List<String> depeendentFeatures) {
 		
 		this.scorers = new HashMap<String,Scorer>();
 		
-		
+		HashSet<String> features = new HashSet<>();
+		for (String feature : depeendentFeatures) {
+			features.add(feature);
+		}
 		
 		HashMap<String,Independence> independences = new HashMap<String,Independence>();
 		independences.put("chisquared", new IndependenceChiSquared());
@@ -103,7 +110,7 @@ public class FeaturesService {
 		normalizations.put("z", new NormalizationZ());
 	
 		scorers.put("LMDirichlet", new LMDirichletScorer(2000));
-		/*
+		
 		scorers.put("BM25", new BM25Scorer());
 		scorers.put("TFIDF", new TFIDFScorer());
 		
@@ -130,7 +137,18 @@ public class FeaturesService {
 				    		normalization.getValue()));
 				}
 			}
-		}*/
+		}
+		ArrayList<String> allScorers = new ArrayList<String>();
+		for (String scorer : scorers.keySet()) {
+			allScorers.add(scorer);
+		}
+		
+		
+		for (String score :allScorers) {
+			if (!features.contains(score)) {
+				scorers.remove(score);
+			}
+		}
 	}
 	
 }

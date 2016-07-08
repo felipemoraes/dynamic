@@ -19,20 +19,47 @@ public class LETOROutputFormat {
 	}
 	
 	public void write(int queryId, float[][] features, int[] docId){
-		String line = "-1 qid:" + queryId + " ";
-	
-		for (int i = 0; i < features.length; i++) {
-			line += i+1 + ":" + features[i] + " ";
+		
+		for (int i = 0; i < docId.length; i++) {
+			
+			String line = "-1 qid:" + queryId + " ";
+			
+			for (int j = 0; j < features[i].length; j++) {
+				line += j+1 + ":" + features[i][j] + " ";
+			}
+			writer.write(line+ "# " + docId[i] +"\n");
+			
+			
 		}
-		writer.write(line+"\n");
-	}
 
+	}
+	public void close(){
+		writer.close();
+	}
 	public void write(int queryId, float[][] features, String[] docId){
-		String line = "-1 qid:" + queryId + " ";
-	
-		for (int i = 0; i < features.length; i++) {
-			line += i+1 + ":" + features[i] + " ";
+		for (int i = 0; i < docId.length; i++) {
+			
+			String line = "-1 qid:" + queryId + " ";
+			
+			for (int j = 0; j < features[i].length; j++) {
+				line += j+1 + ":" + features[i][j] + " ";
+			}
+			writer.write(line+ "#docid = " + docId[i] +"\n");
+			
+			
 		}
-		writer.write(line+"\n");
+	}
+	
+	public void write(int queryId, float[] features, String[] docId){
+		for (int i = 0; i < docId.length; i++) {
+			
+			String line = "-1 qid:" + queryId + " ";
+			
+			line +=  "1:" + features[i] + " ";
+			
+			writer.write(line+ "#docid = " + docId[i] +"\n");
+			
+			
+		}
 	}
 }

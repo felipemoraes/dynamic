@@ -4,7 +4,7 @@ import org.elasticsearch.common.settings.Settings;
 
 
 
-public class Default implements WeightingModel {
+public class TFIDF implements WeightingModel {
 
 	@Override
 	public Settings getSettings() {

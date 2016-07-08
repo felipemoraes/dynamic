@@ -30,7 +30,12 @@ public class DFRScorer extends DFRSimilarity implements Scorer {
 		float s = 0;
 		for (int i = 0; i < termCount; i++) {
 			// we need to encode a normalization as lucene does that too
+			if (termFreq[i] == 0) {
+				continue;
+			}
 			s += score(basicStats[i], termFreq[i], decodeNormValue(this.encodeNormValue(1, docLen)));
+
+			
 		}
 		return s;
 	}

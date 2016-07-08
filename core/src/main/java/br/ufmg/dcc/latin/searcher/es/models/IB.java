@@ -10,7 +10,9 @@ public class IB implements WeightingModel {
 	
 	
 	public IB() {
-		
+		this.distribution = "ll";
+		this.lambda = "df";
+		this.normalization = "no";
 	}
 	public IB(String distribution, String lambda, String normalization) {
 		this.distribution = distribution;

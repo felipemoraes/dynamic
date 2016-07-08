@@ -5,7 +5,7 @@ apply plugin: 'application'
 dependencies {
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.21'
-    compile group: 'org.elasticsearch', name: 'elasticsearch', version: '2.3.3'
+    compile group: 'org.elasticsearch', name: 'elasticsearch', version: '2.3.4'
     compile group: 'org.apache.lucene', name: 'lucene-core', version: '5.5.0'
     compile project(':core')
 }
@@ -24,33 +24,16 @@ task copyLicense {
 
 
 
-task FatResultSet(type: Jar) {
+task FeaturedResultSet(type: JavaExec, dependsOn: classes) {
 
-    doFirst {
-        def serviceDir = file("$buildDir/META-INF/services")
-        serviceDir.deleteDir()
-        serviceDir.mkdirs()
-
-        // copy all service files from deps to buildDir
-        for(file in configurations.runtime) {
-            zipTree(file).matching{ include 'META-INF/services/*' }.each { f ->
-                new File(serviceDir, f.name) << f.getText("UTF-8")
-            }
-        }
+    description = 'This task will start the main class of the FeatureResultSet project'
+    group = 'FeatureResultSet'
+    main = 'br.ufmg.dcc.latin.features.Main'
+    classpath = sourceSets.main.runtimeClasspath
+   // args System.getProperty("args").split()    
+   if(project.hasProperty('Xargs')){
+       args (Xargs.split());
     }
-    
-	manifest {
-        attributes 'Description': 'Gradle Jar File Example',  
-        	'Main-Class': 'br.ufmg.dcc.latin.tools.BuildFatResultSet'
-    }
-    baseName = 'FatResultSet'
-    with jar
-    from(configurations.runtime.collect{ it.isDirectory() ? it : zipTree(it) }) {
-        exclude 'META-INF/**' // Don't let Gradle merge service files
-    }
-
-    // include service files from the buildDir
-    from fileTree(buildDir).matching{ include 'META-INF/services/*' }
     
 }
 
