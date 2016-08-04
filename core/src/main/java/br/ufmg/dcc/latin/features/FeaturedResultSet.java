@@ -57,6 +57,7 @@ public class FeaturedResultSet {
 						sumTotalTermFrequency, avgFieldLength, n);
 			
 				for (Entry<String, Scorer> scorer : featuresService.getScorers().entrySet()) { 
+		
 					float s = scorer.getValue()
 							.totalScore(basicStats, termFrequency, docLen, n);
 					scores[i][j] = s;

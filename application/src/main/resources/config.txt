@@ -4,4 +4,4 @@ DEPENDENT_FEATURES /home/felipemoraes/dependentFeatures.txt
 ES_FIELDS text;title
 ES_INDEX_NAME ebola_2015
 ES_DOC_TYPE doc
-OUTPUT_FILENAME /home/felipemoraes/test
+OUTPUT_FILENAME /home/felipemoraes/learning2rank.txt

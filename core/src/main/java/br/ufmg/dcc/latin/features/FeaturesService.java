@@ -149,6 +149,11 @@ public class FeaturesService {
 				scorers.remove(score);
 			}
 		}
+		
+		for (Entry<String, Scorer> scorer : scorers.entrySet()) { 
+			System.out.println(scorer.getKey());
+
+		}
 	}
 	
 }

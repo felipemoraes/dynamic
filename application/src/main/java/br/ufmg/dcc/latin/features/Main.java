@@ -42,7 +42,7 @@ public class Main {
 		CommandLine cmd = null;
 		CommandLineParser parser = new DefaultParser();
 		String topicsFile = "src/main/resources/sample_topics_domain.txt";
-		String configFilePath = "src/main/resources/config";
+		String configFilePath = "src/main/resources/config.txt";
 		try {
 			cmd = parser.parse(options, args);
 			if (cmd.hasOption("t")) {
@@ -104,7 +104,7 @@ public class Main {
 	    		String query = splitLine[1];
 	    		System.out.println(queryId);
 
-	    		ResultSet resultSet = searchService.search(query, Config.ES_FIELDS, 1);
+	    		ResultSet resultSet = searchService.search(query, Config.ES_FIELDS, 5000);
 	    		
 	    		FeaturedResultSet featuredResultSet = new FeaturedResultSet(resultSet,featuresService, Config.ES_FIELDS);
 	    		
