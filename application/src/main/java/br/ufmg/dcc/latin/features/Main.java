@@ -19,7 +19,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import br.ufmg.dcc.latin.searcher.ResultSet;
-import br.ufmg.dcc.latin.searcher.SearchService;
+import br.ufmg.dcc.latin.searcher.SearchResource;
 import br.ufmg.dcc.latin.searcher.WeightingModule;
 
 
@@ -73,7 +73,7 @@ public class Main {
 		
 		float startTime = System.nanoTime();
 		
-		SearchService searchService = new SearchService(Config.ES_INDEX_NAME, "text", Config.ES_DOC_TYPE);
+		SearchResource searchService = new SearchResource(Config.ES_INDEX_NAME, Config.ES_DOC_TYPE);
 		
 
 		// QueryIndependentFeatures queryIndependentFeatures;

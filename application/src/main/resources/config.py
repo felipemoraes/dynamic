@@ -1,4 +1,3 @@
-import xmltodict
 import sys
 import xml.etree.ElementTree as ET
 
@@ -8,8 +7,8 @@ tree = ET.parse(sys.argv[1])
 root = tree.getroot()
 
 
-f = open('truth_data.txt','w')
-
+f = open('truth_data_2016.txt','w')
+ft =  open('topics_domain_2016.txt','w')
 domain_nodes = root.findall('.//domain')
 
 for domain_node in domain_nodes:
@@ -17,6 +16,7 @@ for domain_node in domain_nodes:
     topic_nodes = domain_node.findall('./topic')
     for topic_node in topic_nodes:
         tid = topic_node.get('id')
+        ft.write("%s %s %s\n" % (domain_node.get('name'), topic_node.get('id'), topic_node.get('name')))
         subtopics = ""
         subtopic_nodes = topic_node.findall('./subtopic')
         for subtopic_node in subtopic_nodes:

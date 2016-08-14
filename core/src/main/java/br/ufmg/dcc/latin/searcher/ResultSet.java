@@ -14,6 +14,7 @@ public class ResultSet {
 	//Optional
 	
 	private Posting[][] postings;
+	private String[] docContent;
 	public int[] getDocIds() {
 		return docIds;
 	}
@@ -37,5 +38,11 @@ public class ResultSet {
 	}
 	public void setDocNos(String[] docNos) {
 		this.docNos = docNos;
+	}
+	public String[] getDocContent() {
+		return docContent;
+	}
+	public void setDocContent(String[] docContent) {
+		this.docContent = docContent;
 	}
 }

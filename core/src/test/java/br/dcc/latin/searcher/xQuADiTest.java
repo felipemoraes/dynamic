@@ -6,7 +6,7 @@ import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 
-import br.ufmg.dcc.latin.searcher.xQuADi;
+import br.ufmg.dcc.latin.models.xQuADi;
 
 public class xQuADiTest {
 
