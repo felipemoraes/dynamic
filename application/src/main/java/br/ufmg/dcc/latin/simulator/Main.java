@@ -4,12 +4,19 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.lucene.queryparser.classic.ParseException;
 
-import br.ufmg.dcc.latin.controlers.DynamicSearchController;
-import br.ufmg.dcc.latin.controlers.SearchResponse;
+import br.ufmg.dcc.latin.models.MMR;
+import br.ufmg.dcc.latin.models.xQuADiClassifier;
+import br.ufmg.dcc.latin.models.xQuADiLDA;
+import br.ufmg.dcc.latin.models.xQuADiOracle;
+import br.ufmg.dcc.latin.models.xQuADiTFIDF;
 import br.ufmg.dcc.latin.search.elements.Feedback;
+import br.ufmg.dcc.latin.searcher.WeightingModule;
+import br.ufmg.dcc.latin.searcher.es.models.LMDirichlet;
 
 
 
@@ -21,14 +28,21 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
     	
-    	String runId = "xQuADi_03";
-   
+    	String runId = "baseline_mmr";
+    	
+    	
+    	
+    	
     	
     	String topicsFile = "src/main/resources/topics_domain_2016.txt";
-		DynamicSearchController controller = new DynamicSearchController();
+    	//xQuADiTFIDF xQuADi = new xQuADiTFIDF();
+    	MMR mmr = new MMR();
+    	
 		
 		DDSimulator simulator = new DDSimulator("src/main/resources/truth_data_2016.txt");
-    
+		
+		//WeightingModule.changeWeightingModel("ebola_2016", new LMDirichlet(2500.0));
+		//WeightingModule.changeWeightingModel("polar_2016", new LMDirichlet(2500.0));
 		try (BufferedReader br = new BufferedReader(new FileReader(topicsFile))) {
 		    String line;
 		    while ((line = br.readLine()) != null) {
@@ -42,7 +56,7 @@ public class Main {
 				}
 	        	
 	        	String topicId = splitLine[1];
-	        	//if (!topicId.equals("DD16-8")){
+	        	//if (!topicId.equals("DD16-18")){
 	        	//	continue;
 	        	//}
 	        	
@@ -50,24 +64,30 @@ public class Main {
 	    		query = query.replaceAll("/", " ");
 	    
 	    		System.out.println(topicId);
-	    		int token = controller.initSearch(indexName, "xQuADi", query);
-	    		//String docNos[] = controller.getDocNos(token);
+	    		
+	    		
+	    		mmr.create(indexName, query);
+	    		
+	    		//xQuADi.coverage = simulator.getCoverage(topicId, xQuADi.docNos);
+	    		//xQuADi.importance = simulator.getImportance(topicId);
+	    		//xQuADi.k = xQuADi.importance.length;
+	    		
 	    		//controller.setCoverage(simulator.getCoverage(topicId, docNos), token);
 	    		//controller.setImportance(simulator.getImportance(topicId),token);
-	    		SearchResponse response = controller.searchQuery(indexName, "xQuADi", query, token);
+	    		Map<String,Double> response = mmr.get();
 	        	for (int i = 0; i < 20; i++) {
-	        		Feedback[] feedback = simulator.performStep(runId, topicId, response.getResponse());
-	        		controller.updateFeedback(feedback, response.getToken());
-	        		response = controller.searchQuery(indexName, "xQuADi", query, response.getToken());
-	        		break;
+	        		Feedback[] feedback = simulator.performStep(runId, topicId, response);
+	        		//xQuADi.update(feedback);
+	        		response = mmr.get();
+	        		
 				}
-	        	break;
+	    		
 	        	
 		    }
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} 
 		
     }    
     

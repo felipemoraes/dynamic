@@ -1,21 +1,10 @@
 apply plugin: 'java'
-apply plugin: 'war'
-apply plugin: 'jetty'
-
-
 
 dependencies {
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
-    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.21'
+
     compile group: 'org.elasticsearch', name: 'elasticsearch', version: '2.3.4'
     compile group: 'org.apache.lucene', name: 'lucene-core', version: '5.5.0'
-    compile "javax.ws.rs:jsr311-api:1.1"
-    compile "com.sun.jersey:jersey-core:1.9.1"
-    compile "com.sun.jersey:jersey-server:1.9.1"
-    compile "com.sun.jersey:jersey-json:1.9.1"
-         
-    // Dependency needed for interceptors and filters.
-    compile 'com.sun.jersey.contribs:jersey-contribs:1.19'
+
     compile project(':core')
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
 }

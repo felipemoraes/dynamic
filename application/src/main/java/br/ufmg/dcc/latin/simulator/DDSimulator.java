@@ -132,15 +132,9 @@ public class DDSimulator {
 		for (int i = 0; i < docIds.length; ++i){
 			if (truthData.containsKey(docIds[i])){
 				if (truthData.get(docIds[i]).containsKey(topicId)) {
-					int sum = 0;
 					for (Subtopic subtopic : truthData.get(docIds[i]).get(topicId)) {
 						int j = subtopics.get(subtopic.getId());
-						coverage[i][j] += subtopic.getRating();
-						sum += subtopic.getRating();
-					}
-					
-					for (int j = 0; j < coverage[i].length; ++j) {
-						coverage[i][j] = (double) coverage[i][j]/sum; 
+						coverage[i][j] = Math.max((double) (subtopic.getRating()*2)/10,coverage[i][j]);
 					}
 				}
 			}
@@ -148,7 +142,7 @@ public class DDSimulator {
 		
 		for (int i = 0; i < coverage.length; ++i){
 			for (int j = 0; j < coverage[0].length; j++) {
-				//System.out.print(coverage[i][j] + " " );
+			//	System.out.print(coverage[i][j] + " " );
 			}
 			//System.out.println();
 		}
@@ -183,8 +177,9 @@ public class DDSimulator {
 		double[] importance = new double[k];
 		for (Entry<String,Integer> subtopic: subtopics.entrySet()){
 			int i = subtopic.getValue();
-			importance[i] = (double) subtopicsSize.get(subtopic.getKey())/sum;
-			System.out.println(subtopic.getKey() + " " + subtopicsSize.get(subtopic.getKey()));
+		//	importance[i] = (double) subtopicsSize.get(subtopic.getKey())/sum;
+			importance[i] = 1;
+		//	System.out.println(subtopic.getKey() + " " + subtopicsSize.get(subtopic.getKey()));
 		}
 
 		return importance;
@@ -238,6 +233,7 @@ public class DDSimulator {
 				}
 				accFeedback.add(feedback);
 				out.println(wline);
+				
 				
 			}
 		
