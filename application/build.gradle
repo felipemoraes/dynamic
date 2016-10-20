@@ -1,9 +1,12 @@
 apply plugin: 'java'
+apply plugin: 'application'
 
 dependencies {
 
-    compile group: 'org.elasticsearch', name: 'elasticsearch', version: '2.3.4'
+    compile group: 'org.elasticsearch', name: 'elasticsearch', version: '2.4.0'
     compile group: 'org.apache.lucene', name: 'lucene-core', version: '5.5.0'
+    
+    compile group: 'cc.mallet', name: 'mallet', version: '2.0.8'
 
     compile project(':core')
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
@@ -19,19 +22,21 @@ task copyLicense {
     }
 }
 
-
-
-task FeaturedResultSet(type: JavaExec, dependsOn: classes) {
-
-    description = 'This task will start the main class of the FeatureResultSet project'
-    group = 'FeatureResultSet'
-    main = 'br.ufmg.dcc.latin.features.Main'
+task main(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.simulator.Main'
     classpath = sourceSets.main.runtimeClasspath
-   // args System.getProperty("args").split()    
-   if(project.hasProperty('Xargs')){
+     if(project.hasProperty('Xargs')){
        args (Xargs.split());
     }
-    
 }
+
+task trainHLDA(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.simulator.TrainHLDA'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
+
 
 

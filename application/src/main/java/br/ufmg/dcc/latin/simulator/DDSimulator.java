@@ -6,17 +6,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
 import br.ufmg.dcc.latin.search.elements.Feedback;
 import br.ufmg.dcc.latin.search.elements.Subtopic;
@@ -25,6 +22,7 @@ import br.ufmg.dcc.latin.search.elements.Subtopic;
 public class DDSimulator {
 
 	private HashMap<String, HashMap<String, List<Subtopic>> >  truthData; 
+
 	
 	private HashMap< String, HashMap<String,Integer >> runs;
 	
@@ -108,44 +106,63 @@ public class DDSimulator {
 		return sortedResult;
 	}
 	
-	public double[][] getCoverage(String topicId, String[] docIds){
+	public double[][][] getCoverage(String topicId, String[] docIds){
 		
 		
 		HashMap<String,Integer> subtopics = new HashMap<String,Integer>();
-		int ix = 0;
+		HashMap<String,HashMap<String,Integer>> passages = new HashMap<String,HashMap<String,Integer>>();
+		int si = 0;
 		for (Entry<String,HashMap<String, List<Subtopic> >> entry: truthData.entrySet()){
 			if (entry.getValue().containsKey(topicId)){
 				for (Subtopic subtopic : entry.getValue().get(topicId)) {
 					if (!subtopics.containsKey(subtopic.getId())) {
-						subtopics.put(subtopic.getId(),ix);
+						subtopics.put(subtopic.getId(), si);
+						si++;
+					}
+					if (!passages.containsKey(subtopic.getId())){
+						passages.put(subtopic.getId(), new HashMap<String,Integer>());
+						
+					}
+					int ix = passages.get(subtopic.getId()).size();
+					if (!passages.get(subtopic.getId()).containsKey(subtopic.getPassageText())){
+						passages.get(subtopic.getId()).put(subtopic.getPassageText(),ix);
 						ix++;
 					}
+					
 				}
 			}
 		}
 	
 		int k = subtopics.size();
+		
 		int n = docIds.length;
 		
-		double[][] coverage = new double[n][k];
+		double[][][] coverage = new double[n][k][];
 		
+		for (String subtopic : subtopics.keySet()){
+			int j = subtopics.get(subtopic);
+			System.out.println("Subtopic " + j + " has " + passages.get(subtopic).size() + " passages"  );
+			for (int i = 0; i < coverage.length; i++) {
+				coverage[i][j] = new double[passages.get(subtopic).size()];
+				Arrays.fill(coverage[i][j], 0);
+			}
+		}
+	
 		for (int i = 0; i < docIds.length; ++i){
 			if (truthData.containsKey(docIds[i])){
 				if (truthData.get(docIds[i]).containsKey(topicId)) {
 					for (Subtopic subtopic : truthData.get(docIds[i]).get(topicId)) {
 						int j = subtopics.get(subtopic.getId());
-						coverage[i][j] = Math.max((double) (subtopic.getRating()*2)/10,coverage[i][j]);
+						int l = passages.get(subtopic.getId()).get(subtopic.getPassageText());
+						
+						coverage[i][j][l] = (double) (subtopic.getRating()*2)/10;
 					}
 				}
 			}
 		}
 		
-		for (int i = 0; i < coverage.length; ++i){
-			for (int j = 0; j < coverage[0].length; j++) {
-			//	System.out.print(coverage[i][j] + " " );
-			}
-			//System.out.println();
-		}
+		
+		
 		return coverage;
 	}
 	
@@ -154,6 +171,8 @@ public class DDSimulator {
 		HashMap<String,Integer> subtopics = new HashMap<String,Integer>();
 		HashMap<String,Integer> subtopicsSize = new HashMap<String,Integer>();
 		int ix = 0;
+		
+
 		for (Entry<String,HashMap<String, List<Subtopic> >> entry: truthData.entrySet()){
 			if (entry.getValue().containsKey(topicId)){
 				for (Subtopic subtopic : entry.getValue().get(topicId)) {
@@ -185,6 +204,40 @@ public class DDSimulator {
 		return importance;
 	}
 	
+	
+	public Feedback[] getAllFeedback(String topicId){
+		
+		ArrayList<Feedback> accFeedback = new ArrayList<Feedback>();
+		for (Entry<String,HashMap<String, List<Subtopic> >> entry: truthData.entrySet()){
+			if (entry.getValue().containsKey(topicId)){
+				Feedback feedback = new Feedback();
+				feedback.setOnTopic(true);
+				
+				int k =  truthData.get(entry.getKey()).get(topicId).size();
+				Subtopic[] subtopics = new Subtopic[k];
+				int i = 0;
+				for (Subtopic subtopic : entry.getValue().get(topicId)) {
+					subtopics[i] = subtopic;
+					i++;
+				}
+				feedback.setSubtopics(subtopics);
+				accFeedback.add(feedback);
+			}
+		}
+		Feedback[] feedback = new Feedback[accFeedback.size()];
+		int i = 0;
+		for (Feedback f : accFeedback) {
+			feedback[i] = new Feedback();
+			feedback[i].setDocId(f.getDocId());
+			feedback[i].setOnTopic(f.getOnTopic());
+			feedback[i].setScore(f.getScore());
+			feedback[i].setSubtopics(f.getSubtopics());
+			i++;
+		}
+		return feedback;
+		
+	}
+	
  	public Feedback[] performStep(String runId, String topicId, Map<String, Double> resultSet) {
 		// Get 
 		
@@ -198,6 +251,7 @@ public class DDSimulator {
 		
 		Integer ct = runs.get(runId).getOrDefault(topicId, 0);
 		ArrayList<Feedback> accFeedback = new ArrayList<Feedback>();
+		int p = 0;
 		try(FileWriter fw = new FileWriter(runId + ".txt", true);
 				 BufferedWriter bw = new BufferedWriter(fw);
 				 PrintWriter out = new PrintWriter(bw))
@@ -206,11 +260,14 @@ public class DDSimulator {
 				Feedback feedback = new Feedback();
 				feedback.setDocId(result.getKey());
 				feedback.setScore(result.getValue());
-
+				
+				double score = (5000.0-ct-p)/5000.0;
+				p++;
+				//String wline = topicId + "\t" + ct.toString() +"\t" 
+				//		+ result.getKey() + "\t" + String.format("%.12f", result.getValue()) + "\t";
 				
 				String wline = topicId + "\t" + ct.toString() +"\t" 
-						+ result.getKey() + "\t" + String.format("%.12f", result.getValue()) + "\t";
-				
+						+ result.getKey() + "\t" + String.format("%.12f", score) + "\t";
 				if (!truthData.containsKey(result.getKey())){
 					feedback.setOnTopic(false);
 					wline += "0\tNULL";
@@ -233,7 +290,6 @@ public class DDSimulator {
 				}
 				accFeedback.add(feedback);
 				out.println(wline);
-				
 				
 			}
 		

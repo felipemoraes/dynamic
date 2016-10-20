@@ -6,8 +6,7 @@ package br.ufmg.dcc.latin.features;
 import java.util.Map.Entry;
 
 import org.apache.lucene.search.similarities.BasicStats;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import br.ufmg.dcc.latin.searcher.ResultSet;
 import br.ufmg.dcc.latin.searcher.matching.Scorer;
@@ -22,8 +21,6 @@ import br.ufmg.dcc.latin.searcher.matching.Scorer;
 
 public class FeaturedResultSet {
 	
-	
-	static Logger logger = LoggerFactory.getLogger(FeaturedResultSet.class);
 
 	
 	private int[] docIds;

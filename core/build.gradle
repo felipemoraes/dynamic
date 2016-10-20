@@ -2,15 +2,15 @@
 
 
 dependencies {
-    compile 'io.grpc:grpc-netty:0.15.0'
-    compile 'io.grpc:grpc-protobuf:0.15.0'
-    compile 'io.grpc:grpc-stub:0.15.0'
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
-    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.21'
-    compile group: 'org.elasticsearch', name: 'elasticsearch', version: '2.3.4'
+	    
+    compile group: 'org.elasticsearch', name: 'elasticsearch', version: '2.4.0'
     compile group: 'org.apache.lucene', name: 'lucene-core', version: '5.5.0'
     compile group: 'org.json', name: 'json', version: '20160212'
-    compile group: 'edu.stanford.nlp', name: 'stanford-corenlp', version: '3.6.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.6.2'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.6.2'
+    compile group: 'org.ini4j', name: 'ini4j', version: '0.5.1'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
+    compile group: 'cc.mallet', name: 'mallet', version: '2.0.8'
     testCompile 'junit:junit:4.11'
 
 }

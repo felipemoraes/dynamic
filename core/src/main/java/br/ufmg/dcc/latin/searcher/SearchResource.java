@@ -1,5 +1,6 @@
 package br.ufmg.dcc.latin.searcher;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.InetAddress;
@@ -20,6 +21,9 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.MultiMatchQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
@@ -180,16 +184,79 @@ public class SearchResource {
 		return n;
 	}
 	
-	public ResultSet search(String query, String[] fields, int size) {
+	
+	public ResultSet search(String query, String[] fields, float[] weights, int size) {
+		//File f = new File(query + ".data");
 		ResultSet resultSet = new ResultSet();
-		String terms = getQueryTerms(query);
+		/*if(f.exists() && !f.isDirectory()) { 
+			resultSet.readFromFile(query);
+			return resultSet;
+		}*/
+		
+		MultiMatchQueryBuilder qb = QueryBuilders.multiMatchQuery(query, fields).type("most_fields");
+		for(int i = 0; i < weights.length; ++i){
+			qb.field(fields[i], weights[i]);
+		}
 		
 		SearchRequestBuilder request = client.prepareSearch(indexName)
 				.setTypes(docType)
-				.setQuery(QueryBuilders.queryStringQuery(query).field(fields[0]))
+				.setQuery(qb)
+			//	.setQuery(QueryBuilders.queryStringQuery(query))
 				.addFields(fields)
 				.addField("docno")
 				.addField("docid")
+			
+				.setFrom(0).setSize(size);
+		
+		
+    	SearchResponse response = request.execute().actionGet();
+    	if (response.getHits().getTotalHits() < size) {
+    		size = (int) response.getHits().getTotalHits();
+    	}
+    	int i = 0;
+    	int[] docIds = new int[size];
+    	String[] docNos = new String[size];
+    	String[] docContent = new String[size];
+    	float[] scores = new float[size];
+    	Posting[][] postings = new Posting[size][];
+		for (SearchHit hit : response.getHits()) {
+			
+			docIds[i] =  Integer.parseInt(hit.getFields().get("docid").getValue());
+			docNos[i] =  hit.getFields().get("docno").getValue();
+			scores[i] = hit.getScore();
+			docContent[i] = (String) hit.getFields().get(fields[0]).getValues().get(0);
+			
+			i++;	
+		}	
+		
+		resultSet.setDocIds(docIds);
+		resultSet.setScores(scores);
+		resultSet.setPostings(postings);
+		resultSet.setDocNos(docNos);
+		resultSet.setDocContent(docContent);
+		
+		//resultSet.writeToFile(query);
+		return resultSet;
+	}
+	
+	public ResultSet search(String query, String[] fields, int size) {
+		File f = new File(query + ".data");
+		ResultSet resultSet = new ResultSet();
+		if(f.exists() && !f.isDirectory()) { 
+			resultSet.readFromFile(query);
+			return resultSet;
+		}
+		
+		//String terms = getQueryTerms(query);
+		
+		SearchRequestBuilder request = client.prepareSearch(indexName)
+				.setTypes(docType)
+				.setQuery(QueryBuilders.multiMatchQuery(query, fields).field("text", 0.7f).field("title",0.2f).field("anchor",0.1f))
+			//	.setQuery(QueryBuilders.queryStringQuery(query))
+				.addFields(fields)
+				.addField("docno")
+				.addField("docid")
+			
 				.setFrom(0).setSize(size);
 		
 
@@ -203,6 +270,9 @@ public class SearchResource {
 
 		
     	SearchResponse response = request.execute().actionGet();
+    	if (response.getHits().getTotalHits() < size) {
+    		size = (int) response.getHits().getTotalHits();
+    	}
     	int i = 0;
     	int[] docIds = new int[size];
     	String[] docNos = new String[size];
@@ -241,6 +311,8 @@ public class SearchResource {
 		resultSet.setPostings(postings);
 		resultSet.setDocNos(docNos);
 		resultSet.setDocContent(docContent);
+		
+		resultSet.writeToFile(query);
 		return resultSet;
 	}
 

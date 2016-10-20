@@ -8,6 +8,8 @@ import org.apache.lucene.search.similarities.BasicModel;
 import org.apache.lucene.search.similarities.BasicStats;
 import org.apache.lucene.search.similarities.DFRSimilarity;
 import org.apache.lucene.search.similarities.Normalization;
+import org.apache.lucene.search.similarities.NormalizationH1;
+import org.apache.lucene.search.similarities.NormalizationH3;
 
 /**
  * @author Felipe Moraes
