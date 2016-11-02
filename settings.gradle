@@ -1,5 +1,3 @@
-
-
-include ":src:core"
-
-include "src:indexer"
+include 'core'
+include 'indexing'
+include 'system'

@@ -1,7 +1,0 @@
-apply plugin: 'application'
-
-dependencies {
-
-    compile project(':src:core')
-
-}

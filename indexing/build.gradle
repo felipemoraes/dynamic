@@ -2,7 +2,6 @@ apply plugin: 'application'
 
 
 dependencies {
-
-    compile project(':src:core')
+    compile project(':core')
 
 }
