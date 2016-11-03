@@ -1,5 +1,7 @@
 package br.ufmg.dcc.latin.reranking;
 
-public interface Reranker {
+import br.ufmg.dcc.latin.querying.ResultSet;
 
+public interface Reranker {
+	public ResultSet reranking(ResultSet baselineResultSet);
 }

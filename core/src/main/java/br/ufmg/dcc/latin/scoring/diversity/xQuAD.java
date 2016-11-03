@@ -1,11 +1,12 @@
 package br.ufmg.dcc.latin.scoring.diversity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.ufmg.dcc.latin.diversity.FlatAspect;
+import br.ufmg.dcc.latin.scoring.DiversityScorer;
 
-public class xQuAD {
+
+public class xQuAD extends DiversityScorer{
 	
 	 List<FlatAspect> importance;
 	 List<FlatAspect[]> coverage;
@@ -17,7 +18,8 @@ public class xQuAD {
 		this.novelty = novelty;
 	}
 	
-	public float div(int d ){
+	@Override
+	public float div(int d){
 		float diversity = 0;
 		for (int i = 0; i < importance.size(); i++) {
 			diversity += importance.get(i).getValue()*coverage.get(i)[d].getValue()*novelty.get(i).getValue();
@@ -25,10 +27,11 @@ public class xQuAD {
 		return diversity;
 	}
 	
+	@Override
 	public void update(int d){
 		for (int i = 0; i < novelty.size(); i++) {
-			float nov = novelty.get(i).getValue();
-			novelty.get(i).setValue(nov*(1-coverage.get(i)[d].getValue()));
+			float newNovelty = novelty.get(i).getValue()*(1-coverage.get(i)[d].getValue());
+			novelty.get(i).setValue(newNovelty);
 		}
 		
 	}
@@ -37,6 +40,13 @@ public class xQuAD {
 		this.importance = importance;
 		this.coverage = coverage;
 		this.novelty = novelty;
+	}
+
+	@Override
+	public float score(int d) {
+		float s = div(d);
+		update(d);
+		return s;
 	}
 
 }
