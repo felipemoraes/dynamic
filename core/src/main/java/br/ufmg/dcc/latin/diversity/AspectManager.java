@@ -1,5 +1,9 @@
 package br.ufmg.dcc.latin.diversity;
 
-public interface AspectManager {
+import br.ufmg.dcc.latin.feedback.Feedback;
 
+public interface AspectManager {
+	
+	public void mining(Feedback[] feedbacks);
+		
 }

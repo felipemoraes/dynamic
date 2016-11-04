@@ -1,18 +1,17 @@
 package br.ufmg.dcc.latin.scoring.diversity;
 
-import java.util.List;
 
-import br.ufmg.dcc.latin.diversity.FlatAspect;
+import br.ufmg.dcc.latin.diversity.Aspect;
 import br.ufmg.dcc.latin.scoring.DiversityScorer;
 
 
 public class xQuAD extends DiversityScorer{
 	
-	 List<FlatAspect> importance;
-	 List<FlatAspect[]> coverage;
-	 List<FlatAspect> novelty;
+	 Aspect[] importance;
+	 Aspect[][] coverage;
+	 Aspect[] novelty;
 	 
-	public xQuAD(List<FlatAspect> importance, List<FlatAspect[]> coverage,List<FlatAspect> novelty){
+	public xQuAD(Aspect[] importance, Aspect[][] coverage, Aspect[] novelty){
 		this.importance = importance;
 		this.coverage = coverage;
 		this.novelty = novelty;
@@ -21,22 +20,22 @@ public class xQuAD extends DiversityScorer{
 	@Override
 	public float div(int d){
 		float diversity = 0;
-		for (int i = 0; i < importance.size(); i++) {
-			diversity += importance.get(i).getValue()*coverage.get(i)[d].getValue()*novelty.get(i).getValue();
+		for (int i = 0; i < importance.length; i++) {
+			diversity += importance[i].getValue()*coverage[d][i].getValue()*novelty[i].getValue();
 		}
 		return diversity;
 	}
 	
 	@Override
 	public void update(int d){
-		for (int i = 0; i < novelty.size(); i++) {
-			float newNovelty = novelty.get(i).getValue()*(1-coverage.get(i)[d].getValue());
-			novelty.get(i).setValue(newNovelty);
+		for (int i = 0; i < novelty.length; i++) {
+			float newNovelty = novelty[i].getValue()*(1-coverage[d][i].getValue());
+			novelty[i].setValue(newNovelty);
 		}
 		
 	}
 	
-	public void update(List<FlatAspect> importance, List<FlatAspect[]> coverage,List<FlatAspect> novelty){
+	public void update(Aspect[] importance, Aspect[][] coverage, Aspect[] novelty){
 		this.importance = importance;
 		this.coverage = coverage;
 		this.novelty = novelty;
