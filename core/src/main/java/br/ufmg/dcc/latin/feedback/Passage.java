@@ -6,6 +6,15 @@ public class Passage {
 	private String text;
 	private int relevance;
 	
+	public Passage(){
+		
+	}
+	
+	public Passage(String aspectId, String text, int relevance){
+		this.aspectId = aspectId;
+		this.text = text;
+		this.relevance = relevance;
+	}
 
 	public String getText() {
 		return text;

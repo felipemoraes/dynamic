@@ -20,6 +20,7 @@ import br.ufmg.dcc.latin.cache.AspectCache;
 import br.ufmg.dcc.latin.cache.RerankerCache;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
+import br.ufmg.dcc.latin.querying.SelectedSet;
 
 
 public class FlatAspectManager implements AspectManager {
@@ -125,6 +126,29 @@ public class FlatAspectManager implements AspectManager {
 					AspectCache.coverage[i][j].setValue(normValue);
 				}
 				
+			}
+		}
+	}
+	
+	public void updateNovelty(SelectedSet selected){
+		for (int d : selected.getAll()) {
+			for (int i = 0; i < AspectCache.novelty.length; i++) {
+				float newNovelty = AspectCache.novelty[i].getValue()*(1-AspectCache.coverage[d][i].getValue()/1000);
+				AspectCache.novelty[i].setValue(newNovelty);
+			}
+		}
+		normalizeNovelty();
+	}
+	
+	public void normalizeNovelty(){
+		float sum = 0;
+		for (int i = 0; i < AspectCache.novelty.length; i++) {
+			sum += AspectCache.novelty[i].getValue();
+		}
+		for (int i = 0; i < AspectCache.novelty.length; i++) {
+			if (sum > 0) {
+				float normValue = AspectCache.novelty[i].getValue()/sum;
+				AspectCache.novelty[i].setValue(normValue);
 			}
 		}
 	}
