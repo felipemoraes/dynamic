@@ -24,7 +24,7 @@ public class DiversityReranker extends InteractiveReranker {
 	@Override
 	public ResultSet reranking(ResultSet baselineResultSet) {
 		
-		float[] relevance = baselineResultSet.getScores();
+		float[] relevance = normalize(baselineResultSet.getScores());
 		int[] docids = baselineResultSet.getDocids();
 		
 		int n = docids.length;
@@ -32,29 +32,31 @@ public class DiversityReranker extends InteractiveReranker {
 		float[] scores = new float[n];
 		Arrays.fill(scores, 0f);
 		
-		depth = Math.min(relevance.length, depth+selected.size());
+		depth = Math.min(relevance.length, depth+getSelected().size());
 		
 		SelectedSet localSelected = new SelectedSet();
 		
 		// greedily diversify the top documents
-		while(localSelected.size() < depth){
+		while(localSelected.size() < depth-getSelected().size()){
+			
 			float maxScore = -1;
 			int maxRank = -1;
 			
 			// for each unselected document
 			for (int i = 0; i < depth; ++i ){ 
 				// skip already selected documents
-				if (localSelected.has(docids[i]) || selected.has(docids[i])){
+				if (localSelected.has(docids[i]) || getSelected().has(docids[i])){
 					continue;
 				}
 				
-				float score = (1-lambda)*relevance[i] + lambda*scorer.div(docids[i]);
+				float score = (1-lambda)*relevance[i] + lambda*scorer.div(i);
 				
 				if (score > maxScore) {
 					maxScore = score;
-					maxRank = -1;
+					maxRank = i;
 				}
 			}
+			
 			// update the score of the selected document
 			scores[maxRank] = maxScore;
 			
@@ -71,6 +73,8 @@ public class DiversityReranker extends InteractiveReranker {
 		
 		finalResultSet.setDocids(docids);
 		finalResultSet.setScores(scores);
+		finalResultSet.setDocnos(baselineResultSet.getDocnos());
+		
 		return finalResultSet;
 	}
 

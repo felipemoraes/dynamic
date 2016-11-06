@@ -50,7 +50,7 @@ public class ESSearchRequest implements SearchRequest {
 	@Override
 	public ResultSet search(QueryRequest query) {
 
-		int size = 1000;
+		int size = query.getSize();
 		
 		MultiMatchQueryBuilder qb = QueryBuilders.multiMatchQuery(query.getQuery(), query.getFields()).type("most_fields");
 		for(int i = 0; i < query.getFields().length; ++i){
@@ -61,7 +61,6 @@ public class ESSearchRequest implements SearchRequest {
 				.setTypes(query.getDocType())
 				.setQuery(qb)
 				.addFields(query.getFields())
-				.addField("docno")
 				.addField("docid")
 			
 				.setFrom(0).setSize(size);
@@ -78,9 +77,9 @@ public class ESSearchRequest implements SearchRequest {
     	float[] scores = new float[size];
     	
 		for (SearchHit hit : response.getHits()) {
-			
-			docids[i] =  Integer.parseInt(hit.getFields().get("docid").getValue());
-			docnos[i] =  hit.getFields().get("docno").getValue();
+
+			docids[i] =  Integer.parseInt(hit.getFields().get("docid").getValue().toString());
+			docnos[i] =  hit.getId();
 			scores[i] = hit.getScore();
 			docsContent[i] = (String) hit.getFields().get(query.getFields()[0]).getValues().get(0);
 			i++;	
@@ -90,6 +89,7 @@ public class ESSearchRequest implements SearchRequest {
 		
 		resultSet.setDocids(docids);
 		resultSet.setScores(scores);
+		resultSet.setDocnos(docnos);
 		resultSet.setDocsContent(docsContent);
 	
 		return resultSet;

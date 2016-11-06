@@ -7,6 +7,7 @@ public class QueryRequest {
 	private String docType;
 	private String[] fields;
 	private float[] fieldWeights;
+	private int size;
 	public String getQuery() {
 		return query;
 	}
@@ -36,6 +37,12 @@ public class QueryRequest {
 	}
 	public void setFieldWeights(float[] fieldWeights) {
 		this.fieldWeights = fieldWeights;
+	}
+	public int getSize() {
+		return size;
+	}
+	public void setSize(int size) {
+		this.size = size;
 	}
 
 }

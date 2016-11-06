@@ -9,7 +9,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.ufmg.dcc.latin.cache.AspectCache;
-import br.ufmg.dcc.latin.cache.RerankerCache;
 import br.ufmg.dcc.latin.diversity.FlatAspectManager;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
@@ -64,10 +63,10 @@ public class AspectManagerTest {
 		feedbacks[0].setOnTopic(true);
 		feedbacks[1] = new Feedback();
 		feedbacks[1].setOnTopic(false);
-		RerankerCache.feedbacks = new Feedback[10];
-		RerankerCache.feedbacks[0] = feedbacks[0];
-		RerankerCache.feedbacks[1] = feedbacks[1];
-		aspectManager.mining(feedbacks);
+		AspectCache.feedbacks = new Feedback[10];
+		AspectCache.feedbacks[0] = feedbacks[0];
+		AspectCache.feedbacks[1] = feedbacks[1];
+		aspectManager.miningDiversityAspects(feedbacks);
 		
 		assertEquals(0.00, AspectCache.coverage[1][0].getValue(),0.0);
 		assertEquals(0.00, AspectCache.coverage[1][1].getValue(),0.0);

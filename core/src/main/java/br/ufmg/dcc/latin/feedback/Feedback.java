@@ -3,6 +3,7 @@ package br.ufmg.dcc.latin.feedback;
 public class Feedback {
 	
 	private String topicId;
+	private String docno;
 	private Passage[] passages;
 	private boolean onTopic;
 	
@@ -39,6 +40,12 @@ public class Feedback {
 	}
 	public void setOnTopic(boolean onTopic) {
 		this.onTopic = onTopic;
+	}
+	public String getDocno() {
+		return docno;
+	}
+	public void setDocno(String docno) {
+		this.docno = docno;
 	}
 	
  }

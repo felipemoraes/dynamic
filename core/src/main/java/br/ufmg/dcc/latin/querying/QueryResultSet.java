@@ -4,7 +4,7 @@ public class QueryResultSet implements ResultSet {
 	
 	private int[] docids;
 	private float[] scores;
-	
+	private String[] docnos;
 
 	@Override
 	public int[] getDocids() {
@@ -29,13 +29,12 @@ public class QueryResultSet implements ResultSet {
 
 	@Override
 	public String[] getDocnos() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.docnos;
 	}
 
 	@Override
 	public void setDocnos(String[] docnos) {
-		// TODO Auto-generated method stub
+		this.docnos = docnos;
 		
 	}
 
