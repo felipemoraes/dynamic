@@ -13,8 +13,8 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		String topicsFile = "../share/topics_domain.txt";
-		//String type = args[0];
-		String type = "MMR";
+		String type = args[0];
+		
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
 	    String line;
 	    Session session = null;
@@ -25,7 +25,7 @@ public class Main {
 	    	session = new PM2Session();
 	    }  else if (type.equals("MMR")) {
 	    	session = new MMRSession();
-	    }  else if (type.equals( "PM2")) {
+	    }  else if (type.equals( "LM")) {
 	    	session = new LMSession();
 	    } 
 	    
