@@ -1,4 +1,4 @@
-package br.ufmg.dcc.latin.system;
+package br.ufmg.dcc.latin.system.session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,13 @@ import br.ufmg.dcc.latin.querying.CollectionResultSet;
 import br.ufmg.dcc.latin.querying.ESSearchRequest;
 import br.ufmg.dcc.latin.querying.QueryRequest;
 import br.ufmg.dcc.latin.querying.ResultSet;
-import br.ufmg.dcc.latin.reranking.DiversityReranker;
-import br.ufmg.dcc.latin.scoring.diversity.xQuAD;
+import br.ufmg.dcc.latin.reranking.ProportionalReranker;
+import br.ufmg.dcc.latin.scoring.diversity.PM2;
+import br.ufmg.dcc.latin.system.Evaluator;
+import br.ufmg.dcc.latin.system.Session;
+import br.ufmg.dcc.latin.system.TrecUser;
 
-public class xQuADSession implements Session {
+public class PM2Session implements Session {
 	
 	private CollectionResultSet baselineResultSet;
 	FlatAspectManager aspectManager;
@@ -40,17 +43,41 @@ public class xQuADSession implements Session {
 	}
 	
 
-
-
 	@Override
 	public void run() {
+		
 		for (float[] params : getParameters()) {
-			String runName = "xQuAD_" + (int) params[0] + "_" + String.format("%.1f" ,params[1]);
+			String runName = "PM2_" + (int) params[0] + "_" + String.format("%.1f" ,params[1]);
 			run(runName,params);
 		}
-		
+
 	}
 
+	@Override
+	public void run(String name, float[] params) {
+		int depth = (int) params[0];
+		float lambda = params[1];
+		
+		ResultSet resultSet = baselineResultSet;
+		
+		PM2 scorer = new PM2(AspectCache.v, AspectCache.s, AspectCache.coverage, lambda);
+		ProportionalReranker reranker = new ProportionalReranker(scorer, depth, lambda);
+	
+		ResultSet topResultSet = reranker.getTopResults(resultSet);
+		int iteration = 0;
+		while (iteration < 10 & topResultSet.getDocids().length > 0) {
+			Evaluator.writeToFile(name, topicId, topResultSet, iteration);
+			Feedback[] feedbacks = TrecUser.get(topResultSet,topicId);
+			aspectManager.miningProportionalAspects(feedbacks);
+			scorer.update(AspectCache.v, AspectCache.s, AspectCache.coverage);
+			reranker.updateProportional();
+			resultSet = reranker.reranking(baselineResultSet);
+			topResultSet = reranker.getTopResults(resultSet);
+			iteration++;
+		}
+		aspectManager.clear();
+
+	}
 
 	@Override
 	public List<float[]> getParameters() {
@@ -65,34 +92,5 @@ public class xQuADSession implements Session {
 		}
  		return params;
 	}
-
-
-	@Override
-	public void run(String name, float[] params) {
-		
-		int depth = (int) params[0];
-		float lambda = params[1];
-		
-		ResultSet resultSet = baselineResultSet;
-		
-		xQuAD scorer = new xQuAD(AspectCache.importance, AspectCache.coverage, AspectCache.novelty);
-		DiversityReranker reranker = new DiversityReranker(scorer, depth, lambda);
-	
-		ResultSet topResultSet = reranker.getTopResults(resultSet);
-		int iteration = 0;
-		while (iteration < 10 & topResultSet.getDocids().length > 0) {
-			Evaluator.writeToFile(name, topicId, topResultSet, iteration);
-			Feedback[] feedbacks = TrecUser.get(topResultSet,topicId);
-			aspectManager.miningDiversityAspects(feedbacks);
-			aspectManager.updateNovelty(reranker.getSelected());
-			scorer.update(AspectCache.importance, AspectCache.coverage, AspectCache.novelty);
-			resultSet = reranker.reranking(baselineResultSet);
-			topResultSet = reranker.getTopResults(resultSet);
-			iteration++;
-		}
-		aspectManager.clear();
-	}
-
-
 
 }

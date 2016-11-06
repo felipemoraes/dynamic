@@ -8,10 +8,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.ufmg.dcc.latin.system.TrecUser;
-import br.ufmg.dcc.latin.system.session.xQuADSession;
+import br.ufmg.dcc.latin.system.session.PM2Session;
 
-public class xQuADSessionTest {
+public class PM2SessionTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -32,7 +31,7 @@ public class xQuADSessionTest {
 	@Test
 	public void test() {
 		TrecUser.load("../share/truth_data_deduped.txt");
-		xQuADSession session = new xQuADSession();
+		PM2Session session = new PM2Session();
 		session.start("ebola16", "DD16-1", "US Military Crisis Response");
 		session.run();
 	}
