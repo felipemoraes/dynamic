@@ -8,6 +8,7 @@ import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanQuery;
@@ -15,6 +16,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopScoreDocCollector;
+import org.apache.lucene.store.RAMDirectory;
 
 import br.ufmg.dcc.latin.cache.AspectCache;
 import br.ufmg.dcc.latin.cache.SearchCache;
@@ -32,6 +34,8 @@ public class FlatAspectManager implements AspectManager {
 
 	public FlatAspectManager(String[] docContent){
 		try {
+			AspectCache.config = new IndexWriterConfig(AspectCache.analyzer);
+			AspectCache.indexDir = new RAMDirectory();
 			AspectCache.indexWriter = new IndexWriter(AspectCache.indexDir, AspectCache.config);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -189,11 +193,17 @@ public class FlatAspectManager implements AspectManager {
 	
 	
 	public void cacheFeedback(Feedback[] feedbacks){
+		
+		
 		if (AspectCache.feedbacks == null) {
 			int n = SearchCache.docnos.length;
 			AspectCache.feedbacks = new Feedback[n];
 		}
 		
+		if (SearchCache.docnos == null) {
+			return;
+		}
+
 		for (int i = 0; i < SearchCache.docnos.length; i++) {
 			for (int j = 0; j < feedbacks.length; j++) {
 				if (feedbacks[j].getDocno() == SearchCache.docnos[i]){
@@ -253,6 +263,8 @@ public class FlatAspectManager implements AspectManager {
 		AspectCache.novelty = null;
 		AspectCache.coverage = null;
 		AspectCache.feedbacks = null;
+		AspectCache.s = null;
+		AspectCache.v = null;
 		flatAspectModel = null;
 	}
 

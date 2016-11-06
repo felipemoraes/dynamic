@@ -14,19 +14,6 @@ public abstract class InteractiveReranker implements Reranker {
 		return null;
 	}
 	
-	protected float[] normalize(float[] values){
-		float sum = 0;
-		for (int i = 0; i < values.length; i++) {
-			sum += values[i];
-		}
-		for (int i = 0; i < values.length; i++) {
-			if (sum > 0) {
-				values[i] = values[i]/sum;
-			}
-		}
-		return values;
-	}
-	
 	public ResultSet getTopResults(ResultSet resultSet){
 		int[] docids = new int[5];
 		String[] docnos = new String[5];

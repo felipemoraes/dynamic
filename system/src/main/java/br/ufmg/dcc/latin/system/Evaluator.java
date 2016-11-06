@@ -11,7 +11,7 @@ import br.ufmg.dcc.latin.querying.ResultSet;
 public class Evaluator {
 	
 	public static void writeToFile(String runName, String topicId, ResultSet resultSet, int iteration){
-		try(FileWriter fw = new FileWriter(runName + ".txt", true);
+		try(FileWriter fw = new FileWriter("data/" + runName + ".txt", true);
 				 BufferedWriter bw = new BufferedWriter(fw);
 				 PrintWriter out = new PrintWriter(bw)) {
 			String[] docnos = resultSet.getDocnos();

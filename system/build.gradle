@@ -3,5 +3,16 @@ apply plugin: 'application'
 
 dependencies {
     compile project(':core')
-
+	testCompile 'junit:junit:4.11'
 }
+
+
+task main(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.system.Main'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
+
+mainClassName = ' '

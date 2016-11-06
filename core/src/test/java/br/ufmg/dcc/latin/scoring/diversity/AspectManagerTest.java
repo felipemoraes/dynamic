@@ -70,8 +70,8 @@ public class AspectManagerTest {
 		
 		assertEquals(0.00, AspectCache.coverage[1][0].getValue(),0.0);
 		assertEquals(0.00, AspectCache.coverage[1][1].getValue(),0.0);
-		assertEquals(0.6666667, AspectCache.coverage[0][0].getValue(),0.0001);
-		assertEquals(0.33333334, AspectCache.coverage[0][1].getValue(),0.0001);
+		assertEquals(0.289311, AspectCache.coverage[0][0].getValue(),0.0001);
+		assertEquals(0.094754, AspectCache.coverage[0][1].getValue(),0.0001);
 	}
 	
 	@Test

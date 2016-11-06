@@ -34,9 +34,11 @@ public class PM2 {
 		float quotientotherAspect  = 0;
 		for (int i = 0; i < s.length; i++) {
 			if (i != q) {
+				
 				quotientotherAspect += (v[i].getValue()/(2*s[i].getValue()+1))*coverage[d][i].getValue();
 			}
 		}
+		
 		return lambda*quotientAspectq + (1-lambda)*quotientotherAspect;
 	}
 	
@@ -45,7 +47,18 @@ public class PM2 {
 		for (int i = 0; i < coverage[d].length; ++i) {
 			allCoverage += coverage[d][i].getValue();
 		}
-		float newS = s[q].getValue() + coverage[d][q].getValue()/allCoverage;
-		s[q].setValue(newS);
+		if (allCoverage > 0) {
+			float newS = s[q].getValue() + coverage[d][q].getValue()/allCoverage;
+			s[q].setValue(newS);
+		} else {
+			s[q].setValue(s[q].getValue());
+		}
+
+	}
+	
+	public void update(Aspect[] v, Aspect[] s, Aspect[][] coverage){
+		this.v = v;
+		this.s = s;
+		this.coverage = coverage;
 	}
 }

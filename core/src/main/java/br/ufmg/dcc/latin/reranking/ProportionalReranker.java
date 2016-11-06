@@ -12,6 +12,8 @@ public class ProportionalReranker extends InteractiveReranker {
 	int depth;
 	float lambda;
 	PM2 scorer;
+	int[] highestAspect;
+	int n;
 	
 	public ProportionalReranker(PM2 scorer, int depth, float lambda){
 		this.scorer = scorer;
@@ -26,7 +28,12 @@ public class ProportionalReranker extends InteractiveReranker {
 		float[] relevance = normalize(baselineResultSet.getScores());
 		int[] docids = baselineResultSet.getDocids();
 		
-		int n = docids.length;
+		n = docids.length;
+	
+		if (highestAspect == null){
+			highestAspect = new int[n];
+			Arrays.fill(highestAspect, -1);
+		}
 		
 		float[] scores = new float[n];
 		Arrays.fill(scores, 0f);
@@ -48,7 +55,6 @@ public class ProportionalReranker extends InteractiveReranker {
 				}
 				
 				float score = scorer.score(i, q);
-				
 				if (score > maxScore) {
 					maxScore = score;
 					maxRank = i;
@@ -57,11 +63,10 @@ public class ProportionalReranker extends InteractiveReranker {
 			
 			// update the score of the selected document
 			scores[maxRank] = maxScore;
-			
 			// mark as selected
 			localSelected.put(docids[maxRank]);
 			scorer.update(maxRank,q);
-			
+			highestAspect[maxRank] = q;
 		}
 		for (int i = depth; i < n; i++) {
 			scores[i] = (1-lambda) * relevance[i];
@@ -74,6 +79,17 @@ public class ProportionalReranker extends InteractiveReranker {
 		finalResultSet.setDocnos(baselineResultSet.getDocnos());
 		
 		return finalResultSet;
+	}
+	
+	public void updateProportional(){
+		if (highestAspect == null){
+			return;
+		}
+		for (int i = 0; i < highestAspect.length; i++) {
+			if (highestAspect[i] != -1){
+				scorer.update(i, highestAspect[i]);
+			}
+		}
 	}
 
 }
