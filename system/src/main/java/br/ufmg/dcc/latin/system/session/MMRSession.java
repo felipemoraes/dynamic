@@ -32,7 +32,7 @@ public class MMRSession implements Session {
 		queryRequest.setFields(fields);
 		queryRequest.setQuery(topic);
 		queryRequest.setIndex(index);
-		queryRequest.setSize(1000);
+		queryRequest.setSize(100);
 		this.topicId = topicId;
 		baselineResultSet = (CollectionResultSet) searchRequest.search(queryRequest);
 		SearchCache.cache(baselineResultSet);
@@ -59,13 +59,13 @@ public class MMRSession implements Session {
 		
 		
 		MMRReranker reranker = new MMRReranker(AspectCache.indexDir, depth, lambda);
-		resultSet = reranker.reranking(baselineResultSet);
+		
 		
 		ResultSet topResultSet = reranker.getTopResults(resultSet);
 		int iteration = 0;
 		while (iteration < 10 & topResultSet.getDocids().length > 0) {
 			Evaluator.writeToFile(name, topicId, topResultSet, iteration);
-			topResultSet = reranker.getTopResults(resultSet);
+			topResultSet = reranker.getTopResults(baselineResultSet);
 			iteration++;
 		}
 		aspectManager.clear();
