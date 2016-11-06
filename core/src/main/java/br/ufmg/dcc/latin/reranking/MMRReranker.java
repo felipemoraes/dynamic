@@ -50,7 +50,7 @@ public class MMRReranker extends StaticReranker{
 		String[] resultDocnos = new String[5];
 		float[] resultScores = new float[5];
 		
-		float[] relevance = normalize(baselineResultSet.getScores());
+		float[] relevance = baselineResultSet.getScores();
 		int[] docids = baselineResultSet.getDocids();
 		String[] docnos = baselineResultSet.getDocnos();
 		String[] docsContent = collectionResultSet.getDocsContent();
