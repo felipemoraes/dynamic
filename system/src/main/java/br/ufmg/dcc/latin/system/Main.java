@@ -19,13 +19,13 @@ public class Main {
 	    String line;
 	    Session session = null;
 	    
-	    if (type == "xQuAD"){
+	    if (type.equals("xQuAD")){
 	    	session = new xQuADSession();
-	    } else if (type == "PM2") {
+	    } else if (type.equals( "PM2")) {
 	    	session = new PM2Session();
-	    }  else if (type == "MMR") {
+	    }  else if (type.equals("MMR")) {
 	    	session = new MMRSession();
-	    }  else if (type == "PM2") {
+	    }  else if (type.equals( "PM2")) {
 	    	session = new LMSession();
 	    } 
 	    
