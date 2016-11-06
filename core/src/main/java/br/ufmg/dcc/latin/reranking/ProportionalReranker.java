@@ -53,8 +53,11 @@ public class ProportionalReranker extends InteractiveReranker {
 				if (localSelected.has(docids[i]) || getSelected().has(docids[i])){
 					continue;
 				}
+				float score = relevance[i];
 				
-				float score = scorer.score(i, q);
+				if (q != -1) {
+					score = scorer.score(i, q);
+				}
 				if (score > maxScore) {
 					maxScore = score;
 					maxRank = i;
@@ -65,8 +68,11 @@ public class ProportionalReranker extends InteractiveReranker {
 			scores[maxRank] = maxScore;
 			// mark as selected
 			localSelected.put(docids[maxRank]);
-			scorer.update(maxRank,q);
-			highestAspect[maxRank] = q;
+			if (q != -1) {
+				scorer.update(maxRank,q);
+				highestAspect[maxRank] = q;
+			}
+			
 		}
 		for (int i = depth; i < n; i++) {
 			scores[i] = (1-lambda) * relevance[i];

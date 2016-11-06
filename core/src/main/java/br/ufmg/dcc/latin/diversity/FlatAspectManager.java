@@ -83,7 +83,7 @@ public class FlatAspectManager implements AspectManager {
 		if (aspectSize == 0) {
 			AspectCache.importance = new Aspect[0];
 			AspectCache.novelty = new Aspect[0];
-			AspectCache.coverage = new Aspect[0][];
+			AspectCache.coverage = new Aspect[n][0];
 			return;
 		}
 		AspectCache.importance = new Aspect[aspectSize];
@@ -148,7 +148,7 @@ public class FlatAspectManager implements AspectManager {
 		if (aspectSize == 0) {
 			AspectCache.v = new Aspect[0];
 			AspectCache.s = new Aspect[0];
-			AspectCache.coverage = new Aspect[0][];
+			AspectCache.coverage = new Aspect[n][0];
 			return;
 		}
 		
