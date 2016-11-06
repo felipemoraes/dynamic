@@ -43,11 +43,16 @@ public class MMRReranker extends StaticReranker{
 	}
 	
 	@Override
-	public ResultSet reranking(ResultSet baselineResultSet) {
+	public ResultSet getTopResults(ResultSet baselineResultSet) {
 		CollectionResultSet collectionResultSet = (CollectionResultSet) baselineResultSet;
+		
+		int[] resultDocids = new int[5];
+		String[] resultDocnos = new String[5];
+		float[] resultScores = new float[5];
 		
 		float[] relevance = normalize(baselineResultSet.getScores());
 		int[] docids = baselineResultSet.getDocids();
+		String[] docnos = baselineResultSet.getDocnos();
 		String[] docsContent = collectionResultSet.getDocsContent();
 		n = docids.length;
 		
@@ -57,13 +62,14 @@ public class MMRReranker extends StaticReranker{
 		
 		cacheSim = new float[depth];
 		Arrays.fill(cacheSim, 0.0f);
-		SelectedSet selected = new SelectedSet();
-		while (selected.size() < depth) {
+		int k = 0;
+		
+		while (k < 5) {
 			float maxScore = Float.NEGATIVE_INFINITY;
 			int maxRank = -1;
 			// greedily select max document
 			for (int i = 0; i < depth; ++i){
-				if (selected.has(i)){
+				if (selected.has(docids[i])){
 					continue;
 				}
 				
@@ -73,20 +79,22 @@ public class MMRReranker extends StaticReranker{
 					maxScore = score;
 				}
 			}
-			selected.put(maxRank);
-			updateCache(maxRank,docsContent[maxRank]);
-			scores[maxRank] = maxScore;
 			
+			selected.put(docids[maxRank]);
+			updateCache(maxRank,docsContent[maxRank]);
+			resultScores[k] = maxScore;
+			resultDocids[k] = docids[maxRank];
+			resultDocnos[k] = docnos[maxRank];
+			
+			k++;
 		}
 		
-		for (int i = depth; i < n; i++) {
-			scores[i] = lambda * relevance[i] - (1-lambda) *cacheSim[i];
-		}
+
 		QueryResultSet finalResultSet = new QueryResultSet();
 		
-		finalResultSet.setDocids(docids);
-		finalResultSet.setScores(scores);
-		finalResultSet.setDocnos(baselineResultSet.getDocnos());
+		finalResultSet.setDocids(resultDocids);
+		finalResultSet.setScores(resultScores);
+		finalResultSet.setDocnos(resultDocnos);
 		
 		return finalResultSet;
 	}

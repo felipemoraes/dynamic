@@ -36,7 +36,7 @@ public class Main {
 	    	
         	String topicId = splitLine[1];
         	System.out.println(topicId);
-        	//if (!topicId.equals("DD16-47")){
+        	//if (!topicId.equals("DD16-1")){
         	//	continue;
         	//}
     		

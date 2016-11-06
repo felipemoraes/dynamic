@@ -8,10 +8,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.ufmg.dcc.latin.system.session.LMSession;
 import br.ufmg.dcc.latin.system.session.MMRSession;
-import br.ufmg.dcc.latin.system.session.PM2Session;
 
-public class MMRSessionTestTest {
+public class LMSessionTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -32,10 +32,9 @@ public class MMRSessionTestTest {
 	@Test
 	public void test() {
 		TrecUser.load("../share/truth_data_deduped.txt");
-		MMRSession session = new MMRSession();
+		LMSession session = new LMSession();
 		session.start("ebola16", "DD16-1", "US Military Crisis Response");
-		float[] params = {1000.0f, 1.0f};
-		session.run("test1.0", params);
+		session.run();
 	}
 
 }

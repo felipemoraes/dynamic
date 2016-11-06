@@ -62,6 +62,7 @@ public class MMRSession implements Session {
 		
 		
 		ResultSet topResultSet = reranker.getTopResults(resultSet);
+
 		int iteration = 0;
 		while (iteration < 10 & topResultSet.getDocids().length > 0) {
 			Evaluator.writeToFile(name, topicId, topResultSet, iteration);
