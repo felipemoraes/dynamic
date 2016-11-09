@@ -39,6 +39,7 @@ public class xQuADsSession implements Session {
 		queryRequest.setIndex(index);
 		queryRequest.setSize(1000);
 		this.topicId = topicId;
+		
 		baselineResultSet = (CollectionResultSet) searchRequest.search(queryRequest);
 		SearchCache.cache(baselineResultSet);
 		aspectManager = new FlatAspectManager(baselineResultSet.getDocsContent());
@@ -74,8 +75,10 @@ public class xQuADsSession implements Session {
 			Feedback[] feedbacks = TrecUser.get(topResultSet,topicId);
 			aspectManager.miningDiversityAspects(feedbacks);
 			scorer.update(AspectCache.importance, AspectCache.coverage);
-			resultSet = reranker.reranking(baselineResultSet,true);
-			topResultSet = reranker.getTopResults(resultSet);
+			
+			topResultSet = reranker.rerankingandTopResults(baselineResultSet,true);
+
+			
 			iteration++;
 		}
 		aspectManager.clear();

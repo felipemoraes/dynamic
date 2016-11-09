@@ -75,8 +75,8 @@ public class xQuADssSession implements Session {
 			aspectManager.miningDiversityAspects(feedbacks);
 			scorer.update(AspectCache.importance, AspectCache.coverage);
 			
-			resultSet = reranker.reranking(baselineResultSet,false);
-			topResultSet = reranker.getTopResults(resultSet);
+			topResultSet = reranker.rerankingandTopResults(baselineResultSet,false);
+			
 			iteration++;
 		}
 		aspectManager.clear();
