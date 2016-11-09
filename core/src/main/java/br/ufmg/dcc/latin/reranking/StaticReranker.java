@@ -50,11 +50,6 @@ public class StaticReranker implements Reranker {
 		return topResultSet;
 	}
 
-	@Override
-	public ResultSet reranking(ResultSet baselineResultSet, boolean sim) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 }

@@ -7,7 +7,7 @@ import br.ufmg.dcc.latin.querying.SelectedSet;
 public abstract class InteractiveReranker implements Reranker {
 	
 	
-	private SelectedSet selected;
+	protected SelectedSet selected;
 
 	@Override
 	public ResultSet reranking(ResultSet baselineResultSet) {

@@ -101,13 +101,17 @@ public class DiversityReranker extends InteractiveReranker {
 	    return newCache;
 	}
 	
-	@Override
-	public ResultSet reranking(ResultSet baselineResultSet, boolean sim) {
+
+	public ResultSet rerankingandTopResults(ResultSet baselineResultSet, boolean sim) {
 		
 		CollectionResultSet collectionResultSet = (CollectionResultSet) baselineResultSet;
 		String[] docsContent = collectionResultSet.getDocsContent();
 		float[] relevance = normalize(baselineResultSet.getScores());
 		int[] docids = baselineResultSet.getDocids();
+		String[] docnos = baselineResultSet.getDocnos();
+		int[] resultDocids = new int[5];
+		String[] resultDocnos = new String[5];
+		float[] resultScores = new float[5];
 		
 		int n = docids.length;
 		
@@ -119,7 +123,8 @@ public class DiversityReranker extends InteractiveReranker {
 		SelectedSet localSelected = new SelectedSet();
 		
 		// greedily diversify the top documents
-		while(localSelected.size() < depth-getSelected().size()){
+		int k = 0;
+		while(k < 5){
 			
 			float maxScore = -1;
 			int maxRank = -1;
@@ -127,7 +132,7 @@ public class DiversityReranker extends InteractiveReranker {
 			// for each unselected document
 			for (int i = 0; i < depth; ++i ){ 
 				// skip already selected documents
-				if (localSelected.has(docids[i]) || getSelected().has(docids[i])){
+				if (selected.has(docids[i])){
 					continue;
 				}
 				
@@ -141,9 +146,13 @@ public class DiversityReranker extends InteractiveReranker {
 			
 			// update the score of the selected document
 			scores[maxRank] = maxScore;
+			resultScores[k] = maxScore;
+			resultDocids[k] = docids[maxRank];
+			resultDocnos[k] = docnos[maxRank];
 			
+			k++;
 			// mark as selected
-			localSelected.put(docids[maxRank]);
+			selected.put(docids[maxRank]);
 			if (sim) {
 				float[] sims = similarities(maxRank, docsContent[maxRank]);
 				sims = normalize(sims);
@@ -164,9 +173,9 @@ public class DiversityReranker extends InteractiveReranker {
 		
 		QueryResultSet finalResultSet = new QueryResultSet();
 		
-		finalResultSet.setDocids(docids);
-		finalResultSet.setScores(scores);
-		finalResultSet.setDocnos(baselineResultSet.getDocnos());
+		finalResultSet.setDocids(resultDocids);
+		finalResultSet.setScores(resultScores);
+		finalResultSet.setDocnos(resultDocnos);
 		
 		return finalResultSet;
 	}
