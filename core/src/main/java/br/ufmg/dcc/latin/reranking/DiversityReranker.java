@@ -51,7 +51,7 @@ public class DiversityReranker extends InteractiveReranker {
 	
 	public float[] similarities(int selected, String content){
 		QueryParser queryParser = new QueryParser("content", analyzer);
-		BooleanQuery.setMaxClauseCount(200000);
+		BooleanQuery.setMaxClauseCount(400000);
 		
 		Query q = null;
 		try {
