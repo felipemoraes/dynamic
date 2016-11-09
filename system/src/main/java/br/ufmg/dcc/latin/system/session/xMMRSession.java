@@ -1,5 +1,6 @@
 package br.ufmg.dcc.latin.system.session;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.ufmg.dcc.latin.cache.AspectCache;
@@ -33,7 +34,7 @@ public class xMMRSession implements Session {
 		queryRequest.setFields(fields);
 		queryRequest.setQuery(topic);
 		queryRequest.setIndex(index);
-		queryRequest.setSize(100);
+		queryRequest.setSize(1000);
 		this.topicId = topicId;
 		baselineResultSet = (CollectionResultSet) searchRequest.search(queryRequest);
 		SearchCache.cache(baselineResultSet);
@@ -81,8 +82,16 @@ public class xMMRSession implements Session {
 
 	@Override
 	public List<float[]> getParameters() {
-		// TODO Auto-generated method stub
-		return null;
+		int[] depths = {1000};
+		float[] lambdas = {0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f};
+		List<float[]> params = new ArrayList<float[]>();
+		for (int i = 0; i < depths.length; i++) {
+			for (int j = 0; j < lambdas.length; j++) {
+				float[] param = {(int) depths[i], lambdas[j]};
+				params.add(param);
+			}
+		}
+ 		return params;
 	}
 
 }
