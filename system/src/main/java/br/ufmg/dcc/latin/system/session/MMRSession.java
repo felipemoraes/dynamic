@@ -32,7 +32,7 @@ public class MMRSession implements Session {
 		queryRequest.setFields(fields);
 		queryRequest.setQuery(topic);
 		queryRequest.setIndex(index);
-		queryRequest.setSize(100);
+		queryRequest.setSize(1000);
 		this.topicId = topicId;
 		baselineResultSet = (CollectionResultSet) searchRequest.search(queryRequest);
 		SearchCache.cache(baselineResultSet);
