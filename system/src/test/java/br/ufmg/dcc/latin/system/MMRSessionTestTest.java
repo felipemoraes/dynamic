@@ -34,7 +34,7 @@ public class MMRSessionTestTest {
 		TrecUser.load("../share/truth_data_deduped.txt");
 		MMRSession session = new MMRSession();
 		session.start("ebola16", "DD16-1", "US Military Crisis Response");
-		float[] params = {1000.0f, 1.0f};
+		float[] params = {1000.0f, 0.5f};
 		session.run("test1.0", params);
 	}
 

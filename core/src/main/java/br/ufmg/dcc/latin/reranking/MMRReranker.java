@@ -42,6 +42,33 @@ public class MMRReranker extends StaticReranker{
 		selected = new SelectedSet();
 	}
 	
+	public float[] scaling(float[] scores){
+		float min = Float.POSITIVE_INFINITY;
+		for (int i = 0; i < scores.length; i++) {
+			if (scores[i] < min) {
+				min = scores[i];
+			}
+		}
+		
+		float max = Float.NEGATIVE_INFINITY;
+		for (int i = 0; i < scores.length; i++) {
+			if (scores[i] > max) {
+				max = scores[i];
+			}
+		}
+		
+		for (int i = 0; i < scores.length; i++) {
+			if (max!=min) {
+				scores[i] = (scores[i]-min)/(max-min);
+			} else {
+				scores[i] = 0;
+			}
+			
+		}
+		return scores;
+		
+	}
+	
 	@Override
 	public ResultSet getTopResults(ResultSet baselineResultSet) {
 		CollectionResultSet collectionResultSet = (CollectionResultSet) baselineResultSet;
@@ -50,7 +77,7 @@ public class MMRReranker extends StaticReranker{
 		String[] resultDocnos = new String[5];
 		float[] resultScores = new float[5];
 		
-		float[] relevance = baselineResultSet.getScores();
+		float[] relevance = scaling(baselineResultSet.getScores());
 		int[] docids = baselineResultSet.getDocids();
 		String[] docnos = baselineResultSet.getDocnos();
 		String[] docsContent = collectionResultSet.getDocsContent();
@@ -74,6 +101,7 @@ public class MMRReranker extends StaticReranker{
 				}
 				
 				float score = lambda*(relevance[i]) - (1-lambda)*cacheSim[i];
+				System.out.println(relevance[i] +  " " + cacheSim[i] );
 				if (score > maxScore){
 					maxRank = i;
 					maxScore = score;
@@ -133,15 +161,21 @@ public class MMRReranker extends StaticReranker{
 		}
 	    ScoreDoc[] hits = collector.topDocs().scoreDocs;
 	    
-	   
-	    
+	    float[] newCache = new float[n];
+	    Arrays.fill(newCache, 0);
 	    
 	    for(int i = 0;i<hits.length;++i) {
 	    	int cache_ix = hits[i].doc;
-	    	if (cacheSim[cache_ix] < hits[i].score){
-	    		cacheSim[cache_ix] = hits[i].score;
-	    	}
+	    	newCache[cache_ix] = hits[i].score;
 	    }
+	    
+	    newCache = scaling(newCache);
+	    
+	    for (int i = 0; i < newCache.length; i++) {
+			if (cacheSim[i] < newCache[i]) {
+				cacheSim[i] = newCache[i];
+			}
+		}
 
 	    try {
 			reader.close();
