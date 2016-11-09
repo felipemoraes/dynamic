@@ -34,7 +34,8 @@ public class LMSessionTest {
 		TrecUser.load("../share/truth_data_deduped.txt");
 		LMSession session = new LMSession();
 		session.start("ebola16", "DD16-1", "US Military Crisis Response");
-		session.run();
+		float[] params = {1000.0f, 0.5f};
+		session.run("testLM", params);
 	}
 
 }
