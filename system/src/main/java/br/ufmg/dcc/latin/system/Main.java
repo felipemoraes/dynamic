@@ -15,8 +15,8 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		String topicsFile = "../share/topics_domain.txt";
-		//String type = args[0];
-		String type = "xQuADs";
+		String type = args[0];
+		
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
 	    String line;
 	    Session session = null;
