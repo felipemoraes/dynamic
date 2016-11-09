@@ -98,4 +98,10 @@ public class ProportionalReranker extends InteractiveReranker {
 		}
 	}
 
+	@Override
+	public ResultSet reranking(ResultSet baselineResultSet, boolean sim) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -5,6 +5,9 @@ import br.ufmg.dcc.latin.querying.ResultSet;
 public interface Reranker {
 	public ResultSet reranking(ResultSet baselineResultSet);
 	
+	public ResultSet reranking(ResultSet baselineResultSet,boolean sim);
+	
+	
 	default float[] normalize(float[] values){
 		float sum = 0;
 		for (int i = 0; i < values.length; i++) {

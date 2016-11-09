@@ -9,13 +9,14 @@ import br.ufmg.dcc.latin.system.session.MMRSession;
 import br.ufmg.dcc.latin.system.session.PM2Session;
 import br.ufmg.dcc.latin.system.session.xMMRSession;
 import br.ufmg.dcc.latin.system.session.xQuADSession;
+import br.ufmg.dcc.latin.system.session.xQuADsSession;
 
 public class Main {
 
 	public static void main(String[] args) throws IOException {
 		String topicsFile = "../share/topics_domain.txt";
-		String type = args[0];
-		
+		//String type = args[0];
+		String type = "xQuADs";
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
 	    String line;
 	    Session session = null;
@@ -30,7 +31,10 @@ public class Main {
 	    	session = new LMSession();
 	    }  else if (type.equals( "xMMR")) {
 	    	session = new xMMRSession();
+	    }  else if (type.equals( "xQuADs")) {
+	    	session = new xQuADsSession();
 	    } 
+	    
 	    
 	    TrecUser.load("../share/truth_data_deduped.txt");
 	    

@@ -1,6 +1,7 @@
 package br.ufmg.dcc.latin.diversity;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -16,6 +17,8 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopScoreDocCollector;
+import org.apache.lucene.search.similarities.ClassicSimilarity;
+import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.RAMDirectory;
 
 import br.ufmg.dcc.latin.cache.AspectCache;
@@ -29,6 +32,8 @@ public class FlatAspectManager implements AspectManager {
 	
 	
 	private FlatAspectModel flatAspectModel;
+	
+	
 	
 	
 
@@ -188,6 +193,35 @@ public class FlatAspectManager implements AspectManager {
 			i++;
 		}
 		normalizeCoverage();
+		
+	}
+	
+
+	
+	private float[] scaling(float[] scores){
+		float min = Float.POSITIVE_INFINITY;
+		for (int i = 0; i < scores.length; i++) {
+			if (scores[i] < min) {
+				min = scores[i];
+			}
+		}
+		
+		float max = Float.NEGATIVE_INFINITY;
+		for (int i = 0; i < scores.length; i++) {
+			if (scores[i] > max) {
+				max = scores[i];
+			}
+		}
+		
+		for (int i = 0; i < scores.length; i++) {
+			if (max!=min) {
+				scores[i] = (scores[i]-min)/(max-min);
+			} else {
+				scores[i] = 0;
+			}
+			
+		}
+		return scores;
 		
 	}
 	

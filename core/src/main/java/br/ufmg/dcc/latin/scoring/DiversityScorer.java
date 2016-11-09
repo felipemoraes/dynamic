@@ -16,5 +16,9 @@ public class DiversityScorer implements Scorer {
 	public void update(int d){
 		
 	}
+	
+	public void update(float[] sims){
+		
+	}
 
 }
