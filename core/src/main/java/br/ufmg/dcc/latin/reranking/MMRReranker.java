@@ -42,32 +42,7 @@ public class MMRReranker extends StaticReranker{
 		selected = new SelectedSet();
 	}
 	
-	public float[] scaling(float[] scores){
-		float min = Float.POSITIVE_INFINITY;
-		for (int i = 0; i < scores.length; i++) {
-			if (scores[i] < min) {
-				min = scores[i];
-			}
-		}
-		
-		float max = Float.NEGATIVE_INFINITY;
-		for (int i = 0; i < scores.length; i++) {
-			if (scores[i] > max) {
-				max = scores[i];
-			}
-		}
-		
-		for (int i = 0; i < scores.length; i++) {
-			if (max!=min) {
-				scores[i] = (scores[i]-min)/(max-min);
-			} else {
-				scores[i] = 0;
-			}
-			
-		}
-		return scores;
-		
-	}
+
 	
 	@Override
 	public ResultSet getTopResults(ResultSet baselineResultSet) {
@@ -101,7 +76,6 @@ public class MMRReranker extends StaticReranker{
 				}
 				
 				float score = lambda*(relevance[i]) - (1-lambda)*cacheSim[i];
-				System.out.println(relevance[i] +  " " + cacheSim[i] );
 				if (score > maxScore){
 					maxRank = i;
 					maxScore = score;
