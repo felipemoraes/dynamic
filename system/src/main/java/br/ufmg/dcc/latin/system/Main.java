@@ -7,6 +7,7 @@ import java.io.IOException;
 import br.ufmg.dcc.latin.system.session.LMSession;
 import br.ufmg.dcc.latin.system.session.MMRSession;
 import br.ufmg.dcc.latin.system.session.PM2Session;
+import br.ufmg.dcc.latin.system.session.xMMRSession;
 import br.ufmg.dcc.latin.system.session.xQuADSession;
 
 public class Main {
@@ -27,6 +28,8 @@ public class Main {
 	    	session = new MMRSession();
 	    }  else if (type.equals( "LM")) {
 	    	session = new LMSession();
+	    }  else if (type.equals( "xMMR")) {
+	    	session = new xMMRSession();
 	    } 
 	    
 	    TrecUser.load("../share/truth_data_deduped.txt");
