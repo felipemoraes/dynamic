@@ -32,7 +32,10 @@ public class xQuADs  extends DiversityScorer {
  		for (int i = 0; i < novelty.length; i++) {
 			float newNovelty = novelty[i]*(1-sims[i]);
 			novelty[i] = newNovelty;
+		//	System.out.print(newNovelty+ " ");
 		}
+ 		//System.out.println();
+ 		
 		
 	}
 	

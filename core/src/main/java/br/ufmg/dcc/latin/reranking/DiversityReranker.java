@@ -19,6 +19,7 @@ import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.Directory;
 
 import br.ufmg.dcc.latin.cache.AspectCache;
+import br.ufmg.dcc.latin.diversity.Aspect;
 import br.ufmg.dcc.latin.querying.CollectionResultSet;
 import br.ufmg.dcc.latin.querying.QueryResultSet;
 import br.ufmg.dcc.latin.querying.ResultSet;
@@ -101,7 +102,7 @@ public class DiversityReranker extends InteractiveReranker {
 	}
 	
 	@Override
-	public ResultSet reranking(ResultSet baselineResultSet) {
+	public ResultSet reranking(ResultSet baselineResultSet, boolean sim) {
 		
 		CollectionResultSet collectionResultSet = (CollectionResultSet) baselineResultSet;
 		String[] docsContent = collectionResultSet.getDocsContent();
@@ -143,8 +144,18 @@ public class DiversityReranker extends InteractiveReranker {
 			
 			// mark as selected
 			localSelected.put(docids[maxRank]);
-			float[] sims = similarities(maxRank, docsContent[maxRank]);
-			scorer.update(sims);
+			if (sim) {
+				float[] sims = similarities(maxRank, docsContent[maxRank]);
+				sims = normalize(sims);
+				scorer.update(sims);				
+			} else {
+				
+				float[] sims = similaritiesFromAspects(maxRank);
+				sims = normalize(sims);
+				
+				scorer.update(sims);
+			}
+
 		}
 		
 		for (int i = depth; i < n; i++) {
@@ -160,8 +171,47 @@ public class DiversityReranker extends InteractiveReranker {
 		return finalResultSet;
 	}
 	
+	private float[] similaritiesFromAspects(int maxRank) {
+		float[] sims = new float[AspectCache.n];
+		Arrays.fill(sims, 0);
+		
+		if (AspectCache.coverage == null){
+			return sims;
+		}
+		
+		for (int i = 0; i < sims.length; i++) {
+			
+			sims[i] = cosine(AspectCache.coverage[maxRank],AspectCache.coverage[i]);
+		}
+		
+		return sims;
+	}
+	
+	private float cosine(Aspect[] v1, Aspect[] v2){
+		float denom = 0;
+		float sum1 = 0;
+		float sum2  = 0;
+	
+		for (int i = 0; i < v2.length; i++) {
+			denom += v1[i].getValue()*v2[i].getValue();
+		}
+		
+		for (int i = 0; i < v2.length; i++) {
+			sum1 += v1[i].getValue()*v1[i].getValue();
+			sum2 += v2[i].getValue()*v2[i].getValue();
+		}
+		sum1 = (float) Math.sqrt(sum1);
+		sum2 = (float) Math.sqrt(sum2);
+		
+		if (sum1*sum2 > 0){
+			return denom/(sum1*sum2);
+		} 
+		
+		return 0;
+	}
+
 	@Override
-	public ResultSet reranking(ResultSet baselineResultSet, boolean sim) {
+	public ResultSet reranking(ResultSet baselineResultSet) {
 		
 		float[] relevance = normalize(baselineResultSet.getScores());
 		int[] docids = baselineResultSet.getDocids();

@@ -35,7 +35,7 @@ public class xQuADSessionTest {
 		xQuADSession session = new xQuADSession();
 		session.start("ebola16", "DD16-1", "US Military Crisis Response");
 		float[] params = {1000.0f, 0.5f};
-		session.run("test1.0", params);
+		session.run("testx", params);
 	}
 
 }

@@ -10,6 +10,7 @@ import br.ufmg.dcc.latin.system.session.PM2Session;
 import br.ufmg.dcc.latin.system.session.xMMRSession;
 import br.ufmg.dcc.latin.system.session.xQuADSession;
 import br.ufmg.dcc.latin.system.session.xQuADsSession;
+import br.ufmg.dcc.latin.system.session.xQuADssSession;
 
 public class Main {
 
@@ -33,6 +34,8 @@ public class Main {
 	    	session = new xMMRSession();
 	    }  else if (type.equals( "xQuADs")) {
 	    	session = new xQuADsSession();
+	    }   else if (type.equals( "xQuADss")) {
+	    	session = new xQuADssSession();
 	    } 
 	    
 	    
