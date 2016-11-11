@@ -128,7 +128,12 @@ public class Indexer {
 	        String title = "";
             String description = "";
             String content = "";
-            String key = record.getHeader("WARC-TREC-ID").value;
+            String key = "";
+            try {
+            	key = record.getHeader("WARC-TREC-ID").value;
+            } catch (Exception e){
+            	continue;
+            }
             if (ignoredDocuments.contains(key)) {
 				continue;
 			}
