@@ -33,7 +33,7 @@ public class xQuADsSessionTest {
 	public void test() {
 		TrecUser.load("../share/truth_data_deduped.txt");
 		xQuADsSession session = new xQuADsSession();
-		session.start("ebola16", "DD16-1", "US Military Crisis Response");
+		session.start("ebola16", "DD16-3", "healthcare impacts of ebola");
 		float[] params = {1000.0f, 0.5f};
 		session.run("tests", params);
 	}

@@ -40,6 +40,7 @@ public class DiversityReranker extends InteractiveReranker {
 		this.scorer = scorer;
 		this.depth = depth;
 		this.lambda = lambda;
+		selected = new SelectedSet();
 	}
 	
 	public DiversityReranker(DiversityScorer scorer, Directory indexDir, int depth, float lambda){
@@ -47,6 +48,7 @@ public class DiversityReranker extends InteractiveReranker {
 		this.depth = depth;
 		this.lambda = lambda;
 		this.indexDir = indexDir;
+		selected = new SelectedSet();
 	}
 	
 	public float[] similarities(int selected, String content){
@@ -113,14 +115,12 @@ public class DiversityReranker extends InteractiveReranker {
 		String[] resultDocnos = new String[5];
 		float[] resultScores = new float[5];
 		
-		int n = docids.length;
+
 		
-		float[] scores = new float[n];
-		Arrays.fill(scores, 0f);
+		
 		
 		depth = Math.min(relevance.length, depth+getSelected().size());
 		
-		SelectedSet localSelected = new SelectedSet();
 		
 		// greedily diversify the top documents
 		int k = 0;
@@ -145,11 +145,11 @@ public class DiversityReranker extends InteractiveReranker {
 			}
 			
 			// update the score of the selected document
-			scores[maxRank] = maxScore;
+			
 			resultScores[k] = maxScore;
 			resultDocids[k] = docids[maxRank];
 			resultDocnos[k] = docnos[maxRank];
-			
+			System.out.println(maxRank + " " + maxScore);
 			k++;
 			// mark as selected
 			selected.put(docids[maxRank]);
@@ -167,9 +167,7 @@ public class DiversityReranker extends InteractiveReranker {
 
 		}
 		
-		for (int i = depth; i < n; i++) {
-			scores[i] = (1-lambda) * relevance[i];
-		}
+
 		
 		QueryResultSet finalResultSet = new QueryResultSet();
 		

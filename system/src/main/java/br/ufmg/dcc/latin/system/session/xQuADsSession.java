@@ -60,15 +60,13 @@ public class xQuADsSession implements Session {
 		int depth = (int) params[0];
 		float lambda = params[1];
 		
-		ResultSet resultSet = baselineResultSet;
-		
 		float[] novelty = new float[AspectCache.n];
 		Arrays.fill(novelty, 1);
 		
 		xQuADs scorer = new xQuADs(AspectCache.importance, AspectCache.coverage, novelty);
 		DiversityReranker reranker = new DiversityReranker(scorer, AspectCache.indexDir, depth, lambda);
 		
-		ResultSet topResultSet = reranker.getTopResults(resultSet);
+		ResultSet topResultSet = reranker.rerankingandTopResults(baselineResultSet,true);
 		int iteration = 0;
 		while (iteration < 10 & topResultSet.getDocids().length > 0) {
 			Evaluator.writeToFile(name, topicId, topResultSet, iteration);
@@ -77,7 +75,7 @@ public class xQuADsSession implements Session {
 			scorer.update(AspectCache.importance, AspectCache.coverage);
 			
 			topResultSet = reranker.rerankingandTopResults(baselineResultSet,true);
-
+			System.out.println(iteration);
 			
 			iteration++;
 		}

@@ -21,7 +21,9 @@ public class xQuADs  extends DiversityScorer {
 	public float div(int d){
 		float diversity = 0;
 		for (int i = 0; i < importance.length; i++) {
-			diversity += importance[i].getValue()*coverage[d][i].getValue()*novelty[d];
+			
+			diversity += importance[i].getValue()*coverage[d][i].getValue();
+			System.out.println(diversity + " " + novelty[d]);
 		}
 		return diversity;
 	}
