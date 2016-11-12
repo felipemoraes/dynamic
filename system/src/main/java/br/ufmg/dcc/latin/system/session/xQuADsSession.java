@@ -9,7 +9,7 @@ import br.ufmg.dcc.latin.cache.SearchCache;
 import br.ufmg.dcc.latin.diversity.FlatAspectManager;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.querying.CollectionResultSet;
-import br.ufmg.dcc.latin.querying.ESSearchRequest;
+import br.ufmg.dcc.latin.querying.LuceneSearchRequest;
 import br.ufmg.dcc.latin.querying.QueryRequest;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.reranking.DiversityReranker;
@@ -27,7 +27,7 @@ public class xQuADsSession implements Session {
 	
 	@Override
 	public void start(String index, String topicId, String topic) {
-		ESSearchRequest searchRequest = ESSearchRequest.getInstance();
+		LuceneSearchRequest searchRequest = LuceneSearchRequest.getInstance();
 		QueryRequest queryRequest = new QueryRequest();
 		queryRequest.setDocType("doc");
 		float[] weights = {0.7f,0.3f};

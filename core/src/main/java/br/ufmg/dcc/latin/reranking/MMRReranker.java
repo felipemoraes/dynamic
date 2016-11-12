@@ -3,40 +3,30 @@ package br.ufmg.dcc.latin.reranking;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.Explanation;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopScoreDocCollector;
-import org.apache.lucene.search.similarities.ClassicSimilarity;
-import org.apache.lucene.search.similarities.Similarity;
-import org.apache.lucene.store.Directory;
 
+import br.ufmg.dcc.latin.cache.SearchCache;
 import br.ufmg.dcc.latin.querying.CollectionResultSet;
 import br.ufmg.dcc.latin.querying.QueryResultSet;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.querying.SelectedSet;
+import br.ufmg.dcc.latin.searching.SearchEngineManager;
 
 public class MMRReranker extends StaticReranker{
 
 	
 	private float[] cacheSim;
-	
-	private static Analyzer analyzer = new StandardAnalyzer();
-	private static Similarity similarity = new ClassicSimilarity();
-	private Directory indexDir;
+
 	private int n;
 	private int depth;
 	private float lambda;
 	
-	public MMRReranker(Directory indexDir, int depth, float lambda){
-		this.indexDir = indexDir;
+	public MMRReranker(int depth, float lambda){
 		this.depth = depth;
 		this.lambda = lambda;
 		selected = new SelectedSet();
@@ -83,7 +73,7 @@ public class MMRReranker extends StaticReranker{
 			}
 			
 			selected.put(docids[maxRank]);
-			updateCache(maxRank,docsContent[maxRank]);
+			updateCache(SearchCache.indexName, docids,docsContent[maxRank]);
 			resultScores[k] = maxScore;
 			resultDocids[k] = docids[maxRank];
 			resultDocnos[k] = docnos[maxRank];
@@ -101,47 +91,24 @@ public class MMRReranker extends StaticReranker{
 		return finalResultSet;
 	}
 	
-	private void updateCache(int selected, String content) {
+	private void updateCache(String content, int[] docids, String indexName) {
 		
-		QueryParser queryParser = new QueryParser("content", analyzer);
+		QueryParser queryParser = SearchEngineManager.getQueryParser();
 		BooleanQuery.setMaxClauseCount(200000);
-		
+		IndexSearcher searcher = SearchEngineManager.getIndexSearcher(indexName);
 		Query q = null;
+		 float[] newCache = new float[n];
+		 Arrays.fill(newCache, 0);
 		try {
-			q = queryParser.parse(QueryParser.escape(content).toLowerCase());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			q = queryParser.parse(QueryParser.escape(content));
+			for (int i = 0; i < docids.length; i++) {
+				Explanation exp = searcher.explain(q, docids[i]);
+				newCache[i] = exp.getValue();
+			}
+		} catch (ParseException | IOException e) {
 			e.printStackTrace();
 		}
 		
-	    IndexReader reader = null;
-		try {
-			reader = DirectoryReader.open(indexDir);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    
-	    IndexSearcher searcher = new IndexSearcher(reader);
-	    searcher.setSimilarity(similarity);
-	    int hitsPerPage = n;
-	    TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage);
-	    
-	    try {
-			searcher.search(q, collector);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    ScoreDoc[] hits = collector.topDocs().scoreDocs;
-	    
-	    float[] newCache = new float[n];
-	    Arrays.fill(newCache, 0);
-	    
-	    for(int i = 0;i<hits.length;++i) {
-	    	int cache_ix = hits[i].doc;
-	    	newCache[cache_ix] = hits[i].score;
-	    }
 	    
 	    newCache = scaling(newCache);
 	    
@@ -151,12 +118,6 @@ public class MMRReranker extends StaticReranker{
 			}
 		}
 
-	    try {
-			reader.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	    
 	}
 
