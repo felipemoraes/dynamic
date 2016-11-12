@@ -60,8 +60,10 @@ public class Indexer {
 	public static Analyzer createAnalyzer() throws IOException{
         CustomAnalyzer.Builder builder = CustomAnalyzer.builder();
         builder.withTokenizer("standard");
+        builder.addTokenFilter("lowercase");
         builder.addTokenFilter("stop");
         builder.addTokenFilter("kstem");
+        
   
         Analyzer analyzer = builder.build();
         return analyzer;
@@ -136,7 +138,9 @@ public class Indexer {
             }
             if (ignoredDocuments.contains(key)) {
 				continue;
-			}
+			} 
+            
+           
             String url = record.getHeader("WARC-Target-URI").value;
             url = normalizeUrl(url);
             
