@@ -1,4 +1,4 @@
-package br.ufmg.dcc.latin.scoring;
+package br.ufmg.dcc.latin.diversity.scoring;
 
 import org.apache.lucene.search.similarities.ClassicSimilarity;
 import org.apache.lucene.search.similarities.Similarity;
@@ -28,7 +28,7 @@ public class MMR implements Scorer{
 		
 		float[] newCache = RetrievalController.getSimilarities(docids, docsContent[docid], f2);
 	    
-	    //newCache = scaling(newCache);
+	    newCache = scaling(newCache);
 	    
 	    for (int i = 0; i < newCache.length; i++) {
 			if (cacheSim[i] < newCache[i]) {
@@ -45,13 +45,13 @@ public class MMR implements Scorer{
 	@Override
 	public void build(float[] params) {
 		
-		relevance = RetrievalCache.scores;
+		relevance = scaling(RetrievalCache.scores);
 		docsContent = RetrievalCache.docsContent;
 		docids = RetrievalCache.docids;
 		indexName = RetrievalCache.indexName;
 		f2 = new ClassicSimilarity();
 		lambda = params[1];
-		
+		cacheSim = new float[relevance.length];
 	}
 
 	@Override

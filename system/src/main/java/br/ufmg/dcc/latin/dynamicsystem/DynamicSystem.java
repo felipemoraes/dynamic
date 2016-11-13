@@ -1,20 +1,24 @@
-package br.ufmg.dcc.latin.system;
+package br.ufmg.dcc.latin.dynamicsystem;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class Main {
-
+public class DynamicSystem {
+	
+	private static DynamicSystemParameters parameters;
+	
 	public static void main(String[] args) throws IOException {
 		String topicsFile = "../share/topics_domain.txt";
-		String type = args[0];
+		parameters = ParametersController.getParameters(args[0]);
 		
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
 	    String line;
-	    Session session = null;
+	   
+	    Session session = new Session();
 
-	    
+	    session.setScorer(parameters.scorer);
+	    session.setParams(parameters.experimentalParameters);
 	    
 	    TrecUser.load("../share/truth_data_deduped.txt");
 	    
@@ -28,8 +32,7 @@ public class Main {
         	//}
     		
     		String query = splitLine[2].replaceAll("/", " ");
-    		session.start(splitLine[0], topicId, query);
-    		session.run();
+    		session.run(splitLine[0], topicId, query);
     		
 	    }
 		br.close();

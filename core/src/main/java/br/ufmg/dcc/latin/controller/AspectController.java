@@ -1,7 +1,7 @@
 package br.ufmg.dcc.latin.controller;
 
+import br.ufmg.dcc.latin.diversity.scoring.Scorer;
 import br.ufmg.dcc.latin.feedback.Feedback;
-import br.ufmg.dcc.latin.scoring.Scorer;
 
 public interface AspectController {
 	

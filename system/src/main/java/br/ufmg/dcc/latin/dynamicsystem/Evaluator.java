@@ -1,4 +1,4 @@
-package br.ufmg.dcc.latin.system;
+package br.ufmg.dcc.latin.dynamicsystem;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

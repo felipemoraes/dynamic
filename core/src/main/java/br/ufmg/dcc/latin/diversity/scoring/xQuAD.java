@@ -1,4 +1,4 @@
-package br.ufmg.dcc.latin.scoring;
+package br.ufmg.dcc.latin.diversity.scoring;
 
 import br.ufmg.dcc.latin.cache.AspectCache;
 import br.ufmg.dcc.latin.cache.RetrievalCache;
@@ -24,7 +24,7 @@ public class xQuAD implements Scorer {
 		importance = AspectCache.importance;
 		novelty = AspectCache.novelty;
 		coverage = AspectCache.coverage;
-		relevance = RetrievalCache.scores;
+		relevance = normalize(RetrievalCache.scores);
 		lambda = params[1];
 	}
 

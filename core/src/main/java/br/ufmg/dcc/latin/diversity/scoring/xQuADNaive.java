@@ -1,6 +1,4 @@
-package br.ufmg.dcc.latin.reranking;
-
-import br.ufmg.dcc.latin.scoring.Scorer;
+package br.ufmg.dcc.latin.diversity.scoring;
 
 public class xQuADNaive implements Scorer {
 

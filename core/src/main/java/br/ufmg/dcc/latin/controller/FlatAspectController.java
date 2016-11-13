@@ -8,10 +8,11 @@ import org.apache.lucene.search.similarities.Similarity;
 import br.ufmg.dcc.latin.cache.AspectCache;
 import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.diversity.FlatAspectModel;
+import br.ufmg.dcc.latin.diversity.scoring.Scorer;
+import br.ufmg.dcc.latin.diversity.scoring.xQuAD;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
 import br.ufmg.dcc.latin.querying.SelectedSet;
-import br.ufmg.dcc.latin.scoring.Scorer;
 
 
 public class FlatAspectController implements AspectController {
@@ -25,6 +26,8 @@ public class FlatAspectController implements AspectController {
 		AspectCache.importance = new float[0];
 		AspectCache.novelty = new float[0];
 		AspectCache.coverage = new float[AspectCache.n][0];
+		AspectCache.v = new float[0];
+		AspectCache.s = new float[0];
 	}
 	
 
@@ -57,8 +60,9 @@ public class FlatAspectController implements AspectController {
 		AspectCache.coverage = new float[n][aspectSize];
 		
 		float uniformImportance = 1.0f/aspectSize;
+		
 		Arrays.fill(AspectCache.importance, uniformImportance);
-		Arrays.fill(AspectCache.importance, 1.0f);
+		Arrays.fill(AspectCache.novelty, 1.0f);
 		int i = 0;
 		Similarity similarity = new BM25Similarity();
 		for (String aspectId : flatAspectModel.getAspects()) {
@@ -271,7 +275,6 @@ public class FlatAspectController implements AspectController {
 			for (int j = 0; j < AspectCache.coverage[i].length; j++) {
 				System.out.print(AspectCache.coverage[i][j] + " ");
 			}
-			System.out.println();
 		}
 		
 	}
@@ -285,7 +288,9 @@ public class FlatAspectController implements AspectController {
 
 
 	public void mining(Feedback[] feedback, Scorer scorer) {
-		// TODO Auto-generated method stub
+		if (scorer instanceof xQuAD){
+			miningDiversityAspects(feedback);
+		}
 		
 	}
 

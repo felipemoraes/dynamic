@@ -8,9 +8,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.ufmg.dcc.latin.cache.AspectCache;
+import br.ufmg.dcc.latin.cache.RetrievalCache;
+import br.ufmg.dcc.latin.diversity.scoring.xQuAD;
 
 
-public class DiversityScoringTest {
+
+public class ScoringTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -54,16 +58,25 @@ public class DiversityScoringTest {
 		coverage[2][1] = 0.3f;
 		coverage[3][1] = 0.8f;
 		coverage[4][1] = 0.2f;
+		float[] relevance = {0.70f,0.50f,0.30f,0.20f,0.10f};
 		
-		/*xQuAD divX = new xQuAD(importance,coverage,novelty);
-		assertEquals(0.52, 0.35+ divX.div(0)/2, 0.00001);
-		assertEquals(0.58, 0.25+ divX.div(1)/2, 0.00001);
-		assertEquals(0.27, 0.15+ divX.div(2)/2, 0.00001);
-		assertEquals(0.47, 0.10+ divX.div(3)/2, 0.00001);
-		assertEquals(0.21, 0.05+ divX.div(4)/2, 0.00001);*/
+		RetrievalCache.scores = relevance;
+		AspectCache.coverage = coverage;
+		AspectCache.importance = importance;
+		AspectCache.novelty = novelty;
 		
-		//divX.update(1);
-		//assertEquals(0.41, 0.35+ divX.div(0)/2, 0.001);
+		xQuAD divX = new xQuAD();
+		float[] params = {5f,0.5f};
+		divX.build(params);
+		
+		assertEquals(0.52,divX.score(0), 0.00001);
+		assertEquals(0.58, divX.score(1), 0.00001);
+		assertEquals(0.27, divX.score(2), 0.00001);
+		assertEquals(0.47, divX.score(3), 0.00001);
+		assertEquals(0.21, divX.score(4), 0.00001);
+		
+		divX.update(1);
+		assertEquals(0.41,divX.score(0), 0.001);
 	}
 
 }

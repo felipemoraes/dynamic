@@ -1,4 +1,4 @@
-package br.ufmg.dcc.latin.scoring;
+package br.ufmg.dcc.latin.diversity.scoring;
 
 import java.util.Arrays;
 

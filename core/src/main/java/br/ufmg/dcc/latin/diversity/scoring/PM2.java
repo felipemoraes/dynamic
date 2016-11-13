@@ -1,4 +1,4 @@
-package br.ufmg.dcc.latin.scoring;
+package br.ufmg.dcc.latin.diversity.scoring;
 
 import java.util.Arrays;
 
@@ -38,6 +38,9 @@ public class PM2 implements Scorer {
 	public float score(int docid){
 		
 		int q = highestAspect();
+		if (q == -1){
+			return relevance[docid];
+		}
 		float quotientAspectq = v[q]/(2*s[q]+1);
 		quotientAspectq *= coverage[docid][q];
 		float quotientotherAspect  = 0;

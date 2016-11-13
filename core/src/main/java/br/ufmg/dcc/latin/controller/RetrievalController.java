@@ -14,17 +14,20 @@ import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.Explanation;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Rescorer;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.similarities.BM25Similarity;
 import org.apache.lucene.search.similarities.LMDirichletSimilarity;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.FSDirectory;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.querying.ResultSet;
+import br.ufmg.dcc.latin.rescoring.ReRankQueryRescorer;
+
 
 public class RetrievalController {
 	
@@ -50,7 +53,7 @@ public class RetrievalController {
 		IndexReader reader;
 		IndexSearcher searcher = null;
 		try {
-			reader = DirectoryReader.open(FSDirectory.open( new File(indexName).toPath()) );
+			reader = DirectoryReader.open(FSDirectory.open( new File("../etc/indices/" + indexName).toPath()) );
 			searcher = new IndexSearcher(reader);
 			searcher.setSimilarity(similarity);
 			RetrievalCache.indices.put(indexName, searcher);
@@ -90,26 +93,39 @@ public class RetrievalController {
 	}
 	
 	public static float[] getSimilarities(int[] docids, String query, Similarity similarity){
+		
 		int n = RetrievalCache.docids.length;
 		float[] scores = new float[n];
-		
+		Map<Integer,Integer> mapId = new HashMap<Integer, Integer>();
+		for (int i = 0; i < scores.length; i++) {
+			mapId.put(RetrievalCache.docids[i], i);
+		}
 		IndexSearcher searcher  = RetrievalController.getIndexSearcher(RetrievalCache.indexName);
-		searcher.setSimilarity(similarity);
-		BooleanQuery.setMaxClauseCount(200000);
-	    QueryParser queryParser = RetrievalController.getQueryParser();
-	 
-	    try {
-	    	Query q = queryParser.parse(QueryParser.escape(query));
-	    	
-	 	    for(int i = 0;i<n;++i) {
-	 	    	Explanation exp = searcher.explain(q, RetrievalCache.docids[i]);
-	 	    	scores[i] = exp.getValue();
-	 	    }
-	 	    
-		} catch (IOException | ParseException  e) {
+		
+		BooleanQuery.setMaxClauseCount(400000);
+		QueryParser parser = getQueryParser();
+		Query q = null;
+		try {
+			q = parser.parse(QueryParser.escape(query));
+		} catch (ParseException e) {
 			e.printStackTrace();
-		} 
-	   
+		}
+		searcher.setSimilarity(new BM25Similarity());
+		Rescorer reRankQueryRescorer = new ReRankQueryRescorer(q, 1.0f);
+		
+	    try {
+			TopDocs rescoredDocs = reRankQueryRescorer
+			        .rescore(searcher, RetrievalCache.topDocs, 1000);
+			ScoreDoc[] reRankScoreDocs = rescoredDocs.scoreDocs;
+			for (int i = 0; i < reRankScoreDocs.length; i++) {
+				int ix = mapId.get(reRankScoreDocs[i].doc);
+				scores[ix] = reRankScoreDocs[i].score;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	    return scores;
 	}
 	
@@ -127,11 +143,12 @@ public class RetrievalController {
 		Query query = null;
 		try {
 			query = parser.parse(QueryParser.escape(queryTerms));
+
 			results = searcher.search(query, size);
 		} catch (ParseException | IOException e) {
 			e.printStackTrace();
 		}
-
+	
 		
         hits = results.scoreDocs;
         int n = Math.min(size, hits.length);
@@ -140,6 +157,7 @@ public class RetrievalController {
     	String[] docnos = new String[n];
     	String[] docsContent = new String[n];
     	float[] scores = new float[n];
+    	
     	
         for(int i=0; i< n; i++){
 			try {
@@ -153,6 +171,7 @@ public class RetrievalController {
 			}
 
         }
+       
         
 		ResultSet resultSet = new ResultSet();
 		
@@ -161,6 +180,12 @@ public class RetrievalController {
 		resultSet.docnos = docnos;
 		resultSet.docsContent = docsContent;
 	
+		RetrievalCache.docids = docids;
+		RetrievalCache.scores = scores;
+		RetrievalCache.docnos = docnos;
+		RetrievalCache.docsContent = docsContent;
+		RetrievalCache.indexName = index;
+		RetrievalCache.topDocs = results;
 		return resultSet;
 	}
 }
