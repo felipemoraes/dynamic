@@ -1,62 +1,50 @@
 package br.ufmg.dcc.latin.reranking;
 
-import br.ufmg.dcc.latin.querying.QueryResultSet;
 import br.ufmg.dcc.latin.querying.ResultSet;
-import br.ufmg.dcc.latin.querying.SelectedSet;
 
-public abstract class InteractiveReranker implements Reranker {
+public interface Reranker {
+	public ResultSet reranking(ResultSet baselineResultSet);
 	
 	
-	protected SelectedSet selected;
-
-	@Override
-	public ResultSet reranking(ResultSet baselineResultSet) {
-		return null;
-	}
 	
-	public ResultSet getTopResults(ResultSet resultSet){
-		int[] docids = new int[5];
-		String[] docnos = new String[5];
-		float[] scores = new float[5];
-		int n = resultSet.getDocids().length;
-		
-		if (selected == null) {
-			selected = new SelectedSet();
+	
+	default float[] normalize(float[] values){
+		float sum = 0;
+		for (int i = 0; i < values.length; i++) {
+			sum += values[i];
 		}
-		for (int i = 0; i < 5; ++i){
-			int maxRank = -1;
-			float maxScore = -1;
-			
-			for (int j = 0; j < n; j++) {
-				if (selected.has(resultSet.getDocids()[j])){
-					continue;
-				}
-				if (maxScore < resultSet.getScores()[j]) {
-					maxRank = j;
-					maxScore = resultSet.getScores()[j];
-				}
+		for (int i = 0; i < values.length; i++) {
+			if (sum > 0) {
+				values[i] = values[i]/sum;
 			}
-			docids[i] = resultSet.getDocids()[maxRank];
-			docnos[i] = resultSet.getDocnos()[maxRank];
-			scores[i] = resultSet.getScores()[maxRank];
-			
-			selected.put(docids[i]);
+		}
+		return values;
+	}
+	
+	default float[] scaling(float[] scores){
+		float min = Float.POSITIVE_INFINITY;
+		for (int i = 0; i < scores.length; i++) {
+			if (scores[i] < min) {
+				min = scores[i];
+			}
+		}
+		
+		float max = Float.NEGATIVE_INFINITY;
+		for (int i = 0; i < scores.length; i++) {
+			if (scores[i] > max) {
+				max = scores[i];
+			}
+		}
+		
+		for (int i = 0; i < scores.length; i++) {
+			if (max!=min) {
+				scores[i] = (scores[i]-min)/(max-min);
+			} else {
+				scores[i] = 0;
+			}
 			
 		}
-		ResultSet topResultSet = new QueryResultSet();
-		topResultSet.setDocids(docids);
-		topResultSet.setDocnos(docnos);
-		topResultSet.setScores(scores);
+		return scores;
 		
-		return topResultSet;
 	}
-
-	public SelectedSet getSelected() {
-		return selected;
-	}
-
-	public void setSelected(SelectedSet selected) {
-		this.selected = selected;
-	}
-
 }
