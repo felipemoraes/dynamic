@@ -1,34 +1,30 @@
-package br.ufmg.dcc.latin.diversity;
+package br.ufmg.dcc.latin.controller;
 
-import java.io.IOException;
+import java.util.Arrays;
 
-import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.Explanation;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
+import org.apache.lucene.search.similarities.BM25Similarity;
+import org.apache.lucene.search.similarities.Similarity;
 
 import br.ufmg.dcc.latin.cache.AspectCache;
-import br.ufmg.dcc.latin.cache.SearchCache;
+import br.ufmg.dcc.latin.cache.RetrievalCache;
+import br.ufmg.dcc.latin.diversity.FlatAspectModel;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
 import br.ufmg.dcc.latin.querying.SelectedSet;
-import br.ufmg.dcc.latin.searching.SearchEngineManager;
+import br.ufmg.dcc.latin.scoring.Scorer;
 
 
-public class FlatAspectManager implements AspectManager {
+public class FlatAspectController implements AspectController {
 	
 	
 	private FlatAspectModel flatAspectModel;
 
-	public FlatAspectManager(String[] docContent){
+	public FlatAspectController(){
 		
-		AspectCache.n = docContent.length;
-		
-		AspectCache.importance = new Aspect[0];
-		AspectCache.novelty = new Aspect[0];
-		AspectCache.coverage = new Aspect[AspectCache.n][0];
+		AspectCache.n = RetrievalCache.docids.length;
+		AspectCache.importance = new float[0];
+		AspectCache.novelty = new float[0];
+		AspectCache.coverage = new float[AspectCache.n][0];
 	}
 	
 
@@ -56,44 +52,79 @@ public class FlatAspectManager implements AspectManager {
 		if (aspectSize == 0) {
 			return;
 		}
-		AspectCache.importance = new Aspect[aspectSize];
-		AspectCache.novelty = new Aspect[aspectSize];
-		AspectCache.coverage = new Aspect[n][aspectSize];
+		AspectCache.importance = new float[aspectSize];
+		AspectCache.novelty = new float[aspectSize];
+		AspectCache.coverage = new float[n][aspectSize];
 		
 		float uniformImportance = 1.0f/aspectSize;
+		Arrays.fill(AspectCache.importance, uniformImportance);
+		Arrays.fill(AspectCache.importance, 1.0f);
 		int i = 0;
+		Similarity similarity = new BM25Similarity();
 		for (String aspectId : flatAspectModel.getAspects()) {
-			AspectCache.importance[i] = new FlatAspect(uniformImportance);
-			AspectCache.novelty[i] =  new FlatAspect(1.0f);
+
 			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
-			    float[] scores = computeAspectSimilarity(aspectComponent);
-			   
+				
+			    float[] scores = RetrievalController.getSimilarities(RetrievalCache.docids, aspectComponent,similarity);
 			    for(int j = 0;j< n ;++j) {
-			    	if (AspectCache.coverage[j][i] == null ){
-			    		AspectCache.coverage[j][i] = new FlatAspect(0);
-			    	}
-			    	
+
 			    	float score = scores[j];
-			    	if (AspectCache.coverage[j][i].getValue() < score) {
-			    		AspectCache.coverage[j][i].setValue(score);
+			    	if (AspectCache.coverage[j][i] < score) {
+			    		AspectCache.coverage[j][i] = score;
 			    	}
-			    	
 			    }
 			}
 	
 			for(int j = 0;j< n ;++j) {
 				if (AspectCache.feedbacks[j] != null) {
 					float score = AspectCache.feedbacks[j].getRelevanceAspect(aspectId);
-					if (AspectCache.coverage[j][i] == null) {
-						AspectCache.coverage[j][i] = new FlatAspect(0);
-					}
-					AspectCache.coverage[j][i].setValue(score);
+					AspectCache.coverage[j][i] = score;
 				}
 			}
 			i++;
 		}
 		normalizeCoverage();
 	}
+	
+	public float[] similaritiesFromAspects(int maxRank) {
+		float[] sims = new float[AspectCache.n];
+		Arrays.fill(sims, 0);
+		
+		if (AspectCache.coverage == null){
+			return sims;
+		}
+		
+		for (int i = 0; i < sims.length; i++) {
+			
+			sims[i] = cosine(AspectCache.coverage[maxRank],AspectCache.coverage[i]);
+		}
+		
+		return sims;
+	}
+	
+	private float cosine(float[] v1, float[] v2){
+		float denom = 0;
+		float sum1 = 0;
+		float sum2  = 0;
+	
+		for (int i = 0; i < v2.length; i++) {
+			denom += v1[i]*v2[i];
+		}
+		
+		for (int i = 0; i < v2.length; i++) {
+			sum1 += v1[i]*v1[i];
+			sum2 += v2[i]*v2[i];
+		}
+		sum1 = (float) Math.sqrt(sum1);
+		sum2 = (float) Math.sqrt(sum2);
+		
+		if (sum1*sum2 > 0){
+			return denom/(sum1*sum2);
+		} 
+		
+		return 0;
+	}
+
 	
 	
 	@Override
@@ -117,32 +148,30 @@ public class FlatAspectManager implements AspectManager {
 		
 		int aspectSize = flatAspectModel.getAspects().size();
 		if (aspectSize == 0) {
-			AspectCache.v = new Aspect[0];
-			AspectCache.s = new Aspect[0];
-			AspectCache.coverage = new Aspect[n][0];
+			AspectCache.v = new float[0];
+			AspectCache.s = new float[0];
+			AspectCache.coverage = new float[n][0];
 			return;
 		}
 		
-		AspectCache.v = new Aspect[aspectSize];
-		AspectCache.s = new Aspect[aspectSize];
-		AspectCache.coverage = new Aspect[n][aspectSize];
-		
-		float uniformProportion = 1.0f/aspectSize;
+		AspectCache.v = new float[aspectSize];
+		AspectCache.s = new float[aspectSize];
+		AspectCache.coverage = new float[n][aspectSize];
+		Arrays.fill(AspectCache.v, 1.0f);
+		Arrays.fill(AspectCache.s, 1.0f);
+
 		int i = 0;
+		Similarity similarity = new BM25Similarity();
 		for (String aspectId : flatAspectModel.getAspects()) {
-			AspectCache.v[i] = new FlatAspect(uniformProportion);
-			AspectCache.s[i] =  new FlatAspect(1.0f);
+
 			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
-			    float[] scores = computeAspectSimilarity(aspectComponent);
-			   
+				
+			    float[] scores = RetrievalController.getSimilarities(RetrievalCache.docids, aspectComponent,similarity);
 			    for(int j = 0;j< n ;++j) {
-			    	if (AspectCache.coverage[j][i] == null ){
-			    		AspectCache.coverage[j][i] = new FlatAspect(0);
-			    	}
-			    	
+
 			    	float score = scores[j];
-			    	if (AspectCache.coverage[j][i].getValue() < score) {
-			    		AspectCache.coverage[j][i].setValue(score);
+			    	if (AspectCache.coverage[j][i] < score) {
+			    		AspectCache.coverage[j][i] = score;
 			    	}
 			    }
 			}
@@ -150,10 +179,7 @@ public class FlatAspectManager implements AspectManager {
 			for(int j = 0;j< n ;++j) {
 				if (AspectCache.feedbacks[j] != null) {
 					float score = AspectCache.feedbacks[j].getRelevanceAspect(aspectId);
-					if (AspectCache.coverage[j][i] == null) {
-						AspectCache.coverage[j][i] = new FlatAspect(0);
-					}
-					AspectCache.coverage[j][i].setValue(score);
+					AspectCache.coverage[j][i] = score;
 				}
 			}
 			i++;
@@ -162,51 +188,22 @@ public class FlatAspectManager implements AspectManager {
 		
 	}
 	
-
-	
-	private float[] scaling(float[] scores){
-		float min = Float.POSITIVE_INFINITY;
-		for (int i = 0; i < scores.length; i++) {
-			if (scores[i] < min) {
-				min = scores[i];
-			}
-		}
-		
-		float max = Float.NEGATIVE_INFINITY;
-		for (int i = 0; i < scores.length; i++) {
-			if (scores[i] > max) {
-				max = scores[i];
-			}
-		}
-		
-		for (int i = 0; i < scores.length; i++) {
-			if (max!=min) {
-				scores[i] = (scores[i]-min)/(max-min);
-			} else {
-				scores[i] = 0;
-			}
-			
-		}
-		return scores;
-		
-	}
-	
 	
 	public void cacheFeedback(Feedback[] feedbacks){
 		
 		
 		if (AspectCache.feedbacks == null) {
-			int n = SearchCache.docnos.length;
+			int n = RetrievalCache.docnos.length;
 			AspectCache.feedbacks = new Feedback[n];
 		}
 		
-		if (SearchCache.docnos == null) {
+		if (RetrievalCache.docnos == null) {
 			return;
 		}
 
-		for (int i = 0; i < SearchCache.docnos.length; i++) {
+		for (int i = 0; i < RetrievalCache.docnos.length; i++) {
 			for (int j = 0; j < feedbacks.length; j++) {
-				if (feedbacks[j].getDocno() == SearchCache.docnos[i]){
+				if (feedbacks[j].getDocno() == RetrievalCache.docnos[i]){
 					AspectCache.feedbacks[i] = feedbacks[j]; 
 				}
 			}
@@ -218,13 +215,13 @@ public class FlatAspectManager implements AspectManager {
 		for (int i = 0; i < AspectCache.coverage[0].length; ++i) {
 			float sum = 0;
 			for (int j = 0; j < AspectCache.coverage.length; j++) {
-				sum +=  AspectCache.coverage[j][i].getValue();
+				sum +=  AspectCache.coverage[j][i];
 			}
 			
 			for (int j = 0; j < AspectCache.coverage.length; j++) {
 				if (sum > 0) {
-					float normValue = AspectCache.coverage[j][i].getValue()/sum;
-					AspectCache.coverage[j][i].setValue(normValue);
+					float normValue = AspectCache.coverage[j][i]/sum;
+					AspectCache.coverage[j][i] = normValue;
 				}
 				
 			}
@@ -233,13 +230,13 @@ public class FlatAspectManager implements AspectManager {
 	
 	public void updateNovelty(SelectedSet selected){
 		
-		for (int j = 0; j < SearchCache.docids.length; ++j) {
-			if (! selected.has(SearchCache.docids[j])) {
+		for (int j = 0; j < RetrievalCache.docids.length; ++j) {
+			if (! selected.has(RetrievalCache.docids[j])) {
 				continue;
 			}
 			for (int i = 0; i < AspectCache.novelty.length; i++) {
-				float newNovelty = AspectCache.novelty[i].getValue()*(1-AspectCache.coverage[j][i].getValue());
-				AspectCache.novelty[i].setValue(newNovelty);
+				float newNovelty = AspectCache.novelty[i]*(1-AspectCache.coverage[j][i]);
+				AspectCache.novelty[i] = newNovelty;
 			}
 		}
 		normalizeNovelty();
@@ -248,12 +245,12 @@ public class FlatAspectManager implements AspectManager {
 	public void normalizeNovelty(){
 		float sum = 0;
 		for (int i = 0; i < AspectCache.novelty.length; i++) {
-			sum += AspectCache.novelty[i].getValue();
+			sum += AspectCache.novelty[i];
 		}
 		for (int i = 0; i < AspectCache.novelty.length; i++) {
 			if (sum > 0) {
-				float normValue = AspectCache.novelty[i].getValue()/sum;
-				AspectCache.novelty[i].setValue(normValue);
+				float normValue = AspectCache.novelty[i]/sum;
+				AspectCache.novelty[i] = normValue;
 			}
 		}
 	}
@@ -268,42 +265,11 @@ public class FlatAspectManager implements AspectManager {
 		flatAspectModel = null;
 	}
 
-	
-	public float[] computeAspectSimilarity(String aspectComponent){
-		int n = SearchCache.docids.length;
-		float[] scores = new float[n];
-		
-		IndexSearcher searcher  = SearchEngineManager.getIndexSearcher(SearchCache.indexName);
-		// searcher.setSimilarity(similarity);
-		BooleanQuery.setMaxClauseCount(200000);
-	    QueryParser queryParser = SearchEngineManager.getQueryParser();
-	   
-	    
-	    try {
-	    	Query q = queryParser.parse(QueryParser.escape(aspectComponent));
-	    	
-	 	    for(int i = 0;i<n;++i) {
-	 	    	Explanation exp = searcher.explain(q, SearchCache.docids[i]);
-	 	    	scores[i] = exp.getValue();
-	 	    }
-	 	    
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		} catch (ParseException e) {
-			
-			e.printStackTrace();
-		}
-	   
-	    return scores;
-		
-	}
-
 
 	public void printCoverage() {
 		for (int i = 0; i < AspectCache.coverage.length; i++) {
 			for (int j = 0; j < AspectCache.coverage[i].length; j++) {
-				System.out.print(AspectCache.coverage[i][j].getValue() + " ");
+				System.out.print(AspectCache.coverage[i][j] + " ");
 			}
 			System.out.println();
 		}
@@ -312,9 +278,15 @@ public class FlatAspectManager implements AspectManager {
 	
 	public void printNovelty() {
 		for (int i = 0; i < AspectCache.novelty.length; i++) {
-			System.out.print(AspectCache.novelty[i].getValue() + " ");
+			System.out.print(AspectCache.novelty[i] + " ");
 		}
 		System.out.println();
+	}
+
+
+	public void mining(Feedback[] feedback, Scorer scorer) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

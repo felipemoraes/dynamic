@@ -4,9 +4,9 @@ import java.util.Map;
 
 import org.apache.lucene.search.IndexSearcher;
 
-import br.ufmg.dcc.latin.querying.CollectionResultSet;
+import br.ufmg.dcc.latin.querying.ResultSet;
 
-public class SearchCache {
+public class RetrievalCache {
 	
 	public static String[] docsContent;
 	public static int[] docids;
@@ -17,11 +17,11 @@ public class SearchCache {
 	
 	public static Map<String,IndexSearcher> indices;
 	
-	public static void cache(CollectionResultSet baselineResultSet) {
-		docsContent = baselineResultSet.getDocsContent();
-		docids = baselineResultSet.getDocids();
-		scores = baselineResultSet.getScores();
-		docnos = baselineResultSet.getDocnos();
+	public static void cache(ResultSet resultSet) {
+		docsContent = resultSet.docsContent;
+		docids = resultSet.docids;
+		scores = resultSet.scores;
+		docnos = resultSet.docnos;
 		
 	}
 	

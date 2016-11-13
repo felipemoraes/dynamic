@@ -4,14 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import br.ufmg.dcc.latin.system.session.LMSession;
-import br.ufmg.dcc.latin.system.session.MMRSession;
-import br.ufmg.dcc.latin.system.session.PM2Session;
-import br.ufmg.dcc.latin.system.session.xMMRSession;
-import br.ufmg.dcc.latin.system.session.xQuADSession;
-import br.ufmg.dcc.latin.system.session.xQuADsSession;
-import br.ufmg.dcc.latin.system.session.xQuADssSession;
-
 public class Main {
 
 	public static void main(String[] args) throws IOException {
@@ -21,22 +13,7 @@ public class Main {
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
 	    String line;
 	    Session session = null;
-	    
-	    if (type.equals("xQuAD")){
-	    	session = new xQuADSession();
-	    } else if (type.equals( "PM2")) {
-	    	session = new PM2Session();
-	    }  else if (type.equals("MMR")) {
-	    	session = new MMRSession();
-	    }  else if (type.equals( "LM")) {
-	    	session = new LMSession();
-	    }  else if (type.equals( "xMMR")) {
-	    	session = new xMMRSession();
-	    }  else if (type.equals( "xQuADs")) {
-	    	session = new xQuADsSession();
-	    }   else if (type.equals( "xQuADss")) {
-	    	session = new xQuADssSession();
-	    } 
+
 	    
 	    
 	    TrecUser.load("../share/truth_data_deduped.txt");

@@ -1,9 +1,11 @@
-package br.ufmg.dcc.latin.diversity;
+package br.ufmg.dcc.latin.controller;
 
 import br.ufmg.dcc.latin.feedback.Feedback;
+import br.ufmg.dcc.latin.scoring.Scorer;
 
-public interface AspectManager {
+public interface AspectController {
 	
 	public void miningDiversityAspects(Feedback[] feedbacks);
 	public void miningProportionalAspects(Feedback[] feedbacks);
+	public void mining(Feedback[] feedback, Scorer scorer);
 }

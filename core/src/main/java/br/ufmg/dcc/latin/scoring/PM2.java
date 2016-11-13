@@ -1,103 +1,95 @@
-package br.ufmg.dcc.latin.reranking;
+package br.ufmg.dcc.latin.scoring;
 
 import java.util.Arrays;
 
-import br.ufmg.dcc.latin.querying.QueryResultSet;
-import br.ufmg.dcc.latin.querying.ResultSet;
-import br.ufmg.dcc.latin.querying.SelectedSet;
-import br.ufmg.dcc.latin.scoring.diversity.PM2;
+import br.ufmg.dcc.latin.cache.AspectCache;
+import br.ufmg.dcc.latin.cache.RetrievalCache;
 
-public class ProportionalReranker extends InteractiveReranker {
-	
-	int depth;
+public class PM2 implements Scorer {
+
 	float lambda;
-	PM2 scorer;
 	int[] highestAspect;
-	int n;
 	
-	public ProportionalReranker(PM2 scorer, int depth, float lambda){
-		this.scorer = scorer;
-		this.depth = depth;
-		this.lambda = lambda;
+	float[] v;
+	float[] s;
+	float[][] coverage;
+
+	float[] relevance;
+
+	
+
+	public PM2(){
 	}
 	
-	@Override
-	public ResultSet reranking(ResultSet baselineResultSet) {
-		
-		
-		float[] relevance = normalize(baselineResultSet.getScores());
-		int[] docids = baselineResultSet.getDocids();
-		
-		n = docids.length;
 	
+	public int highestAspect(){
+		int maxQ =  -1;
+		float maxQuotient = -1;
+		for (int i = 0; i < v.length; i++) {
+			float quotient = v[i]/(2*s[i]+1);
+			if (quotient > maxQuotient) {
+				maxQ = i;
+				maxQuotient = quotient;
+			}
+		}
+		return maxQ;
+	}
+	
+	public float score(int docid){
+		
+		int q = highestAspect();
+		float quotientAspectq = v[q]/(2*s[q]+1);
+		quotientAspectq *= coverage[docid][q];
+		float quotientotherAspect  = 0;
+		for (int i = 0; i < s.length; i++) {
+			if (i != q) {
+				
+				quotientotherAspect += (v[i]/(2*s[i]+1))*coverage[docid][i];
+			}
+		}
+		float score = lambda*quotientAspectq + (1-lambda)*quotientotherAspect;
+		
+		return score;
+	}
+	
+	public void update(int docid){
+		int q = highestAspect();
+		float allCoverage = 0;
+		for (int i = 0; i < coverage[docid].length; ++i) {
+			allCoverage += coverage[docid][i];
+		}
+		if (allCoverage > 0) {
+			float newS = s[q] + coverage[docid][q]/allCoverage;
+			s[q] = newS;
+		} 
+		highestAspect[docid] = q;
+	}
+
+
+	@Override
+	public void build(float[] params) {
+		
+		s = AspectCache.s;
+		v = AspectCache.v;
+		coverage = AspectCache.coverage;
+		relevance = RetrievalCache.scores;
+		lambda = params[1];
+		int n = relevance.length;
 		if (highestAspect == null){
 			highestAspect = new int[n];
 			Arrays.fill(highestAspect, -1);
 		}
+
 		
-		float[] scores = new float[n];
-		Arrays.fill(scores, 0f);
-		SelectedSet localSelected = new SelectedSet();
-		depth = Math.min(relevance.length, depth+getSelected().size());
-		// greedily diversify the top documents
-		while(localSelected.size() < depth-getSelected().size()){
-			
-			// select query aspect with highest quotient
-			int q = scorer.highestAspect();
-			
-			float maxScore = -1;
-			int maxRank = -1;
-			// for each unselected document
-			for (int i = 0; i < depth; ++i ){ 
-				// skip already selected documents
-				if (localSelected.has(docids[i]) || getSelected().has(docids[i])){
-					continue;
-				}
-				float score = relevance[i];
-				
-				if (q != -1) {
-					score = scorer.score(i, q);
-				}
-				if (score > maxScore) {
-					maxScore = score;
-					maxRank = i;
-				}
-			}
-			
-			// update the score of the selected document
-			scores[maxRank] = maxScore;
-			// mark as selected
-			localSelected.put(docids[maxRank]);
-			if (q != -1) {
-				scorer.update(maxRank,q);
-				highestAspect[maxRank] = q;
-			}
-			
-		}
-		for (int i = depth; i < n; i++) {
-			scores[i] = (1-lambda) * relevance[i];
-		}
-		
-		QueryResultSet finalResultSet = new QueryResultSet();
-		
-		finalResultSet.setDocids(docids);
-		finalResultSet.setScores(scores);
-		finalResultSet.setDocnos(baselineResultSet.getDocnos());
-		
-		return finalResultSet;
-	}
-	
-	public void updateProportional(){
-		if (highestAspect == null){
-			return;
-		}
-		for (int i = 0; i < highestAspect.length; i++) {
-			if (highestAspect[i] != -1){
-				scorer.update(i, highestAspect[i]);
-			}
-		}
 	}
 
+
+	@Override
+	public void flush() {
+		coverage = AspectCache.coverage;
+		s = AspectCache.s;
+		v = AspectCache.v;
+	}
 
 
 }

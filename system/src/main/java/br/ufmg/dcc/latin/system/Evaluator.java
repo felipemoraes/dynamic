@@ -14,7 +14,7 @@ public class Evaluator {
 		try(FileWriter fw = new FileWriter("data/" + runName + ".txt", true);
 				 BufferedWriter bw = new BufferedWriter(fw);
 				 PrintWriter out = new PrintWriter(bw)) {
-			String[] docnos = resultSet.getDocnos();
+			String[] docnos = resultSet.docnos;
 			for (int i = 0; i < docnos.length; i++) {
 				float score = (float) ((1000.0-iteration-i)/1000.0);
 				String wline = topicId + "\t" + iteration +"\t" + docnos[i] + "\t" + String.format("%.12f", score) + "\t";

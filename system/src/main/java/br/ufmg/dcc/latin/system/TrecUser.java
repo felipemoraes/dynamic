@@ -63,10 +63,10 @@ public class TrecUser implements User {
 	}
 
 	public static Feedback[] get(ResultSet resultSet, String topicId) {
-		int n = resultSet.getDocids().length;
+		int n = resultSet.docids.length;
 		Feedback[] feedbacks = new Feedback[n];
-		for (int i = 0; i < resultSet.getDocids().length; i++) {
-			feedbacks[i] = TrecUser.get(resultSet.getDocnos()[i], topicId);
+		for (int i = 0; i < resultSet.docids.length; i++) {
+			feedbacks[i] = TrecUser.get(resultSet.docnos[i], topicId);
 		}
 		return feedbacks;
 	}
