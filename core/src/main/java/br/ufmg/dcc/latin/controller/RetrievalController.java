@@ -2,10 +2,12 @@ package br.ufmg.dcc.latin.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.custom.CustomAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
@@ -20,6 +22,7 @@ import org.apache.lucene.search.Rescorer;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.similarities.BM25Similarity;
+import org.apache.lucene.search.similarities.DPHSimilarity;
 import org.apache.lucene.search.similarities.LMDirichletSimilarity;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.FSDirectory;
@@ -39,7 +42,7 @@ public class RetrievalController {
 	 
 	public static IndexSearcher getIndexSearcher(String indexName){
 		if (similarity == null) {
-			similarity = new LMDirichletSimilarity(2500f);
+			similarity = new DPHSimilarity();
 		}
 		if (RetrievalCache.indices == null) {
 			RetrievalCache.indices = new HashMap<String,IndexSearcher>();
@@ -110,7 +113,7 @@ public class RetrievalController {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		searcher.setSimilarity(new BM25Similarity());
+		//searcher.setSimilarity(new BM25Similarity());
 		Rescorer reRankQueryRescorer = new ReRankQueryRescorer(q, 1.0f);
 		
 	    try {
@@ -162,7 +165,15 @@ public class RetrievalController {
         for(int i=0; i< n; i++){
 			try {
 				 Document doc = searcher.doc(hits[i].doc);
-	             docnos[i] = doc.get("docno");;
+	             docnos[i] = doc.get("docno");
+/*	             int doclen = 0;
+	             TokenStream stream  = analyzer.tokenStream(null, new StringReader(doc.get("content")));
+	             stream.reset();
+	             while (stream.incrementToken()) {
+	            	 doclen++;
+	             }
+	             stream.close();
+	             System.out.println(doclen);*/
 	             scores[i] = hits[i].score;
 	             docids[i] = hits[i].doc;
 	             docsContent[i] = doc.get("content");

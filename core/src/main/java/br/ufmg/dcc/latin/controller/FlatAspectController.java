@@ -8,8 +8,12 @@ import org.apache.lucene.search.similarities.Similarity;
 import br.ufmg.dcc.latin.cache.AspectCache;
 import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.diversity.FlatAspectModel;
+import br.ufmg.dcc.latin.diversity.scoring.MMR;
+import br.ufmg.dcc.latin.diversity.scoring.PM2;
 import br.ufmg.dcc.latin.diversity.scoring.Scorer;
+import br.ufmg.dcc.latin.diversity.scoring.xMMR;
 import br.ufmg.dcc.latin.diversity.scoring.xQuAD;
+import br.ufmg.dcc.latin.diversity.scoring.xQuAD1;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
 import br.ufmg.dcc.latin.querying.SelectedSet;
@@ -171,6 +175,7 @@ public class FlatAspectController implements AspectController {
 			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
 				
 			    float[] scores = RetrievalController.getSimilarities(RetrievalCache.docids, aspectComponent,similarity);
+			    scores = scaling(scores);
 			    for(int j = 0;j< n ;++j) {
 
 			    	float score = scores[j];
@@ -189,6 +194,33 @@ public class FlatAspectController implements AspectController {
 			i++;
 		}
 		normalizeCoverage();
+		
+	}
+	
+	private float[] scaling(float[] scores){
+		float min = Float.POSITIVE_INFINITY;
+		for (int i = 0; i < scores.length; i++) {
+			if (scores[i] < min) {
+				min = scores[i];
+			}
+		}
+		
+		float max = Float.NEGATIVE_INFINITY;
+		for (int i = 0; i < scores.length; i++) {
+			if (scores[i] > max) {
+				max = scores[i];
+			}
+		}
+		
+		for (int i = 0; i < scores.length; i++) {
+			if (max!=min) {
+				scores[i] = (scores[i]-min)/(max-min);
+			} else {
+				scores[i] = 0;
+			}
+			
+		}
+		return scores;
 		
 	}
 	
@@ -289,6 +321,12 @@ public class FlatAspectController implements AspectController {
 
 	public void mining(Feedback[] feedback, Scorer scorer) {
 		if (scorer instanceof xQuAD){
+			miningDiversityAspects(feedback);
+		} else if (scorer instanceof PM2) {
+			miningProportionalAspects(feedback);
+		} else if (scorer instanceof xMMR) {
+			miningDiversityAspects(feedback);
+		} else if (scorer instanceof xQuAD1) {
 			miningDiversityAspects(feedback);
 		}
 		

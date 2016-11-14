@@ -14,7 +14,7 @@ public class ScorerFactory {
 		} else if (className.equals("xMMR")){
 			scorer = new xMMR();
 		} else if (className.equals("xQuADNaive")){
-			scorer = new xQuADNaive();
+			scorer = new xQuAD1();
 		} 
 		
 		return scorer;

@@ -36,18 +36,22 @@ public class SessionTest {
 	public void test() {
 		TrecUser.load("../share/truth_data_deduped.txt");
 		List<float[]> params = new ArrayList<float[]>();
-		float[] param = {1000f, 0.9f};
+		float[] param = {1000f, 0.8f};
 		params.add(param);
 		Session session = new Session();
-		session.setScorer("xQuAD");
 		session.setParams(params);
+		
+		session.setScorer("xQuAD");
 		session.run("US Military Crisis Response", "ebola16", "DD16-1");
 		
 		//session.setScorer("PM2");
 		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
 		
-		session.setScorer("MMR");
-		session.run("US Military Crisis Response", "ebola16", "DD16-1");
+		//session.setScorer("MMR");
+		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
+		
+		//session.setScorer("xMMR");
+		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
 	}
 
 }

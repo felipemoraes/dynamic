@@ -26,8 +26,9 @@ public class xMMR implements Scorer {
 
 	@Override
 	public void build(float[] params) {
-		relevance = RetrievalCache.scores;
-		
+		relevance = normalize(scaling(RetrievalCache.scores));
+		n = RetrievalCache.scores.length;
+		cacheSim = new float[n];
 		coverage = AspectCache.coverage;
 		lambda = params[1];
 		
@@ -35,6 +36,7 @@ public class xMMR implements Scorer {
 
 	@Override
 	public float score(int docid) {
+		
 		float score = lambda*(relevance[docid]) - (1-lambda)*cacheSim[docid];
 		return score;
 	}
@@ -46,23 +48,22 @@ public class xMMR implements Scorer {
 
 	@Override
 	public void update(int docid) {
+		
 		float[] newCache = new float[n];
 	    Arrays.fill(newCache, 0);
-		if (coverage == null) {
-			return;
-		}
+
 	    for(int i = 0;i<newCache.length;++i) {
 	    	newCache[i] = cosine(coverage[i],coverage[docid]);
 	    }
 	    
-	   // newCache = scaling(newCache);
+	    newCache = normalize(scaling(newCache));
 	    
 	    for (int i = 0; i < newCache.length; i++) {
+	    	
 			if (cacheSim[i] < newCache[i]) {
 				cacheSim[i] = newCache[i];
 			}
 		}
-	    
 		
 	}
 	
@@ -70,6 +71,7 @@ public class xMMR implements Scorer {
 		float denom = 0;
 		float sum1 = 0;
 		float sum2  = 0;
+		
 	
 		for (int i = 0; i < v2.length; i++) {
 			denom += v1[i]*v2[i];

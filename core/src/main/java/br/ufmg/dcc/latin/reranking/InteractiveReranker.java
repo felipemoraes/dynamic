@@ -1,5 +1,7 @@
 package br.ufmg.dcc.latin.reranking;
 
+import org.apache.lucene.search.similarities.DFRSimilarity;
+
 import br.ufmg.dcc.latin.controller.AspectController;
 import br.ufmg.dcc.latin.controller.FlatAspectController;
 import br.ufmg.dcc.latin.controller.RetrievalController;
@@ -50,7 +52,6 @@ public class InteractiveReranker implements Reranker {
 			result.scores[k] = maxScore;
 			result.docids[k] = docids[maxRank];
 			result.docnos[k] = docnos[maxRank];
-			
 			// mark as selected
 			selected.put(docids[maxRank]);
 			scorer.update(maxRank);

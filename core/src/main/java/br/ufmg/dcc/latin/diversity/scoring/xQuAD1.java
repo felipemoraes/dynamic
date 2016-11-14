@@ -1,6 +1,6 @@
 package br.ufmg.dcc.latin.diversity.scoring;
 
-public class xQuADNaive implements Scorer {
+public class xQuAD1 implements Scorer {
 
 	@Override
 	public void build(float[] params) {
