@@ -28,7 +28,7 @@ public class xMMR extends InteractiveReranker {
 	@Override
 	public void start(float[] params) {
 		super.start(params);
-		relevance = normalize(scaling(RetrievalCache.scores));
+		relevance = normalize(RetrievalCache.scores);
 		n = relevance.length;
 		cacheSim = new float[n];
 		lambda = params[1];
@@ -54,7 +54,7 @@ public class xMMR extends InteractiveReranker {
 	    	newCache[i] = cosine(coverage[i],coverage[docid]);
 	    }
 	    
-	    newCache = normalize(scaling(newCache));
+	    newCache = normalize(newCache);
 	    
 	    for (int i = 0; i < newCache.length; i++) {
 	    	
