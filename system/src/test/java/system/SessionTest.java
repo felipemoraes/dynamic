@@ -39,10 +39,13 @@ public class SessionTest {
 		List<float[]> params = new ArrayList<float[]>();
 		float[] param = {1000f, 0.8f};
 		//float[] param = {1000f};
-		param[1] = 0.5f;
+		//param[1] = 0.5f;
 		params.add(param);
 		Session session = new Session();
 		session.setParams(params);
+		
+		session.setReranker("xQuAD3");
+		session.run( "ebola16", "DD16-1", "US Military Crisis Response");
 		
 		//session.setReranker("xQuAD1");
 		//session.run( "ebola16", "DD16-1", "US Military Crisis Response");
@@ -56,8 +59,8 @@ public class SessionTest {
 		//session.setReranker("PM2");
 		//session.run("ebola16", "DD16-1", "US Military Crisis Response");
 		
-		session.setReranker("MMR");
-		session.run("ebola16", "DD16-1", "US Military Crisis Response");
+		//session.setReranker("MMR");
+		//session.run("ebola16", "DD16-1", "US Military Crisis Response");
 		
 		//session.setReranker("xMMR");
 		//session.run("US Military Crisis Response", "ebola16", "DD16-1");

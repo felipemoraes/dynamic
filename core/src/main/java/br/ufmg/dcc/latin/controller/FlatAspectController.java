@@ -75,17 +75,22 @@ public class FlatAspectController implements AspectController {
 		int i = 0;
 		
 		for (String aspectId : flatAspectModel.getAspects()) {
-
+			int s = flatAspectModel.getAspectComponents(aspectId).size();
+			for(int j = 0;j< n ;++j) {
+				features[j][i] = new float[s];
+			}
+			int k = 0;
 			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
 				
 			    float[] scores = RetrievalController.getSimilarities(RetrievalCache.docids, aspectComponent);
 			    for(int j = 0;j< n ;++j) {
-
 			    	float score = scores[j];
+			    	features[j][i][k] = score;
 			    	if (coverage[j][i] < score) {
 			    		coverage[j][i] = score;
 			    	}
 			    }
+			    k++;
 			}
 	
 			for(int j = 0;j< n ;++j) {
@@ -98,46 +103,6 @@ public class FlatAspectController implements AspectController {
 		}
 		normalizeCoverage();
 	}
-	
-	public float[] similaritiesFromAspects(int maxRank) {
-		float[] sims = new float[n];
-		Arrays.fill(sims, 0);
-		
-		if (coverage == null){
-			return sims;
-		}
-		
-		for (int i = 0; i < sims.length; i++) {
-			
-			sims[i] = cosine(coverage[maxRank],coverage[i]);
-		}
-		
-		return sims;
-	}
-	
-	private float cosine(float[] v1, float[] v2){
-		float denom = 0;
-		float sum1 = 0;
-		float sum2  = 0;
-	
-		for (int i = 0; i < v2.length; i++) {
-			denom += v1[i]*v2[i];
-		}
-		
-		for (int i = 0; i < v2.length; i++) {
-			sum1 += v1[i]*v1[i];
-			sum2 += v2[i]*v2[i];
-		}
-		sum1 = (float) Math.sqrt(sum1);
-		sum2 = (float) Math.sqrt(sum2);
-		
-		if (sum1*sum2 > 0){
-			return denom/(sum1*sum2);
-		} 
-		
-		return 0;
-	}
-
 	
 	
 	@Override
@@ -273,37 +238,6 @@ public class FlatAspectController implements AspectController {
 
 	public void setSelected(SelectedSet selected) {
 		this.selected = selected;
-	}
-
-
-	public void miningFeatures() {
-
-		int i = 0;
-		
-		for (String aspectId : flatAspectModel.getAspects()) {
-
-			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
-				
-			    float[] scores = RetrievalController.getSimilarities(RetrievalCache.docids, aspectComponent);
-			    
-			    for(int j = 0;j< n ;++j) {
-
-			    	float score = scores[j];
-			    	if (coverage[j][i] < score) {
-			    		coverage[j][i] = score;
-			    	}
-			    }
-			}
-	
-			for(int j = 0;j< n ;++j) {
-				if (this.feedbacks[j] != null) {
-					float score = this.feedbacks[j].getRelevanceAspect(aspectId);
-					coverage[j][i] = score;
-				}
-			}
-			i++;
-		}
-		
 	}
 
 }

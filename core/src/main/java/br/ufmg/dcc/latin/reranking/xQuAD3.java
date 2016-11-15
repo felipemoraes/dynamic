@@ -1,5 +1,8 @@
 package br.ufmg.dcc.latin.reranking;
 
+
+import java.util.Arrays;
+
 import br.ufmg.dcc.latin.controller.FlatAspectController;
 import br.ufmg.dcc.latin.feedback.Feedback;
 
@@ -19,7 +22,7 @@ public class xQuAD3 extends InteractiveReranker {
 	public float score(int docid){
 		float diversity = 0;
 		for (int i = 0; i < importance.length; i++) {
-			diversity +=  importance[i]*coverage[docid][i]*novelty[docid][i];
+			diversity +=  importance[i]*coverage[docid][i]*novelty[i][docid];
 		}
 		
 		float score = (1-lambda)*relevance[docid] + lambda*diversity;
@@ -36,19 +39,21 @@ public class xQuAD3 extends InteractiveReranker {
 		aspectControler = new FlatAspectController();
 		coverage = aspectControler.coverage;
 		importance = aspectControler.importance;
-		novelty = new float[n][0];
+		novelty = new float[0][n];
+		features = new float[n][0][0];
 	}
 
 	@Override
 	protected void update(int docid) {
 		for (int i = 0; i < novelty.length; i++) {
 			float[] probs = new float[n];
+			
 			for (int j = 0; j < probs.length; j++) {
 				probs[j] = cosine(features[docid][i], features[j][i]);
 			}
 			probs = normalize(probs);
 			for (int j = 0; j < probs.length; j++) {
-				novelty[j][i] *= (1-coverage[j][i]);
+				novelty[i][j] *= (1-probs[j]);
 			}
 		}
 		
@@ -60,10 +65,12 @@ public class xQuAD3 extends InteractiveReranker {
 		aspectControler.miningDiversityAspects(feedback);
 		coverage = aspectControler.coverage;
 		importance = aspectControler.importance;
-		aspectControler.miningFeatures();
 		features = aspectControler.features;
 		int aspectSize = importance.length;
-		novelty = new float[n][aspectSize];
+		novelty = new float[aspectSize][n];
+		for (int i = 0; i < novelty.length; i++) {
+			Arrays.fill(novelty[i], 1f);
+		}
 		updateNovelty();
 	
 	}
