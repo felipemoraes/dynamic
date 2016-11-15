@@ -50,7 +50,7 @@ public class xQuAD1 extends InteractiveReranker {
 	@Override
 	public void update(int docid) {
 		float[] probs = RetrievalController.getSimilarities(docids, docsContent[docid]);
-	    probs = normalize(scaling(probs));
+	    probs = normalize(probs);
 	    novelty[docid] *= (1-probs[docid]);
 	}
 	
