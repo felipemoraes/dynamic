@@ -17,6 +17,7 @@ public class xQuAD1 extends InteractiveReranker {
 	private float[] importance;
 	private float[] novelty;
 	private float[][] coverage;
+	private float[][] docSimCache;
 	protected String[] docsContent;
 	
 	String indexName;
@@ -32,6 +33,7 @@ public class xQuAD1 extends InteractiveReranker {
 		indexName = RetrievalCache.indexName;
 		lambda = params[1];
 		novelty = new float[relevance.length];
+		docSimCache =  new float[relevance.length][];
 		Arrays.fill(novelty, 1.0f);
 	}
 	
@@ -49,8 +51,18 @@ public class xQuAD1 extends InteractiveReranker {
 
 	@Override
 	public void update(int docid) {
-		float[] probs = RetrievalController.getSimilarities(docids, docsContent[docid]);
+		float[] probs = null;
+		
 	    probs = normalize(probs);
+		if (docSimCache[docid] != null) {
+			probs = docSimCache[docid];
+		} else {
+			probs = RetrievalController.getSimilarities(docids, docsContent[docid]);
+			probs = normalize(probs);
+			docSimCache[docid] = probs;
+		}
+
+		
 	    novelty[docid] *= (1-probs[docid]);
 	}
 	

@@ -10,6 +10,9 @@ public class MMR extends InteractiveReranker {
 
 	protected String[] docsContent;
 	private float[] cacheSim;
+	
+	private float[][] docSimCache;
+	
 	String indexName;
 	
 	public MMR(){
@@ -18,10 +21,15 @@ public class MMR extends InteractiveReranker {
 
 	
 	public void update(int docid) {
-		
-		float[] newCache = RetrievalController.getSimilarities(docids, docsContent[docid]);
-	    
-	    newCache = normalize(newCache);
+		float[] newCache = null;
+		if (docSimCache[docid] != null) {
+			newCache = docSimCache[docid];
+		} else {
+			newCache = RetrievalController.getSimilarities(docids, docsContent[docid]);
+			newCache = normalize(newCache);
+			docSimCache[docid] = newCache;
+		}
+
 	    
 	    for (int i = 0; i < newCache.length; i++) {
 			if (cacheSim[i] < newCache[i]) {
@@ -40,6 +48,7 @@ public class MMR extends InteractiveReranker {
 		
 		lambda = params[1];
 		cacheSim = new float[relevance.length];
+		docSimCache = new float[relevance.length][];
 	}
 
 	@Override
