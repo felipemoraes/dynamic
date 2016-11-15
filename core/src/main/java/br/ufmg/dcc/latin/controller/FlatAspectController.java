@@ -19,6 +19,8 @@ public class FlatAspectController implements AspectController {
 	public float[] novelty;
 	public float[][] coverage;
 	
+	public float[][][] features;
+	
 	public float[] v;
 	public float[] s;
 	
@@ -63,6 +65,8 @@ public class FlatAspectController implements AspectController {
 		importance = new float[aspectSize];
 		novelty = new float[aspectSize];
 		coverage = new float[n][aspectSize];
+		
+		features = new float[n][aspectSize][];
 		
 		float uniformImportance = 1.0f/aspectSize;
 		
@@ -174,7 +178,7 @@ public class FlatAspectController implements AspectController {
 			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
 				
 			    float[] scores = RetrievalController.getSimilarities(RetrievalCache.docids, aspectComponent);
-			    scores = scaling(scores);
+			    scores = normalize(scores);
 			    for(int j = 0;j< n ;++j) {
 
 			    	float score = scores[j];
@@ -195,32 +199,7 @@ public class FlatAspectController implements AspectController {
 		normalizeCoverage();
 	}
 	
-	private float[] scaling(float[] scores){
-		float min = Float.POSITIVE_INFINITY;
-		for (int i = 0; i < scores.length; i++) {
-			if (scores[i] < min) {
-				min = scores[i];
-			}
-		}
-		
-		float max = Float.NEGATIVE_INFINITY;
-		for (int i = 0; i < scores.length; i++) {
-			if (scores[i] > max) {
-				max = scores[i];
-			}
-		}
-		
-		for (int i = 0; i < scores.length; i++) {
-			if (max!=min) {
-				scores[i] = (scores[i]-min)/(max-min);
-			} else {
-				scores[i] = 0;
-			}
-			
-		}
-		return scores;
-		
-	}
+
 	
 	
 	public void cacheFeedback(Feedback[] feedbacks){
@@ -236,6 +215,20 @@ public class FlatAspectController implements AspectController {
 				}
 			}
 		}
+	}
+	
+	private float[] normalize(float[] values){
+		float sum = 0;
+		for (int i = 0; i < values.length; i++) {
+			sum += values[i];
+		}
+		for (int i = 0; i < values.length; i++) {
+			if (sum > 0) {
+				values[i] = values[i]/sum;
+			}
+			
+		}
+		return values;
 	}
 	
 	
@@ -280,6 +273,37 @@ public class FlatAspectController implements AspectController {
 
 	public void setSelected(SelectedSet selected) {
 		this.selected = selected;
+	}
+
+
+	public void miningFeatures() {
+
+		int i = 0;
+		
+		for (String aspectId : flatAspectModel.getAspects()) {
+
+			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
+				
+			    float[] scores = RetrievalController.getSimilarities(RetrievalCache.docids, aspectComponent);
+			    
+			    for(int j = 0;j< n ;++j) {
+
+			    	float score = scores[j];
+			    	if (coverage[j][i] < score) {
+			    		coverage[j][i] = score;
+			    	}
+			    }
+			}
+	
+			for(int j = 0;j< n ;++j) {
+				if (this.feedbacks[j] != null) {
+					float score = this.feedbacks[j].getRelevanceAspect(aspectId);
+					coverage[j][i] = score;
+				}
+			}
+			i++;
+		}
+		
 	}
 
 }

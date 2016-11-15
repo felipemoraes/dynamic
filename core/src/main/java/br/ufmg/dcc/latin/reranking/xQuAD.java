@@ -13,6 +13,7 @@ public class xQuAD extends InteractiveReranker {
 	public float[] novelty;
 	public float[][] coverage;
 	
+	
 	public xQuAD(){
 	}
 	
