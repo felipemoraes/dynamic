@@ -53,7 +53,6 @@ public class xQuAD1 extends InteractiveReranker {
 	public void update(int docid) {
 		float[] probs = null;
 		
-	    probs = normalize(probs);
 		if (docSimCache[docid] != null) {
 			probs = docSimCache[docid];
 		} else {
