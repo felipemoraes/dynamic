@@ -88,10 +88,10 @@ public class PM2 extends InteractiveReranker {
 		s = aspectControler.s;
 		lambda = params[1];
 		int n = relevance.length;
-		if (highestAspect == null){
-			highestAspect = new int[n];
-			Arrays.fill(highestAspect, -1);
-		}
+		
+		highestAspect = new int[n];
+		Arrays.fill(highestAspect, -1);
+		
 	}
 
 

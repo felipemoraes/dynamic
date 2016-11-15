@@ -7,8 +7,7 @@ import br.ufmg.dcc.latin.feedback.Feedback;
 public class MMR extends InteractiveReranker {
 
 	private float lambda;
-	float[] relevance;
-	int[] docids;
+
 	protected String[] docsContent;
 	private float[] cacheSim;
 	String indexName;
@@ -22,7 +21,7 @@ public class MMR extends InteractiveReranker {
 		
 		float[] newCache = RetrievalController.getSimilarities(docids, docsContent[docid]);
 	    
-	    newCache = scaling(newCache);
+	    newCache = normalize(newCache);
 	    
 	    for (int i = 0; i < newCache.length; i++) {
 			if (cacheSim[i] < newCache[i]) {
@@ -35,9 +34,8 @@ public class MMR extends InteractiveReranker {
 	@Override
 	public void start(float[] params) {
 		super.start(params);
-		relevance = scaling(RetrievalCache.scores);
+		relevance = normalize(relevance);
 		docsContent = RetrievalCache.docsContent;
-		docids = RetrievalCache.docids;
 		indexName = RetrievalCache.indexName;
 		
 		lambda = params[1];

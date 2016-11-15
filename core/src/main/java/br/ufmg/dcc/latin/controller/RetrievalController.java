@@ -19,8 +19,10 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Rescorer;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.similarities.BM25;
 import org.apache.lucene.search.similarities.LMDirichlet;
 import org.apache.lucene.search.similarities.Similarity;
+import org.apache.lucene.search.similarities.TFIDF;
 import org.apache.lucene.store.FSDirectory;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
@@ -110,6 +112,7 @@ public class RetrievalController {
 			e.printStackTrace();
 		}
 		searcher.setSimilarity(new LMDirichlet(2500.0f));
+		
 		Rescorer reRankQueryRescorer = new ReRankQueryRescorer(q, 1.0f);
 		
 	    try {
