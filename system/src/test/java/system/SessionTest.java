@@ -37,20 +37,27 @@ public class SessionTest {
 	public void test() {
 		TrecUser.load("../share/truth_data_deduped.txt");
 		List<float[]> params = new ArrayList<float[]>();
-		//float[] param = {1000f, 0.8f};
-		float[] param = {1000f};
+		float[] param = {1000f, 0.8f};
+		//float[] param = {1000f};
+		param[1] = 0.5f;
 		params.add(param);
 		Session session = new Session();
 		session.setParams(params);
+		
+		//session.setReranker("xQuAD1");
+		//session.run( "ebola16", "DD16-1", "US Military Crisis Response");
+		
+		//session.setReranker("xQuAD2");
+		//session.run( "ebola16", "DD16-1", "US Military Crisis Response");
 		
 		//session.setReranker("xQuAD");
 		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
 		
 		//session.setReranker("PM2");
-		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
+		//session.run("ebola16", "DD16-1", "US Military Crisis Response");
 		
-		//session.setReranker("MMR");
-		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
+		session.setReranker("MMR");
+		session.run("ebola16", "DD16-1", "US Military Crisis Response");
 		
 		//session.setReranker("xMMR");
 		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
@@ -58,8 +65,8 @@ public class SessionTest {
 		//session.setReranker("LM");
 		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
 		
-		session.setReranker("DPH");
-		session.run("illicit_goods", "DD15-102", "Telemarketing");
+		//session.setReranker("DPH");
+		//session.run("illicit_goods", "DD15-102", "Telemarketing");
 		
 		//session.setReranker("BM25");
 		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
