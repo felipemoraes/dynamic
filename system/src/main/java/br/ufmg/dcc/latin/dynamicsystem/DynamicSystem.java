@@ -26,10 +26,11 @@ public class DynamicSystem {
 	    	String[] splitLine = line.split(" ",3);
 	    	
         	String topicId = splitLine[1];
-        	System.out.println(topicId);
-        	//if (!topicId.equals("DD16-1")){
+        	
+        	//if (!topicId.equals("DD16-2")){
         	//	continue;
         	//}
+        	System.out.println(topicId);
     		
     		String query = splitLine[2].replaceAll("/", " ");
     		session.run(splitLine[0], topicId, query);

@@ -15,9 +15,11 @@ public class ParametersController {
 		try (BufferedReader br = new BufferedReader(new FileReader(parametersFile))) {
 			String line =  br.readLine();
 			parameters.reranker = line.replace("\n", "");
+			
 			while ((line = br.readLine()) != null) {
+				
 				List<Float> list = new ArrayList<Float>();
-		    	String[] splitLine = line.split(",");
+		    	String[] splitLine = line.split(" ");
 		    	for (int i = 0; i < splitLine.length; i++) {
 					list.add(Float.parseFloat(splitLine[i]));
 				}
@@ -32,6 +34,7 @@ public class ParametersController {
 			
 			e.printStackTrace();
 		}
+		
 		List<List<Float>> product = cartesianProduct(lists);
 		List<float[]> experimentalParameters = new ArrayList<float[]>();
 		for (List<Float> list : product) {
@@ -40,6 +43,7 @@ public class ParametersController {
 			for (int i = 0; i < n; i++) {
 				params[i] = list.get(i);
 			}
+			experimentalParameters.add(params);
 		}
 		parameters.experimentalParameters = experimentalParameters;
 		return parameters;

@@ -26,9 +26,10 @@ public class Session {
 		return name;
 	}
 
-	public void run(String query, String index, String topicId){
+	public void run(String index, String topicId, String query){
 		
 		reranker.start(query, index);
+		
 		for (float[] param : params) {
 			String name = getName(param);
 			run(topicId, name, param);

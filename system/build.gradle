@@ -8,7 +8,7 @@ dependencies {
 
 
 task main(type: JavaExec, dependsOn: classes) {
-    main = 'br.ufmg.dcc.latin.system.Main'
+    main = 'br.ufmg.dcc.latin.dynamicsystem.DynamicSystem'
     classpath = sourceSets.main.runtimeClasspath
      if(project.hasProperty('Xargs')){
        args (Xargs.split());
