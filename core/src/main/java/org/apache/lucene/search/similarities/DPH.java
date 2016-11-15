@@ -45,12 +45,9 @@ public class DPH extends SimilarityBase {
     float score = (float) (freq*norm*log2((freq*
 			averageDocumentLength/docLength) *
 			( numberOfDocuments/tfc)));
-    
-    	score += 0.5*log2(2d*Math.PI*freq*(1f-f));
-    
-    
- 
-    
+	if ((1f-f) > 0) { 
+		score += 0.5*log2(2d*Math.PI*freq*(1f-f));
+	}
 
     return score;
   }

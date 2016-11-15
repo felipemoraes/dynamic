@@ -55,14 +55,14 @@ public class SessionTest {
 		//session.setReranker("xMMR");
 		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
 		
-		session.setReranker("LM");
-		session.run("US Military Crisis Response", "ebola16", "DD16-1");
+		//session.setReranker("LM");
+		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
 		
 		session.setReranker("DPH");
-		session.run("US Military Crisis Response", "ebola16", "DD16-1");
+		session.run("illicit_goods", "DD15-102", "Telemarketing");
 		
-		session.setReranker("BM25");
-		session.run("US Military Crisis Response", "ebola16", "DD16-1");
+		//session.setReranker("BM25");
+		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
 	}
 
 }
