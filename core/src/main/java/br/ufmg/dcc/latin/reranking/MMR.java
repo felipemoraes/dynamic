@@ -1,32 +1,26 @@
-package br.ufmg.dcc.latin.diversity.scoring;
-
-import org.apache.lucene.search.similarities.ClassicSimilarity;
-import org.apache.lucene.search.similarities.Similarity;
+package br.ufmg.dcc.latin.reranking;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.controller.RetrievalController;
+import br.ufmg.dcc.latin.feedback.Feedback;
 
-public class MMR implements Scorer{
+public class MMR extends InteractiveReranker {
 
 	private float lambda;
 	float[] relevance;
 	int[] docids;
-
-	String[] docsContent;
+	protected String[] docsContent;
 	private float[] cacheSim;
 	String indexName;
-	private Similarity f2;
 	
 	public MMR(){
 		
 	}
-	
 
-	
 	
 	public void update(int docid) {
 		
-		float[] newCache = RetrievalController.getSimilarities(docids, docsContent[docid], f2);
+		float[] newCache = RetrievalController.getSimilarities(docids, docsContent[docid]);
 	    
 	    newCache = scaling(newCache);
 	    
@@ -38,18 +32,14 @@ public class MMR implements Scorer{
 
 	}
 
-
-
-
-
 	@Override
-	public void build(float[] params) {
-		
+	public void start(float[] params) {
+		super.start(params);
 		relevance = scaling(RetrievalCache.scores);
 		docsContent = RetrievalCache.docsContent;
 		docids = RetrievalCache.docids;
 		indexName = RetrievalCache.indexName;
-		f2 = new ClassicSimilarity();
+		
 		lambda = params[1];
 		cacheSim = new float[relevance.length];
 	}
@@ -60,9 +50,9 @@ public class MMR implements Scorer{
 		return score;
 	}
 
-	@Override
-	public void flush() {
-	}
 
+	@Override
+	public void update(Feedback[] feedback) {
+	}
 
 }

@@ -17,7 +17,7 @@ public class DynamicSystem {
 	   
 	    Session session = new Session();
 
-	    session.setScorer(parameters.scorer);
+	    session.setReranker(parameters.reranker);
 	    session.setParams(parameters.experimentalParameters);
 	    
 	    TrecUser.load("../share/truth_data_deduped.txt");

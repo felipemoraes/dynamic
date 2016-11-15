@@ -27,7 +27,7 @@ import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.search.similarities.DPHSimilarity;
+import org.apache.lucene.search.similarities.DPH;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.tika.exception.TikaException;
@@ -79,7 +79,7 @@ public class Indexer {
             Analyzer analyzer = createAnalyzer();
             
             IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
-            iwc.setSimilarity(new DPHSimilarity());
+            iwc.setSimilarity(new DPH());
             iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
             writer = new IndexWriter(dir, iwc);
             

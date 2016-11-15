@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.lucene.search.similarities.ClassicSimilarity;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -36,22 +37,32 @@ public class SessionTest {
 	public void test() {
 		TrecUser.load("../share/truth_data_deduped.txt");
 		List<float[]> params = new ArrayList<float[]>();
-		float[] param = {1000f, 0.8f};
+		//float[] param = {1000f, 0.8f};
+		float[] param = {1000f};
 		params.add(param);
 		Session session = new Session();
 		session.setParams(params);
 		
-		session.setScorer("xQuAD");
+		//session.setReranker("xQuAD");
+		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
+		
+		//session.setReranker("PM2");
+		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
+		
+		//session.setReranker("MMR");
+		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
+		
+		//session.setReranker("xMMR");
+		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
+		
+		session.setReranker("LM");
 		session.run("US Military Crisis Response", "ebola16", "DD16-1");
 		
-		//session.setScorer("PM2");
-		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
+		session.setReranker("DPH");
+		session.run("US Military Crisis Response", "ebola16", "DD16-1");
 		
-		//session.setScorer("MMR");
-		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
-		
-		//session.setScorer("xMMR");
-		//session.run("US Military Crisis Response", "ebola16", "DD16-1");
+		session.setReranker("BM25");
+		session.run("US Military Crisis Response", "ebola16", "DD16-1");
 	}
 
 }

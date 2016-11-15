@@ -25,40 +25,24 @@ import org.apache.lucene.util.BytesRef;
  * limitations under the License.
  */
 
-public class DPHSimilarity extends SimilarityBase {
-  
+/**
+ * Bayesian smoothing using Dirichlet priors. From Chengxiang Zhai and John Lafferty. 2001. A study of smoothing methods
+ * for language models applied to Ad Hoc information retrieval. In Proceedings of the 24th annual international ACM
+ * SIGIR conference on Research and development in information retrieval (SIGIR '01). ACM, New York, NY, USA, 334-342.
+ * <p>
+ * The formula as defined the paper assigns a negative score to documents that contain the term, but with fewer
+ * occurrences than predicted by the collection language model. The Lucene implementation returns {@code 0} for such
+ * documents.
+ * </p>
+ * 
+ * @lucene.experimental
+ */
+public class LMDirichlet extends LMDirichletSimilarity {
+
+  public LMDirichlet(float mu) {
+	  super(mu);
+  }
   @Override
-  protected float score(BasicStats stats, float freq, float docLen) {
-    // document length
-    float docLength = docLen;
-    // relative term frequency
-    float f = freq / docLength;
-    
-    float norm = (1f-f) * (1f -f)/(freq+1f);
-
-    // collection frequency (prior)
-    float tfc = stats.totalTermFreq;
-    float numberOfDocuments = stats.getNumberOfDocuments();
-    
-    float averageDocumentLength = stats.getAvgFieldLength();
-    
-    float score = (float) (freq*norm*log2((freq*
-			averageDocumentLength/docLength) *
-			( numberOfDocuments/tfc)));
-    
-    	score += 0.5*log2(2d*Math.PI*freq*(1f-f));
-    
-    
- 
-    
-
-    return score;
-  }
-  
-  public long computeNorm(FieldInvertState state) {
-	   	return (long) state.getLength();
-  }
-  
   public SimScorer simScorer(SimWeight stats, LeafReaderContext context) throws IOException {
     if (stats instanceof MultiSimilarity.MultiStats) {
       // a multi term query (e.g. phrase). return the summation, 
@@ -67,53 +51,49 @@ public class DPHSimilarity extends SimilarityBase {
       SimScorer subScorers[] = new SimScorer[subStats.length];
       for (int i = 0; i < subScorers.length; i++) {
         BasicStats basicstats = (BasicStats) subStats[i];
-        subScorers[i] = new DPHSimScorer(basicstats, context.reader().getNormValues(basicstats.field));
+        subScorers[i] = new DirichletLMSimScorer(basicstats, context.reader().getNormValues(basicstats.field));
       }
       return new MultiSimilarity.MultiSimScorer(subScorers);
     } else {
       BasicStats basicstats = (BasicStats) stats;
-      return new DPHSimScorer(basicstats, context.reader().getNormValues(basicstats.field));
+      return new DirichletLMSimScorer(basicstats, context.reader().getNormValues(basicstats.field));
     }
   }
   
-  private class DPHSimScorer extends SimScorer {
+  @Override
+  public long computeNorm(FieldInvertState state) {
+    return state.getLength();
+  }
+  
+  private class DirichletLMSimScorer extends SimScorer {
     private final BasicStats stats;
     private final NumericDocValues norms;
     
-    DPHSimScorer(BasicStats stats, NumericDocValues norms) throws IOException {
+    DirichletLMSimScorer(BasicStats stats, NumericDocValues norms) throws IOException {
       this.stats = stats;
       this.norms = norms;
     }
-
+    
     @Override
     public float score(int doc, float freq) {
       // We have to supply something in case norms are omitted
-      
-      return DPHSimilarity.this.score(stats, freq,
-          norms == null ? 1F : norms.get(doc));
+      return LMDirichlet.this.score(stats, freq, norms.get(doc));
     }
     
     @Override
     public Explanation explain(int doc, Explanation freq) {
-      return DPHSimilarity.this.explain(stats, doc, freq,
-          norms == null ? 1F : norms.get(doc));
+      return LMDirichlet.this.explain(stats, doc, freq, norms.get(doc));
     }
-
+    
     @Override
     public float computeSlopFactor(int distance) {
       return 1.0f / (distance + 1);
     }
-
+    
     @Override
     public float computePayloadFactor(int doc, int start, int end, BytesRef payload) {
       return 1f;
     }
-    
-  }
-  
-  @Override
-  public String toString() {
-    return "DPH";
   }
   
 }

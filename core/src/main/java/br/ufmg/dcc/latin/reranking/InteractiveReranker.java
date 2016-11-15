@@ -1,27 +1,23 @@
 package br.ufmg.dcc.latin.reranking;
 
-import org.apache.lucene.search.similarities.DFRSimilarity;
-
-import br.ufmg.dcc.latin.controller.AspectController;
-import br.ufmg.dcc.latin.controller.FlatAspectController;
 import br.ufmg.dcc.latin.controller.RetrievalController;
-import br.ufmg.dcc.latin.diversity.scoring.Scorer;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.querying.SelectedSet;
 
-public class InteractiveReranker implements Reranker {
+public abstract class InteractiveReranker implements Reranker {
 	
-	float[] relevance;
-	int[] docids;
-	String[] docnos;
+	protected float[] relevance;
+	protected int[] docids;
+	protected String[] docnos;
 	
-	int depth;
+	private int depth;
 	
-	SelectedSet selected;
-	AspectController aspectControler;
+	protected SelectedSet selected;
 	
-	private Scorer scorer;
+	protected abstract float score(int docid);
+	
+	protected abstract void update(int docid);
 	
 	@Override
 	public ResultSet get(){
@@ -41,7 +37,7 @@ public class InteractiveReranker implements Reranker {
 				if (selected.has(docids[i])){
 					continue;
 				}
-				float score = scorer.score(i);
+				float score = score(i);
 				if (score > maxScore) {
 					maxScore = score;
 					maxRank = i;
@@ -54,17 +50,14 @@ public class InteractiveReranker implements Reranker {
 			result.docnos[k] = docnos[maxRank];
 			// mark as selected
 			selected.put(docids[maxRank]);
-			scorer.update(maxRank);
+			update(maxRank);
 			k++;
 		}
 		
 		return result;
 	}
 	
-	public void update(Feedback[] feedback){
-		aspectControler.mining(feedback,scorer);
-		scorer.flush();
-	}
+	public abstract void update(Feedback[] feedback);
 	
 	public void start(String query, String index){
 		ResultSet result = RetrievalController.search(query, index);
@@ -72,21 +65,12 @@ public class InteractiveReranker implements Reranker {
 		relevance = result.scores;
 		docnos = result.docnos;
 		selected = new SelectedSet();
-		aspectControler = new FlatAspectController();
 	}
 	
 	public void start(float[] params){
 		depth = (int) params[0];
 		selected = new SelectedSet();
-		aspectControler = new FlatAspectController();
 	}
 
-	public Scorer getScorer() {
-		return scorer;
-	}
 
-	public void setScorer(Scorer scorer) {
-		this.scorer = scorer;
-	}
-	
 }

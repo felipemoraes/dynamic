@@ -14,7 +14,7 @@ public class ParametersController {
 		List<List<Float>> lists = new ArrayList<List<Float>>();
 		try (BufferedReader br = new BufferedReader(new FileReader(parametersFile))) {
 			String line =  br.readLine();
-			parameters.scorer = line.replace("\n", "");
+			parameters.reranker = line.replace("\n", "");
 			while ((line = br.readLine()) != null) {
 				List<Float> list = new ArrayList<Float>();
 		    	String[] splitLine = line.split(",");

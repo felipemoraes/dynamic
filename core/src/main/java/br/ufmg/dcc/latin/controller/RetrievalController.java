@@ -2,12 +2,10 @@ package br.ufmg.dcc.latin.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.custom.CustomAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
@@ -21,9 +19,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Rescorer;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.similarities.BM25Similarity;
-import org.apache.lucene.search.similarities.DPHSimilarity;
-import org.apache.lucene.search.similarities.LMDirichletSimilarity;
+import org.apache.lucene.search.similarities.LMDirichlet;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.FSDirectory;
 
@@ -42,7 +38,7 @@ public class RetrievalController {
 	 
 	public static IndexSearcher getIndexSearcher(String indexName){
 		if (similarity == null) {
-			similarity = new DPHSimilarity();
+			similarity = new LMDirichlet(2500.0f);
 		}
 		if (RetrievalCache.indices == null) {
 			RetrievalCache.indices = new HashMap<String,IndexSearcher>();
@@ -95,7 +91,7 @@ public class RetrievalController {
 
 	}
 	
-	public static float[] getSimilarities(int[] docids, String query, Similarity similarity){
+	public static float[] getSimilarities(int[] docids, String query){
 		
 		int n = RetrievalCache.docids.length;
 		float[] scores = new float[n];
@@ -113,7 +109,7 @@ public class RetrievalController {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		//searcher.setSimilarity(new BM25Similarity());
+		searcher.setSimilarity(new LMDirichlet(2500.0f));
 		Rescorer reRankQueryRescorer = new ReRankQueryRescorer(q, 1.0f);
 		
 	    try {
@@ -166,14 +162,7 @@ public class RetrievalController {
 			try {
 				 Document doc = searcher.doc(hits[i].doc);
 	             docnos[i] = doc.get("docno");
-/*	             int doclen = 0;
-	             TokenStream stream  = analyzer.tokenStream(null, new StringReader(doc.get("content")));
-	             stream.reset();
-	             while (stream.incrementToken()) {
-	            	 doclen++;
-	             }
-	             stream.close();
-	             System.out.println(doclen);*/
+	             
 	             scores[i] = hits[i].score;
 	             docids[i] = hits[i].doc;
 	             docsContent[i] = doc.get("content");
@@ -198,5 +187,9 @@ public class RetrievalController {
 		RetrievalCache.indexName = index;
 		RetrievalCache.topDocs = results;
 		return resultSet;
+	}
+
+	public static void setSimilarity(Similarity sim) {
+		similarity = sim;
 	}
 }

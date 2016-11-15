@@ -1,22 +1,20 @@
-package br.ufmg.dcc.latin.diversity.scoring;
+package br.ufmg.dcc.latin.reranking;
 
 import java.util.Arrays;
 
-import br.ufmg.dcc.latin.cache.AspectCache;
-import br.ufmg.dcc.latin.cache.RetrievalCache;
+import br.ufmg.dcc.latin.controller.FlatAspectController;
+import br.ufmg.dcc.latin.feedback.Feedback;
 
-public class PM2 implements Scorer {
+public class PM2 extends InteractiveReranker {
 
 	float lambda;
 	int[] highestAspect;
 	
-	float[] v;
-	float[] s;
-	float[][] coverage;
+	private float[] v;
+	private float[] s;
+	private float[][] coverage;
 
-	float[] relevance;
-
-	
+	FlatAspectController aspectControler;
 
 	public PM2(){
 	}
@@ -56,7 +54,10 @@ public class PM2 implements Scorer {
 	}
 	
 	public void update(int docid){
-		int q = highestAspect();
+		int q = highestAspect[docid];
+		if (q == -1) {
+			q = highestAspect();
+		} 
 		float allCoverage = 0;
 		for (int i = 0; i < coverage[docid].length; ++i) {
 			allCoverage += coverage[docid][i];
@@ -67,32 +68,41 @@ public class PM2 implements Scorer {
 		} 
 		highestAspect[docid] = q;
 	}
-
-
+	
+	public void updateNovelty(){
+		for (int j = 0; j < docids.length; ++j) {
+			if (! selected.has(docids[j])) {
+				continue;
+			}
+			update(j);
+		}
+	}
+	
 	@Override
-	public void build(float[] params) {
-		
-		s = AspectCache.s;
-		v = AspectCache.v;
-		coverage = AspectCache.coverage;
-		relevance = RetrievalCache.scores;
+	public void start(float[] params){
+		super.start(params);
+		relevance = normalize(relevance);
+		aspectControler = new FlatAspectController();
+		coverage = aspectControler.coverage;
+		v = aspectControler.v;
+		s = aspectControler.s;
 		lambda = params[1];
 		int n = relevance.length;
 		if (highestAspect == null){
 			highestAspect = new int[n];
 			Arrays.fill(highestAspect, -1);
 		}
-
-		
 	}
 
 
 	@Override
-	public void flush() {
-		coverage = AspectCache.coverage;
-		s = AspectCache.s;
-		v = AspectCache.v;
+	public void update(Feedback[] feedback) {
+		aspectControler.miningProportionalAspects(feedback);
+		coverage = aspectControler.coverage;
+		v = aspectControler.v;
+		s = aspectControler.s;
+		updateNovelty();
+		
 	}
-
 
 }

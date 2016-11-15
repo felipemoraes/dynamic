@@ -1,11 +1,12 @@
-package br.ufmg.dcc.latin.diversity.scoring;
+package br.ufmg.dcc.latin.reranking;
 
 import java.util.Arrays;
 
-import br.ufmg.dcc.latin.cache.AspectCache;
 import br.ufmg.dcc.latin.cache.RetrievalCache;
+import br.ufmg.dcc.latin.controller.FlatAspectController;
+import br.ufmg.dcc.latin.feedback.Feedback;
 
-public class xMMR implements Scorer {
+public class xMMR extends InteractiveReranker {
 
 	private float[] cacheSim;
 	
@@ -17,21 +18,22 @@ public class xMMR implements Scorer {
 	
 	private float[][] coverage; 
 
+	private FlatAspectController aspectControler;
 	
 	public xMMR(){
-
 	}
 
 
 
 	@Override
-	public void build(float[] params) {
+	public void start(float[] params) {
+		super.start(params);
 		relevance = normalize(scaling(RetrievalCache.scores));
-		n = RetrievalCache.scores.length;
+		n = relevance.length;
 		cacheSim = new float[n];
-		coverage = AspectCache.coverage;
 		lambda = params[1];
-		
+		aspectControler = new FlatAspectController();
+		coverage = aspectControler.coverage;
 	}
 
 	@Override
@@ -41,10 +43,6 @@ public class xMMR implements Scorer {
 		return score;
 	}
 
-	@Override
-	public void flush() {
-		coverage = AspectCache.coverage;
-	}
 
 	@Override
 	public void update(int docid) {
@@ -89,6 +87,13 @@ public class xMMR implements Scorer {
 		} 
 		
 		return 0;
+	}
+
+	@Override
+	public void update(Feedback[] feedback) {
+		aspectControler.miningProportionalAspects(feedback);
+		coverage = aspectControler.coverage;
+		
 	}
 	
 
