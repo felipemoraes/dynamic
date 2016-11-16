@@ -14,9 +14,9 @@ public class ReRankQueryRescorer extends QueryRescorer {
 
     @Override
     protected float combine(float firstPassScore, boolean secondPassMatches, float secondPassScore) {
-      float score = firstPassScore;
+      float score = 0;
       if (secondPassMatches) {
-        score += reRankWeight * secondPassScore;
+        score = (float) (reRankWeight * secondPassScore);
       }
       return score;
     }
