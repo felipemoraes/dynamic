@@ -2,6 +2,7 @@ package br.ufmg.dcc.latin.reranking;
 
 import java.util.Arrays;
 
+import org.apache.lucene.search.similarities.LMDirichlet;
 import org.apache.lucene.search.similarities.TFIDF;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
@@ -36,6 +37,7 @@ public class xQuAD1 extends InteractiveReranker {
 		lambda = params[1];
 		novelty = new float[relevance.length];
 		docSimCache =  new float[relevance.length][];
+		RetrievalController.setSimilarity(new LMDirichlet(2500f));
 		Arrays.fill(novelty, 1.0f);
 	}
 	

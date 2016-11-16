@@ -27,7 +27,6 @@ public class MMR extends InteractiveReranker {
 		if (docSimCache[docid] != null) {
 			newCache = docSimCache[docid];
 		} else {
-			RetrievalController.setSimilarity(new TFIDF());
 			newCache = RetrievalController.getSimilarities(docids, docsContent[docid]);
 			newCache = scaling(newCache);
 			docSimCache[docid] = newCache;
@@ -44,6 +43,7 @@ public class MMR extends InteractiveReranker {
 	@Override
 	public void start(String query, String index){
 		super.start(query,index);
+		RetrievalController.setSimilarity(new TFIDF());
 		docSimCache = new float[relevance.length][];
 	}
 

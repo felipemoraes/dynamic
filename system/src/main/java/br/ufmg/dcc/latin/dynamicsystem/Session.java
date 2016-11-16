@@ -42,10 +42,10 @@ public class Session {
 		reranker.start(params);
 		for (int i = 0; i < 10; i++) {
 			ResultSet resultSet = reranker.get();
-			//Evaluator.writeToFile(name, topicId, resultSet, i);
+			Evaluator.writeToFile(name, topicId, resultSet, i);
 			Feedback[] feedback = TrecUser.get(resultSet, topicId);
 			reranker.update(feedback);
-			Evaluator.writeToFile(name, reranker.debug(topicId, i));
+			//Evaluator.writeToFile(name, reranker.debug(topicId, i));
 		}
 	}
 
