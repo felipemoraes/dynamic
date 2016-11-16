@@ -76,6 +76,11 @@ public class xQuAD1 extends InteractiveReranker {
 		importance = aspectControler.importance;
 	}
 
+	@Override
+	public String debug(String topicid, int iteration) {
+		return "";
+	}
+
 
 
 }

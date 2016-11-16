@@ -33,4 +33,9 @@ public class Baseline extends InteractiveReranker {
 	public void update(Feedback[] feedback) {
 	}
 
+	@Override
+	public String debug(String topicid, int iteration) {
+		return "";
+	}
+
 }

@@ -18,6 +18,8 @@ public abstract class InteractiveReranker implements Reranker {
 	
 	protected SelectedSet selected;
 	
+	public abstract String debug(String topicid, int iteration);
+	
 	protected abstract float score(int docid);
 	
 	protected abstract void update(int docid);

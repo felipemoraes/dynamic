@@ -95,6 +95,13 @@ public class xMMR extends InteractiveReranker {
 		coverage = aspectControler.coverage;
 		
 	}
+
+
+
+	@Override
+	public String debug(String topicid, int iteration) {
+		return "";
+	}
 	
 
 	

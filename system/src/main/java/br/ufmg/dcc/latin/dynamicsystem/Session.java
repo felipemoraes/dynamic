@@ -2,6 +2,8 @@ package br.ufmg.dcc.latin.dynamicsystem;
 
 import java.util.List;
 
+import javax.swing.DebugGraphics;
+
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.reranking.InteractiveReranker;
@@ -40,9 +42,10 @@ public class Session {
 		reranker.start(params);
 		for (int i = 0; i < 10; i++) {
 			ResultSet resultSet = reranker.get();
-			Evaluator.writeToFile(name, topicId, resultSet, i);
+			//Evaluator.writeToFile(name, topicId, resultSet, i);
 			Feedback[] feedback = TrecUser.get(resultSet, topicId);
 			reranker.update(feedback);
+			Evaluator.writeToFile(name, reranker.debug(topicId, i));
 		}
 	}
 

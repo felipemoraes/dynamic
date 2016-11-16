@@ -37,5 +37,20 @@ public class Evaluator {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void writeToFile(String runName, String debugMessage){
+		try(FileWriter fw = new FileWriter("data/" + runName + ".txt", true);
+				 BufferedWriter bw = new BufferedWriter(fw);
+				 PrintWriter out = new PrintWriter(bw)) {
+			
+			out.println(debugMessage);
+				
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+	}
+
 
 }

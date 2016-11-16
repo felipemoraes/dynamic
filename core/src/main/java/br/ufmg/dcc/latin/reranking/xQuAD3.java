@@ -107,5 +107,10 @@ public class xQuAD3 extends InteractiveReranker {
 		return 0;
 	}
 
+	@Override
+	public String debug(String topicid, int iteration) {
+		return "";
+	}
+
 
 }
