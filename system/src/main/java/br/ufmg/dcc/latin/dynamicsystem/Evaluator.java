@@ -39,7 +39,7 @@ public class Evaluator {
 	}
 	
 	public static void writeToFile(String runName, String debugMessage){
-		try(FileWriter fw = new FileWriter("data/" + runName + ".txt", true);
+		try(FileWriter fw = new FileWriter("data/" + runName + "_debug.txt", true);
 				 BufferedWriter bw = new BufferedWriter(fw);
 				 PrintWriter out = new PrintWriter(bw)) {
 			
