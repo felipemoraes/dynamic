@@ -71,9 +71,12 @@ public class xQuAD extends InteractiveReranker {
 
 	@Override
 	public String debug(String topicid, int iteration) {
-		String result = topicid + " " + iteration + " ";
-		for (int i = 0; i < novelty.length; i++) {
-			result += novelty[i] + " ";
+		String result = topicid + " " + iteration + " " + coverage.length + " " + coverage[0].length + " ";
+		
+		for (int i = 0; i < coverage.length; i++) {
+			for (int j = 0; j < coverage[i].length; j++) {
+				result += coverage[i][j] + " ";
+			}
 		}
 		return result;
 	}
