@@ -37,14 +37,14 @@ public class SessionTest {
 	public void test() {
 		TrecUser.load("../share/truth_data_deduped.txt");
 		List<float[]> params = new ArrayList<float[]>();
-		float[] param = {1000f, 0.8f};
+		float[] param = {1000f, 0.3f};
 		//float[] param = {1000f};
 		//param[1] = 0.5f;
 		params.add(param);
 		Session session = new Session();
 		session.setParams(params);
 		
-		session.setReranker("PM2");
+		session.setReranker("MMR");
 		session.run( "ebola16", "DD16-1", "US Military Crisis Response");
 		
 		//session.setReranker("xQuAD1");
