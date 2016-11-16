@@ -83,6 +83,7 @@ public class FlatAspectController implements AspectController {
 			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
 				
 			    float[] scores = RetrievalController.getSimilarities(RetrievalCache.docids, aspectComponent);
+			    scores = scaling(scores);
 			    for(int j = 0;j< n ;++j) {
 			    	float score = scores[j];
 			    	features[j][i][k] = score;
@@ -143,7 +144,7 @@ public class FlatAspectController implements AspectController {
 			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
 				
 			    float[] scores = RetrievalController.getSimilarities(RetrievalCache.docids, aspectComponent);
-			    scores = normalize(scores);
+			    scores = scaling(scores);
 			    for(int j = 0;j< n ;++j) {
 
 			    	float score = scores[j];
@@ -164,6 +165,32 @@ public class FlatAspectController implements AspectController {
 		normalizeCoverage();
 	}
 	
+	private float[] scaling(float[] scores){
+		float min = Float.POSITIVE_INFINITY;
+		for (int i = 0; i < scores.length; i++) {
+			if (scores[i] < min) {
+				min = scores[i];
+			}
+		}
+		
+		float max = Float.NEGATIVE_INFINITY;
+		for (int i = 0; i < scores.length; i++) {
+			if (scores[i] > max) {
+				max = scores[i];
+			}
+		}
+		
+		for (int i = 0; i < scores.length; i++) {
+			if (max!=min) {
+				scores[i] = (scores[i]-min)/(max-min);
+			} else {
+				scores[i] = 0;
+			}
+			
+		}
+		return scores;
+		
+	}
 
 	
 	
