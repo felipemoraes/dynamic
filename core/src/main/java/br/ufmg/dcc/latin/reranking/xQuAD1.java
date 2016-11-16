@@ -2,6 +2,8 @@ package br.ufmg.dcc.latin.reranking;
 
 import java.util.Arrays;
 
+import org.apache.lucene.search.similarities.TFIDF;
+
 import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.controller.FlatAspectController;
 import br.ufmg.dcc.latin.controller.RetrievalController;
@@ -56,6 +58,7 @@ public class xQuAD1 extends InteractiveReranker {
 		if (docSimCache[docid] != null) {
 			probs = docSimCache[docid];
 		} else {
+			RetrievalController.setSimilarity(new TFIDF());
 			probs = RetrievalController.getSimilarities(docids, docsContent[docid]);
 			probs = normalize(probs);
 			docSimCache[docid] = probs;
