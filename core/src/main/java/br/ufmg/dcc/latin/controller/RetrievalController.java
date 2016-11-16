@@ -102,7 +102,7 @@ public class RetrievalController {
 		}
 		IndexSearcher searcher  = RetrievalController.getIndexSearcher(RetrievalCache.indexName);
 		
-		BooleanQuery.setMaxClauseCount(400000);
+		BooleanQuery.setMaxClauseCount(1000000);
 		QueryParser parser = getQueryParser();
 		Query q = null;
 		try {

@@ -34,9 +34,9 @@ public class DynamicSystem {
 	    	
         	String topicId = splitLine[1];
         	
-        	//if (!topicId.equals("DD16-1")){
-        	//	continue;
-        	//}
+        	if (!topicId.equals("DD15-54")){
+        		continue;
+        	}
         	System.out.println(topicId);
     		
     		String query = splitLine[2].replaceAll("/", " ");
