@@ -23,8 +23,9 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.custom.CustomAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.FieldType;
 import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.similarities.DPH;
@@ -44,6 +45,8 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
 public class Indexer {
+	
+	private static FieldType ft = new FieldType();
 	
 	public static List<String> readFileListFromDirectory(String directoryPath) throws IOException{
 		List<String> fileList = new ArrayList<String>();
@@ -195,11 +198,11 @@ public class Indexer {
             doc.add(docnoField);
             Field urlField = new StringField("url", url, Field.Store.YES);
             doc.add(urlField);
-            Field titleField = new TextField("title", title, Field.Store.YES);
+            Field titleField = new Field("title", title, ft);
             doc.add(titleField);
-            Field descriptionField = new TextField("description", description, Field.Store.YES);
+            Field descriptionField = new Field("description",description, ft);
             doc.add(descriptionField);
-            Field contentField = new TextField("content", content, Field.Store.YES);
+            Field contentField = new Field("content", content,ft);
             doc.add(contentField);
             docs.add(doc);
           
@@ -250,7 +253,14 @@ public class Indexer {
 		String collectionPath = "/Users/felipemoraes/polar/";
         String indexPath = "/Users/felipemoraes/polar/index";
         String ignoreFilePath = "/Users/felipemoraes/polar_duplicates.txt";
-        
+        ft.setIndexOptions( IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS );
+        ft.setStoreTermVectors( true );
+        ft.setStoreTermVectorOffsets( true );
+        ft.setStoreTermVectorPayloads( true );
+        ft.setStoreTermVectorPositions( true );
+        ft.setTokenized( true );
+        ft.setStored(true);
+      
         try {
         	collectionPath = args[0];
         	indexPath = args[1];
