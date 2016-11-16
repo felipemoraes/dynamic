@@ -44,7 +44,7 @@ public class SessionTest {
 		Session session = new Session();
 		session.setParams(params);
 		
-		session.setReranker("xQuAD");
+		session.setReranker("PM2");
 		session.run( "ebola16", "DD16-1", "US Military Crisis Response");
 		
 		//session.setReranker("xQuAD1");
