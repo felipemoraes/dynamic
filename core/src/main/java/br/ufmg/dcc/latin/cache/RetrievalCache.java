@@ -19,6 +19,9 @@ public class RetrievalCache {
 	
 	public static Map<String,IndexSearcher> indices;
 	
+	public static Map<String,float[]> passageCache;
+
+	
 	public static void cache(ResultSet resultSet) {
 		docsContent = resultSet.docsContent;
 		docids = resultSet.docids;

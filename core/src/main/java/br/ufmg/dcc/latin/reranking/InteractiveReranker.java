@@ -1,5 +1,8 @@
 package br.ufmg.dcc.latin.reranking;
 
+import java.util.HashMap;
+
+import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.controller.RetrievalController;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.querying.ResultSet;
@@ -65,6 +68,7 @@ public abstract class InteractiveReranker implements Reranker {
 		relevance = result.scores;
 		docnos = result.docnos;
 		selected = new SelectedSet();
+		RetrievalCache.passageCache = new HashMap<String,float[]>();
 	}
 	
 	public void start(float[] params){

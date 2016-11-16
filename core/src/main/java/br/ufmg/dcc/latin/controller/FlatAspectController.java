@@ -1,6 +1,8 @@
 package br.ufmg.dcc.latin.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.diversity.FlatAspectModel;
@@ -37,6 +39,8 @@ public class FlatAspectController implements AspectController {
 		v = new float[0];
 		s = new float[0];
 	}
+	
+
 	
 
 	@Override
@@ -82,7 +86,14 @@ public class FlatAspectController implements AspectController {
 			int k = 0;
 			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
 				
-			    float[] scores = RetrievalController.getSimilarities(RetrievalCache.docids, aspectComponent);
+				float[] scores = null;
+				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
+					scores = RetrievalCache.passageCache.get(aspectComponent);
+				} else {
+					scores = RetrievalController.getSimilarities(RetrievalCache.docids, aspectComponent);
+					RetrievalCache.passageCache.put(aspectComponent, scores);
+				}
+				
 			    scores = scaling(scores);
 			    for(int j = 0;j< n ;++j) {
 			    	float score = scores[j];
@@ -142,8 +153,14 @@ public class FlatAspectController implements AspectController {
 		for (String aspectId : flatAspectModel.getAspects()) {
 
 			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
-				
-			    float[] scores = RetrievalController.getSimilarities(RetrievalCache.docids, aspectComponent);
+				float[] scores = null;
+				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
+					scores = RetrievalCache.passageCache.get(aspectComponent);
+				} else {
+					scores = RetrievalController.getSimilarities(RetrievalCache.docids, aspectComponent);
+					RetrievalCache.passageCache.put(aspectComponent, scores);
+				}
+			    
 			    scores = scaling(scores);
 			    for(int j = 0;j< n ;++j) {
 
