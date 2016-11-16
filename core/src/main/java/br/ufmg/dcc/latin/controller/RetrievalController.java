@@ -106,7 +106,7 @@ public class RetrievalController {
 		QueryParser parser = getQueryParser();
 		Query q = null;
 		try {
-			q = parser.parse(QueryParser.escape(query));
+			q = parser.parse(QueryParser.escape(query.toLowerCase()));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
