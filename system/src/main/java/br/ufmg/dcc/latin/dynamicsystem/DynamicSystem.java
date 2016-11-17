@@ -18,7 +18,7 @@ public class DynamicSystem {
 	    String line;
 	   
 	    Session session = new Session();
-	    /*parameters = new DynamicSystemParameters();
+	   /* parameters = new DynamicSystemParameters();
 	    parameters.reranker = "MMR";
 	    float[] param = {1000f, 0.2f};
 	    List<float[]> listParams = new ArrayList<float[]>();
@@ -26,7 +26,7 @@ public class DynamicSystem {
 	    parameters.experimentalParameters = listParams;*/
 	    session.setReranker(parameters.reranker);
 	    session.setParams(parameters.experimentalParameters);
-
+	    
 	    TrecUser.load("../share/truth_data_deduped.txt");
 	    
 	    while ((line = br.readLine()) != null) {
@@ -34,9 +34,9 @@ public class DynamicSystem {
 	    	
         	String topicId = splitLine[1];
         	
-        	//if (!topicId.equals("DD15-54")){
-        	//	continue;
-        	//}
+        	if (!topicId.equals("DD16-1")){
+        		continue;
+        	}
         	System.out.println(topicId);
     		
     		String query = splitLine[2].replaceAll("/", " ");

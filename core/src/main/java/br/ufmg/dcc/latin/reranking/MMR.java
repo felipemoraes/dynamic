@@ -27,8 +27,8 @@ public class MMR extends InteractiveReranker {
 		if (docSimCache[docid] != null) {
 			newCache = docSimCache[docid];
 		} else {
-			newCache = RetrievalController.getSimilarities(docids, docsContent[docid]);
-			newCache = scaling(newCache);
+			newCache = RetrievalController.getSimilarities(docids, docid);
+			newCache = normalize(newCache);
 			docSimCache[docid] = newCache;
 		}
 
@@ -44,13 +44,14 @@ public class MMR extends InteractiveReranker {
 	public void start(String query, String index){
 		super.start(query,index);
 		RetrievalController.setSimilarity(new TFIDF());
+		RetrievalController.termsVector = null;
 		docSimCache = new float[relevance.length][];
 	}
 
 	@Override
 	public void start(float[] params) {
 		super.start(params);
-		relevance = scaling(relevance);
+		relevance = normalize(relevance);
 		docsContent = RetrievalCache.docsContent;
 		indexName = RetrievalCache.indexName;
 		

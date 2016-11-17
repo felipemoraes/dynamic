@@ -90,7 +90,7 @@ public class FlatAspectController implements AspectController {
 				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
 					scores = RetrievalCache.passageCache.get(aspectComponent);
 				} else {
-					scores = RetrievalController.getSimilarities(RetrievalCache.docids, aspectComponent);
+					scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids, aspectComponent);
 					RetrievalCache.passageCache.put(aspectComponent, scores);
 				}
 				
@@ -157,7 +157,7 @@ public class FlatAspectController implements AspectController {
 				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
 					scores = RetrievalCache.passageCache.get(aspectComponent);
 				} else {
-					scores = RetrievalController.getSimilarities(RetrievalCache.docids, aspectComponent);
+					scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids, aspectComponent);
 					RetrievalCache.passageCache.put(aspectComponent, scores);
 				}
 			    

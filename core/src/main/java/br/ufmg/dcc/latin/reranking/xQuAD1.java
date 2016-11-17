@@ -61,7 +61,7 @@ public class xQuAD1 extends InteractiveReranker {
 			probs = docSimCache[docid];
 		} else {
 			RetrievalController.setSimilarity(new TFIDF());
-			probs = RetrievalController.getSimilarities(docids, docsContent[docid]);
+			probs = RetrievalController.getSimilarities(docids, docid);
 			probs = normalize(probs);
 			docSimCache[docid] = probs;
 		}
