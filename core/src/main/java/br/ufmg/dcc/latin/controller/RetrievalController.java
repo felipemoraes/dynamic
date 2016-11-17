@@ -52,9 +52,9 @@ public class RetrievalController {
 	
 	public static Terms[] termsVector;
 	
-	private static Map<String,Float> docFreqs;
+	public static Map<String, Map<String,Float>> docFreqs;
 	
-	private static long docCount;
+	private static Map<String, Integer> docCount;
 	 
 	public static IndexSearcher getIndexSearcher(String indexName){
 		if (similarity == null) {
@@ -149,78 +149,9 @@ public class RetrievalController {
 	    return scores;
 	}
 	
-	private static void computeTermVectors(int[] docids){
-		if (directedIndexController != null){
-			return;
-		}
-		int n = docids.length;
 
-		IndexSearcher searcher  = RetrievalController.getIndexSearcher(RetrievalCache.indexName);
-		
-		IndexReader reader = searcher.getIndexReader();
-		float docCount = 0;
-		try {
-			docCount = searcher.collectionStatistics("content").docCount();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		directedIndexController = new DirectedIndexController();
-		TermFrequencies[] termFrequencies = new TermFrequencies[n];
-		Map<String,Float> idfs = new HashMap<String, Float>();
-		float[] docNorms = new float[n];
-		for (int i = 0; i <docids.length; i++) {
-			Terms termVector;
-			try {
-				termVector = reader.getTermVector(docids[i], "content");
-				TermsEnum terms = termVector.iterator();
-				int docLength = 0;
-				PostingsEnum p = null;
-				Map<String,Float> freqs = new HashMap<String,Float>();
-				while( terms.next() != null ) {
-					p = terms.postings( p, PostingsEnum.ALL );
-					String t = terms.term().utf8ToString();
-					float df = terms.docFreq();
-					idfs.put(t,(float)(Math.log(docCount/(df+1))));
-					while( p.nextDoc() != PostingsEnum.NO_MORE_DOCS ) {
-						float freq = p.freq();
-						docLength += freq*freq;
-						freqs.put(t, (float) freq);
-					}
-				}
-				termFrequencies[i] = new TermFrequencies();
-				termFrequencies[i].setFreqs(freqs);
-				docNorms[i] = (float) Math.sqrt(docLength);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-		}
-		directedIndexController.setDocNorms(docNorms);
-		directedIndexController.setIdfs(idfs);
-		directedIndexController.setTermFrequencies(termFrequencies);
-	}
 	
-	/*private static float tfidf(int docid1, int docid2){
-		float score = 0;
-		float doc1Norm = directedIndexController.getDocNorms()[docid1];
-		float doc2Norm = directedIndexController.getDocNorms()[docid2];
-		TermFrequencies termFrequencies1 = directedIndexController.getTermFrequencies()[docid1];
-		TermFrequencies termFrequencies2 = directedIndexController.getTermFrequencies()[docid2];
-		for (Entry<String,Float> entry: termFrequencies1.getFreqs().entrySet() ) {
-			if (termFrequencies2.getFreqs().containsKey(entry.getKey())){
-				float idf = directedIndexController.getIdfs().get(entry.getKey());
-				float tf1 = termFrequencies2.getFreqs().get(entry.getKey());
-				float tf2 = termFrequencies2.getFreqs().get(entry.getKey());
-				score += tf1*idf*tf2*idf;
-			}
-		}
-		score /= doc1Norm*doc2Norm;
-		return score;
-	}*/
-	
-	private static float tfidf(int docid1, int docid2){
+	private static float tfidf(int docid1, int docid2, int docCount, Map<String,Float> docFreqs){
 		float score = 0;
 		
 		TermsEnum termVector1 = null;
@@ -274,13 +205,13 @@ public class RetrievalController {
 				float df = 0;
 				String t = term1.utf8ToString();
 				if (docFreqs.containsKey(t)){
-					df = docFreqs.get(t);
+					df = (float) docFreqs.get(t);
 					
 				} 
 				
 				docNorm1 += tf1*tf1;
 				docNorm2 += tf2*tf2;
-				float idf = (float)(Math.log(docCount/(df+1)));
+				float idf = (float)(Math.log(docCount)/(df+1));
 				
 				score += tf1*idf*tf2*idf;
 				t1 = termVector1.next();
@@ -288,7 +219,7 @@ public class RetrievalController {
 			}
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		docNorm1 = (float) Math.sqrt(docNorm1);
@@ -303,26 +234,36 @@ public class RetrievalController {
 		
 		int n = RetrievalCache.docids.length;
 		
+		
+		
 		IndexSearcher searcher  = RetrievalController.getIndexSearcher(RetrievalCache.indexName);
 		
 		IndexReader reader = searcher.getIndexReader();
 		
 		if (docFreqs == null) {
+	        
+	        docFreqs = new HashMap<String, Map<String, Float> >();
+	        docCount = new HashMap<String,Integer>();
+		} 
+		
+		if (!docFreqs.containsKey(RetrievalCache.indexName)){
+			Map<String,Float> docFreqIndex = new HashMap<String,Float>();
 			try {
-				docCount = searcher.collectionStatistics("content").docCount();
+				BytesRef term = null;
+				docCount.put(RetrievalCache.indexName, (int) searcher.collectionStatistics("content").docCount());
 				TermsEnum termsEnum = MultiFields.getTerms(reader, "content").iterator();
-		      
-		        BytesRef term = null;
-		        docFreqs = new HashMap<String, Float>();
 		        while ((term = termsEnum.next()) != null) {
-		          docFreqs.put(term.utf8ToString(),(float) termsEnum.docFreq());
+		        	docFreqIndex.put(term.utf8ToString(),(float) termsEnum.docFreq());
 		        }
 				
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			docFreqs.put(RetrievalCache.indexName, docFreqIndex);
 		}
+		
+		
 		if (termsVector == null){
 			termsVector = new Terms[n];
 			for (int i = 0; i < docids.length; i++) {
@@ -335,8 +276,10 @@ public class RetrievalController {
 		}
 		
 		float[] scores = new float[n];
+		int count = docCount.get(RetrievalCache.indexName);
+		Map<String,Float> dfreq = docFreqs.get(RetrievalCache.indexName);
 		for (int i = 0; i < docids.length; i++) {
-			scores[i] = tfidf(i,docid);
+			scores[i] = tfidf(i,docid,count,dfreq);
 		}
 	    return scores;
 	}
