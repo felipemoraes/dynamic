@@ -35,6 +35,7 @@ public class Baseline extends InteractiveReranker {
 		fiedlWeights[0] = params[1];
 		fiedlWeights[1] = 1-params[1];
 		RetrievalController.setFiedlWeights(fiedlWeights);
+		RetrievalController.parser = null;
 		ResultSet result = RetrievalController.search(query, index);
 		docids = result.docids;
 		relevance = result.scores;
