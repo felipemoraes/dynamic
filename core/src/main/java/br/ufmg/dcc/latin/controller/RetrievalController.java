@@ -318,7 +318,6 @@ public class RetrievalController {
         for(int i=0; i< n; i++){
 			try {
 				 Document doc = searcher.doc(hits[i].doc);
-				 System.out.println(searcher.explain(query, hits[i].doc));
 	             docnos[i] = doc.get("docno");
 	             scores[i] = hits[i].score;
 	             docids[i] = hits[i].doc;
