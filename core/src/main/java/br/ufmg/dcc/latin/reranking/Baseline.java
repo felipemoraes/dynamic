@@ -1,13 +1,21 @@
 package br.ufmg.dcc.latin.reranking;
 
+import java.util.HashMap;
+
 import org.apache.lucene.search.similarities.BM25;
 import org.apache.lucene.search.similarities.DPH;
 import org.apache.lucene.search.similarities.LMDirichlet;
 
+import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.controller.RetrievalController;
 import br.ufmg.dcc.latin.feedback.Feedback;
+import br.ufmg.dcc.latin.querying.ResultSet;
+import br.ufmg.dcc.latin.querying.SelectedSet;
 
 public class Baseline extends InteractiveReranker {
+	
+	private String query;
+	private String index;
 	
 	public Baseline(String sim){
 		if (sim.equals("LM")){
@@ -21,11 +29,24 @@ public class Baseline extends InteractiveReranker {
 	
 	@Override
 	public void start(float[] params) {
+		
 		super.start(params);
 		float[] fiedlWeights = new float[2];
 		fiedlWeights[0] = params[1];
 		fiedlWeights[1] = 1-params[1];
 		RetrievalController.setFiedlWeights(fiedlWeights);
+		ResultSet result = RetrievalController.search(query, index);
+		docids = result.docids;
+		relevance = result.scores;
+		docnos = result.docnos;
+		selected = new SelectedSet();
+		RetrievalCache.passageCache = new HashMap<String,float[]>();
+	}
+	
+	@Override
+	public void start(String query, String index){
+		this.query = query;
+		this.index = index;
 	}
 
 	@Override

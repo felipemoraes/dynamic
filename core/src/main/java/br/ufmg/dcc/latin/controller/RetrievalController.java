@@ -91,6 +91,7 @@ public class RetrievalController {
 			createAnalyzer();
 		}
 		Map<String,Float> boosts = new HashMap<String,Float>();
+		
 		boosts.put("title", fiedlWeights[0]);
 		boosts.put("content", fiedlWeights[1]);
 		parser = new MultiFieldQueryParser(new String[]{"title", "content"}, analyzer, boosts);
@@ -318,7 +319,6 @@ public class RetrievalController {
 			try {
 				 Document doc = searcher.doc(hits[i].doc);
 	             docnos[i] = doc.get("docno");
-	             
 	             scores[i] = hits[i].score;
 	             docids[i] = hits[i].doc;
 	             docsContent[i] = doc.get("content");
