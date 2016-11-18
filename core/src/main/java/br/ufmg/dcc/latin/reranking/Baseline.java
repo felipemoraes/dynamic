@@ -18,6 +18,15 @@ public class Baseline extends InteractiveReranker {
 			RetrievalController.setSimilarity(new BM25());
 		} 
 	}
+	
+	@Override
+	public void start(float[] params) {
+		super.start(params);
+		float[] fiedlWeights = new float[2];
+		fiedlWeights[0] = params[1];
+		fiedlWeights[1] = 1-params[1];
+		RetrievalController.setFiedlWeights(fiedlWeights);
+	}
 
 	@Override
 	protected float score(int docid) {

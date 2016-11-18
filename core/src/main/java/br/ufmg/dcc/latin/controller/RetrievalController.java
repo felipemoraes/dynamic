@@ -44,11 +44,11 @@ public class RetrievalController {
 	
 	private static QueryParser parser;
 	
+	private static float[] fiedlWeights;
+	
 	private static Analyzer analyzer;
 	
 	private static Similarity similarity;
-	
-	private static DirectedIndexController directedIndexController;
 	
 	public static Terms[] termsVector;
 	
@@ -91,8 +91,8 @@ public class RetrievalController {
 			createAnalyzer();
 		}
 		Map<String,Float> boosts = new HashMap<String,Float>();
-		boosts.put("title", 0.3f);
-		boosts.put("content", 0.7f);
+		boosts.put("title", fiedlWeights[0]);
+		boosts.put("content", fiedlWeights[1]);
 		parser = new MultiFieldQueryParser(new String[]{"title", "content"}, analyzer, boosts);
 		return parser;
 	}
@@ -347,5 +347,13 @@ public class RetrievalController {
 
 	public static void setSimilarity(Similarity sim) {
 		similarity = sim;
+	}
+
+	public static float[] getFiedlWeights() {
+		return fiedlWeights;
+	}
+
+	public static void setFiedlWeights(float[] fiedlWeights) {
+		RetrievalController.fiedlWeights = fiedlWeights;
 	}
 }
