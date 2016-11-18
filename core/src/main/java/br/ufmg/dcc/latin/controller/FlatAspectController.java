@@ -85,7 +85,7 @@ public class FlatAspectController implements AspectController {
 			}
 			int k = 0;
 			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
-				
+				aspectComponent = RetrievalCache.query + " " + aspectComponent;
 				float[] scores = null;
 				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
 					scores = RetrievalCache.passageCache.get(aspectComponent);

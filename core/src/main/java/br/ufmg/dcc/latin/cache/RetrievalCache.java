@@ -16,6 +16,7 @@ public class RetrievalCache {
 	public static TopDocs topDocs;
 	
 	public static String indexName;	
+	public static String query;	
 	
 	public static Map<String,IndexSearcher> indices;
 	

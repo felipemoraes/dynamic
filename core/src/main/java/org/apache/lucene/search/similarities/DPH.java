@@ -48,7 +48,7 @@ public class DPH extends SimilarityBase {
 	if ((1f-f) > 0) { 
 		score += 0.5*log2(2d*Math.PI*freq*(1f-f));
 	}
-
+	score = stats.getBoost()*score;
     return score;
   }
   
