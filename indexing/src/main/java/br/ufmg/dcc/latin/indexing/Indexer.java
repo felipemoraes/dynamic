@@ -44,6 +44,9 @@ import org.jwat.warc.WarcRecord;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
+import de.l3s.boilerpipe.BoilerpipeProcessingException;
+import de.l3s.boilerpipe.extractors.ArticleExtractor;
+
 public class Indexer {
 	
 	private static FieldType ft = new FieldType();
@@ -135,6 +138,7 @@ public class Indexer {
 	        String title = "";
             String description = "";
             String content = "";
+            String raw_content = "";
             String key = "";
             try {
             	key = record.getHeader("WARC-TREC-ID").value;
@@ -159,25 +163,30 @@ public class Indexer {
             boolean exception = false;
             
             try {
-                content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
-                InputStream in = IOUtils.toInputStream(content, "UTF-8");
+            	
+                raw_content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
+                content = ArticleExtractor.INSTANCE.getText(raw_content);
+                InputStream in = IOUtils.toInputStream(raw_content, "UTF-8");
             	parser.parse(in, handler, metadata, context);
                 title = metadata.get("title");
                 description = metadata.get("description");
-                content = handler.toString();
+                raw_content = handler.toString();
+                
             } catch (TikaException e) {
             	exception = true;
             } catch (SAXException e) {
             	exception = true;
             } catch (IOException e) {
             	exception = true;
-
+			} catch (BoilerpipeProcessingException e) {
+				exception = true;
+				e.printStackTrace();
 			} 
             
             if (exception) {
             	try {
                	org.jsoup.nodes.Document doc = Jsoup.parse(content);
-            	content = doc.text();
+               	raw_content = doc.text();
             	title = doc.title();
             	} catch (Exception e){
             	}
@@ -204,6 +213,8 @@ public class Indexer {
             doc.add(descriptionField);
             Field contentField = new Field("content", content,ft);
             doc.add(contentField);
+            Field rawContentField = new Field("raw_content", raw_content,ft);
+            doc.add(rawContentField);
             docs.add(doc);
           
 		}

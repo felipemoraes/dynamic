@@ -6,9 +6,8 @@ dependencies {
 	compile group: 'org.apache.tika', name: 'tika-core', version: '1.13'
 	compile group: 'org.apache.tika', name: 'tika-parsers', version: '1.13'
 	compile group: 'org.jwat', name: 'jwat-warc', version: '1.0.4'
-	compile group: 'org.apache.lucene', name: 'lucene-core', version: '6.3.0'
-	compile group: 'org.apache.lucene', name: 'lucene-queryparser', version: '6.3.0'
-	compile group: 'org.apache.lucene', name: 'lucene-analyzers-common', version: '6.3.0'
+	compile group: 'com.syncthemall', name: 'boilerpipe', version: '1.2.2'
+	
 	compile project(':core')
 }
 
