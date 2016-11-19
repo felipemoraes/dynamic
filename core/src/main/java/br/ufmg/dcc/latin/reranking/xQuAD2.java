@@ -38,6 +38,7 @@ public class xQuAD2 extends InteractiveReranker {
 			diversity +=  importance[i]*coverage[docid][i];
 		}
 		
+		
 		float score = (1-lambda)*relevance[docid] + lambda*diversity*novelty[docid];
 		return score;
 	}
@@ -55,7 +56,12 @@ public class xQuAD2 extends InteractiveReranker {
 	    
 	    probs = normalize(probs);
 	    
-	    novelty[docid] *= (1-probs[docid]);
+	    for (int i = 0; i < probs.length; i++) {
+	    	 novelty[i] *= (1-probs[i]);
+	    	 
+	    	
+		}
+	  
 		
 	}
 	
@@ -101,6 +107,7 @@ public class xQuAD2 extends InteractiveReranker {
 			}
 			update(j);
 		}
+
 	}
 
 

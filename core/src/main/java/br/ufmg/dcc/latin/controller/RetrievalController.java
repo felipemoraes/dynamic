@@ -4,19 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.custom.CustomAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.Fields;
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexReaderContext;
 import org.apache.lucene.index.MultiFields;
 import org.apache.lucene.index.PostingsEnum;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.index.TermContext;
 import org.apache.lucene.index.Terms;
 import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
@@ -27,11 +22,9 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Rescorer;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TermStatistics;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.similarities.LMDirichlet;
+import org.apache.lucene.search.similarities.DPH;
 import org.apache.lucene.search.similarities.Similarity;
-
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.BytesRef;
 
@@ -58,7 +51,7 @@ public class RetrievalController {
 	 
 	public static IndexSearcher getIndexSearcher(String indexName){
 		if (similarity == null) {
-			similarity = new LMDirichlet(2500.0f);
+			similarity = new DPH();
 		}
 		if (RetrievalCache.indices == null) {
 			RetrievalCache.indices = new HashMap<String,IndexSearcher>();
@@ -208,12 +201,14 @@ public class RetrievalController {
 					df = (float) docFreqs.get(t);
 					
 				} 
-				
-				docNorm1 += tf1*tf1;
-				docNorm2 += tf2*tf2;
 				float idf = (float)(Math.log(docCount)/(df+1));
+				float weight1 = tf1*idf;
+				float weight2 = tf2*idf;
+				docNorm1 += weight1*weight1;
+				docNorm2 += weight2*weight2;
 				
-				score += tf1*idf*tf2*idf;
+				
+				score += weight1*weight2;
 				t1 = termVector1.next();
 				t2 = termVector2.next();
 			}
@@ -225,7 +220,8 @@ public class RetrievalController {
 		docNorm1 = (float) Math.sqrt(docNorm1);
 		docNorm2 = (float) Math.sqrt(docNorm2);
 
-		score /= docNorm1*docNorm2;
+
+		score /= (docNorm1*docNorm2);
 		
 		return score;
 	}

@@ -14,7 +14,7 @@ public abstract class InteractiveReranker implements Reranker {
 	protected int[] docids;
 	protected String[] docnos;
 	
-	private int depth;
+	protected int depth;
 	
 	protected SelectedSet selected;
 	
@@ -50,6 +50,7 @@ public abstract class InteractiveReranker implements Reranker {
 			}
 			
 			// update the score of the selected document
+			
 			result.scores[k] = maxScore;
 			result.docids[k] = docids[maxRank];
 			result.docnos[k] = docnos[maxRank];
@@ -65,6 +66,7 @@ public abstract class InteractiveReranker implements Reranker {
 	public abstract void update(Feedback[] feedback);
 	
 	public void start(String query, String index){
+		RetrievalController.setFiedlWeights(new float[]{0.2f,0.8f});
 		ResultSet result = RetrievalController.search(query, index);
 		docids = result.docids;
 		relevance = result.scores;

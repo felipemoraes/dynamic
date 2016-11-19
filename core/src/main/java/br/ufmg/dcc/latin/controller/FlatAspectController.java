@@ -1,8 +1,6 @@
 package br.ufmg.dcc.latin.controller;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.diversity.FlatAspectModel;
@@ -21,6 +19,8 @@ public class FlatAspectController implements AspectController {
 	public float[] novelty;
 	public float[][] coverage;
 	
+	public float[] accumulatedRelevance;
+	
 	public float[][][] features;
 	
 	public float[] v;
@@ -38,11 +38,93 @@ public class FlatAspectController implements AspectController {
 		coverage = new float[n][0];
 		v = new float[0];
 		s = new float[0];
+		accumulatedRelevance = new float[0];
 	}
 	
 
-	
 
+	public void miningCTAspects(Feedback[] feedbacks) {
+		cacheFeedback(feedbacks);
+		if (flatAspectModel == null) {
+			flatAspectModel = new FlatAspectModel();
+		}
+		
+		for (int i = 0; i < feedbacks.length; i++) {
+			if (!feedbacks[i].isOnTopic()){
+				continue;
+			}
+			Passage[] passages = feedbacks[i].getPassages();
+			for (int j = 0; j < passages.length; j++) {
+				flatAspectModel.addToAspect(passages[j].getAspectId(), passages[j].getText());
+			}
+		}
+
+		
+		int aspectSize = flatAspectModel.getAspects().size();
+		if (aspectSize == 0) {
+			return;
+		}
+		importance = new float[aspectSize];
+		novelty = new float[aspectSize];
+		coverage = new float[n][aspectSize];
+		accumulatedRelevance = new float[aspectSize];
+		features = new float[n][aspectSize][];
+		
+		float uniformImportance = 1.0f/aspectSize;
+		
+		Arrays.fill(importance, uniformImportance);
+		Arrays.fill(novelty, 0f);
+		Arrays.fill(accumulatedRelevance, 0f);
+		int i = 0;
+
+		for (String aspectId : flatAspectModel.getAspects()) {
+			
+			int s = flatAspectModel.getAspectComponents(aspectId).size();
+			for(int j = 0;j< n ;++j) {
+				features[j][i] = new float[s];
+			}
+			int k = 0;
+			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
+				aspectComponent = RetrievalCache.query + " " + aspectComponent;
+				float[] scores = null;
+				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
+					scores = RetrievalCache.passageCache.get(aspectComponent);
+				} else {
+					scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids, aspectComponent);
+					RetrievalCache.passageCache.put(aspectComponent, scores);
+				}
+				
+			    scores = scaling(scores);
+			    for(int j = 0;j< n ;++j) {
+			    	float score = scores[j];
+
+			    	features[j][i][k] = score;
+			    	if (coverage[j][i] < score) {
+			    		coverage[j][i] = score;
+			    	}
+			    }
+			    k++;
+			}
+
+			for(int j = 0;j< n ;++j) {
+				if (this.feedbacks[j] != null) {
+					float score = this.feedbacks[j].getRelevanceAspect(aspectId);
+					coverage[j][i] = score;
+					
+					if (score > 0) {
+						novelty[i]+=1;
+					}
+
+					accumulatedRelevance[i] += score;
+				}
+			}
+			
+			i++;
+		}
+	
+		
+	}
+	
 	@Override
 	public void miningDiversityAspects(Feedback[] feedbacks) {
 		
@@ -114,6 +196,7 @@ public class FlatAspectController implements AspectController {
 			i++;
 		}
 		normalizeCoverage();
+
 	}
 	
 	
@@ -219,27 +302,14 @@ public class FlatAspectController implements AspectController {
 		
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < feedbacks.length; j++) {
-				if (feedbacks[j].getDocno() == RetrievalCache.docnos[i]){
+				if (feedbacks[j].getDocno().equals(RetrievalCache.docnos[i])){
 					this.feedbacks[i] = feedbacks[j]; 
 				}
 			}
 		}
 	}
 	
-	private float[] normalize(float[] values){
-		float sum = 0;
-		for (int i = 0; i < values.length; i++) {
-			sum += values[i];
-		}
-		for (int i = 0; i < values.length; i++) {
-			if (sum > 0) {
-				values[i] = values[i]/sum;
-			}
-			
-		}
-		return values;
-	}
-	
+
 	
 	public void normalizeCoverage(){
 		for (int i = 0; i < coverage[0].length; ++i) {

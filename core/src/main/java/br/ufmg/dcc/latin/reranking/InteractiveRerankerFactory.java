@@ -25,6 +25,10 @@ public class InteractiveRerankerFactory {
 			reranker = new Baseline(className);
 		} else if (className.equals("BM25")) {
 			reranker = new Baseline(className);
+		}else if (className.equals("Cube")) {
+			reranker = new Cube();
+		}else if (className.equals("xQuAD*")) {
+			reranker = new xQuADStar();
 		}
 		
 		return reranker;

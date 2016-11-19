@@ -24,11 +24,11 @@ public class Feedback {
 			return 0;
 		}
 		for (int i = 0; i < passages.length; i++) {
-			if (aspectId == passages[i].getAspectId()) {
+			if (aspectId.equals(passages[i].getAspectId())) {
 				score = Math.max( passages[i].getRelevance(), score);
 			}
 		}
-		return (float) score/4;
+		return (float) score/4.0f;
 	}
 	
 	public void setPassages(Passage[] passages) {

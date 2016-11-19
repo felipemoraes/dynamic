@@ -1,7 +1,5 @@
 package br.ufmg.dcc.latin.reranking;
 
-import org.apache.lucene.search.similarities.TFIDF;
-
 import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.controller.RetrievalController;
 import br.ufmg.dcc.latin.feedback.Feedback;
@@ -32,18 +30,17 @@ public class MMR extends InteractiveReranker {
 			docSimCache[docid] = newCache;
 		}
 
-	    
-	    for (int i = 0; i < newCache.length; i++) {
+		
+	    for (int i = 0; i < cacheSim.length; i++) {
 			if (cacheSim[i] < newCache[i]) {
 				cacheSim[i] = newCache[i];
 			}
 		}
-
+	    
 	}
 	@Override
 	public void start(String query, String index){
 		super.start(query,index);
-		RetrievalController.setSimilarity(new TFIDF());
 		RetrievalController.termsVector = null;
 		docSimCache = new float[relevance.length][];
 	}

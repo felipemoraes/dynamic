@@ -48,6 +48,7 @@ public class xQuAD extends InteractiveReranker {
 		for (int i = 0; i < novelty.length; i++) {
 			novelty[i] *= (1-coverage[docid][i]);
 		}
+		
 	}
 
 	@Override
