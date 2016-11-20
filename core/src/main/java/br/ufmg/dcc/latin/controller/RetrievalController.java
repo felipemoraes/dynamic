@@ -151,6 +151,9 @@ public class RetrievalController {
 		TermsEnum termVector2 = null;
 
 		try {
+			if (termsVector[docid1] == null || termsVector[docid2] == null ){
+				return 0;
+			}
 			termVector1 = termsVector[docid1].iterator();
 			termVector2 = termsVector[docid2].iterator();
 		} catch (IOException e) {
