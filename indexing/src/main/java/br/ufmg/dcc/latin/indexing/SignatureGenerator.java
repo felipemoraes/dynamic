@@ -32,6 +32,7 @@ import org.xml.sax.SAXException;
 
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.ArticleExtractor;
+import de.l3s.boilerpipe.extractors.DefaultExtractor;
 
 public class SignatureGenerator {
 
@@ -88,7 +89,7 @@ public class SignatureGenerator {
 	            try {
 	            	
 	            	content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
-	            	content = ArticleExtractor.INSTANCE.getText(content);
+	            	content = DefaultExtractor.INSTANCE.getText(content);
 	            	
 	            	
 	            	
