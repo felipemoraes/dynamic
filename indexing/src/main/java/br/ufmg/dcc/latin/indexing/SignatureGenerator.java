@@ -33,6 +33,7 @@ import org.xml.sax.SAXException;
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.ArticleExtractor;
 import de.l3s.boilerpipe.extractors.DefaultExtractor;
+import de.l3s.boilerpipe.extractors.LargestContentExtractor;
 
 public class SignatureGenerator {
 
@@ -57,6 +58,7 @@ public class SignatureGenerator {
    			SolrParams solrParams = SolrRequestParsers.parseQueryString(request
    				.toString());
    		
+   	
 	    	System.out.println("Parsing file " + file);
 	    	
 	    	
@@ -89,7 +91,7 @@ public class SignatureGenerator {
 	            try {
 	            	
 	            	content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
-	            	content = DefaultExtractor.INSTANCE.getText(content);
+	            	content = LargestContentExtractor.INSTANCE.getText(content);
 	            	
 	            	
 	            	
