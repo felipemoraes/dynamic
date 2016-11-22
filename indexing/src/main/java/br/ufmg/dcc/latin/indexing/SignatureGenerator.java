@@ -87,11 +87,13 @@ public class SignatureGenerator {
 	            
 	            try {
 	            	
+	            	content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
 	            	content = ArticleExtractor.INSTANCE.getText(content);
 	            	
-	            	/*content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
+	            	
+	            	
 	  
-	                InputStream in = IOUtils.toInputStream(content, "UTF-8");
+	                /*InputStream in = IOUtils.toInputStream(content, "UTF-8");
 	            	parser.parse(in, handler, metadata, context);
 	            	content = handler.toString();*/
 	                
@@ -117,7 +119,7 @@ public class SignatureGenerator {
 	    		
 	            TextProfileSignature signaure = new TextProfileSignature();
 	            signaure.init(solrParams);
-	   
+	            
 	            signaure.add(content);
 	            
 	            
