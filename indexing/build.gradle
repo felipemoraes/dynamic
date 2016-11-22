@@ -7,7 +7,8 @@ dependencies {
 	compile group: 'org.apache.tika', name: 'tika-parsers', version: '1.13'
 	compile group: 'org.jwat', name: 'jwat-warc', version: '1.0.4'
 	compile group: 'com.syncthemall', name: 'boilerpipe', version: '1.2.2'
-	
+	compile group: 'org.apache.solr', name: 'solr-core', version: '6.3.0'
+	compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
 	compile project(':core')
 }
 
@@ -18,5 +19,14 @@ task indexing(type: JavaExec, dependsOn: classes) {
        args (Xargs.split());
     }
 }
+
+task signature(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.indexing.SignatureGenerator'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
+
 
 mainClassName = ' '
