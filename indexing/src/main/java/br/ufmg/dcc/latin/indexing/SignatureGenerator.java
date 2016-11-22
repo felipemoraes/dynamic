@@ -30,6 +30,9 @@ import org.jwat.warc.WarcRecord;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
+import de.l3s.boilerpipe.BoilerpipeProcessingException;
+import de.l3s.boilerpipe.extractors.ArticleExtractor;
+
 public class SignatureGenerator {
 
 	public static List<String> readFileListFromDirectory(String directoryPath) throws IOException{
@@ -84,18 +87,17 @@ public class SignatureGenerator {
 	            
 	            try {
 	            	
-	            	content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
+	            	content = ArticleExtractor.INSTANCE.getText(content);
+	            	
+	            	/*content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
 	  
 	                InputStream in = IOUtils.toInputStream(content, "UTF-8");
 	            	parser.parse(in, handler, metadata, context);
-	            	content = handler.toString();
+	            	content = handler.toString();*/
 	                
-	            } catch (TikaException e) {
-	            	exception = true;
-	            } catch (SAXException e) {
-	            	exception = true;
-	            } catch (IOException e) {
-	            	exception = true;
+	            }  catch (BoilerpipeProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				} 
 	            
 	            
