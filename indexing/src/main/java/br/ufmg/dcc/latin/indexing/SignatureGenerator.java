@@ -33,7 +33,6 @@ import org.xml.sax.SAXException;
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.ArticleExtractor;
 import de.l3s.boilerpipe.extractors.DefaultExtractor;
-import de.l3s.boilerpipe.extractors.LargestContentExtractor;
 
 public class SignatureGenerator {
 
@@ -88,10 +87,10 @@ public class SignatureGenerator {
 	            
 	            boolean exception = false;
 	            
-	            try {
+	   //         try {
 	            	
 	            	content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
-	            	content = LargestContentExtractor.INSTANCE.getText(content);
+	            	//content = DefaultExtractor.INSTANCE.getText(content);
 	            	
 	            	
 	            	
@@ -100,10 +99,10 @@ public class SignatureGenerator {
 	            	parser.parse(in, handler, metadata, context);
 	            	content = handler.toString();*/
 	                
-	            }  catch (BoilerpipeProcessingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
+	     //       }  catch (BoilerpipeProcessingException e) {
+		//			// TODO Auto-generated catch block
+		//			e.printStackTrace();
+		//		} 
 	            
 	            
 	            if (exception) {
