@@ -6,11 +6,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
@@ -33,6 +39,7 @@ import org.xml.sax.SAXException;
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.ArticleExtractor;
 import de.l3s.boilerpipe.extractors.DefaultExtractor;
+import de.l3s.boilerpipe.extractors.KeepEverythingExtractor;
 
 public class SignatureGenerator {
 
@@ -48,7 +55,24 @@ public class SignatureGenerator {
         Collections.sort(fileList);
         return fileList;
 	}
-	
+    public static String normalizeUrl(String url){
+    	
+		try {
+			url = URLDecoder.decode(url, "UTF-8");
+			URI uri;
+			uri = new URI(url);
+			url = uri.normalize().toString();
+		} catch (URISyntaxException e) {
+
+		} catch (IllegalArgumentException e) {
+
+		} catch (UnsupportedEncodingException e) {
+
+		}
+		
+		return url;
+		
+    }
 	   public static List<String> createSignaturesFromFile(String file) throws IOException{
 		   
             StringBuffer request = new StringBuffer();
@@ -79,6 +103,10 @@ public class SignatureGenerator {
 	            	continue;
 	            }
 	            
+	            String url = record.getHeader("WARC-Target-URI").value;
+	            url = normalizeUrl(url);
+	            
+	            
 	        	Metadata metadata = new Metadata();
 	            ContentHandler handler = new BodyContentHandler(10 * 1024 * 1024);
 	            ParseContext context = new ParseContext();
@@ -87,22 +115,22 @@ public class SignatureGenerator {
 	            
 	            boolean exception = false;
 	            
-	   //         try {
+	            try {
 	            	
 	            	content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
-	            	//content = DefaultExtractor.INSTANCE.getText(content);
+	            	content = KeepEverythingExtractor.INSTANCE.getText(content);
 	            	
 	            	
 	            	
 	  
-	                /*InputStream in = IOUtils.toInputStream(content, "UTF-8");
-	            	parser.parse(in, handler, metadata, context);
-	            	content = handler.toString();*/
+	             //   InputStream in = IOUtils.toInputStream(content, "UTF-8");
+	            //	parser.parse(in, handler, metadata, context);
+	            //	content = handler.toString();
 	                
-	     //       }  catch (BoilerpipeProcessingException e) {
-		//			// TODO Auto-generated catch block
-		//			e.printStackTrace();
-		//		} 
+	            }  catch ( BoilerpipeProcessingException e) {
+					// TODO Auto-generated catch block
+				//	e.printStackTrace();
+				} 
 	            
 	            
 	            if (exception) {
@@ -124,8 +152,17 @@ public class SignatureGenerator {
 	            
 	            signaure.add(content);
 	            
+	            if (content == "") {
+	            	continue;
+	            }
 	            
 	            String s = Hex.encodeHexString( signaure.getSignature() );
+	          //  if (duplicates.containsKey(s)) {
+	           // 	System.out.println("Duplicated doc: " + url);
+			//		System.out.println(duplicates.get(s));
+			//	} else {
+			//		duplicates.put(s, url);
+			//	}
 	            docs.add(key + " " + s);
 	          
 			}
@@ -150,7 +187,10 @@ public class SignatureGenerator {
 		}
 	}
 	   
+	public static Map<String,String> duplicates;
 	public static void main(String[] args) {
+		
+		duplicates = new HashMap<String,String>();
 		
 		String collectionPath = "/Users/felipemoraes/ebola16";
         
