@@ -164,8 +164,8 @@ public class SignatureGenerator {
             String s = Hex.encodeHexString( signature.getSignature() );
            if (duplicates.containsKey(s)) {
         	  
-        	   System.out.println("Duplicate doc: " + mainContent);
-        	   System.out.println(duplicates.get(s));
+        //	   System.out.println("Duplicate doc: " + mainContent);
+        //	   System.out.println(duplicates.get(s));
 			} else {
 				duplicates.put(s, mainContent);
 			}
