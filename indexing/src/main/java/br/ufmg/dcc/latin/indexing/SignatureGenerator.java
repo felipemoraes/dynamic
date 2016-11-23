@@ -110,7 +110,7 @@ public class SignatureGenerator {
 		
         StringBuffer request = new StringBuffer();
         request.append("quantRate=0.01");
-		request.append("&minTokenLen=2");
+		request.append("&minTokenLen=3");
 		SolrParams solrParams = SolrRequestParsers.parseQueryString(request
 			.toString());
 	
@@ -134,6 +134,11 @@ public class SignatureGenerator {
 
 
             String key = (String) obj.get("key");
+            
+            String url = (String) obj.get("url");
+            
+            url = normalizeUrl(url);
+            
             LinkedHashMap response = (LinkedHashMap) obj.get("response");
             String content = (String) response.get("body");
             Document html = Jsoup.parse(content);
@@ -157,7 +162,13 @@ public class SignatureGenerator {
 
             
             String s = Hex.encodeHexString( signature.getSignature() );
-
+           if (duplicates.containsKey(s)) {
+        	  
+        	   System.out.println("Duplicate doc: " + mainContent);
+        	   System.out.println(duplicates.get(s));
+			} else {
+				duplicates.put(s, mainContent);
+			}
             docs.add(key + " " + s);
           
 		}
@@ -206,12 +217,12 @@ public class SignatureGenerator {
 	}
 	   
 	public static HashSet<String> relevants;
-	public static Map<String,HashSet<String>> duplicates;
+	public static Map<String, String> duplicates;
 	
 	private static int duplicateCounter = 0;
 	public static void main(String[] args) {
 		
-		duplicates = new HashMap<String,HashSet<String>>();
+		duplicates = new HashMap<String, String>();
 		relevants = new HashSet<>();
 		String collectionPath = "/Users/felipemoraes/ebola16_cbor";
         
@@ -235,7 +246,7 @@ public class SignatureGenerator {
             for (String f : files) {
                 System.out.println("About to Parse Files in: " +  f);
                 List<String> signatures = createSignaturesFromFile(f);
-                writeToFile(collectionPath+"_signatures", signatures);
+             //   writeToFile(collectionPath+"_signatures", signatures);
                 counter++;
                 System.out.println("Genenated " + counter + " of " + files.size());
                 
