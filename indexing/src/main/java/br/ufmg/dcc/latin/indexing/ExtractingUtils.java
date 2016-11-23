@@ -40,17 +40,30 @@ public class ExtractingUtils {
     }
     public static String extractArticle(String content) throws BoilerpipeProcessingException  {
         BoilerpipeExtractor extractor = CommonExtractors.ARTICLE_EXTRACTOR;
-        return extractor.getText(content);
+        try {
+        	 return extractor.getText(content);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return extractor.getText(flattenToAscii(content));
+		}
+       
     }
     
     public static String extractDefault(String content) throws BoilerpipeProcessingException{
         BoilerpipeExtractor extractor = CommonExtractors.DEFAULT_EXTRACTOR;
-        return extractor.getText(content);
+        try {
+       	 return extractor.getText(content);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return extractor.getText(flattenToAscii(content));
+		}
     }
     
     public static String extractKeep(String content) throws BoilerpipeProcessingException{
         BoilerpipeExtractor extractor = CommonExtractors.KEEP_EVERYTHING_EXTRACTOR;
-        return extractor.getText(content);
+        try {
+       	 return extractor.getText(content);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return extractor.getText(flattenToAscii(content));
+		}
     }
     
    
