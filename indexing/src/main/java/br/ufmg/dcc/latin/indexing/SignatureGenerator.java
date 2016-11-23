@@ -201,7 +201,8 @@ public class SignatureGenerator {
 			String line;
 			while ((line = br.readLine()) != null) {
 		    	String[] splitLine = line.split(" ");
-		    	
+		    	System.out.println(line);
+		    	System.out.println(splitLine.length);
 		    	relevants.add(splitLine[2]);
 	
 			}
