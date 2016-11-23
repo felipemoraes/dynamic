@@ -16,8 +16,10 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
@@ -33,6 +35,11 @@ import org.jwat.warc.WarcReaderFactory;
 import org.jwat.warc.WarcRecord;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
+
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
 
 import de.l3s.boilerpipe.BoilerpipeExtractor;
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
@@ -92,6 +99,10 @@ public class SignatureGenerator {
 
    public static List<String> createSignaturesFromFile(String file) throws IOException{
 	   
+
+		CBORFactory f = new CBORFactory();
+		ObjectMapper mapper = new ObjectMapper(f);
+		
         StringBuffer request = new StringBuffer();
         request.append("quantRate=0.01");
 		request.append("&minTokenLen=2");
@@ -104,30 +115,22 @@ public class SignatureGenerator {
     	
     	List<String> docs = new ArrayList<String>();
 		
-		InputStream fp = new FileInputStream(file);
+    	InputStream fp = new FileInputStream(file);
+		if (file.endsWith(".gz")) {
+			fp = new GZIPInputStream(fp);
+		}
 		
-    	WarcReader reader = WarcReaderFactory.getReader(fp);
-		WarcRecord record;
+		ObjectReader r = mapper.reader(Map.class);
+		MappingIterator<Map> it = r.readValues(fp);
+		while (it.hasNextValue()) {
+			Map obj = it.nextValue();
+
 		
-		while ( (record = reader.getNextRecord()) != null ) {
 
 
-            String key = "";
-            
-            try {
-            	key = record.getHeader("WARC-TREC-ID").value;
-            } catch (Exception e){
-            	continue;
-            }
-            
-            String url = record.getHeader("WARC-Target-URI").value;
-            url = normalizeUrl(url);
-            
-
-            
-            String content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
-          
-            content = flattenToAscii(content);
+            String key = (String) obj.get("key");
+            LinkedHashMap response = (LinkedHashMap) obj.get("response");
+            String content = (String) response.get("body");
             Document html = Jsoup.parse(content);
             
     		String mainContent = "";
@@ -184,7 +187,7 @@ public class SignatureGenerator {
 		
 		duplicates = new HashMap<String,String>();
 		
-		String collectionPath = "/Users/felipemoraes/ebola16";
+		String collectionPath = "/Users/felipemoraes/ebola16_cbor";
         
 		
         try {
