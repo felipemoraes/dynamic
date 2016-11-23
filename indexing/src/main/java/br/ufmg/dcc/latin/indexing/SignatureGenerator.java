@@ -1,7 +1,10 @@
 package br.ufmg.dcc.latin.indexing;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,6 +45,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
 
+import br.ufmg.dcc.latin.feedback.Passage;
 import de.l3s.boilerpipe.BoilerpipeExtractor;
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.ArticleExtractor;
@@ -154,7 +158,9 @@ public class SignatureGenerator {
             String s = Hex.encodeHexString( signaure.getSignature() );
            if (duplicates.containsKey(s)) {
         	   if (duplicates.get(s).contains(mainContent)){
-        		   duplicateCounter++;
+        		   if (!relevants.contains(key)) {
+        			   duplicateCounter++;
+        		   }
         		   System.out.println("Duplicates counter:"  + duplicateCounter);
         	   } else {
         		   duplicates.get(s).add(mainContent);
@@ -188,7 +194,30 @@ public class SignatureGenerator {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void readRelevants(String filename){
+		relevants = new HashSet<>();
+		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+		    	String[] splitLine = line.split(",",5);
+		    	
+		    	relevants.add(splitLine[2]);
+	
+			}
+			
+			
+		} catch (FileNotFoundException e) {
+			
+			e.printStackTrace();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
+	}
 	   
+	public static HashSet<String> relevants;
 	public static Map<String,HashSet<String>> duplicates;
 	
 	private static int duplicateCounter = 0;
@@ -207,6 +236,8 @@ public class SignatureGenerator {
            // System.exit(1);
         }
         
+        
+        readRelevants(args[1]);
         int counter = 0;
         
         try {
