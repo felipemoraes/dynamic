@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,14 +24,10 @@ import org.apache.commons.io.IOUtils;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.servlet.SolrRequestParsers;
 import org.apache.solr.update.processor.TextProfileSignature;
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.Parser;
-import org.apache.tika.sax.BodyContentHandler;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.parser.Parser;
 import org.jwat.warc.WarcReader;
 import org.jwat.warc.WarcReaderFactory;
 import org.jwat.warc.WarcRecord;
@@ -81,6 +78,17 @@ public class SignatureGenerator {
         BoilerpipeExtractor extractor = CommonExtractors.ARTICLE_EXTRACTOR;
         return extractor.getText(html);
     }
+    
+    public static String flattenToAscii(String string) {
+        char[] out = new char[string.length()];
+        string = Normalizer.normalize(string, Normalizer.Form.NFD);
+        int j = 0;
+        for (int i = 0, n = string.length(); i < n; ++i) {
+            char c = string.charAt(i);
+            if (c <= '\u007F') out[j++] = c;
+        }
+        return new String(out);
+    }
 
    public static List<String> createSignaturesFromFile(String file) throws IOException{
 	   
@@ -112,18 +120,21 @@ public class SignatureGenerator {
             	continue;
             }
             
-          //  String url = record.getHeader("WARC-Target-URI").value;
-          //  url = normalizeUrl(url);
+            String url = record.getHeader("WARC-Target-URI").value;
+            url = normalizeUrl(url);
             
 
             
             String content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
+          
+            content = flattenToAscii(content);
             Document html = Jsoup.parse(content);
+            
     		String mainContent = "";
     		try{
-
                 mainContent = extractText(html.html());//clean text
                 mainContent = Jsoup.parse(mainContent).text();//clean any remaining html source code
+               
             }catch (Throwable e){
                 mainContent = (Jsoup.parse(html.html()).text());
             }
@@ -137,10 +148,10 @@ public class SignatureGenerator {
 
             
             String s = Hex.encodeHexString( signaure.getSignature() );
-         /*   if (duplicates.containsKey(s)) {
+        /*   if (duplicates.containsKey(s)) {
             	System.out.println("Duplicated doc: " + url);
 				System.out.println(duplicates.get(s));
-				 System.out.println(content);
+				 
 			} else {
 				duplicates.put(s, url);
 			}*/
