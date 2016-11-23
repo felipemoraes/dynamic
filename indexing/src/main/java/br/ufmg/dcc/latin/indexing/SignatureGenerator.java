@@ -146,8 +146,10 @@ public class SignatureGenerator {
             }catch (Throwable e){
                 mainContent = (Jsoup.parse(html.html()).text());
             }
+    		
+    		
 
-    		MD5Signature signature = new MD5Signature();
+    		TextProfileSignature signature = new TextProfileSignature();
     		
     		signature.init(solrParams);
             
@@ -155,21 +157,7 @@ public class SignatureGenerator {
 
             
             String s = Hex.encodeHexString( signature.getSignature() );
-           if (duplicates.containsKey(s)) {
-        	   if (duplicates.get(s).contains(mainContent)){
-        		   if (!relevants.contains(key)) {
-        			   duplicateCounter++;
-        		   }
-        		   System.out.println("Duplicates counter:"  + duplicateCounter);
-        	   } else {
-        		   duplicates.get(s).add(mainContent);
-        	   }
-				 
-      
-			} else {
-				duplicates.put(s, new HashSet<String>());
-				duplicates.get(s).add(mainContent);
-			}
+
             docs.add(key + " " + s);
           
 		}
@@ -195,7 +183,7 @@ public class SignatureGenerator {
 	}
 	
 	public static void readRelevants(String filename){
-		relevants = new HashSet<>();
+		
 		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
 			String line;
 			while ((line = br.readLine()) != null) {
@@ -224,7 +212,7 @@ public class SignatureGenerator {
 	public static void main(String[] args) {
 		
 		duplicates = new HashMap<String,HashSet<String>>();
-		
+		relevants = new HashSet<>();
 		String collectionPath = "/Users/felipemoraes/ebola16_cbor";
         
 		
@@ -237,7 +225,7 @@ public class SignatureGenerator {
         }
         
         
-        readRelevants(args[1]);
+        //readRelevants(args[1]);
         int counter = 0;
         
         try {
@@ -247,7 +235,7 @@ public class SignatureGenerator {
             for (String f : files) {
                 System.out.println("About to Parse Files in: " +  f);
                 List<String> signatures = createSignaturesFromFile(f);
-             //   writeToFile(collectionPath+"_signatures", signatures);
+                writeToFile(collectionPath+"_signatures", signatures);
                 counter++;
                 System.out.println("Genenated " + counter + " of " + files.size());
                 
