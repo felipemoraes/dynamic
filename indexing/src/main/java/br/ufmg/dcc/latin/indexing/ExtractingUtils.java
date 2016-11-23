@@ -24,9 +24,7 @@ import com.kohlschutter.boilerpipe.extractors.CommonExtractors;
 
 public class ExtractingUtils {
 	
-	static Metadata metadata = new Metadata();
-    static ContentHandler handler = new BodyContentHandler(-1);
-    static ParseContext context = new ParseContext();
+
     
     static Parser parser = new AutoDetectParser();
     
@@ -62,6 +60,9 @@ public class ExtractingUtils {
     }
     
     public static String extractTika(String content) throws IOException, SAXException, TikaException {
+    	Metadata metadata = new Metadata();
+        ContentHandler handler = new BodyContentHandler(-1);
+        ParseContext context = new ParseContext();
     	String utfHtmlContent = new String(content.getBytes(),"UTF-8");
     	InputStream htmlStream = new ByteArrayInputStream(utfHtmlContent.getBytes());
     	parser.parse(htmlStream, handler, metadata, context);
