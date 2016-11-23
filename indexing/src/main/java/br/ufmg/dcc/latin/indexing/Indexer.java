@@ -215,36 +215,36 @@ public class Indexer {
             Field urlField = new StringField("url", url, Field.Store.YES);
             doc.add(urlField);
 
-            String s = generateSignature(article_content);
-            if (relevantDocuments.contains(key) || !articleSignatures.contains(s)){
-            	articleSignatures.add(s);
+      //      String s = generateSignature(article_content);
+            if (true){
+      //      	articleSignatures.add(s);
             	Field contentField = new Field("article_content", article_content,ft);
                 doc.add(contentField);
             }
-            s = generateSignature(default_content);
-            if (relevantDocuments.contains(key) || !defaultSignatures.contains(s)){
-            	defaultSignatures.add(s);
+       //     s = generateSignature(default_content);
+            if (true){
+        //    	defaultSignatures.add(s);
             	Field contentField = new Field("default_content", default_content,ft);
                 doc.add(contentField);
             }
             
-            s = generateSignature(keep_content);
-            if (relevantDocuments.contains(key) || !keepSignatures.contains(s)){
-            	keepSignatures.add(s);
+        //    s = generateSignature(keep_content);
+            if (true){
+          //  	keepSignatures.add(s);
             	Field contentField = new Field("keep_content", keep_content,ft);
                 doc.add(contentField);
             }
             
-            s = generateSignature(tika_content);
-            if (relevantDocuments.contains(key) || !tikaSignatures.contains(s)){
-            	tikaSignatures.add(s);
+          //  s = generateSignature(tika_content);
+            if (true){
+           // 	tikaSignatures.add(s);
             	Field contentField = new Field("tika_content", tika_content,ft);
                 doc.add(contentField);
             }
             
-            s = generateSignature(jsoup_content);
-            if (relevantDocuments.contains(key) || !jsoupSignatures.contains(s)){
-            	jsoupSignatures.add(s);
+          //  s = generateSignature(jsoup_content);
+            if (true){
+          //  	jsoupSignatures.add(s);
             	Field contentField = new Field("jsoup_content", jsoup_content,ft);
                 doc.add(contentField);
             }
