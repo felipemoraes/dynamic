@@ -161,7 +161,7 @@ public class SignatureGenerator {
     		signature.add(mainContent);
 
             
-            String s = Hex.encodeHexString( signature.getSignature() );
+            String s = bytesToHex( signature.getSignature() );
            if (duplicates.containsKey(s)) {
         	  
         //	   System.out.println("Duplicate doc: " + mainContent);
@@ -175,6 +175,14 @@ public class SignatureGenerator {
 
         return docs;
     }
+   
+   public static String bytesToHex(byte[] in) {
+	    final StringBuilder builder = new StringBuilder();
+	    for(byte b : in) {
+	        builder.append(String.format("%02x", b));
+	    }
+	    return builder.toString();
+	}
 	   
 	   
 	public static void writeToFile(String filename, List<String> texts){

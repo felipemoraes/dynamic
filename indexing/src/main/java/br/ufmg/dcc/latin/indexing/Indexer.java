@@ -241,15 +241,15 @@ public class Indexer {
 		
 	}
 	
-	public static Set<String> ignoredDocuments = new HashSet<String>();
+	public static Set<String> relevantDocuments = new HashSet<String>();
    
 	public static int indexedDocCounter = 0;
 	
-	public static void loadIgnoredFile(String ignoreFile){
-		try (BufferedReader br = new BufferedReader(new FileReader(ignoreFile))) {
+	public static void loadRelevantsFile(String relevantsFile){
+		try (BufferedReader br = new BufferedReader(new FileReader(relevantsFile))) {
 			String line;
 			while ((line = br.readLine()) != null) {
-				ignoredDocuments.add(line.replaceAll("\n", ""));
+				relevantDocuments.add(line.replaceAll("\n", ""));
 			}
 		} catch (FileNotFoundException e) {
 			
@@ -263,7 +263,8 @@ public class Indexer {
 	public static void main(String[] args) {
 		String collectionPath = "/Users/felipemoraes/polar/";
         String indexPath = "/Users/felipemoraes/polar/index";
-        String ignoreFilePath = "/Users/felipemoraes/polar_duplicates.txt";
+        String relevantsFilePath = "/Users/felipemoraes/polar_duplicates.txt";
+        
         ft.setIndexOptions( IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS );
         ft.setStoreTermVectors( true );
         ft.setStoreTermVectorOffsets( true );
@@ -275,7 +276,7 @@ public class Indexer {
         try {
         	collectionPath = args[0];
         	indexPath = args[1];
-        	ignoreFilePath = args[2];
+        	relevantsFilePath = args[2];
         } catch(Exception e){
             System.out.println(" caught a " + e.getClass() +
                     "\n with message: " + e.getMessage());
@@ -286,7 +287,7 @@ public class Indexer {
         
         try {
         	List<String> files = readFileListFromDirectory(collectionPath);
-        	loadIgnoredFile(ignoreFilePath);
+        	loadIgnoredFile(relevantsFilePath);
         	IndexWriter writer =  createWriter(indexPath);
         	System.out.println("Start indexing... We will ignore " + ignoredDocuments.size() + " documents.");
             for (String f : files) {
