@@ -247,9 +247,9 @@ public class Indexer {
             	Field contentField = new Field("jsoup_content", jsoup_content,ft);
                 doc.add(contentField);
             }
-
+            docs.add(doc);
 		}
-		docs.add(doc);
+		
         return docs;
     }
     
