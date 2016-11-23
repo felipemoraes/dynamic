@@ -23,7 +23,7 @@ import com.kohlschutter.boilerpipe.extractors.CommonExtractors;
 public class ExtractingUtils {
 	
 	static Metadata metadata = new Metadata();
-    static ContentHandler handler = new BodyContentHandler(10 * 1024 * 1024);
+    static ContentHandler handler = new BodyContentHandler(-1);
     static ParseContext context = new ParseContext();
     
     static Parser parser = new AutoDetectParser();
@@ -36,13 +36,15 @@ public class ExtractingUtils {
     }
     
     public static String extractDefault(String content) throws BoilerpipeProcessingException{
+    	Document html = Jsoup.parse(content);
         BoilerpipeExtractor extractor = CommonExtractors.DEFAULT_EXTRACTOR;
-        return extractor.getText(content);
+        return extractor.getText(html.html());
     }
     
     public static String extractKeep(String content) throws BoilerpipeProcessingException{
+    	Document html = Jsoup.parse(content);
         BoilerpipeExtractor extractor = CommonExtractors.KEEP_EVERYTHING_EXTRACTOR;
-        return extractor.getText(content);
+        return extractor.getText(html.html());
     }
     
     public static String extractJsoup(String content){
@@ -51,7 +53,8 @@ public class ExtractingUtils {
     }
     
     public static String extractTika(String content) throws IOException, SAXException, TikaException{
-    	InputStream in = IOUtils.toInputStream(content, "UTF-8");
+    	Document html = Jsoup.parse(content);
+    	InputStream in = IOUtils.toInputStream(html.html(), "UTF-8");
     	parser.parse(in, handler, metadata, context);
     	return handler.toString();
     }

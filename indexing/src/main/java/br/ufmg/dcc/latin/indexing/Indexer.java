@@ -20,7 +20,7 @@ import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.custom.CustomAnalyzer;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.FieldType;
@@ -31,24 +31,16 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.similarities.DPH;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.tika.config.TikaConfig;
+import org.apache.solr.common.params.SolrParams;
+import org.apache.solr.servlet.SolrRequestParsers;
+import org.apache.solr.update.processor.TextProfileSignature;
 import org.apache.tika.exception.TikaException;
-import org.apache.tika.io.TikaInputStream;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.Parser;
-import org.apache.tika.sax.BodyContentHandler;
-import org.jsoup.Jsoup;
 import org.jwat.warc.WarcReader;
 import org.jwat.warc.WarcReaderFactory;
 import org.jwat.warc.WarcRecord;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
-import com.kohlschutter.boilerpipe.BoilerpipeExtractor;
 import com.kohlschutter.boilerpipe.BoilerpipeProcessingException;
-import com.kohlschutter.boilerpipe.extractors.CommonExtractors;
 
 
 public class Indexer {
@@ -69,15 +61,8 @@ public class Indexer {
 	}
 	
 	public static Analyzer createAnalyzer() throws IOException{
-        CustomAnalyzer.Builder builder = CustomAnalyzer.builder();
-        builder.withTokenizer("standard");
-        builder.addTokenFilter("lowercase");
-        builder.addTokenFilter("stop");
-        builder.addTokenFilter("kstem");
-        
-  
-        Analyzer analyzer = builder.build();
-        return analyzer;
+        Analyzer Analyzer = new EnglishAnalyzer();
+        return Analyzer;
 	}
 	
 	public static IndexWriter createWriter(String indexPath){
@@ -128,7 +113,32 @@ public class Indexer {
 		
     }
     
+    public static String bytesToHex(byte[] in) {
+	    final StringBuilder builder = new StringBuilder();
+	    for(byte b : in) {
+	        builder.append(String.format("%02x", b));
+	    }
+	    return builder.toString();
+	}
+	   
 
+    public static String generateSignature(String content){
+    	TextProfileSignature signature = new TextProfileSignature();
+		
+        StringBuffer request = new StringBuffer();
+        request.append("quantRate=0.01");
+		request.append("&minTokenLen=2");
+		SolrParams solrParams = SolrRequestParsers.parseQueryString(request
+			.toString());
+		
+		signature.init(solrParams);
+        
+		signature.add(content);
+
+        
+        String s = bytesToHex( signature.getSignature() );
+        return s;
+    }
 
     
     public static List<Document> createDocumentsFromFile(String file) throws IOException{
@@ -146,7 +156,10 @@ public class Indexer {
 			
             String content = "";
             String article_content = "";
- 
+            String default_content=  "";
+            String keep_content = "";
+            String jsoup_content = "";
+            String tika_content = "";
             
             String key = "";
             try {
@@ -167,11 +180,18 @@ public class Indexer {
 
             
             try {
-				ExtractingUtils.extractArticle(content);
-			} catch (BoilerpipeProcessingException e) {
-				// TODO Auto-generated catch block
+            	article_content = ExtractingUtils.extractArticle(content);
+            	default_content = ExtractingUtils.extractDefault(content);
+            	keep_content = ExtractingUtils.extractKeep(content);
+            	jsoup_content = ExtractingUtils.extractJsoup(content);
+            	tika_content = ExtractingUtils.extractTika(content);
+            	
+			} catch (BoilerpipeProcessingException | SAXException | TikaException e) {
+				
 				e.printStackTrace();
 			}
+            
+            
 
             
             Document doc = new Document();
@@ -180,17 +200,47 @@ public class Indexer {
             Field urlField = new StringField("url", url, Field.Store.YES);
             doc.add(urlField);
 
+            String s = generateSignature(article_content);
+            if (relevantDocuments.contains(key) || !articleSignatures.contains(s)){
+            	articleSignatures.add(s);
+            	Field contentField = new Field("article_content", article_content,ft);
+                doc.add(contentField);
+            }
+            s = generateSignature(default_content);
+            if (relevantDocuments.contains(key) || !defaultSignatures.contains(s)){
+            	defaultSignatures.add(s);
+            	Field contentField = new Field("default_content", default_content,ft);
+                doc.add(contentField);
+            }
+            
+            s = generateSignature(keep_content);
+            if (relevantDocuments.contains(key) || !keepSignatures.contains(s)){
+            	keepSignatures.add(s);
+            	Field contentField = new Field("keep_content", keep_content,ft);
+                doc.add(contentField);
+            }
+            
+            s = generateSignature(tika_content);
+            if (relevantDocuments.contains(key) || !tikaSignatures.contains(s)){
+            	tikaSignatures.add(s);
+            	Field contentField = new Field("tika_content", tika_content,ft);
+                doc.add(contentField);
+            }
+            
+            s = generateSignature(jsoup_content);
+            if (relevantDocuments.contains(key) || !jsoupSignatures.contains(s)){
+            	jsoupSignatures.add(s);
+            	Field contentField = new Field("jsopu_content", jsoup_content,ft);
+                doc.add(contentField);
+            }
 
-           // Field contentField = new Field("content", content,ft);
-           // doc.add(contentField);
-           // Field rawContentField = new Field("raw_content", raw_content,ft);
-           // doc.add(rawContentField);
-           // docs.add(doc);
-          
 		}
 
         return docs;
     }
+    
+    
+    
     
 	private static void indexDocumentsFromFile(IndexWriter writer, String file) {
 			System.out.println("Indexing file " + file);
@@ -219,7 +269,8 @@ public class Indexer {
 		try (BufferedReader br = new BufferedReader(new FileReader(relevantsFile))) {
 			String line;
 			while ((line = br.readLine()) != null) {
-				relevantDocuments.add(line.replaceAll("\n", ""));
+				String[] splitLine = line.split("\t");
+				relevantDocuments.add(splitLine[2]);
 			}
 		} catch (FileNotFoundException e) {
 			
@@ -229,8 +280,21 @@ public class Indexer {
 			e.printStackTrace();
 		}
 	}
+	
+	public static Set<String> tikaSignatures;
+	public static Set<String> articleSignatures;
+	public static Set<String> defaultSignatures;
+	public static Set<String> keepSignatures;
+	public static Set<String> jsoupSignatures;
 
 	public static void main(String[] args) {
+		
+		tikaSignatures = new HashSet<String>();
+		articleSignatures =  new HashSet<String>();
+	    defaultSignatures =  new HashSet<String>();
+	    keepSignatures = new HashSet<String>();
+	    jsoupSignatures = new HashSet<String>();
+	    
 		String collectionPath = "/Users/felipemoraes/ebola16/";
         String indexPath = "/Users/felipemoraes/ebola16_index";
         String relevantsFilePath = "/Users/felipemoraes/polar_duplicates.txt";
@@ -266,6 +330,11 @@ public class Indexer {
                 counter++;
                 System.out.println("Indexed " + counter + " of " + files.size());
                 System.out.println("Indexed " + indexedDocCounter + " documents.");
+                System.out.println("Non-duplicate documents with tika: " + tikaSignatures.size());
+                System.out.println("Non-duplicate documents with jsoup: " + jsoupSignatures.size());
+                System.out.println("Non-duplicate documents with article: " + articleSignatures.size());
+                System.out.println("Non-duplicate documents with default: " + defaultSignatures.size());
+                System.out.println("Non-duplicate documents with keep: " + keepSignatures.size());
             }
             if (writer != null){
                 writer.close();
