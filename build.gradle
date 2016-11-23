@@ -1,8 +1,13 @@
 subprojects {
     apply plugin: 'java'
 
+
     repositories {
         mavenCentral()
          maven { url "http://maven.restlet.org" }
+         
+           flatDir {
+       			dirs 'libs'
+  		 }
     }
 }
