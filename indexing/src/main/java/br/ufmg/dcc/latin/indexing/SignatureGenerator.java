@@ -30,14 +30,17 @@ import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jwat.warc.WarcReader;
 import org.jwat.warc.WarcReaderFactory;
 import org.jwat.warc.WarcRecord;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
+import de.l3s.boilerpipe.BoilerpipeExtractor;
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.ArticleExtractor;
+import de.l3s.boilerpipe.extractors.CommonExtractors;
 import de.l3s.boilerpipe.extractors.DefaultExtractor;
 import de.l3s.boilerpipe.extractors.KeepEverythingExtractor;
 
@@ -73,102 +76,80 @@ public class SignatureGenerator {
 		return url;
 		
     }
-	   public static List<String> createSignaturesFromFile(String file) throws IOException{
-		   
-            StringBuffer request = new StringBuffer();
-            request.append("quantRate=0.01");
-   			request.append("&minTokenLen=2");
-   			SolrParams solrParams = SolrRequestParsers.parseQueryString(request
-   				.toString());
-   		
-   	
-	    	System.out.println("Parsing file " + file);
-	    	
-	    	
-	    	List<String> docs = new ArrayList<String>();
-			
-			InputStream fp = new FileInputStream(file);
-			
-	    	WarcReader reader = WarcReaderFactory.getReader(fp);
-			WarcRecord record;
-			
-			while ( (record = reader.getNextRecord()) != null ) {
+    
+    public static String extractText(String html) throws BoilerpipeProcessingException {
+        BoilerpipeExtractor extractor = CommonExtractors.ARTICLE_EXTRACTOR;
+        return extractor.getText(html);
+    }
 
-	            String content = "";
-	            String key = "";
-	            
-	            try {
-	            	key = record.getHeader("WARC-TREC-ID").value;
-	            } catch (Exception e){
-	            	continue;
-	            }
-	            
-	            String url = record.getHeader("WARC-Target-URI").value;
-	            url = normalizeUrl(url);
-	            
-	            
-	        	Metadata metadata = new Metadata();
-	            ContentHandler handler = new BodyContentHandler(10 * 1024 * 1024);
-	            ParseContext context = new ParseContext();
-	            
-	            Parser parser = new AutoDetectParser();
-	            
-	            boolean exception = false;
-	            
-	            try {
-	            	
-	            	content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
-	            	content = KeepEverythingExtractor.INSTANCE.getText(content);
-	            	
-	            	
-	            	
-	  
-	             //   InputStream in = IOUtils.toInputStream(content, "UTF-8");
-	            //	parser.parse(in, handler, metadata, context);
-	            //	content = handler.toString();
-	                
-	            }  catch ( BoilerpipeProcessingException e) {
-					// TODO Auto-generated catch block
-				//	e.printStackTrace();
-				} 
-	            
-	            
-	            if (exception) {
-	            	try {
-	               	org.jsoup.nodes.Document doc = Jsoup.parse(content);
-	               	content = doc.text();
+   public static List<String> createSignaturesFromFile(String file) throws IOException{
+	   
+        StringBuffer request = new StringBuffer();
+        request.append("quantRate=0.01");
+		request.append("&minTokenLen=2");
+		SolrParams solrParams = SolrRequestParsers.parseQueryString(request
+			.toString());
+	
 
-	            	} catch (Exception e){
-	            	}
-	            }
+    	System.out.println("Parsing file " + file);
+    	
+    	
+    	List<String> docs = new ArrayList<String>();
+		
+		InputStream fp = new FileInputStream(file);
+		
+    	WarcReader reader = WarcReaderFactory.getReader(fp);
+		WarcRecord record;
+		
+		while ( (record = reader.getNextRecord()) != null ) {
 
-	            if (content == null){
-	            	content = "";
-	            }
-	            
-	    		
-	            TextProfileSignature signaure = new TextProfileSignature();
-	            signaure.init(solrParams);
-	            
-	            signaure.add(content);
-	            
-	            if (content == "") {
-	            	continue;
-	            }
-	            
-	            String s = Hex.encodeHexString( signaure.getSignature() );
-	          //  if (duplicates.containsKey(s)) {
-	           // 	System.out.println("Duplicated doc: " + url);
-			//		System.out.println(duplicates.get(s));
-			//	} else {
-			//		duplicates.put(s, url);
-			//	}
-	            docs.add(key + " " + s);
-	          
-			}
 
-	        return docs;
-	    }
+            String key = "";
+            
+            try {
+            	key = record.getHeader("WARC-TREC-ID").value;
+            } catch (Exception e){
+            	continue;
+            }
+            
+          //  String url = record.getHeader("WARC-Target-URI").value;
+          //  url = normalizeUrl(url);
+            
+
+            
+            String content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
+            Document html = Jsoup.parse(content);
+    		String mainContent = "";
+    		try{
+
+                mainContent = extractText(html.html());//clean text
+                mainContent = Jsoup.parse(mainContent).text();//clean any remaining html source code
+            }catch (Throwable e){
+                mainContent = (Jsoup.parse(html.html()).text());
+            }
+
+    		
+    		
+            TextProfileSignature signaure = new TextProfileSignature();
+            signaure.init(solrParams);
+            
+            signaure.add(mainContent);
+
+            
+            String s = Hex.encodeHexString( signaure.getSignature() );
+         /*   if (duplicates.containsKey(s)) {
+            	System.out.println("Duplicated doc: " + url);
+				System.out.println(duplicates.get(s));
+				 System.out.println(content);
+			} else {
+				duplicates.put(s, url);
+			}*/
+            docs.add(key + " " + s);
+          
+		}
+
+        return docs;
+    }
 	   
 	   
 	public static void writeToFile(String filename, List<String> texts){
