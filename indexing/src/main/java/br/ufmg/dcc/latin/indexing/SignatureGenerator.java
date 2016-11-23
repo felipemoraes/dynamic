@@ -110,7 +110,7 @@ public class SignatureGenerator {
 		
         StringBuffer request = new StringBuffer();
         request.append("quantRate=0.01");
-		request.append("&minTokenLen=3");
+		request.append("&minTokenLen=2");
 		SolrParams solrParams = SolrRequestParsers.parseQueryString(request
 			.toString());
 	
@@ -246,7 +246,7 @@ public class SignatureGenerator {
             for (String f : files) {
                 System.out.println("About to Parse Files in: " +  f);
                 List<String> signatures = createSignaturesFromFile(f);
-             //   writeToFile(collectionPath+"_signatures", signatures);
+                writeToFile(collectionPath+"_signatures", signatures);
                 counter++;
                 System.out.println("Genenated " + counter + " of " + files.size());
                 
