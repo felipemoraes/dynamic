@@ -29,6 +29,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.servlet.SolrRequestParsers;
+import org.apache.solr.update.processor.MD5Signature;
 import org.apache.solr.update.processor.TextProfileSignature;
 
 import org.jsoup.Jsoup;
@@ -147,15 +148,14 @@ public class SignatureGenerator {
                 mainContent = (Jsoup.parse(html.html()).text());
             }
 
+    		MD5Signature signature = new MD5Signature();
     		
-    		
-            TextProfileSignature signaure = new TextProfileSignature();
-            signaure.init(solrParams);
+    		signature.init(solrParams);
             
-            signaure.add(mainContent);
+    		signature.add(mainContent);
 
             
-            String s = Hex.encodeHexString( signaure.getSignature() );
+            String s = Hex.encodeHexString( signature.getSignature() );
            if (duplicates.containsKey(s)) {
         	   if (duplicates.get(s).contains(mainContent)){
         		   if (!relevants.contains(key)) {
