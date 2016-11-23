@@ -1,8 +1,10 @@
 package br.ufmg.dcc.latin.indexing;
 
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.Normalizer;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.exception.TikaException;
@@ -28,7 +30,16 @@ public class ExtractingUtils {
     
     static Parser parser = new AutoDetectParser();
     
-    
+    public static String flattenToAscii(String string) {
+        char[] out = new char[string.length()];
+        string = Normalizer.normalize(string, Normalizer.Form.NFD);
+        int j = 0;
+        for (int i = 0, n = string.length(); i < n; ++i) {
+            char c = string.charAt(i);
+            if (c <= '\u007F') out[j++] = c;
+        }
+        return new String(out);
+    }
     public static String extractArticle(String content) throws BoilerpipeProcessingException  {
         BoilerpipeExtractor extractor = CommonExtractors.ARTICLE_EXTRACTOR;
         return extractor.getText(content);
@@ -51,8 +62,9 @@ public class ExtractingUtils {
     }
     
     public static String extractTika(String content) throws IOException, SAXException, TikaException {
-    	InputStream in = IOUtils.toInputStream(content, "UTF-8");
-    	parser.parse(in, handler, metadata, context);
+    	String utfHtmlContent = new String(content.getBytes(),"UTF-8");
+    	InputStream htmlStream = new ByteArrayInputStream(utfHtmlContent.getBytes());
+    	parser.parse(htmlStream, handler, metadata, context);
     	return handler.toString();
     }
 }

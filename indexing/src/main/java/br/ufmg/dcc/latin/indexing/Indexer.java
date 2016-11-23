@@ -175,21 +175,38 @@ public class Indexer {
             String url = record.getHeader("WARC-Target-URI").value;
             url = normalizeUrl(url);
             
-
-            content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
-
+           
+            content = IOUtils.toString(record.getPayloadContent()); 
             
-            try {
-            	article_content = ExtractingUtils.extractArticle(content);
-            	default_content = ExtractingUtils.extractDefault(content);
-            	keep_content = ExtractingUtils.extractKeep(content);
+            
+          
+            	try {
+					article_content = ExtractingUtils.extractArticle(content);
+				} catch (BoilerpipeProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            	try {
+					default_content = ExtractingUtils.extractDefault(content);
+				} catch (BoilerpipeProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            	try {
+					keep_content = ExtractingUtils.extractKeep(content);
+				} catch (BoilerpipeProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             	jsoup_content = ExtractingUtils.extractJsoup(content);
-            	tika_content = ExtractingUtils.extractTika(content);
+            	try {
+					tika_content = ExtractingUtils.extractTika(content);
+				} catch (SAXException e) {
+					tika_content = jsoup_content;
+				} catch (TikaException e) {
+					tika_content = jsoup_content;
+				}
             	
-			} catch (BoilerpipeProcessingException | SAXException | TikaException e) {
-				
-				e.printStackTrace();
-			}
             
             
 
