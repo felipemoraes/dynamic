@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.custom.CustomAnalyzer;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -84,12 +85,12 @@ public class RetrievalController {
 			createAnalyzer();
 		}
 		Map<String,Float> boosts = new HashMap<String,Float>();
-		boosts.put("title", fiedlWeights[0]);
+	//	boosts.put("title", fiedlWeights[0]);
 		boosts.put("content", fiedlWeights[1]);
-		parser = new MultiFieldQueryParser(new String[]{"title", "content"}, analyzer, boosts);
+		parser = new MultiFieldQueryParser(new String[]{ "content"}, analyzer, boosts);
 		return parser;
 	}
-
+/*
 	private static void createAnalyzer() {
         CustomAnalyzer.Builder builder = CustomAnalyzer.builder();
         try {
@@ -101,6 +102,11 @@ public class RetrievalController {
 			e.printStackTrace();
 		}
         analyzer = builder.build();
+
+	}*/
+	
+	private static void createAnalyzer() {
+        analyzer = new EnglishAnalyzer();
 
 	}
 	

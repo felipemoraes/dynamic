@@ -33,6 +33,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.servlet.SolrRequestParsers;
+import org.apache.solr.update.processor.MD5Signature;
 import org.apache.solr.update.processor.TextProfileSignature;
 import org.apache.tika.exception.TikaException;
 import org.jwat.warc.WarcReader;
@@ -123,7 +124,7 @@ public class Indexer {
 	   
 
     public static String generateSignature(String content){
-    	TextProfileSignature signature = new TextProfileSignature();
+    	MD5Signature signature = new MD5Signature();
 		
         StringBuffer request = new StringBuffer();
         request.append("quantRate=0.01");
