@@ -249,7 +249,7 @@ public class Indexer {
             }
 
 		}
-
+		docs.add(doc);
         return docs;
     }
     
