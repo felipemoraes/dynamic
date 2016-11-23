@@ -167,10 +167,7 @@ public class Indexer {
             } catch (Exception e){
             	continue;
             }
-            if (relevantDocuments.contains(key)) {
-				continue;
-			} 
-            
+
            
             String url = record.getHeader("WARC-Target-URI").value;
             url = normalizeUrl(url);
@@ -247,7 +244,7 @@ public class Indexer {
             s = generateSignature(jsoup_content);
             if (relevantDocuments.contains(key) || !jsoupSignatures.contains(s)){
             	jsoupSignatures.add(s);
-            	Field contentField = new Field("jsopu_content", jsoup_content,ft);
+            	Field contentField = new Field("jsoup_content", jsoup_content,ft);
                 doc.add(contentField);
             }
 
