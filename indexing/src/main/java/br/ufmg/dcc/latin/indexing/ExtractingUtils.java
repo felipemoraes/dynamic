@@ -30,31 +30,28 @@ public class ExtractingUtils {
     
     
     public static String extractArticle(String content) throws BoilerpipeProcessingException  {
-    	Document html = Jsoup.parse(content);
         BoilerpipeExtractor extractor = CommonExtractors.ARTICLE_EXTRACTOR;
-        return extractor.getText(html.html());
+        return extractor.getText(content);
     }
     
     public static String extractDefault(String content) throws BoilerpipeProcessingException{
-    	Document html = Jsoup.parse(content);
         BoilerpipeExtractor extractor = CommonExtractors.DEFAULT_EXTRACTOR;
-        return extractor.getText(html.html());
+        return extractor.getText(content);
     }
     
     public static String extractKeep(String content) throws BoilerpipeProcessingException{
-    	Document html = Jsoup.parse(content);
         BoilerpipeExtractor extractor = CommonExtractors.KEEP_EVERYTHING_EXTRACTOR;
-        return extractor.getText(html.html());
+        return extractor.getText(content);
     }
     
+   
     public static String extractJsoup(String content){
     	Document html = Jsoup.parse(content);
     	return html.text();
     }
     
-    public static String extractTika(String content) throws IOException, SAXException, TikaException{
-    	Document html = Jsoup.parse(content);
-    	InputStream in = IOUtils.toInputStream(html.html(), "UTF-8");
+    public static String extractTika(String content) throws IOException, SAXException, TikaException {
+    	InputStream in = IOUtils.toInputStream(content, "UTF-8");
     	parser.parse(in, handler, metadata, context);
     	return handler.toString();
     }
