@@ -55,7 +55,13 @@ public class ExtractingUtils {
     
    
     public static String extractJsoup(String content){
-    	Document html = Jsoup.parse(content);
+    	Document html = null;
+    	try {
+    		html = Jsoup.parse(content);
+		} catch (Exception e) {
+			html = Jsoup.parse(flattenToAscii(content));
+		}
+    	
     	return html.text();
     }
     
