@@ -145,7 +145,7 @@ public class Indexer {
             } catch (Exception e){
             	continue;
             }
-            if (ignoredDocuments.contains(key)) {
+            if (relevantDocuments.contains(key)) {
 				continue;
 			} 
             
@@ -287,9 +287,9 @@ public class Indexer {
         
         try {
         	List<String> files = readFileListFromDirectory(collectionPath);
-        	loadIgnoredFile(relevantsFilePath);
+        	loadRelevantsFile(relevantsFilePath);
         	IndexWriter writer =  createWriter(indexPath);
-        	System.out.println("Start indexing... We will ignore " + ignoredDocuments.size() + " documents.");
+        	System.out.println("Start indexing... We will ignore " + relevantDocuments.size() + " documents.");
             for (String f : files) {
                 System.out.println("About to Index Files in: " +  f);
                 indexDocumentsFromFile(writer,f);
