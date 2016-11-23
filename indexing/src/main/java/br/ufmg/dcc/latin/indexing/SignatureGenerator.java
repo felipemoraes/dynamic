@@ -16,6 +16,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,13 +152,19 @@ public class SignatureGenerator {
 
             
             String s = Hex.encodeHexString( signaure.getSignature() );
-        /*   if (duplicates.containsKey(s)) {
-            	System.out.println("Duplicated doc: " + url);
-				System.out.println(duplicates.get(s));
+           if (duplicates.containsKey(s)) {
+        	   if (duplicates.get(s).contains(mainContent)){
+        		   duplicateCounter++;
+        		   System.out.println("Duplicates counter:"  + duplicateCounter);
+        	   } else {
+        		   duplicates.get(s).add(mainContent);
+        	   }
 				 
+      
 			} else {
-				duplicates.put(s, url);
-			}*/
+				duplicates.put(s, new HashSet<String>());
+				duplicates.get(s).add(mainContent);
+			}
             docs.add(key + " " + s);
           
 		}
@@ -182,10 +189,12 @@ public class SignatureGenerator {
 		}
 	}
 	   
-	public static Map<String,String> duplicates;
+	public static Map<String,HashSet<String>> duplicates;
+	
+	private static int duplicateCounter = 0;
 	public static void main(String[] args) {
 		
-		duplicates = new HashMap<String,String>();
+		duplicates = new HashMap<String,HashSet<String>>();
 		
 		String collectionPath = "/Users/felipemoraes/ebola16_cbor";
         
@@ -207,7 +216,7 @@ public class SignatureGenerator {
             for (String f : files) {
                 System.out.println("About to Parse Files in: " +  f);
                 List<String> signatures = createSignaturesFromFile(f);
-                writeToFile(collectionPath+"_signatures", signatures);
+             //   writeToFile(collectionPath+"_signatures", signatures);
                 counter++;
                 System.out.println("Genenated " + counter + " of " + files.size());
                 
