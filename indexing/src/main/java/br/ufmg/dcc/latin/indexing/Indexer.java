@@ -31,7 +31,9 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.similarities.DPH;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.tika.config.TikaConfig;
 import org.apache.tika.exception.TikaException;
+import org.apache.tika.io.TikaInputStream;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
@@ -44,8 +46,10 @@ import org.jwat.warc.WarcRecord;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
-import de.l3s.boilerpipe.BoilerpipeProcessingException;
-import de.l3s.boilerpipe.extractors.ArticleExtractor;
+import com.kohlschutter.boilerpipe.BoilerpipeExtractor;
+import com.kohlschutter.boilerpipe.BoilerpipeProcessingException;
+import com.kohlschutter.boilerpipe.extractors.CommonExtractors;
+
 
 public class Indexer {
 	
@@ -124,6 +128,9 @@ public class Indexer {
 		
     }
     
+
+
+    
     public static List<Document> createDocumentsFromFile(String file) throws IOException{
     	System.out.println("Parsing file " + file);
     	
@@ -135,10 +142,12 @@ public class Indexer {
 		WarcRecord record;
 		
 		while ( (record = reader.getNextRecord()) != null ) {
-	        String title = "";
-            String description = "";
+
+			
             String content = "";
-            String raw_content = "";
+            String article_content = "";
+ 
+            
             String key = "";
             try {
             	key = record.getHeader("WARC-TREC-ID").value;
@@ -153,69 +162,30 @@ public class Indexer {
             String url = record.getHeader("WARC-Target-URI").value;
             url = normalizeUrl(url);
             
-            
-        	Metadata metadata = new Metadata();
-            ContentHandler handler = new BodyContentHandler(10 * 1024 * 1024);
-            ParseContext context = new ParseContext();
-            
-            Parser parser = new AutoDetectParser();
-            
-            boolean exception = false;
+
+            content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
+
             
             try {
-            	
-                raw_content = IOUtils.toString(record.getPayloadContent(), "UTF-8"); 
-                content = ArticleExtractor.INSTANCE.getText(raw_content);
-                InputStream in = IOUtils.toInputStream(raw_content, "UTF-8");
-            	parser.parse(in, handler, metadata, context);
-                title = metadata.get("title");
-                description = metadata.get("description");
-                raw_content = handler.toString();
-                
-            } catch (TikaException e) {
-            	exception = true;
-            } catch (SAXException e) {
-            	exception = true;
-            } catch (IOException e) {
-            	exception = true;
+				ExtractingUtils.extractArticle(content);
 			} catch (BoilerpipeProcessingException e) {
-				exception = true;
+				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} 
-            
-            if (exception) {
-            	try {
-               	org.jsoup.nodes.Document doc = Jsoup.parse(content);
-               	raw_content = doc.text();
-            	title = doc.title();
-            	} catch (Exception e){
-            	}
-            }
-            
-            if (title == null){
-            	title = "";
-            }
-            if (description == null) {
-            	description = "";
-            }
-            if (content == null){
-            	content = "";
-            }
+			}
+
             
             Document doc = new Document();
             Field docnoField = new StringField("docno", key, Field.Store.YES);
             doc.add(docnoField);
             Field urlField = new StringField("url", url, Field.Store.YES);
             doc.add(urlField);
-            Field titleField = new Field("title", title, ft);
-            doc.add(titleField);
-            Field descriptionField = new Field("description",description, ft);
-            doc.add(descriptionField);
-            Field contentField = new Field("content", content,ft);
-            doc.add(contentField);
-            Field rawContentField = new Field("raw_content", raw_content,ft);
-            doc.add(rawContentField);
-            docs.add(doc);
+
+
+           // Field contentField = new Field("content", content,ft);
+           // doc.add(contentField);
+           // Field rawContentField = new Field("raw_content", raw_content,ft);
+           // doc.add(rawContentField);
+           // docs.add(doc);
           
 		}
 
@@ -261,8 +231,8 @@ public class Indexer {
 	}
 
 	public static void main(String[] args) {
-		String collectionPath = "/Users/felipemoraes/polar/";
-        String indexPath = "/Users/felipemoraes/polar/index";
+		String collectionPath = "/Users/felipemoraes/ebola16/";
+        String indexPath = "/Users/felipemoraes/ebola16_index";
         String relevantsFilePath = "/Users/felipemoraes/polar_duplicates.txt";
         
         ft.setIndexOptions( IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS );
@@ -280,7 +250,7 @@ public class Indexer {
         } catch(Exception e){
             System.out.println(" caught a " + e.getClass() +
                     "\n with message: " + e.getMessage());
-            System.exit(1);
+       //     System.exit(1);
         }
         
         int counter = 0;

@@ -149,6 +149,7 @@ public class SignatureGenerator {
                 mainContent = Jsoup.parse(mainContent).text();//clean any remaining html source code
                
             }catch (Throwable e){
+            	e.printStackTrace();
                 mainContent = (Jsoup.parse(html.html()).text());
             }
     		
