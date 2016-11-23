@@ -200,7 +200,7 @@ public class SignatureGenerator {
 		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
 			String line;
 			while ((line = br.readLine()) != null) {
-		    	String[] splitLine = line.split(",",5);
+		    	String[] splitLine = line.split(" ");
 		    	
 		    	relevants.add(splitLine[2]);
 	
