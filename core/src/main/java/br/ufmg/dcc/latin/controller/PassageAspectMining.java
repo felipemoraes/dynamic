@@ -9,7 +9,7 @@ import br.ufmg.dcc.latin.feedback.Passage;
 import br.ufmg.dcc.latin.querying.SelectedSet;
 
 
-public class FlatAspectController implements AspectController {
+public class PassageAspectMining implements AspectMining {
 	
 	public Feedback[] feedbacks;
 
@@ -30,7 +30,7 @@ public class FlatAspectController implements AspectController {
 	
 	private FlatAspectModel flatAspectModel;
 
-	public FlatAspectController(){
+	public PassageAspectMining(){
 		
 		n = RetrievalCache.docids.length;
 		importance = new float[0];
@@ -353,6 +353,27 @@ public class FlatAspectController implements AspectController {
 
 	public void setSelected(SelectedSet selected) {
 		this.selected = selected;
+	}
+
+
+
+	@Override
+	public float[][] getCoverage() {
+		return coverage;
+	}
+
+
+
+	@Override
+	public float[] getImportance() {
+		return importance;
+	}
+
+
+
+	@Override
+	public float[] getNovelty() {
+		return novelty;
 	}
 
 }

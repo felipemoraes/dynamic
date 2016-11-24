@@ -2,11 +2,11 @@ package br.ufmg.dcc.latin.reranking;
 
 public class InteractiveRerankerFactory {
 	
-	public static InteractiveReranker getInstance(String className){
+	public static InteractiveReranker getInstance(String className, String aspectMiningClassName){
 		InteractiveReranker reranker = null;
 
 		if (className.equals("xQuAD")){
-			reranker = new xQuAD();
+			reranker = new xQuAD(aspectMiningClassName);
 		} else if (className.equals("MMR")){
 			reranker = new MMR();
 		} else if (className.equals("PM2")){
@@ -28,7 +28,7 @@ public class InteractiveRerankerFactory {
 		}else if (className.equals("Cube")) {
 			reranker = new Cube();
 		}else if (className.equals("xQuAD*")) {
-			reranker = new xQuADStar();
+			reranker = new xQuADStar(aspectMiningClassName);
 		}
 		
 		return reranker;

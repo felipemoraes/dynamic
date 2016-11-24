@@ -3,7 +3,7 @@ package br.ufmg.dcc.latin.reranking;
 import java.util.Arrays;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
-import br.ufmg.dcc.latin.controller.FlatAspectController;
+import br.ufmg.dcc.latin.controller.PassageAspectMining;
 import br.ufmg.dcc.latin.feedback.Feedback;
 
 public class xMMR extends InteractiveReranker {
@@ -18,7 +18,7 @@ public class xMMR extends InteractiveReranker {
 	
 	private float[][] coverage; 
 
-	private FlatAspectController aspectControler;
+	private PassageAspectMining aspectControler;
 	
 	public xMMR(){
 	}
@@ -32,7 +32,7 @@ public class xMMR extends InteractiveReranker {
 		n = relevance.length;
 		cacheSim = new float[n];
 		lambda = params[1];
-		aspectControler = new FlatAspectController();
+		aspectControler = new PassageAspectMining();
 		coverage = aspectControler.coverage;
 	}
 

@@ -2,7 +2,7 @@ package br.ufmg.dcc.latin.reranking;
 
 import java.util.Arrays;
 
-import br.ufmg.dcc.latin.controller.FlatAspectController;
+import br.ufmg.dcc.latin.controller.PassageAspectMining;
 import br.ufmg.dcc.latin.feedback.Feedback;
 
 public class PM2 extends InteractiveReranker {
@@ -14,7 +14,7 @@ public class PM2 extends InteractiveReranker {
 	private float[] s;
 	private float[][] coverage;
 
-	FlatAspectController aspectControler;
+	PassageAspectMining aspectControler;
 
 	public PM2(){
 	}
@@ -82,7 +82,7 @@ public class PM2 extends InteractiveReranker {
 	public void start(float[] params){
 		super.start(params);
 		relevance = normalize(relevance);
-		aspectControler = new FlatAspectController();
+		aspectControler = new PassageAspectMining();
 		coverage = aspectControler.coverage;
 		v = aspectControler.v;
 		s = aspectControler.s;

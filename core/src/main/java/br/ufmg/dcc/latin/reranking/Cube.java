@@ -1,6 +1,6 @@
 package br.ufmg.dcc.latin.reranking;
 
-import br.ufmg.dcc.latin.controller.FlatAspectController;
+import br.ufmg.dcc.latin.controller.PassageAspectMining;
 import br.ufmg.dcc.latin.feedback.Feedback;
 
 public class Cube extends InteractiveReranker {
@@ -11,7 +11,7 @@ public class Cube extends InteractiveReranker {
 	public float[][] coverage;
 	public float[] accumalatedRelevance;
 	
-	private FlatAspectController aspectControler;
+	private PassageAspectMining aspectControler;
 	
 	@Override
 	public String debug(String topicid, int iteration) {
@@ -22,7 +22,7 @@ public class Cube extends InteractiveReranker {
 	public void start(float[] params){
 		super.start(params);
 		gamma = params[1];
-		aspectControler = new FlatAspectController();
+		aspectControler = new PassageAspectMining();
 		coverage = aspectControler.coverage;
 		importance = aspectControler.importance;
 		novelty = aspectControler.novelty;

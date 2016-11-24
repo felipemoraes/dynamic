@@ -247,6 +247,7 @@ public class Indexer {
             String signature = generateSignature(content);
             
             if (relevantDocuments.contains(key) || !signatures.contains(signature)){
+            	signatures.add(signature);
             	docs.add(doc);
             }
 		}

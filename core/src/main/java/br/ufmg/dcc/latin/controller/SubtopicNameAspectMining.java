@@ -13,7 +13,7 @@ import br.ufmg.dcc.latin.diversity.FlatAspectModel;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
 
-public class FlatAspectGTController implements AspectController {
+public class SubtopicNameAspectMining implements AspectMining {
 	
 	public Feedback[] feedbacks;
 	
@@ -34,7 +34,7 @@ public class FlatAspectGTController implements AspectController {
 	
 	private FlatAspectModel flatAspectModel;
 	
-	public FlatAspectGTController(){
+	public SubtopicNameAspectMining(){
 		
 		n = RetrievalCache.docids.length;
 		importance = new float[0];
@@ -209,6 +209,27 @@ public class FlatAspectGTController implements AspectController {
 	public void miningProportionalAspects(Feedback[] feedbacks) {
 		// TODO Auto-generated method stub
 
+	}
+
+
+	@Override
+	public float[][] getCoverage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public float[] getImportance() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public float[] getNovelty() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

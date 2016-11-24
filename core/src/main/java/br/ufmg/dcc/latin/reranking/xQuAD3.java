@@ -3,14 +3,14 @@ package br.ufmg.dcc.latin.reranking;
 
 import java.util.Arrays;
 
-import br.ufmg.dcc.latin.controller.FlatAspectController;
+import br.ufmg.dcc.latin.controller.PassageAspectMining;
 import br.ufmg.dcc.latin.feedback.Feedback;
 
 public class xQuAD3 extends InteractiveReranker {
 
 	float lambda;
 	
-	private FlatAspectController aspectControler;
+	private PassageAspectMining aspectControler;
 	
 	public float[] importance;
 	public float[][] novelty;
@@ -36,7 +36,7 @@ public class xQuAD3 extends InteractiveReranker {
 		relevance = normalize(relevance);
 		lambda = params[1];
 		n = relevance.length;
-		aspectControler = new FlatAspectController();
+		aspectControler = new PassageAspectMining();
 		coverage = aspectControler.coverage;
 		importance = aspectControler.importance;
 		novelty = new float[0][n];

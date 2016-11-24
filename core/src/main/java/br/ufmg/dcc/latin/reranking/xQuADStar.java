@@ -2,6 +2,10 @@ package br.ufmg.dcc.latin.reranking;
 
 public class xQuADStar extends xQuAD {
 	
+	public xQuADStar(String aspectMiningClassName) {
+		super(aspectMiningClassName);
+	}
+
 	@Override
 	public float score(int docid){
 		float diversity = 0;
