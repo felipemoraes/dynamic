@@ -216,7 +216,7 @@ public class Indexer {
 		    		html = Jsoup.parse(content,"", org.jsoup.parser.Parser.xmlParser());
 		    		html = Jsoup.parse(html.html());
 				} catch (Exception e_in) {
-					html = Jsoup.parse(flattenToAscii(html.html()));
+					html = Jsoup.parse(flattenToAscii(content));
 				}
 		    	if (html != null) {
 		    		content = html.text();
