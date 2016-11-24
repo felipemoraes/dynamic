@@ -70,7 +70,6 @@ public class RetrievalController {
 			
 	
 			searcher = new IndexSearcher(reader);
-			System.out.println(searcher.collectionStatistics("content").docCount());
 			
 			searcher.setSimilarity(similarity);
 			RetrievalCache.indices.put(indexName, searcher);
@@ -86,7 +85,7 @@ public class RetrievalController {
 			return parser;
 		}
 		if (analyzer == null) {
-			createAnalyzer();
+			getAnalyzer();
 		}
 		Map<String,Float> boosts = new HashMap<String,Float>();
 		boosts.put("title", fiedlWeights[0]);
@@ -95,7 +94,7 @@ public class RetrievalController {
 		return parser;
 	}
 
-	private static void createAnalyzer() {
+	public static Analyzer getAnalyzer() {
         CustomAnalyzer.Builder builder = CustomAnalyzer.builder();
         try {
 			builder.withTokenizer("standard");
@@ -106,7 +105,7 @@ public class RetrievalController {
 			e.printStackTrace();
 		}
         analyzer = builder.build();
-
+        return analyzer;
 	}
 	/*
 	private static void createAnalyzer() {
@@ -239,15 +238,57 @@ public class RetrievalController {
 		return score;
 	}
 	
+	public static float getIdf(String term){
+		float df = 0;
+		int count = docCount.get(RetrievalCache.indexName);
+		if (docFreqs.get(RetrievalCache.indexName).containsKey(term)){
+			df = (float) docFreqs.get(RetrievalCache.indexName).get(term);
+			
+		} 
+		float idf = (float)(Math.log(count)/(df+1));
+		return idf;
+	}
+	
 	public static float[] getSimilarities(int[] docids, int docid){
 		
 		int n = RetrievalCache.docids.length;
 		
 		
 		
+		
 		IndexSearcher searcher  = RetrievalController.getIndexSearcher(RetrievalCache.indexName);
 		
 		IndexReader reader = searcher.getIndexReader();
+		
+		loadDocFreqs();
+		
+		
+		if (termsVector == null){
+			termsVector = new Terms[n];
+			for (int i = 0; i < docids.length; i++) {
+				try {
+					termsVector[i] = reader.getTermVector(docids[i], "content");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		float[] scores = new float[n];
+		int count = docCount.get(RetrievalCache.indexName);
+		Map<String,Float> dfreq = docFreqs.get(RetrievalCache.indexName);
+		for (int i = 0; i < docids.length; i++) {
+			scores[i] = tfidf(i,docid,count,dfreq);
+		}
+	    return scores;
+	}
+
+	public static void loadDocFreqs() {
+		
+		IndexSearcher searcher  = RetrievalController.getIndexSearcher(RetrievalCache.indexName);
+		
+		IndexReader reader = searcher.getIndexReader();
+		
 		
 		if (docFreqs == null) {
 	        
@@ -271,26 +312,6 @@ public class RetrievalController {
 			}
 			docFreqs.put(RetrievalCache.indexName, docFreqIndex);
 		}
-		
-		
-		if (termsVector == null){
-			termsVector = new Terms[n];
-			for (int i = 0; i < docids.length; i++) {
-				try {
-					termsVector[i] = reader.getTermVector(docids[i], "content");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		
-		float[] scores = new float[n];
-		int count = docCount.get(RetrievalCache.indexName);
-		Map<String,Float> dfreq = docFreqs.get(RetrievalCache.indexName);
-		for (int i = 0; i < docids.length; i++) {
-			scores[i] = tfidf(i,docid,count,dfreq);
-		}
-	    return scores;
 	}
 	
 	public static ResultSet search(String queryTerms, String index) {

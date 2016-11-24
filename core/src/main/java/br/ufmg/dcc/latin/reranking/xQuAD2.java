@@ -2,29 +2,36 @@ package br.ufmg.dcc.latin.reranking;
 
 import java.util.Arrays;
 
-import br.ufmg.dcc.latin.controller.PassageAspectMining;
+import br.ufmg.dcc.latin.controller.AspectMining;
+import br.ufmg.dcc.latin.controller.AspectMiningFactory;
 import br.ufmg.dcc.latin.feedback.Feedback;
 
 public class xQuAD2 extends InteractiveReranker {
 	
 	float lambda;
 	
-	private PassageAspectMining aspectControler;
+	
 	
 	private float[] importance;
 	private float[] novelty;
 	private float[][] coverage;
 	
 	int n;
+	private String aspectMiningClassName;
+	private AspectMining aspectMining;
+	
+	public xQuAD2(String aspectMiningClassName){
+		this.aspectMiningClassName = aspectMiningClassName;
+	}
 	
 	@Override
 	public void start(float[] params){
 		super.start(params);
 		relevance = normalize(relevance);
 		n = relevance.length;
-		aspectControler = new PassageAspectMining();
-		coverage = aspectControler.coverage;
-		importance = aspectControler.importance;
+		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName);
+		coverage = aspectMining.getCoverage();
+		importance = aspectMining.getImportance();
 		lambda = params[1];
 		novelty = new float[relevance.length];
 		Arrays.fill(novelty, 1.0f);
@@ -92,9 +99,9 @@ public class xQuAD2 extends InteractiveReranker {
 
 	@Override
 	public void update(Feedback[] feedback) {
-		aspectControler.miningDiversityAspects(feedback);
-		coverage = aspectControler.coverage;
-		importance = aspectControler.importance;
+		aspectMining.miningFeedback(feedback);
+		coverage = aspectMining.getCoverage();
+		importance = aspectMining.getImportance();
 		novelty = new float[n];
 		Arrays.fill(novelty, 1f);
 		updateNovelty();

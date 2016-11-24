@@ -2,8 +2,6 @@ package br.ufmg.dcc.latin.dynamicsystem;
 
 import java.util.List;
 
-import javax.swing.DebugGraphics;
-
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.reranking.InteractiveReranker;
@@ -21,7 +19,14 @@ public class Session {
 	}
 	
 	private String getName(float[] params){
-		String name = rerankerName;
+		String[] rerankerSplit = rerankerName.split(" ");
+		String name = "";
+		if (rerankerSplit.length > 1) {
+			name = rerankerSplit[0] + "_" + rerankerSplit[1].charAt(0);
+		} else {
+			name = rerankerName;
+		}
+		
 		for (int i = 0; i < params.length; i++) {
 			name += "_" + String.format("%.2f", params[i]);
 		}
@@ -51,7 +56,13 @@ public class Session {
 
 	public void setReranker(String reranker) {
 		rerankerName = reranker;
-		this.reranker = InteractiveRerankerFactory.getInstance(reranker);
+		String[] rerankerSplit = reranker.split(" ");
+		if (rerankerSplit.length > 1){ 
+			this.reranker = InteractiveRerankerFactory.getInstance(rerankerSplit[0],rerankerSplit[1]);
+		} else {
+			this.reranker = InteractiveRerankerFactory.getInstance(rerankerName,"");
+		}
+		
 	}
 
 	public List<float[]> getParams() {

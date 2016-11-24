@@ -10,15 +10,15 @@ public class InteractiveRerankerFactory {
 		} else if (className.equals("MMR")){
 			reranker = new MMR();
 		} else if (className.equals("PM2")){
-			reranker = new PM2();
+			reranker = new PM2(aspectMiningClassName);
 		} else if (className.equals("xMMR")){
-			reranker = new xMMR();
+			reranker = new xMMR(aspectMiningClassName);
 		} else if (className.equals("xQuAD1")){
-			reranker = new xQuAD1();
+			reranker = new xQuAD1(aspectMiningClassName);
 		} else if (className.equals("xQuAD2")){
-			reranker = new xQuAD2();
+			reranker = new xQuAD2(aspectMiningClassName);
 		} else if (className.equals("xQuAD3")){
-			reranker = new xQuAD3();
+			reranker = new xQuAD3(aspectMiningClassName);
 		} else if (className.equals("LM")) {
 			reranker = new Baseline(className);
 		} else if (className.equals("DPH")) {
@@ -26,7 +26,7 @@ public class InteractiveRerankerFactory {
 		} else if (className.equals("BM25")) {
 			reranker = new Baseline(className);
 		}else if (className.equals("Cube")) {
-			reranker = new Cube();
+			reranker = new Cube(aspectMiningClassName);
 		}else if (className.equals("xQuAD*")) {
 			reranker = new xQuADStar(aspectMiningClassName);
 		}

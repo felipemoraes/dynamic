@@ -3,7 +3,8 @@ package br.ufmg.dcc.latin.reranking;
 import java.util.Arrays;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
-import br.ufmg.dcc.latin.controller.PassageAspectMining;
+import br.ufmg.dcc.latin.controller.AspectMining;
+import br.ufmg.dcc.latin.controller.AspectMiningFactory;
 import br.ufmg.dcc.latin.controller.RetrievalController;
 import br.ufmg.dcc.latin.feedback.Feedback;
 
@@ -12,7 +13,8 @@ public class xQuAD1 extends InteractiveReranker {
 	
 	float lambda;
 	
-	private PassageAspectMining aspectControler;
+	private String aspectMiningClassName;
+	
 	
 	private float[] importance;
 	private float[] novelty;
@@ -22,13 +24,20 @@ public class xQuAD1 extends InteractiveReranker {
 	
 	String indexName;
 	
+	private AspectMining aspectMining;
+	
+	public xQuAD1(String aspectMiningClassName){
+		this.aspectMiningClassName = aspectMiningClassName;
+	}
+	
 	@Override
 	public void start(float[] params){
 		super.start(params);
 		relevance = normalize(relevance);
-		aspectControler = new PassageAspectMining();
-		coverage = aspectControler.coverage;
-		importance = aspectControler.importance;
+		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName);
+		coverage = aspectMining.getCoverage();
+		importance = aspectMining.getImportance();
+		
 		docsContent = RetrievalCache.docsContent;
 		indexName = RetrievalCache.indexName;
 		lambda = params[1];
@@ -71,9 +80,9 @@ public class xQuAD1 extends InteractiveReranker {
 	
 	@Override
 	public void update(Feedback[] feedback) {
-		aspectControler.miningDiversityAspects(feedback);
-		coverage = aspectControler.coverage;
-		importance = aspectControler.importance;
+		aspectMining.miningFeedback(feedback);
+		coverage = aspectMining.getCoverage();
+		importance = aspectMining.getImportance();
 	}
 
 	@Override

@@ -55,7 +55,7 @@ public class xQuAD extends InteractiveReranker {
 
 	@Override
 	public void update(Feedback[] feedback) {
-		aspectMining.miningDiversityAspects(feedback);
+		aspectMining.miningFeedback(feedback);
 		coverage = aspectMining.getCoverage();
 		importance = aspectMining.getImportance();
 		novelty = aspectMining.getNovelty();

@@ -2,7 +2,8 @@ package br.ufmg.dcc.latin.reranking;
 
 import java.util.Arrays;
 
-import br.ufmg.dcc.latin.controller.PassageAspectMining;
+import br.ufmg.dcc.latin.controller.AspectMining;
+import br.ufmg.dcc.latin.controller.AspectMiningFactory;
 import br.ufmg.dcc.latin.feedback.Feedback;
 
 public class PM2 extends InteractiveReranker {
@@ -14,9 +15,12 @@ public class PM2 extends InteractiveReranker {
 	private float[] s;
 	private float[][] coverage;
 
-	PassageAspectMining aspectControler;
+	private String aspectMiningClassName;
+	
+	AspectMining aspectMining;
 
-	public PM2(){
+	public PM2(String aspectMiningClassName){
+		this.aspectMiningClassName = aspectMiningClassName;
 	}
 	
 	
@@ -82,10 +86,10 @@ public class PM2 extends InteractiveReranker {
 	public void start(float[] params){
 		super.start(params);
 		relevance = normalize(relevance);
-		aspectControler = new PassageAspectMining();
-		coverage = aspectControler.coverage;
-		v = aspectControler.v;
-		s = aspectControler.s;
+		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName);
+		coverage = aspectMining.getCoverage();
+		v = aspectMining.getV();
+		s = aspectMining.getS();
 		lambda = params[1];
 		int n = relevance.length;
 		
@@ -97,10 +101,10 @@ public class PM2 extends InteractiveReranker {
 
 	@Override
 	public void update(Feedback[] feedback) {
-		aspectControler.miningProportionalAspects(feedback);
-		coverage = aspectControler.coverage;
-		v = aspectControler.v;
-		s = aspectControler.s;
+		aspectMining.miningFeedback(feedback);
+		coverage = aspectMining.getCoverage();
+		v = aspectMining.getV();
+		s = aspectMining.getS();
 		updateNovelty();
 		
 	}

@@ -1,17 +1,25 @@
 package br.ufmg.dcc.latin.reranking;
 
-import br.ufmg.dcc.latin.controller.PassageAspectMining;
+import br.ufmg.dcc.latin.controller.AspectMining;
+import br.ufmg.dcc.latin.controller.AspectMiningFactory;
 import br.ufmg.dcc.latin.feedback.Feedback;
 
 public class Cube extends InteractiveReranker {
 	float gamma;
 	private static float MaxHeight = 10.0f;
-	public float[] importance;
-	public float[] novelty;
-	public float[][] coverage;
-	public float[] accumalatedRelevance;
+	private float[] importance;
+	private float[] novelty;
+	private float[][] coverage;
+	private float[] accumalatedRelevance;
 	
-	private PassageAspectMining aspectControler;
+	private String aspectMiningClassName;
+	
+	private AspectMining aspectMining;
+	
+	public Cube(String aspectMiningClassName){
+		this.aspectMiningClassName = aspectMiningClassName;
+	}
+	
 	
 	@Override
 	public String debug(String topicid, int iteration) {
@@ -22,11 +30,11 @@ public class Cube extends InteractiveReranker {
 	public void start(float[] params){
 		super.start(params);
 		gamma = params[1];
-		aspectControler = new PassageAspectMining();
-		coverage = aspectControler.coverage;
-		importance = aspectControler.importance;
-		novelty = aspectControler.novelty;
-		accumalatedRelevance = aspectControler.accumulatedRelevance;
+		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName);
+		coverage = aspectMining.getCoverage();
+		importance = aspectMining.getImportance();
+		novelty = aspectMining.getNovelty();
+		accumalatedRelevance = aspectMining.getAccumulatedRelevance();
 	}
 	
 	private float discountFactor(int subtopic){
@@ -59,11 +67,11 @@ public class Cube extends InteractiveReranker {
 
 	@Override
 	public void update(Feedback[] feedback) {
-		aspectControler.miningCTAspects(feedback);
-		coverage = aspectControler.coverage;
-		importance = aspectControler.importance;
-		novelty = aspectControler.novelty;
-		accumalatedRelevance = aspectControler.accumulatedRelevance;
+		aspectMining.miningFeedbackForCube(feedback);
+		coverage = aspectMining.getCoverage();
+		importance = aspectMining.getImportance();
+		novelty = aspectMining.getNovelty();
+		accumalatedRelevance = aspectMining.getAccumulatedRelevance();
 	}
 
 }
