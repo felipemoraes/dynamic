@@ -73,6 +73,7 @@ public abstract class InteractiveReranker implements Reranker {
 		docnos = result.docnos;
 		selected = new SelectedSet();
 		RetrievalCache.passageCache = new HashMap<String,float[]>();
+		RetrievalCache.subtopicsCache = new HashMap<String,float[]>();
 	}
 	
 	public void start(float[] params){

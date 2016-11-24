@@ -1,13 +1,14 @@
 package br.ufmg.dcc.latin.reranking;
 
 import br.ufmg.dcc.latin.controller.FlatAspectController;
+import br.ufmg.dcc.latin.controller.FlatAspectGTController;
 import br.ufmg.dcc.latin.feedback.Feedback;
 
 public class xQuAD extends InteractiveReranker {
 
 	float lambda;
 	
-	private FlatAspectController aspectControler;
+	private FlatAspectGTController aspectControler;
 	
 	public float[] importance;
 	public float[] novelty;
@@ -36,7 +37,7 @@ public class xQuAD extends InteractiveReranker {
 		super.start(params);
 		relevance = normalize(relevance);
 		lambda = params[1];
-		aspectControler = new FlatAspectController();
+		aspectControler = new FlatAspectGTController();
 		coverage = aspectControler.coverage;
 		importance = aspectControler.importance;
 		novelty = aspectControler.novelty;

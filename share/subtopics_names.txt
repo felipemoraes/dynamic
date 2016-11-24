@@ -1,0 +1,891 @@
+DD15-1	DD15-1.1	Judge looked to for solution
+DD15-1	DD15-1.2	Reactions to Redden's ruling
+DD15-1	DD15-1.3	View of Fish and Wildlife Service
+DD15-1	DD15-1.4	Judge Redden's ruling
+DD15-1	DD15-1.5	Removal of dams
+DD15-1	DD15-1.6	Judge Redden replaced
+DD15-2	DD15-2.1	costco backing of initiative
+DD15-2	DD15-2.2	privatization of liquor stores (WA)
+DD15-2	DD15-2.3	revenue effect of liquor sale privatization
+DD15-3	DD15-3.1	Defense
+DD15-3	DD15-3.2	Publication ban
+DD15-3	DD15-3.3	Terri-Lynne McClintic  co-accused
+DD15-3	DD15-3.4	Tori Stafford
+DD15-3	DD15-3.5	Victoria 'Tori' Stafford's family
+DD15-3	DD15-3.6	Prosecution
+DD15-3	DD15-3.7	Michael Thomas Rafferty  accused
+DD15-3	DD15-3.8	Pre-trial
+DD15-3	DD15-3.9	Trial
+DD15-4	DD15-4.1	Community Energy Solutions supports solar
+DD15-4	DD15-4.2	RePower Bainbridge
+DD15-4	DD15-4.3	Solutions Stories Project
+DD15-4	DD15-4.4	Residents seek to increase energy efficiency
+DD15-5	DD15-5.1	Schooling
+DD15-5	DD15-5.2	Third Party Management
+DD15-5	DD15-5.3	Housing Crisis
+DD15-5	DD15-5.4	De Beers Relationship
+DD15-5	DD15-5.5	Holmes' Reaction
+DD15-5	DD15-5.6	Morris Modular Space Inc. Reaction
+DD15-5	DD15-5.7	Humanitarian Reaction
+DD15-5	DD15-5.8	Misuse of Funds
+DD15-5	DD15-5.9	Government Reaction
+DD15-6	DD15-6.1	Spokane residents surveyed about casino
+DD15-6	DD15-6.2	Tribe seeks approval to build casino
+DD15-7	DD15-7.1	City Council Candidacy
+DD15-7	DD15-7.2	Jail
+DD15-8	DD15-8.1	Council meetings
+DD15-8	DD15-8.2	Appointment to Mayor
+DD15-8	DD15-8.3	Personal connections with other councilmembers
+DD15-8	DD15-8.4	Vietnam War Veteran claim
+DD15-9	DD15-9.1	Redistricting Commission approves plan
+DD15-9	DD15-9.2	First Legislative district created
+DD15-9	DD15-9.3	Legislature receives plan
+DD15-9	DD15-9.4	Redistricting presented many challenges
+DD15-9	DD15-9.5	Washington gains new Congressional District
+DD15-9	DD15-9.6	Redistricting plan challenged
+DD15-9	DD15-9.7	Creation of the Redistricting Commission
+DD15-9	DD15-9.8	A number of areas affected
+DD15-9	DD15-9.9	Reactions to the redistricting plan and process
+DD15-10	DD15-10.1	Dispute Effects
+DD15-10	DD15-10.2	Dispute Cause
+DD15-10	DD15-10.3	Dispute Resolution
+DD15-11	DD15-11.1	Other cities follow suit
+DD15-11	DD15-11.2	Reasons for the ordinance
+DD15-11	DD15-11.3	Bellingham ordinance
+DD15-11	DD15-11.4	Two women work for the bill's passage
+DD15-12	DD15-12.1	Impact
+DD15-12	DD15-12.2	Facilities Affected
+DD15-12	DD15-12.3	Timeline
+DD15-12	DD15-12.4	Public Reaction
+DD15-12	DD15-12.5	Rationale
+DD15-13	DD15-13.1	opposition actions
+DD15-13	DD15-13.2	setbacks to opposition
+DD15-14	DD15-14.1	Public views of the project
+DD15-14	DD15-14.2	Gitsan First nation also upset by deal
+DD15-14	DD15-14.3	Govt's role in decision
+DD15-14	DD15-14.4	Positions of Federal and provincial governments
+DD15-14	DD15-14.5	Support for pipeline
+DD15-14	DD15-14.6	Enbridge deal
+DD15-14	DD15-14.7	Position of other nations
+DD15-14	DD15-14.8	Derrick decision opposed
+DD15-14	DD15-14.9	Enridge's position
+DD15-14	DD15-14.10	Benefits of Northern Gateway Pipeline
+DD15-14	DD15-14.11	Threat of the pipeline
+DD15-15	DD15-15.1	Defense
+DD15-15	DD15-15.2	Paul Martin
+DD15-15	DD15-15.3	Verdict
+DD15-15	DD15-15.4	Background of the incident
+DD15-15	DD15-15.5	Charges
+DD15-15	DD15-15.6	Trial and hearing
+DD15-15	DD15-15.7	Cathy-Lee Martin
+DD15-16	DD15-16.1	steps toward recognition
+DD15-16	DD15-16.2	reasons favoring recognition
+DD15-16	DD15-16.3	obstacles to recognition
+DD15-17	DD15-17.1	Issues
+DD15-17	DD15-17.2	Illinois
+DD15-17	DD15-17.3	Pennsylvania
+DD15-17	DD15-17.4	Coyote-Wolf interbreeding
+DD15-17	DD15-17.5	North Carolina
+DD15-17	DD15-17.6	Washington State
+DD15-17	DD15-17.7	Encounters  Toronto area
+DD15-17	DD15-17.8	Preventative measures
+DD15-17	DD15-17.9	Minnesota
+DD15-17	DD15-17.10	Hunting and trapping
+DD15-18	DD15-18.1	Programs countering white supremacists
+DD15-18	DD15-18.2	Incidents involving white supremacists
+DD15-18	DD15-18.3	Law enforcement action against white supremacists
+DD15-19	DD15-19.1	project cancellation
+DD15-19	DD15-19.2	project history
+DD15-19	DD15-19.3	opposition
+DD15-20	DD15-20.1	Severe Winter Weather Response
+DD15-20	DD15-20.2	Coyote Problems
+DD15-20	DD15-20.3	Puyallup City Manager
+DD15-20	DD15-20.4	Downtown Parking
+DD15-20	DD15-20.5	Budget
+DD15-21	DD15-21.1	parking issues
+DD15-21	DD15-21.2	Elected Positions Held
+DD15-21	DD15-21.3	election issues
+DD15-21	DD15-21.4	mayoral election
+DD15-22	DD15-22.1	PAWS
+DD15-22	DD15-22.2	AZA and CAZA
+DD15-22	DD15-22.3	health or care
+DD15-22	DD15-22.4	Move logistics
+DD15-22	DD15-22.5	accreditation
+DD15-22	DD15-22.6	training
+DD15-22	DD15-22.7	National Elephant Centre
+DD15-22	DD15-22.8	city council / zoo board controversy
+DD15-23	DD15-23.1	Dollar Amounts Stolen
+DD15-23	DD15-23.2	Locations
+DD15-24	DD15-24.1	Reduction of the native gray wolf
+DD15-24	DD15-24.2	Gray wolves protected
+DD15-24	DD15-24.3	Wolf conservation and management plan adopted
+DD15-24	DD15-24.4	Targets established for wolves
+DD15-24	DD15-24.5	Wolves found on the Colville Indian reservation
+DD15-24	DD15-24.6	Resident packs
+DD15-24	DD15-24.7	Wolf breeding pairs
+DD15-25	DD15-25.1	progress on chihuly garden and glass project
+DD15-25	DD15-25.2	project financintg
+DD15-26	DD15-26.1	police testimony to Inquiry
+DD15-26	DD15-26.2	Reporter Suzanne Fournier
+DD15-26	DD15-26.3	Victim families
+DD15-26	DD15-26.4	Informants
+DD15-26	DD15-26.5	serial killer Robert Pickton
+DD15-26	DD15-26.6	Police investigation
+DD15-26	DD15-26.7	RCMP Cpl Catherine Galliford
+DD15-26	DD15-26.8	victims
+DD15-26	DD15-26.9	Missing Women Commission of Inquiry
+DD15-26	DD15-26.10	sex workers testimony
+DD15-27	DD15-27.1	Advice
+DD15-27	DD15-27.2	Singled out mayors
+DD15-27	DD15-27.3	Doug Ford
+DD15-27	DD15-27.4	Cut The Waist
+DD15-27	DD15-27.5	Rob Ford
+DD15-27	DD15-27.6	Weight loss efforts
+DD15-28	DD15-28.1	Williams' wife
+DD15-28	DD15-28.2	Larry Jones lawsuit
+DD15-28	DD15-28.3	Ontario and Police
+DD15-28	DD15-28.4	Undisclosed victim
+DD15-28	DD15-28.5	Russell Williams
+DD15-28	DD15-28.6	Jonas Kelly
+DD15-28	DD15-28.7	Laurie Massicotte
+DD15-28	DD15-28.8	Lloyd Family lawsuit
+DD15-29	DD15-29.1	Fall-out
+DD15-29	DD15-29.2	Animals killed
+DD15-29	DD15-29.3	Theft of carcass
+DD15-29	DD15-29.4	Columbus Zoo  surviving animals
+DD15-29	DD15-29.5	Unaccounted
+DD15-29	DD15-29.6	Muskingum County Animal Farm
+DD15-29	DD15-29.7	Marian Thompson
+DD15-29	DD15-29.8	Terry Thompson
+DD15-29	DD15-29.9	Animals Released
+DD15-29	DD15-29.10	Hunt for released animals
+DD15-30	DD15-30.1	charges against him and court case
+DD15-30	DD15-30.2	how he defrauded clients
+DD15-31	DD15-31.1	leaving coach and janitor job
+DD15-31	DD15-31.2	joining school board
+DD15-31	DD15-31.3	donated some of winnings
+DD15-32	DD15-32.1	fracking tremor connection
+DD15-32	DD15-32.2	Studies proving or disproving fracking problems
+DD15-32	DD15-32.3	fracking linked to groundwater pollution
+DD15-32	DD15-32.4	water used in fracking
+DD15-33	DD15-33.1	Patients
+DD15-33	DD15-33.2	Liability
+DD15-33	DD15-33.3	Cause
+DD15-33	DD15-33.4	Arrest and Charges
+DD15-33	DD15-33.5	Fatalities and Injuries
+DD15-34	DD15-34.1	support for Mayor Dan Pike or Kelli Linville
+DD15-34	DD15-34.2	Cherry Point terminal
+DD15-34	DD15-34.3	coal as fuel
+DD15-34	DD15-34.4	coal trains
+DD15-35	DD15-35.1	Former Manager
+DD15-35	DD15-35.2	New Manager
+DD15-35	DD15-35.3	Candidates
+DD15-35	DD15-35.4	Interim Manager
+DD15-35	DD15-35.5	Controversy
+DD15-36	DD15-36.1	Polls
+DD15-36	DD15-36.2	Political agenda
+DD15-36	DD15-36.3	Personal Information
+DD15-36	DD15-36.4	Education
+DD15-36	DD15-36.5	Scheduled appearances
+DD15-36	DD15-36.6	Endorsements lost or received
+DD15-37	DD15-37.1	Town controversy over cannon
+DD15-37	DD15-37.2	explosion
+DD15-37	DD15-37.3	cannon tradition and history
+DD15-37	DD15-37.4	threats to victim
+DD15-37	DD15-37.5	explosion injury
+DD15-37	DD15-37.6	Community reaction to victim
+DD15-38	DD15-38.1	glitches
+DD15-38	DD15-38.2	procedures
+DD15-38	DD15-38.3	first all-mail general election November 2011
+DD15-39	DD15-39.1	ferry's history
+DD15-39	DD15-39.2	ferry's sale
+DD15-40	DD15-40.1	Hamed Mohammad Shafia  Accused
+DD15-40	DD15-40.2	Other Brother Testifies
+DD15-40	DD15-40.3	Tooba Yahya Mohammad  Accused
+DD15-40	DD15-40.4	Prosecution and Investigation
+DD15-40	DD15-40.5	Moosa Hadi
+DD15-40	DD15-40.6	Mohammad Shafia  Accused
+DD15-40	DD15-40.7	Defense
+DD15-40	DD15-40.8	Victims
+DD15-40	DD15-40.9	Where and How?
+DD15-40	DD15-40.10	Honor Killing?
+DD15-40	DD15-40.11	Trial
+DD15-40	DD15-40.12	Shafia Family Background
+DD15-41	DD15-41.1	State versus local funding
+DD15-41	DD15-41.2	Legislators consider state funding
+DD15-41	DD15-41.3	School District and parent reactions
+DD15-41	DD15-41.4	How to fund education
+DD15-41	DD15-41.5	court to ensure implementation
+DD15-41	DD15-41.6	Background on the case
+DD15-41	DD15-41.7	Ruling of the Washington Supreme Court
+DD15-42	DD15-42.1	Phoenix Jones (Benjamin Fodor) loses day job
+DD15-42	DD15-42.2	Community of self-proclaimed superheroes
+DD15-42	DD15-42.3	Phoenix Jones' activities
+DD15-42	DD15-42.4	Phoenix Jones' arrest
+DD15-43	DD15-43.1	Police Chief Kirkpatrick Resigns
+DD15-43	DD15-43.2	Mayor Verner Defeat
+DD15-43	DD15-43.3	Otto Zehm
+DD15-43	DD15-43.4	Impact on Police Force
+DD15-43	DD15-43.5	County Prosecutor Tucker Recall
+DD15-44	DD15-44.1	runaway train
+DD15-45	DD15-45.1	fire department
+DD15-45	DD15-45.2	court/legal issues rulings
+DD15-45	DD15-45.3	injuries/deaths
+DD15-45	DD15-45.4	violence
+DD15-45	DD15-45.5	public opinion
+DD15-45	DD15-45.6	occupy movement
+DD15-45	DD15-45.7	camp conditions/issues
+DD15-45	DD15-45.8	supporters
+DD15-45	DD15-45.9	business response
+DD15-45	DD15-45.10	reaction to injunctions
+DD15-45	DD15-45.11	police
+DD15-45	DD15-45.12	city government response
+DD15-46	DD15-46.1	which salmon?
+DD15-46	DD15-46.2	seriousness of disease and inquiries
+DD15-46	DD15-46.3	about the virus
+DD15-47	DD15-47.1	Drones
+DD15-47	DD15-47.2	Sea Shepherd harasses Japanese whalers
+DD15-47	DD15-47.3	Collision
+DD15-47	DD15-47.4	Injuries -- Japanese whalers
+DD15-47	DD15-47.5	Nisshin Maru
+DD15-47	DD15-47.6	Sea Shepherd Members
+DD15-47	DD15-47.7	Sea Shepherd Ships
+DD15-47	DD15-47.8	Yushin Maru No.3
+DD15-47	DD15-47.9	Shonan Maru No.2
+DD15-47	DD15-47.10	Yushin Maru No.2
+DD15-47	DD15-47.11	Australia's Exclusive Economic Zone
+DD15-47	DD15-47.12	Japan's Research hunts
+DD15-47	DD15-47.13	Activists Boarded Shonan Maru No. 2
+DD15-47	DD15-47.14	Injuries -- Sea Shepherd
+DD15-48	DD15-48.1	Muckleshoot Tribe background
+DD15-48	DD15-48.2	Muckleshoot Casino
+DD15-48	DD15-48.3	Tribal Warrior Society
+DD15-48	DD15-48.4	Fishing Rights
+DD15-49	DD15-49.1	Risks and Benefits
+DD15-49	DD15-49.2	Description
+DD15-49	DD15-49.3	Controversy
+DD15-50	DD15-50.1	Plan UK
+DD15-50	DD15-50.2	SOS Children
+DD15-50	DD15-50.3	Save the Children
+DD15-50	DD15-50.4	Type of Help Needed
+DD15-50	DD15-50.5	Guinea
+DD15-50	DD15-50.6	World Food Programme (WPF)
+DD15-50	DD15-50.7	Disasters Emergency Committee (DEC)
+DD15-50	DD15-50.8	Unicef
+DD15-50	DD15-50.9	Orphans
+DD15-50	DD15-50.10	Sierra Leone
+DD15-50	DD15-50.11	Child Fund
+DD15-50	DD15-50.12	Wenzhou charity
+DD15-50	DD15-50.13	Liberia
+DD15-51	DD15-51.1	health screening
+DD15-51	DD15-51.2	border control/closing/flight restrictions
+DD15-51	DD15-51.3	economic impact
+DD15-52	DD15-52.1	Strategy
+DD15-53	DD15-53.1	training
+DD15-53	DD15-53.2	donning and removing
+DD15-53	DD15-53.3	cleaning
+DD15-53	DD15-53.4	guidelines/requirements
+DD15-53	DD15-53.5	personal hygiene
+DD15-53	DD15-53.6	disposal
+DD15-53	DD15-53.7	types
+DD15-54	DD15-54.1	Animal Experiments
+DD15-54	DD15-54.2	How it could happen
+DD15-54	DD15-54.3	Likelihood
+DD15-55	DD15-55.1	Obstacles
+DD15-55	DD15-55.2	Resources/Number of Tracers
+DD15-55	DD15-55.3	General Description
+DD15-55	DD15-55.4	Effectiveness
+DD15-56	DD15-56.1	solar radio and radio-lights' importance and usefulness
+DD15-56	DD15-56.2	who gets them, from whom and how
+DD15-57	DD15-57.1	Capacity of health facilities to handle possible outbreak
+DD15-57	DD15-57.2	Source of the fears
+DD15-57	DD15-57.3	Isolation of infected people
+DD15-57	DD15-57.4	Should there be a travel ban?
+DD15-57	DD15-57.5	Quarantines as a possibility
+DD15-57	DD15-57.6	Africans stigmatized
+DD15-57	DD15-57.7	How Govt officials react
+DD15-57	DD15-57.8	Screening at airports
+DD15-57	DD15-57.9	Scare statements
+DD15-57	DD15-57.10	Scare on airlines
+DD15-57	DD15-57.11	Are fears rational
+DD15-57	DD15-57.12	American reactions
+DD15-57	DD15-57.13	Secure the borders
+DD15-57	DD15-57.14	Unsubstantiated cliams
+DD15-57	DD15-57.15	Advice from the government
+DD15-57	DD15-57.16	Reactions to the scare
+DD15-57	DD15-57.17	ads citing threat of Ebola
+DD15-58	DD15-58.1	Vomiting/Diarrhea
+DD15-58	DD15-58.2	Antibiotics
+DD15-58	DD15-58.3	Blood Clotting
+DD15-58	DD15-58.4	Fluid Replacement
+DD15-58	DD15-58.5	Restlessness/Confusion/Seizures
+DD15-58	DD15-58.6	General Description
+DD15-58	DD15-58.7	Fever/Pain Relief
+DD15-59	DD15-59.1	Speed
+DD15-59	DD15-59.2	How they work
+DD15-59	DD15-59.3	Types
+DD15-59	DD15-59.4	Availability
+DD15-60	DD15-60.1	animal clinical trials
+DD15-60	DD15-60.2	drug approvals
+DD15-60	DD15-60.3	human experimental treatments/clinical trials
+DD15-60	DD15-60.4	economics
+DD15-60	DD15-60.5	safety/ethical issues
+DD15-60	DD15-60.6	drugs/vaccines
+DD15-61	DD15-61.1	Transport
+DD15-61	DD15-61.2	handling/disposal
+DD15-61	DD15-61.3	Companies
+DD15-61	DD15-61.4	volume
+DD15-62	DD15-62.1	Guinea
+DD15-62	DD15-62.2	Sierra Leone
+DD15-62	DD15-62.3	Ghana
+DD15-62	DD15-62.4	Area Wide
+DD15-62	DD15-62.5	Benin
+DD15-62	DD15-62.6	Liberia
+DD15-62	DD15-62.7	Nigeria
+DD15-63	DD15-63.1	Liberia
+DD15-63	DD15-63.2	Sierra Leone
+DD15-63	DD15-63.3	Mali
+DD15-64	DD15-64.1	training
+DD15-64	DD15-64.2	proper technique
+DD15-64	DD15-64.3	recommendations
+DD15-64	DD15-64.4	Nigerian campaign
+DD15-64	DD15-64.5	Sierra Leone campaign
+DD15-64	DD15-64.6	disease transmission
+DD15-65	DD15-65.1	Related victims
+DD15-65	DD15-65.2	Precautions
+DD15-65	DD15-65.3	ETU
+DD15-65	DD15-65.4	Army - Quarantined
+DD15-65	DD15-65.5	Ebola source
+DD15-65	DD15-65.6	Army - Died
+DD15-66	DD15-66.1	Perceptions of health workers
+DD15-66	DD15-66.2	Types of health workers
+DD15-66	DD15-66.3	How CHWs can help
+DD15-66	DD15-66.4	need for health workers
+DD15-66	DD15-66.5	cost of increasing numbers of health workers
+DD15-66	DD15-66.6	training of health workers
+DD15-66	DD15-66.7	Health worker scarcity
+DD15-66	DD15-66.8	Needs of health workers
+DD15-66	DD15-66.9	Effect of epidemic
+DD15-66	DD15-66.10	Roles in treatment
+DD15-66	DD15-66.11	Recruitment of health workers
+DD15-67	DD15-67.1	Difficulties in restricting bushmeat consumption
+DD15-67	DD15-67.2	Origin of outbreak?
+DD15-67	DD15-67.3	Patient Zero
+DD15-67	DD15-67.4	Efforts to minimize threat from bushmeat
+DD15-67	DD15-67.5	Bats as Ebola reservoirs
+DD15-67	DD15-67.6	Spillover and spread
+DD15-68	DD15-68.1	infection from animals used as food
+DD15-68	DD15-68.2	infection from animals
+DD15-68	DD15-68.3	virus reservoirs or hosts
+DD15-69	DD15-69.1	songs raising ebola awareness
+DD15-69	DD15-69.2	effectiveness of the songs
+DD15-69	DD15-69.3	who is writing  performing the songs
+DD15-70	DD15-70.1	Sierra Leonean HCW
+DD15-70	DD15-70.2	Quarantined/Monitored/Evacuated
+DD15-70	DD15-70.3	American HCW
+DD15-70	DD15-70.4	Organization which employed infected HCW
+DD15-70	DD15-70.5	British HCW
+DD15-71	DD15-71.1	Time-Frame
+DD15-71	DD15-71.2	Detailed Description
+DD15-71	DD15-71.3	General Description
+DD15-72	DD15-72.1	burial
+DD15-72	DD15-72.2	Transportation of remains
+DD15-72	DD15-72.3	resistance to body removal
+DD15-72	DD15-72.4	Embaling
+DD15-72	DD15-72.5	delayed removal
+DD15-72	DD15-72.6	resistance to burials
+DD15-72	DD15-72.7	cremations
+DD15-72	DD15-72.8	protests
+DD15-72	DD15-72.9	body dumping
+DD15-73	DD15-73.1	current number of deaths
+DD15-73	DD15-73.2	historical data
+DD15-73	DD15-73.3	survival rate percentage
+DD15-73	DD15-73.4	death rate predictions
+DD15-73	DD15-73.5	current death rate percentage
+DD15-74	DD15-74.1	Healthcare workers
+DD15-74	DD15-74.2	Infection or death statistics
+DD15-74	DD15-74.3	evacuation
+DD15-74	DD15-74.4	Nurses
+DD15-74	DD15-74.5	Doctors
+DD15-74	DD15-74.6	quarantine
+DD15-75	DD15-75.1	Social Implications
+DD15-75	DD15-75.2	Security Implications
+DD15-75	DD15-75.3	Economic Implications
+DD15-75	DD15-75.4	Political Implications
+DD15-76	DD15-76.1	causes/reasons
+DD15-76	DD15-76.2	injuries/deaths
+DD15-76	DD15-76.3	security intervention
+DD15-77	DD15-77.1	Lofa County
+DD15-77	DD15-77.2	Bomi County
+DD15-77	DD15-77.3	Montserrado County
+DD15-77	DD15-77.4	Margibi County
+DD15-77	DD15-77.5	Countrywide
+DD15-77	DD15-77.6	Bong County
+DD15-78	DD15-78.1	quarantining health workers
+DD15-78	DD15-78.2	Protective gear
+DD15-78	DD15-78.3	Training workers in safe practices
+DD15-78	DD15-78.4	occurences
+DD15-78	DD15-78.5	gowns and gloves as contaminants
+DD15-78	DD15-78.6	self-contamination
+DD15-78	DD15-78.7	use of PPE
+DD15-78	DD15-78.8	Health worker risks
+DD15-79	DD15-79.1	witchdoctor ebola connection
+DD15-80	DD15-80.1	Survivors help care for the sick
+DD15-80	DD15-80.2	Survivor reintegration into the community
+DD15-80	DD15-80.3	Survivor needs
+DD15-80	DD15-80.4	Survivors are shunned and discriminated against
+DD15-80	DD15-80.5	Survivor concerns
+DD15-80	DD15-80.6	Blood from survivors thought to have antibodies
+DD15-80	DD15-80.7	Programs for Ebola survivors
+DD15-80	DD15-80.8	Post Ebola syndrome
+DD15-81	DD15-81.1	Trials of therapies
+DD15-81	DD15-81.2	The drug TKM-Ebola
+DD15-81	DD15-81.3	Anti-virals
+DD15-81	DD15-81.4	FDA approved drugs show promise
+DD15-81	DD15-81.5	Using unapproved and untested drugs
+DD15-81	DD15-81.6	BCX4430  an anti-viral drug
+DD15-81	DD15-81.7	Brincidofovir approved for emergency use
+DD15-81	DD15-81.8	Promising therapies
+DD15-81	DD15-81.9	Licensed medications to treat Ebola
+DD15-81	DD15-81.10	Ethical issues in drug treatments
+DD15-81	DD15-81.11	Use of Zmapp
+DD15-82	DD15-82.1	Implications of Immune Individuals/Populations
+DD15-82	DD15-82.2	Immunity after recovery
+DD15-82	DD15-82.3	Immunity by Vaccine
+DD15-82	DD15-82.4	Exposure to Ebola  Asymptomatic
+DD15-83	DD15-83.1	Healing and burial practices
+DD15-83	DD15-83.2	Hunting and eating practices
+DD15-83	DD15-83.3	Systems of belief
+DD15-83	DD15-83.4	Fear of modern medicine and Western providers
+DD15-83	DD15-83.5	Population movements
+DD15-83	DD15-83.6	Need to understand cultural risk factors
+DD15-83	DD15-83.7	Confidence in government
+DD15-83	DD15-83.8	Women's role as caregivers
+DD15-83	DD15-83.9	What community leaders say
+DD15-84	DD15-84.1	Last Mile Health recruiting
+DD15-84	DD15-84.2	Last Mile Health activities
+DD15-84	DD15-84.3	Last Mile Health effectiveness
+DD15-84	DD15-84.4	Last Mile Health history
+DD15-85	DD15-85.1	Casualties -- Liberia
+DD15-85	DD15-85.2	Riots in Liberia
+DD15-85	DD15-85.3	Casualties -- Sierra Leone
+DD15-85	DD15-85.4	Why? Guinea
+DD15-85	DD15-85.5	Why? Sierra Leone
+DD15-85	DD15-85.6	Why? Liberia
+DD15-85	DD15-85.7	Casualties -- Guinea
+DD15-85	DD15-85.8	Riots in Sierra Leone
+DD15-85	DD15-85.9	Riots in Guinea
+DD15-86	DD15-86.1	nano silver use
+DD15-86	DD15-86.2	approved for use or rejected
+DD15-86	DD15-86.3	efficacy of nano silver
+DD15-86	DD15-86.4	what is nano silver?
+DD15-87	DD15-87.1	Ebola Contained
+DD15-87	DD15-87.2	Ebola Reaches Nigeria
+DD15-87	DD15-87.3	Ebola Free
+DD15-87	DD15-87.4	Policies
+DD15-88	DD15-88.1	Quarantined
+DD15-88	DD15-88.2	Reaction
+DD15-88	DD15-88.3	Treatment of those infected
+DD15-88	DD15-88.4	Food and Supplies
+DD15-88	DD15-88.5	Background
+DD15-88	DD15-88.6	Enforcement of quarantine
+DD15-89	DD15-89.1	Where is spam illegal
+DD15-89	DD15-89.2	Making money from spam
+DD15-89	DD15-89.3	who sends spam
+DD15-89	DD15-89.4	Tips on spamming
+DD15-89	DD15-89.5	Seeking spammers
+DD15-89	DD15-89.6	difficulties prosecuting spam
+DD15-89	DD15-89.7	Virginia's law on spamming
+DD15-89	DD15-89.8	Protecting against spam
+DD15-89	DD15-89.9	Legal spam
+DD15-89	DD15-89.10	prosecution for spamming
+DD15-89	DD15-89.11	Questions about sending spam
+DD15-89	DD15-89.12	Definition of spam
+DD15-90	DD15-90.1	Silk Road founder found guilty
+DD15-90	DD15-90.2	What was Silk Road
+DD15-90	DD15-90.3	How it was taken down
+DD15-90	DD15-90.4	Alternatives to Silk Road
+DD15-90	DD15-90.5	About Ross Ulbricht, the alleged founder
+DD15-90	DD15-90.6	Drugs sold by Silk Road
+DD15-91	DD15-91.1	How to use bitcoin
+DD15-91	DD15-91.2	Advantages of bitcoins
+DD15-91	DD15-91.3	Who uses or prefers bitcoin
+DD15-91	DD15-91.4	Demand for bitcoin
+DD15-91	DD15-91.5	Traceability of bitcoins
+DD15-91	DD15-91.6	Possible regulation of bitcoins
+DD15-91	DD15-91.7	Effect on sales
+DD15-91	DD15-91.8	How bitcoins can be used
+DD15-91	DD15-91.9	Disadvantages of bitcoins
+DD15-92	DD15-92.1	What is it?
+DD15-92	DD15-92.2	Profitability of site flipping
+DD15-92	DD15-92.3	Scams/Fraud
+DD15-92	DD15-92.4	How to site flip
+DD15-93	DD15-93.1	Scope of counterfeit trade
+DD15-93	DD15-93.2	internet sites
+DD15-93	DD15-93.3	Legislation to combat piracy
+DD15-93	DD15-93.4	McColo Corp
+DD15-93	DD15-93.5	Cracking down on counterfeiters
+DD15-93	DD15-93.6	Quality of counterfeit products
+DD15-94	DD15-94.1	removal
+DD15-94	DD15-94.2	detection
+DD15-94	DD15-94.3	Operating systems
+DD15-94	DD15-94.4	software tools
+DD15-94	DD15-94.5	how they work
+DD15-94	DD15-94.6	seeking/giving advice
+DD15-95	DD15-95.1	Buyers
+DD15-95	DD15-95.2	Exchanges
+DD15-95	DD15-95.3	Sellers
+DD15-96	DD15-96.1	SEO and
+DD15-96	DD15-96.2	Illegal Activity
+DD15-96	DD15-96.3	General Descriptions
+DD15-97	DD15-97.1	Use
+DD15-97	DD15-97.2	Sellers
+DD15-97	DD15-97.3	Results
+DD15-97	DD15-97.4	Software
+DD15-98	DD15-98.1	review themes
+DD15-98	DD15-98.2	review providers
+DD15-98	DD15-98.3	seeking review providers
+DD15-98	DD15-98.4	software
+DD15-99	DD15-99.1	offering ticketmaster proxies
+DD15-99	DD15-99.2	how to make money with ticketmaster proxies
+DD15-99	DD15-99.3	looking for ticketmaster proxies
+DD15-100	DD15-100.1	Mode of Payment
+DD15-100	DD15-100.2	Prices
+DD15-100	DD15-100.3	Sellers
+DD15-101	DD15-101.1	eBay
+DD15-101	DD15-101.2	Web Hosting Companies' Actions
+DD15-101	DD15-101.3	Applications and Service Providers
+DD15-101	DD15-101.4	BlackHatWorld Actions
+DD15-101	DD15-101.5	Paypal
+DD15-101	DD15-101.6	Legality
+DD15-102	DD15-102.1	telemarketing law
+DD15-102	DD15-102.2	outsourcing  hiring  using  or working as a telemarketers
+DD15-102	DD15-102.3	looking for or identifying leads to telemarket to
+DD15-102	DD15-102.4	discouraging telemarketers
+DD15-102	DD15-102.5	recorded telemarketing
+DD15-103	DD15-103.1	Effectiveness
+DD15-103	DD15-103.2	Countering negative SEO
+DD15-103	DD15-103.3	Definition
+DD15-103	DD15-103.4	How it works
+DD15-104	DD15-104.1	Scams
+DD15-104	DD15-104.2	Money Laundering
+DD15-104	DD15-104.3	Description/How To Use
+DD15-105	DD15-105.1	Conversion Rates
+DD15-105	DD15-105.2	Designers and Tools
+DD15-105	DD15-105.3	Google and Squeeze Pages
+DD15-105	DD15-105.4	Bing and Squeeze Pages
+DD15-106	DD15-106.1	problems with making money from freecycle
+DD15-106	DD15-106.2	ways to make money from freecycle
+DD15-107	DD15-107.1	buyers
+DD15-107	DD15-107.2	pros and cons of buying
+DD15-107	DD15-107.3	Business selling/offering
+DD15-107	DD15-107.4	individuals selling/offering/trading
+DD15-108	DD15-108.1	Advice
+DD15-108	DD15-108.2	Service Providers
+DD15-109	DD15-109.1	guides
+DD15-109	DD15-109.2	individual spinner/writer providers
+DD15-109	DD15-109.3	advice seeking
+DD15-109	DD15-109.4	software spinner/rewriter recommendations/reviews
+DD15-109	DD15-109.5	looking for spinning services
+DD15-109	DD15-109.6	advice given
+DD15-109	DD15-109.7	looking for system testers
+DD15-110	DD15-110.1	Atomic Email -- details & aliases
+DD15-110	DD15-110.2	RankTracker -- details & aliases
+DD15-110	DD15-110.3	Kalrudra -- details & aliases
+DD15-110	DD15-110.4	Scrape Genius -- details & aliases
+DD15-110	DD15-110.5	Sellers/Creators
+DD15-110	DD15-110.6	Scrapers
+DD15-110	DD15-110.7	Gscraper -- details & aliases
+DD15-110	DD15-110.8	Mozenda -- details & aliases
+DD15-110	DD15-110.9	Hrefer -- details & aliases
+DD15-110	DD15-110.10	ScrapeBox -- details & aliases
+DD15-110	DD15-110.11	Tweetattacks -- details & aliases
+DD15-111	DD15-111.1	account service providers
+DD15-111	DD15-111.2	sellers
+DD15-111	DD15-111.3	account verification
+DD15-111	DD15-111.4	fake paypal accounts
+DD15-111	DD15-111.5	buyers
+DD15-112	DD15-112.1	CAPTCHA Service Effectiveness
+DD15-112	DD15-112.2	CAPTCHA Service Names (Companies and/or Software)
+DD15-112	DD15-112.3	CAPTCHA Hacks
+DD15-112	DD15-112.4	CAPTCHA Service: How to Use
+DD15-112	DD15-112.5	CAPTCHA Service Costs
+DD15-112	DD15-112.6	CAPTCHA Service Descriptions
+DD15-113	DD15-113.1	fake reviews
+DD15-113	DD15-113.2	reviews for pay
+DD15-114	DD15-114.1	Reviews/Assessments
+DD15-114	DD15-114.2	What it does
+DD15-114	DD15-114.3	How it works
+DD15-115	DD15-115.1	amberlamps
+DD15-115	DD15-115.2	HealeyV3
+DD15-115	DD15-115.3	BigHustlah
+DD15-115	DD15-115.4	Proxy finders
+DD15-115	DD15-115.5	GauravJ
+DD15-115	DD15-115.6	skype_signinnoww
+DD15-115	DD15-115.7	portalweb
+DD15-115	DD15-115.8	clfox
+DD15-115	DD15-115.9	Jrim_Software
+DD15-115	DD15-115.10	proxygo
+DD15-116	DD15-116.1	Internet sites
+DD15-116	DD15-116.2	Legislation to block sites
+DD15-116	DD15-116.3	Law enforcement efforts
+DD15-116	DD15-116.4	How to create or market pornography sites
+DD15-116	DD15-116.5	offers to establish sites
+DD15-117	DD15-117.1	Prosecuting offenders
+DD15-117	DD15-117.2	Sites involved in piracy
+DD15-117	DD15-117.3	Pirating software
+DD15-117	DD15-117.4	New law proposed to combat piracy
+DD15-117	DD15-117.5	Copyrights alert system
+DD15-117	DD15-117.6	Pirating films
+DD15-117	DD15-117.7	Google's actions to control piracy
+DD15-117	DD15-117.8	Legalities of downloading versus streaming
+DD15-117	DD15-117.9	Unlawful sites
+DD15-117	DD15-117.10	Usiing IP addresses
+DD15-117	DD15-117.11	FBI involvement
+DD15-118	DD15-118.1	What Is It?
+DD15-118	DD15-118.2	How to use account?
+DD15-118	DD15-118.3	How to set up account
+DD15-118	DD15-118.4	Why Use?
+DD15-118	DD15-118.5	Limits/Disadvantages/Consequences
+DD16-1	DD16-1.1	West African mission
+DD16-1	DD16-1.2	Key Personnel
+DD16-1	DD16-1.3	Personnel safety protocols
+DD16-2	DD16-2.1	Efforts to Counter
+DD16-2	DD16-2.2	Origins
+DD16-2	DD16-2.3	The Claims
+DD16-3	DD16-3.1	healthcare insurance
+DD16-3	DD16-3.2	healthcare costs of ebola
+DD16-3	DD16-3.3	provider impacts
+DD16-4	DD16-4.1	his background
+DD16-4	DD16-4.2	his assignment and activities
+DD16-4	DD16-4.3	his contacts
+DD16-5	DD16-5.1	Ewedu Preparation and Dose
+DD16-6	DD16-6.1	Spider Venom
+DD16-6	DD16-6.2	Condensed Milk
+DD16-6	DD16-6.3	Kola Nut
+DD16-6	DD16-6.4	Algae
+DD16-6	DD16-6.5	Melatonin
+DD16-6	DD16-6.6	Fermented Soy
+DD16-6	DD16-6.7	Cannabis
+DD16-6	DD16-6.8	Essential Oils
+DD16-6	DD16-6.9	Saltwater
+DD16-6	DD16-6.10	Vitamin C
+DD16-6	DD16-6.11	Raw Onions
+DD16-7	DD16-7.1	Migration
+DD16-7	DD16-7.2	Movement
+DD16-8	DD16-8.1	Dr. Buck's Biography
+DD16-8	DD16-8.2	Official Sierra Leone Requests for Help
+DD16-8	DD16-8.3	Sierra Leone Medical Fatalities
+DD16-8	DD16-8.4	WHO
+DD16-9	DD16-9.1	Biography
+DD16-9	DD16-9.2	Post-Mortem Repercussions
+DD16-9	DD16-9.3	Disease Pathology
+DD16-9	DD16-9.4	Nurses Nina Pham & Amber Vinson
+DD16-10	DD16-10.1	Countries affected most by ebola
+DD16-10	DD16-10.2	Government impacts  spending on ebola
+DD16-10	DD16-10.3	Companies affected most by ebola
+DD16-10	DD16-10.4	Worldwide ebola impact
+DD16-11	DD16-11.1	Evacuated to U.S.
+DD16-11	DD16-11.2	Medical Protocols
+DD16-11	DD16-11.3	Infected with ebola
+DD16-12	DD16-12.1	can your immune system prevent ebola
+DD16-12	DD16-12.2	who has a natural immunity to ebola
+DD16-12	DD16-12.3	after having Ebola are you immune.
+DD16-13	DD16-13.1	his background  assignment  family
+DD16-13	DD16-13.2	why he volunteered
+DD16-13	DD16-13.3	what preparation for ebola work
+DD16-14	DD16-14.1	Rumors
+DD16-14	DD16-14.2	Personal info
+DD16-14	DD16-14.3	Preventative measures
+DD16-14	DD16-14.4	Healing Powers and Anointing Water
+DD16-14	DD16-14.5	Joshua's response to delegation
+DD16-14	DD16-14.6	Government concerns
+DD16-14	DD16-14.7	Convention
+DD16-15	DD16-15.1	Education
+DD16-15	DD16-15.2	Position
+DD16-15	DD16-15.3	Bringing his Claim to Market
+DD16-15	DD16-15.4	His Claim
+DD16-15	DD16-15.5	Publications/Symposia
+DD16-16	DD16-16.1	Healthmap
+DD16-16	DD16-16.2	Computational Epidemiology
+DD16-16	DD16-16.3	BDEI
+DD16-16	DD16-16.4	IDEA
+DD16-16	DD16-16.5	SEIR
+DD16-16	DD16-16.6	NDSSL
+DD16-17	DD16-17.1	Dr. Sheik Umar Khan
+DD16-17	DD16-17.2	How Ebola came into Sierra Leone
+DD16-17	DD16-17.3	Hospital workers infected
+DD16-17	DD16-17.4	Patients afraid to go to Kenema hospital
+DD16-17	DD16-17.5	Lassa research to Ebola research
+DD16-17	DD16-17.6	Health workers strike
+DD16-17	DD16-17.7	Ebola rumors and fears hindering health care
+DD16-17	DD16-17.8	Conditions in KGH Ebola treatment areas
+DD16-17	DD16-17.9	Aid and assistance given to Hospital
+DD16-17	DD16-17.10	Khan's care after contracting Ebola
+DD16-17	DD16-17.11	First Kenema Hospital Ebola patient
+DD16-18	DD16-18.1	JEDI app
+DD16-18	DD16-18.2	Telepresence
+DD16-18	DD16-18.3	Medical Robots
+DD16-19	DD16-19.1	who was attacked
+DD16-19	DD16-19.2	instances of attacks against ebola aid
+DD16-19	DD16-19.3	who were the attackers
+DD16-19	DD16-19.4	why attacks took place
+DD16-20	DD16-20.1	Home Address
+DD16-20	DD16-20.2	Contacts
+DD16-20	DD16-20.3	Employment Org/Loc
+DD16-21	DD16-21.1	cost of ebola medical waste
+DD16-21	DD16-21.2	dangers of ebola medical waste
+DD16-21	DD16-21.3	disposal of ebola medical waste
+DD16-21	DD16-21.4	containment of ebola medical waste
+DD16-22	DD16-22.1	content and logistics of broadcasts
+DD16-22	DD16-22.2	who is involved in producing broadcasts
+DD16-22	DD16-22.3	challenges
+DD16-22	DD16-22.4	how many students reached
+DD16-23	DD16-23.1	bitcoin
+DD16-23	DD16-23.2	Treatment Prevention and Cure
+DD16-23	DD16-23.3	Pricing
+DD16-23	DD16-23.4	Mapping
+DD16-24	DD16-24.1	Port Harcourt contacts monitored
+DD16-24	DD16-24.2	Port Harcourt Ebola patients
+DD16-24	DD16-24.3	How and where Koye contracted Ebola
+DD16-24	DD16-24.4	Koye traveled to Port Harcourt
+DD16-24	DD16-24.5	Dr. Enemuo's sister
+DD16-24	DD16-24.6	Legal consequences
+DD16-24	DD16-24.7	Koye's treatment at Port Harcourt hotel
+DD16-24	DD16-24.8	Enemuo's wife and child
+DD16-24	DD16-24.9	Dr. Enemuo
+DD16-24	DD16-24.10	Olu Koye
+DD16-24	24.11	Koye evaded surveillance in Lagos
+DD16-25	DD16-25.1	Vaccine progress at E. U.
+DD16-25	DD16-25.2	Key members of team at E. U.
+DD16-25	DD16-25.3	How successful was treatment at E. U
+DD16-25	DD16-25.4	Prevention progress at E. U.
+DD16-26	DD16-26.1	Societal And Community Roles
+DD16-26	DD16-26.2	Funeral and Burial Treatment
+DD16-26	DD16-26.3	Anthropological Factors
+DD16-27	DD16-27.1	NJ Actions
+DD16-27	DD16-27.2	Maine Actions
+DD16-27	DD16-27.3	Public Opinion
+DD16-27	DD16-27.4	Kaci's Behavior
+DD16-28	DD16-28.1	influencing factors
+DD16-28	DD16-28.2	distribution
+DD16-28	DD16-28.3	broad studies
+DD16-28	DD16-28.4	consequences
+DD16-28	DD16-28.5	situation
+DD16-28	DD16-28.6	change studies
+DD16-29	DD16-29.1	Greenland
+DD16-29	DD16-29.2	NSIDC
+DD16-29	DD16-29.3	past sea-level rise
+DD16-29	DD16-29.4	sea ice index
+DD16-29	DD16-29.5	ICESat
+DD16-29	DD16-29.6	Artic
+DD16-29	DD16-29.7	Antartica
+DD16-29	DD16-29.8	future sea-level rise
+DD16-30	DD16-30.1	locations
+DD16-31	DD16-31.1	sea level drop
+DD16-31	DD16-31.2	storm surge
+DD16-31	DD16-31.3	sea level rise impact
+DD16-31	DD16-31.4	change of sea level rise
+DD16-31	DD16-31.5	XSEDE
+DD16-31	DD16-31.6	cause of sea level rise
+DD16-31	DD16-31.7	coastal vulnerability
+DD16-32	DD16-32.1	surface freshwater forcing
+DD16-32	DD16-32.2	Arctic Freshwater Initiative
+DD16-32	DD16-32.3	Freshwater Budget of the Canadian Archipelago
+DD16-32	DD16-32.4	Freshwater Fluxes in the East Greenland Current
+DD16-32	DD16-32.5	terrestrial and freshwater ecosystems
+DD16-33	DD16-33.1	shoreline erosion
+DD16-33	DD16-33.2	NOAA
+DD16-33	DD16-33.3	sea-level rise
+DD16-33	DD16-33.4	Coastal Hazards
+DD16-34	DD16-34.1	global ocean circulation
+DD16-34	DD16-34.2	salinity
+DD16-35	DD16-35.1	snow accumulation rate
+DD16-35	DD16-35.2	Greenland
+DD16-35	DD16-35.3	Ice sheet
+DD16-35	DD16-35.4	GRACE
+DD16-35	DD16-35.5	North Atlantic Oscillation
+DD16-36	DD16-36.1	monitoring methods
+DD16-36	DD16-36.2	studies
+DD16-37	DD16-37.1	The West Antarctic Ice Sheet (WAIS) initiative
+DD16-37	DD16-37.2	Amundsen Sea
+DD16-38	DD16-38.1	Upper level changes
+DD16-38	DD16-38.2	Lower level changes
+DD16-38	DD16-38.3	Productivity
+DD16-39	DD16-39.1	Worth
+DD16-39	DD16-39.2	Drilling
+DD16-39	DD16-39.3	Shipping
+DD16-39	DD16-39.4	Helpful changes
+DD16-40	DD16-40.1	methane
+DD16-40	DD16-40.2	polar terrestrial ecosystem
+DD16-40	DD16-40.3	Biosphere
+DD16-40	DD16-40.4	carbon dioxide
+DD16-40	DD16-40.5	CDIAC
+DD16-40	DD16-40.6	Nitrous oxide
+DD16-40	DD16-40.7	trace gas
+DD16-41	DD16-41.1	Artic sea ice extent
+DD16-41	DD16-41.2	SEARCH
+DD16-41	DD16-41.3	PARCA
+DD16-41	DD16-41.4	Sea ice retreat
+DD16-41	DD16-41.5	fish
+DD16-41	DD16-41.6	Sea ice
+DD16-41	DD16-41.7	DAMOCLES
+DD16-41	DD16-41.8	Greenland ice cover
+DD16-41	DD16-41.9	MEaSUREs
+DD16-41	DD16-41.10	Artic mercury pollution
+DD16-42	DD16-42.1	Volcanos
+DD16-42	DD16-42.2	Extraction
+DD16-42	DD16-42.3	Other random minerals
+DD16-42	DD16-42.4	Methane
+DD16-43	DD16-43.1	Ice sheet getting smaller
+DD16-44	DD16-44.1	vegitative productivity
+DD16-44	DD16-44.2	vegitative changes
+DD16-44	DD16-44.3	impact
+DD16-44	DD16-44.4	causes
+DD16-44	DD16-44.5	Monitoring methods
+DD16-45	DD16-45.1	Testing
+DD16-45	DD16-45.2	Impede
+DD16-45	DD16-45.3	Commercial
+DD16-46	DD16-46.1	Coverage
+DD16-46	DD16-46.2	Ice Expansion
+DD16-46	DD16-46.3	Causes of decrease
+DD16-47	DD16-47.1	thickness in the multi-year sea ice zone north-west of Greenland
+DD16-47	DD16-47.2	thickness of the ice cover
+DD16-47	DD16-47.3	NASA ICESat
+DD16-47	DD16-47.4	collecting data on ice thickness
+DD16-47	DD16-47.5	Arctic sea ice extent
+DD16-47	DD16-47.6	the ice surface
+DD16-47	DD16-47.7	Measuring ice thickness
+DD16-48	DD16-48.1	Jason-1
+DD16-48	DD16-48.2	global ocean circulation
+DD16-48	DD16-48.3	salinity
+DD16-48	DD16-48.4	Global Ocean currents climatology
+DD16-48	DD16-48.5	polar ocean
+DD16-48	DD16-48.6	global water cycle
+DD16-48	DD16-48.7	TOPEX/Poseidon
+DD16-49	DD16-49.1	Changes
+DD16-49	DD16-49.2	Affects
+DD16-50	DD16-50.1	glacier contribution to sea level rise
+DD16-50	DD16-50.2	impacts of climate change and sea level rise
+DD16-50	DD16-50.3	planning for sea level change
+DD16-50	DD16-50.4	visualizing sea level rise
+DD16-51	DD16-51.1	Land changes
+DD16-51	DD16-51.2	Water Changes
+DD16-51	DD16-51.3	Effects
+DD16-52	DD16-52.1	MODIS
+DD16-52	DD16-52.2	climate model
+DD16-52	DD16-52.3	cloud feedback
+DD16-52	DD16-52.4	CDOM
+DD16-52	DD16-52.5	Artic climate change
+DD16-52	DD16-52.6	albedo
+DD16-52	DD16-52.7	ice-albedo feedback
+DD16-52	DD16-52.8	albedo feedback
+DD16-52	DD16-52.9	CERES
+DD16-52	DD16-52.10	VIIRS
+DD16-52	DD16-52.11	land cover
+DD16-52	DD16-52.12	AVHRR
+DD16-53	DD16-53.1	polar bears and sea ice
+DD16-53	DD16-53.2	polar bears toxins
+DD16-53	DD16-53.3	polar bear population
+DD16-53	DD16-53.4	Polar bear habitat
+DD16-53	DD16-53.5	polar bears and food sources

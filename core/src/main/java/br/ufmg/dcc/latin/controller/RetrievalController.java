@@ -67,7 +67,11 @@ public class RetrievalController {
 		IndexSearcher searcher = null;
 		try {
 			reader = DirectoryReader.open(FSDirectory.open( new File("../etc/indices/" + indexName).toPath()) );
+			
+	
 			searcher = new IndexSearcher(reader);
+			System.out.println(searcher.collectionStatistics("content").docCount());
+			
 			searcher.setSimilarity(similarity);
 			RetrievalCache.indices.put(indexName, searcher);
 		} catch (IOException e) {
@@ -85,12 +89,12 @@ public class RetrievalController {
 			createAnalyzer();
 		}
 		Map<String,Float> boosts = new HashMap<String,Float>();
-	//	boosts.put("title", fiedlWeights[0]);
+		boosts.put("title", fiedlWeights[0]);
 		boosts.put("content", fiedlWeights[1]);
-		parser = new MultiFieldQueryParser(new String[]{ "content"}, analyzer, boosts);
+		parser = new MultiFieldQueryParser(new String[]{"title", "content"}, analyzer, boosts);
 		return parser;
 	}
-/*
+
 	private static void createAnalyzer() {
         CustomAnalyzer.Builder builder = CustomAnalyzer.builder();
         try {
@@ -103,12 +107,12 @@ public class RetrievalController {
 		}
         analyzer = builder.build();
 
-	}*/
-	
+	}
+	/*
 	private static void createAnalyzer() {
         analyzer = new EnglishAnalyzer();
 
-	}
+	}*/
 	
 	public static float[] getSimilaritiesRerank(int[] docids, String query){
 		
