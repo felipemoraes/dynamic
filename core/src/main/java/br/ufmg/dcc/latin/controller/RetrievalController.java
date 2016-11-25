@@ -94,7 +94,7 @@ public class RetrievalController {
 		return parser;
 	}
 
-	public static Analyzer getAnalyzer() {
+	/*public static Analyzer getAnalyzer() {
         CustomAnalyzer.Builder builder = CustomAnalyzer.builder();
         try {
 			builder.withTokenizer("standard");
@@ -106,12 +106,12 @@ public class RetrievalController {
 		}
         analyzer = builder.build();
         return analyzer;
-	}
-	/*
-	private static void createAnalyzer() {
-        analyzer = new EnglishAnalyzer();
-
 	}*/
+	
+	public static Analyzer getAnalyzer() {
+        return analyzer = new EnglishAnalyzer();
+
+	}
 	
 	public static float[] getSimilaritiesRerank(int[] docids, String query){
 		
@@ -122,12 +122,12 @@ public class RetrievalController {
 			mapId.put(RetrievalCache.docids[i], i);
 		}
 		IndexSearcher searcher  = RetrievalController.getIndexSearcher(RetrievalCache.indexName);
-		
+		System.out.println(query);
 		BooleanQuery.setMaxClauseCount(1000000);
 		QueryParser parser = getQueryParser();
 		Query q = null;
 		try {
-			q = parser.parse(QueryParser.escape(query.toLowerCase()));
+			q = parser.parse(query);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -141,6 +141,7 @@ public class RetrievalController {
 			ScoreDoc[] reRankScoreDocs = rescoredDocs.scoreDocs;
 			for (int i = 0; i < reRankScoreDocs.length; i++) {
 				int ix = mapId.get(reRankScoreDocs[i].doc);
+				
 				scores[ix] = reRankScoreDocs[i].score;
 			}
 		} catch (IOException e) {

@@ -164,6 +164,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			}
 			selected.add(maxTerm);
 			complexAspectComponent += maxTerm + "^" + String.format("%.4f", maxFreq) + " ";
+			//complexAspectComponent += maxTerm + " ";
 			
 		}
 		return complexAspectComponent;

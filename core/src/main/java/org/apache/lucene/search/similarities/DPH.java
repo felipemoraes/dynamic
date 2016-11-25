@@ -48,6 +48,7 @@ public class DPH extends SimilarityBase {
 	if ((1f-f) > 0) { 
 		score += 0.5*log2(2d*Math.PI*freq*(1f-f));
 	}
+	
 	score = stats.getBoost()*score;
     return score;
   }
@@ -91,6 +92,7 @@ public class DPH extends SimilarityBase {
     
     @Override
     public Explanation explain(int doc, Explanation freq) {
+      
       return DPH.this.explain(stats, doc, freq,
           norms == null ? 1F : norms.get(doc));
     }

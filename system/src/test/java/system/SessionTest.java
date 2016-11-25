@@ -43,7 +43,7 @@ public class SessionTest {
 		Session session = new Session();
 		session.setParams(params);
 		
-		session.setReranker("Cube MostRelevantTermsAspectMining");
+		session.setReranker("xQuAD MostRelevantTermsAspectMining");
 		session.run( "ebola16", "DD16-1", "US Military Crisis Response");
 		
 
