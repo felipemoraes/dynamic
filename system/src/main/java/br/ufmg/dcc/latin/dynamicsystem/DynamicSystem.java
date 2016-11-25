@@ -27,7 +27,7 @@ public class DynamicSystem {
 	    session.setReranker(parameters.reranker);
 	    session.setParams(parameters.experimentalParameters);
 	    
-	    TrecUser.load("../share/truth_data_deduped.txt");
+	    TrecUser.load("../share/truth_data.txt");
 	    
 	    while ((line = br.readLine()) != null) {
 	    	String[] splitLine = line.split(" ",3);
