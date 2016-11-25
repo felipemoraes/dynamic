@@ -1,0 +1,118 @@
+local_politics DD15-1 Columbia-Snake salmon dam controversery
+local_politics DD15-2 Washington liquor sale privatization
+local_politics DD15-3 Victoria Stafford - murder trial of Michael Thomas Rafferty
+local_politics DD15-4 Bainbridge Island residents seek to lower energy use
+local_politics DD15-5 Attawapiskat First Nation Housing Crisis
+local_politics DD15-6 Spokane Tribe seeks to build casino.
+local_politics DD15-7 Robert Jesse Hill Tacoma
+local_politics DD15-8 Controversy surrounding Rick Hansen's appointment to Mayor of Puyallup, WA
+local_politics DD15-9 Legislative redistricting in Washington State
+local_politics DD15-10 Squamish Canada Land Dispute
+local_politics DD15-11 Bellingham bans plastic bags
+local_politics DD15-12 Consolidation of Postal Centers
+local_politics DD15-13 Pebble Mine opposition 
+local_politics DD15-14 Enbridge-Gitsan deal controversy
+local_politics DD15-15 Paul and Cathy Lee Martin
+local_politics DD15-16 Duwamish tribal recognition 
+local_politics DD15-17 Coyote Encounters in Urban and Suburban Areas
+local_politics DD15-18 White Supremacists in Washington State
+local_politics DD15-19 Radar Ridge wind project
+local_politics DD15-20 Ralph Dannenberg Puyallup
+local_politics DD15-21 Nancy Wilhelm-Morden
+local_politics DD15-22 Toronto Zoo elephant move controversy
+local_politics DD15-23 Poppy Box Thievery
+local_politics DD15-24 Survival of the Gray Wolf in Washington State
+local_politics DD15-25 Chihuly Garden and Glass
+local_politics DD15-26 Downtown Easton Missing Women
+local_politics DD15-27 Rob Ford Toronto Cut The Waist
+local_politics DD15-28 Convicted killer Russell Williams is sued
+local_politics DD15-29 Muskingum County Animal Farm
+local_politics DD15-30 Stockbroker Richard Finger 
+local_politics DD15-31 Millionaire janitor joins school board
+local_politics DD15-32 Fracking's water and tremor problems
+local_politics DD15-33 Australian Nursing Home Fire
+local_politics DD15-34 Bellingham export facility
+local_politics DD15-35 Tacoma City Manager
+local_politics DD15-36 Rob McKenna gubernatorial candidate
+local_politics DD15-37 snohomish high school cannon explosion
+local_politics DD15-38 Washington all-mail election
+local_politics DD15-39 Kalakala ferry
+local_politics DD15-40 Shafia Canal Lock Murder Trial
+local_politics DD15-41 The McCleary decision
+local_politics DD15-42 Phoenix Jones Seattle
+local_politics DD15-43 Zehm Case Upends Spokane County Government
+local_politics DD15-44 Runaway BNSF train 
+local_politics DD15-45 occupy vancouver
+local_politics DD15-46 Salmon virus
+local_politics DD15-47 Sea Shepherd Conservation Society clashes with Japanese whalers
+local_politics DD15-48 Muckleshoot Indian Tribe
+ebola15 DD15-49 Community Care Centers
+ebola15 DD15-50 Ebola Orphans in Guinea, Liberia and Sierra Leone
+ebola15 DD15-51 border closings
+ebola15 DD15-52 Lofa containment strategy
+ebola15 DD15-53 ppe personal protective equipment
+ebola15 DD15-54 Airborne Transmission
+ebola15 DD15-55 Ebola and Contact Tracing
+ebola15 DD15-56 Solar powered radios
+ebola15 DD15-57 The Ebola scare in the United States
+ebola15 DD15-58 Ebola Treatment: Supportive Care
+ebola15 DD15-59 Diagnostic Tests
+ebola15 DD15-60 vaccines drugs vaccine drug
+ebola15 DD15-61 medical waste 
+ebola15 DD15-62 Outbreaks of Other Diseases in West Africa
+ebola15 DD15-63 Availability of mobile Ebola labs in West Africa
+ebola15 DD15-64 Hand washing importance
+ebola15 DD15-65 Ebola in Liberian Armed Forces
+ebola15 DD15-66 Community health workers
+ebola15 DD15-67 Ebola and Bushmeat
+ebola15 DD15-68 animal host reservoirs
+ebola15 DD15-69 Ebola songs
+ebola15 DD15-70 Health Care Workers infected with Ebola in Sierra Leone
+ebola15 DD15-71 Ebola Symptoms
+ebola15 DD15-72 disposition of bodies
+ebola15 DD15-73 mortality and survival rates
+ebola15 DD15-74 medical personnel infected
+ebola15 DD15-75 Impact of Ebola Crisis on Stability of Liberian Government
+ebola15 DD15-76 Riots, protests, strikes
+ebola15 DD15-77 Location of Medical Treatment Centers for Ebola in Liberia
+ebola15 DD15-78 Health workers contaminated by Ebola
+ebola15 DD15-79 Witchdoctor ebola involvement 
+ebola15 DD15-80 Ebola survivors' situation in the community
+ebola15 DD15-81 Drug protocols for Ebola treatment
+ebola15 DD15-82 Acquired Immunity
+ebola15 DD15-83 Cultural challenges for health workers in controlling transmission
+ebola15 DD15-84 Last Mile Health
+ebola15 DD15-85 Ebola Riots
+ebola15 DD15-86 Nano Silver
+ebola15 DD15-87 Nigeria Eradicates Ebola
+ebola15 DD15-88 Ebola Slum, West Point
+illicit_goods DD15-89 Spamming can be helpful
+illicit_goods DD15-90 Silk Road 1 marketplace shut down
+illicit_goods DD15-91  Bitcoins provide anonymity on the internet 
+illicit_goods DD15-92 Site Flipping
+illicit_goods DD15-93 Counterfeit products sold on internet
+illicit_goods DD15-94 Rootkits root kits
+illicit_goods DD15-95 MoneyPak codes
+illicit_goods DD15-96 Deep Web Description, Illegal Activity, and SEO
+illicit_goods DD15-97 Wiki Backlinks
+illicit_goods DD15-98 review
+illicit_goods DD15-99 Ticketmaster proxies
+illicit_goods DD15-100 Facebook Accounts
+illicit_goods DD15-101 Cookie Stuffing
+illicit_goods DD15-102 Telemarketing
+illicit_goods DD15-103 Negative SEO
+illicit_goods DD15-104 Liberty Reserve
+illicit_goods DD15-105 Squeeze Pages
+illicit_goods DD15-106 Making money on freecycle
+illicit_goods DD15-107 twitter accounts
+illicit_goods DD15-108 Improve Conversion Rates
+illicit_goods DD15-109 article spinner spinning
+illicit_goods DD15-110 SERP Scraper
+illicit_goods DD15-111 paypal accounts
+illicit_goods DD15-112 CAPTCHA Services
+illicit_goods DD15-113 Paying for Amazon book reviews
+illicit_goods DD15-114 Xrumer
+illicit_goods DD15-115 Proxy Sales
+illicit_goods DD15-116 Internet sellers of pornography
+illicit_goods DD15-117 Online piracy of copyrighted materials 
+illicit_goods DD15-118 Stealth PayPal
