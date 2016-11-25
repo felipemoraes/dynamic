@@ -84,7 +84,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			
 			
 			String aspectComponent = getComplexAspectComponent(RetrievalCache.query, flatAspectModel.getAspectComponentsAndWeights(aspectId));
-			System.out.println(aspectId + " :" + aspectComponent);
+			
 			float[] scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids, aspectComponent);
 			scores = scaling(scores);
 		    for(int j = 0;j< n ;++j) {
@@ -163,7 +163,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 				}
 			}
 			selected.add(maxTerm);
-			complexAspectComponent += maxTerm + "^" + String.format("%.4f", maxFreq) + " ";
+			complexAspectComponent += maxTerm + " ";
 			//complexAspectComponent += maxTerm + " ";
 			
 		}
