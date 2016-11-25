@@ -21,7 +21,7 @@ public class WeightedPassageAspectMining extends AspectMining {
 		novelty = new float[0];
 		coverage = new float[n][0];
 		s = new float[0];
-		s = new float[0];
+		v = new float[0];
 		accumulatedRelevance = new float[0];
 		flatAspectModel = new FlatAspectModel();
 	}
