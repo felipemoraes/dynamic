@@ -19,7 +19,7 @@ public class Baseline extends InteractiveReranker {
 	
 	public Baseline(String sim){
 		if (sim.equals("LM")){
-			RetrievalController.setSimilarity(new LMDirichlet(2500.0f));
+			RetrievalController.setSimilarity(new LMDirichlet(2000.0f));
 		} else if (sim.equals("DPH")){
 			RetrievalController.setSimilarity(new DPH());
 		} else if (sim.equals("BM25")){
