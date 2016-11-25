@@ -66,7 +66,7 @@ public abstract class InteractiveReranker implements Reranker {
 	public abstract void update(Feedback[] feedback);
 	
 	public void start(String query, String index){
-		RetrievalController.setFiedlWeights(new float[]{0.20f,0.80f});
+		RetrievalController.setFiedlWeights(new float[]{0.15f,0.85f});
 		ResultSet result = RetrievalController.search(query, index);
 		docids = result.docids;
 		relevance = result.scores;
