@@ -122,7 +122,7 @@ public class RetrievalController {
 			mapId.put(RetrievalCache.docids[i], i);
 		}
 		IndexSearcher searcher  = RetrievalController.getIndexSearcher(RetrievalCache.indexName);
-		System.out.println(query);
+		
 		BooleanQuery.setMaxClauseCount(1000000);
 		QueryParser parser = getQueryParser();
 		Query q = null;
