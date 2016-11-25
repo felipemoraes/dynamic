@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.lucene.queryparser.classic.QueryParser;
+
 import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.diversity.FlatAspectModel;
 import br.ufmg.dcc.latin.feedback.Feedback;
@@ -106,7 +108,7 @@ public class SubtopicNameAspectMining extends AspectMining {
 			if (RetrievalCache.subtopicsCache.containsKey(aspectComponent)) {
 				scores = RetrievalCache.subtopicsCache.get(aspectComponent);
 			} else {
-				scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids, aspectComponent);
+				scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids,  QueryParser.escape(aspectComponent));
 				RetrievalCache.subtopicsCache.put(aspectComponent, scores);
 			}
 			scores = scaling(scores);
@@ -170,7 +172,7 @@ public class SubtopicNameAspectMining extends AspectMining {
 			if (RetrievalCache.subtopicsCache.containsKey(aspectComponent)) {
 				scores = RetrievalCache.subtopicsCache.get(aspectComponent);
 			} else {
-				scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids, aspectComponent);
+				scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids,  QueryParser.escape(aspectComponent));
 				RetrievalCache.subtopicsCache.put(aspectComponent, scores);
 			}
 			scores = scaling(scores);

@@ -2,6 +2,8 @@ package br.ufmg.dcc.latin.controller;
 
 import java.util.Arrays;
 
+import org.apache.lucene.queryparser.classic.QueryParser;
+
 import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.diversity.FlatAspectModel;
 import br.ufmg.dcc.latin.feedback.Feedback;
@@ -74,7 +76,7 @@ public class WeightedPassageAspectMining extends AspectMining {
 				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
 					scores = RetrievalCache.passageCache.get(aspectComponent);
 				} else {
-					scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids, aspectComponent);
+					scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids,  QueryParser.escape(aspectComponent));
 					RetrievalCache.passageCache.put(aspectComponent, scores);
 				}
 				float passageWeight = flatAspectModel.getAspectWeight(aspectId, aspectComponent);
@@ -149,7 +151,7 @@ public class WeightedPassageAspectMining extends AspectMining {
 				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
 					scores = RetrievalCache.passageCache.get(aspectComponent);
 				} else {
-					scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids, aspectComponent);
+					scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids,  QueryParser.escape(aspectComponent));
 					RetrievalCache.passageCache.put(aspectComponent, scores);
 				}
 				
