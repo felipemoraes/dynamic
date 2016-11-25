@@ -9,7 +9,7 @@ public class AspectMiningFactory {
 			aspectMining = new PassageAspectMining();
 		} else if (className.equals("WeightedPassageAspectMining")){
 			aspectMining = new WeightedPassageAspectMining();
-		} else if (className.equals("SubtopicNamesAspectMining")){
+		} else if (className.equals("SubtopicNameAspectMining")){
 			aspectMining = new SubtopicNameAspectMining();
 		} else if (className.equals("MostRelevantTermsAspectMining")){
 			aspectMining = new MostRelevantTermsAspectMining();
