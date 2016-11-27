@@ -30,6 +30,10 @@ public class RM3 extends InteractiveReranker {
 	String query;
 	String indexName;
 	
+	float[] originalRelevance;
+	
+	
+	
 	float mu;
 	float muFB;
 	float lambda;
@@ -55,7 +59,11 @@ public class RM3 extends InteractiveReranker {
 		relevances = new ArrayList<Float>();
 		docLens = new ArrayList<Float>();
 		terms = new HashSet<String>();
-		relevance = RetrievalCache.scores;
+		
+		for (int i = 0; i < relevance.length; i++) {
+			relevance[i] = originalRelevance[i];
+		}
+
 		queryLikelihoodForPassages = new HashMap<String, List<Float>>();
 		queryLikelihoodForPassages.put("content", new ArrayList<Float>());
 		queryLikelihoodForPassages.put("title", new ArrayList<Float>());
@@ -66,6 +74,11 @@ public class RM3 extends InteractiveReranker {
 		super.start(query,index);
 		this.query = query;
 		this.indexName = index;
+		originalRelevance = new float[relevance.length];
+		for (int i = 0; i < relevance.length; i++) {
+			originalRelevance[i] = relevance[i];
+			
+		}
 		RetrievalController.loadDocFreqs(indexName);
 	}
 	
