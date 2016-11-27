@@ -15,6 +15,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
+import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
 import br.ufmg.dcc.latin.retrieval.RetrievalController;
@@ -54,6 +55,7 @@ public class RM3 extends InteractiveReranker {
 		relevances = new ArrayList<Float>();
 		docLens = new ArrayList<Float>();
 		terms = new HashSet<String>();
+		relevance = RetrievalCache.scores;
 		queryLikelihoodForPassages = new HashMap<String, List<Float>>();
 		queryLikelihoodForPassages.put("content", new ArrayList<Float>());
 		queryLikelihoodForPassages.put("title", new ArrayList<Float>());
