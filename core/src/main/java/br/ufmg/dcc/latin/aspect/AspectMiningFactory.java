@@ -1,4 +1,4 @@
-package br.ufmg.dcc.latin.controller;
+package br.ufmg.dcc.latin.aspect;
 
 public class AspectMiningFactory {
 	

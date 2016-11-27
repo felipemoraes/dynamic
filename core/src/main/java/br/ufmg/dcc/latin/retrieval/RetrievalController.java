@@ -1,4 +1,4 @@
-package br.ufmg.dcc.latin.controller;
+package br.ufmg.dcc.latin.retrieval;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,9 +46,10 @@ public class RetrievalController {
 	
 	public static Terms[] termsVector;
 	
-	public static Map<String, Map<String,Float>> docFreqs;
+	public static Map<String, TermStatistics> termStatistics;
 	
 	private static Map<String, Integer> docCount;
+	public static Map<String, Integer> sumTotalTerms;
 	 
 	public static IndexSearcher getIndexSearcher(String indexName){
 		if (similarity == null) {
@@ -93,8 +94,21 @@ public class RetrievalController {
 		parser = new MultiFieldQueryParser(new String[]{"title", "content"}, analyzer, boosts);
 		return parser;
 	}
+	
+	public static QueryParser getQueryParser(String field){
+		if (parser != null) {
+			return parser;
+		}
+		if (analyzer == null) {
+			getAnalyzer();
+		}
+		Map<String,Float> boosts = new HashMap<String,Float>();
+		boosts.put(field, 1f);
+		parser = new MultiFieldQueryParser(new String[]{field}, analyzer, boosts);
+		return parser;
+	}
 
-	/*public static Analyzer getAnalyzer() {
+	public static Analyzer getAnalyzer() {
         CustomAnalyzer.Builder builder = CustomAnalyzer.builder();
         try {
 			builder.withTokenizer("standard");
@@ -106,12 +120,54 @@ public class RetrievalController {
 		}
         analyzer = builder.build();
         return analyzer;
-	}*/
-	
-	public static Analyzer getAnalyzer() {
-        return analyzer = new EnglishAnalyzer();
-
 	}
+	
+	//public static Analyzer getAnalyzer() {
+    //    return analyzer = new EnglishAnalyzer();
+
+	//}
+	
+	
+	public static float[] getSimilaritiesRerank(int[] docids, String query, String field){
+		
+		int n = RetrievalCache.docids.length;
+		float[] scores = new float[n];
+		Map<Integer,Integer> mapId = new HashMap<Integer, Integer>();
+		for (int i = 0; i < scores.length; i++) {
+			mapId.put(RetrievalCache.docids[i], i);
+		}
+		IndexSearcher searcher  = RetrievalController.getIndexSearcher(RetrievalCache.indexName);
+		
+		BooleanQuery.setMaxClauseCount(1000000);
+		QueryParser parser = getQueryParser(field);
+		Query q = null;
+		try {
+			q = parser.parse(query);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		
+		Rescorer reRankQueryRescorer = new ReRankQueryRescorer(q, 1.0f);
+		
+	    try {
+			TopDocs rescoredDocs = reRankQueryRescorer
+			        .rescore(searcher, RetrievalCache.topDocs, 1000);
+			ScoreDoc[] reRankScoreDocs = rescoredDocs.scoreDocs;
+			for (int i = 0; i < reRankScoreDocs.length; i++) {
+				int ix = mapId.get(reRankScoreDocs[i].doc);
+				
+				scores[ix] = reRankScoreDocs[i].score;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	    return scores;
+	}
+	
+	
 	
 	public static float[] getSimilaritiesRerank(int[] docids, String query){
 		
@@ -154,7 +210,7 @@ public class RetrievalController {
 	
 
 	
-	private static float tfidf(int docid1, int docid2, int docCount, Map<String,Float> docFreqs){
+	private static float tfidf(int docid1, int docid2, int docCount, TermStatistics termStatistics){
 		float score = 0;
 		
 		TermsEnum termVector1 = null;
@@ -208,12 +264,9 @@ public class RetrievalController {
 					break;
 				}
 
-				float df = 0;
+	
 				String t = term1.utf8ToString();
-				if (docFreqs.containsKey(t)){
-					df = (float) docFreqs.get(t);
-					
-				} 
+				float df = termStatistics.docFreq(t);
 				float idf = (float)(Math.log(docCount)/(df+1));
 				float weight1 = tf1*idf;
 				float weight2 = tf2*idf;
@@ -240,22 +293,18 @@ public class RetrievalController {
 	}
 	
 	public static float getIdf(String term){
-		float df = 0;
-		int count = docCount.get(RetrievalCache.indexName);
-		if (docFreqs.get(RetrievalCache.indexName).containsKey(term)){
-			df = (float) docFreqs.get(RetrievalCache.indexName).get(term);
+
+		int count = docCount.get(RetrievalCache.indexName);		
+		float df = termStatistics.get(RetrievalCache.indexName + "_content").docFreq(term);
 			
-		} 
-		float idf = (float)(Math.log(count)/(df+1));
+		float idf = (float) (Math.log(count)/(df+1));
 		return idf;
 	}
 	
 	public static float[] getSimilarities(int[] docids, int docid){
 		
 		int n = RetrievalCache.docids.length;
-		
-		
-		
+	
 		
 		IndexSearcher searcher  = RetrievalController.getIndexSearcher(RetrievalCache.indexName);
 		
@@ -277,9 +326,9 @@ public class RetrievalController {
 		
 		float[] scores = new float[n];
 		int count = docCount.get(RetrievalCache.indexName);
-		Map<String,Float> dfreq = docFreqs.get(RetrievalCache.indexName);
+		TermStatistics contentTermStatistics = termStatistics.get(RetrievalCache.indexName+ "_content");
 		for (int i = 0; i < docids.length; i++) {
-			scores[i] = tfidf(i,docid,count,dfreq);
+			scores[i] = tfidf(i,docid,count,contentTermStatistics);
 		}
 	    return scores;
 	}
@@ -291,27 +340,42 @@ public class RetrievalController {
 		IndexReader reader = searcher.getIndexReader();
 		
 		
-		if (docFreqs == null) {
+		if (termStatistics == null) {
 	        
-	        docFreqs = new HashMap<String, Map<String, Float> >();
+			termStatistics = new HashMap<String, TermStatistics>();
 	        docCount = new HashMap<String,Integer>();
+	        sumTotalTerms = new HashMap<String,Integer>();
 		} 
 		
-		if (!docFreqs.containsKey(RetrievalCache.indexName)){
-			Map<String,Float> docFreqIndex = new HashMap<String,Float>();
+		if (!termStatistics.containsKey(RetrievalCache.indexName + "_content")){
+			
 			try {
 				BytesRef term = null;
-				docCount.put(RetrievalCache.indexName, (int) searcher.collectionStatistics("content").docCount());
+				docCount.put(RetrievalCache.indexName + "_content", (int) searcher.collectionStatistics("content").docCount());
+				docCount.put(RetrievalCache.indexName + "_title", (int) searcher.collectionStatistics("title").docCount());
+				sumTotalTerms.put(RetrievalCache.indexName + "_content", (int) searcher.collectionStatistics("content").sumTotalTermFreq());
+				sumTotalTerms.put(RetrievalCache.indexName + "_title", (int) searcher.collectionStatistics("title").sumTotalTermFreq());
+				TermStatistics contentTermStatistics = new TermStatistics();
 				TermsEnum termsEnum = MultiFields.getTerms(reader, "content").iterator();
 		        while ((term = termsEnum.next()) != null) {
-		        	docFreqIndex.put(term.utf8ToString(),(float) termsEnum.docFreq());
+		        	contentTermStatistics.docFreq(term.utf8ToString(), (float) termsEnum.docFreq());
+		        	contentTermStatistics.totalTermFreq(term.utf8ToString(), (float) termsEnum.totalTermFreq());
 		        }
+		        termStatistics.put(RetrievalCache.indexName + "_content", contentTermStatistics);
+				TermStatistics titleTermStatistics = new TermStatistics();
+				
+				termsEnum = MultiFields.getTerms(reader, "title").iterator();
+		        while ((term = termsEnum.next()) != null) {
+		        	titleTermStatistics.docFreq(term.utf8ToString(), (float) termsEnum.docFreq());
+		        	titleTermStatistics.totalTermFreq(term.utf8ToString(), (float) termsEnum.totalTermFreq());
+		        }
+		        termStatistics.put(RetrievalCache.indexName + "_title", titleTermStatistics);
 				
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			docFreqs.put(RetrievalCache.indexName, docFreqIndex);
+			
 		}
 	}
 	

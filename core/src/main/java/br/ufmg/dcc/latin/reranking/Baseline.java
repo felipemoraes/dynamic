@@ -7,10 +7,10 @@ import org.apache.lucene.search.similarities.DPH;
 import org.apache.lucene.search.similarities.LMDirichlet;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
-import br.ufmg.dcc.latin.controller.RetrievalController;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.querying.SelectedSet;
+import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
 public class Baseline extends InteractiveReranker {
 	

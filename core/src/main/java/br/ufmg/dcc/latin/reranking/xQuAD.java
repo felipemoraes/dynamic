@@ -1,7 +1,7 @@
 package br.ufmg.dcc.latin.reranking;
 
-import br.ufmg.dcc.latin.controller.AspectMining;
-import br.ufmg.dcc.latin.controller.AspectMiningFactory;
+import br.ufmg.dcc.latin.aspect.AspectMining;
+import br.ufmg.dcc.latin.aspect.AspectMiningFactory;
 import br.ufmg.dcc.latin.feedback.Feedback;
 
 public class xQuAD extends InteractiveReranker {

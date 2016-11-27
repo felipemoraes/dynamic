@@ -1,4 +1,4 @@
-package br.ufmg.dcc.latin.controller;
+package br.ufmg.dcc.latin.aspect;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.feedback.Feedback;

@@ -29,7 +29,10 @@ public class InteractiveRerankerFactory {
 			reranker = new Cube(aspectMiningClassName);
 		}else if (className.equals("xQuAD*")) {
 			reranker = new xQuADStar(aspectMiningClassName);
+		} else if (className.equals("RM3")) {
+			reranker = new RM3();
 		}
+		
 		
 		return reranker;
 	}

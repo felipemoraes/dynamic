@@ -1,8 +1,8 @@
 package br.ufmg.dcc.latin.reranking;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
-import br.ufmg.dcc.latin.controller.RetrievalController;
 import br.ufmg.dcc.latin.feedback.Feedback;
+import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
 public class MMR extends InteractiveReranker {
 

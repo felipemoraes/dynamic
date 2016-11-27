@@ -3,8 +3,8 @@ package br.ufmg.dcc.latin.reranking;
 
 import java.util.Arrays;
 
-import br.ufmg.dcc.latin.controller.AspectMining;
-import br.ufmg.dcc.latin.controller.AspectMiningFactory;
+import br.ufmg.dcc.latin.aspect.AspectMining;
+import br.ufmg.dcc.latin.aspect.AspectMiningFactory;
 import br.ufmg.dcc.latin.feedback.Feedback;
 
 public class xQuAD3 extends InteractiveReranker {

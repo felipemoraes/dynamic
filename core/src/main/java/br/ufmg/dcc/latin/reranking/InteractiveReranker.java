@@ -3,10 +3,10 @@ package br.ufmg.dcc.latin.reranking;
 import java.util.HashMap;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
-import br.ufmg.dcc.latin.controller.RetrievalController;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.querying.SelectedSet;
+import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
 public abstract class InteractiveReranker implements Reranker {
 	

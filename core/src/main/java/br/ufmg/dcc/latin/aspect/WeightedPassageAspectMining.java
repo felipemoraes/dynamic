@@ -1,4 +1,4 @@
-package br.ufmg.dcc.latin.controller;
+package br.ufmg.dcc.latin.aspect;
 
 import java.util.Arrays;
 
@@ -8,6 +8,7 @@ import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.diversity.FlatAspectModel;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
+import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
 public class WeightedPassageAspectMining extends AspectMining {
 
