@@ -55,7 +55,7 @@ public class RetrievalController {
 	 
 	public static IndexSearcher getIndexSearcher(String indexName){
 		if (similarity == null) {
-			similarity = new DPH();
+			similarity = new LMDirichlet(2000f);
 		}
 		if (RetrievalCache.indices == null) {
 			RetrievalCache.indices = new HashMap<String,IndexSearcher>();
