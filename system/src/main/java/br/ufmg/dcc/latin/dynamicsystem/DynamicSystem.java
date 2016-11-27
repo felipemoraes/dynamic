@@ -19,8 +19,8 @@ public class DynamicSystem {
 	   
 	    Session session = new Session();
 	    /*parameters = new DynamicSystemParameters();
-	    parameters.reranker = "MMR";
-	    float[] param = {100f, 0.1f};
+	    parameters.reranker = "RM3";
+	    float[] param = {100f, 10f, 0.5f};
 	    List<float[]> listParams = new ArrayList<float[]>();
 	    listParams.add(param);
 	    parameters.experimentalParameters = listParams;*/
@@ -34,7 +34,7 @@ public class DynamicSystem {
 	    	
         	String topicId = splitLine[1];
         	
-        	//if (!topicId.equals("DD16-14")){
+        	//if (!topicId.equals("DD16-1")){
         	//	continue;
         	//}
         	System.out.println(topicId);
