@@ -110,7 +110,7 @@ public class RetrievalController {
 		return parser;
 	}
 
-	public static Analyzer getAnalyzer() {
+	/*public static Analyzer getAnalyzer() {
         CustomAnalyzer.Builder builder = CustomAnalyzer.builder();
         try {
 			builder.withTokenizer("standard");
@@ -122,12 +122,12 @@ public class RetrievalController {
 		}
         analyzer = builder.build();
         return analyzer;
-	}
+	}*/
 	
-	//public static Analyzer getAnalyzer() {
-    //    return analyzer = new EnglishAnalyzer();
+	public static Analyzer getAnalyzer() {
+        return analyzer = new EnglishAnalyzer();
 
-	//}
+	}
 	
 	
 	public static float[] rerankResults(int[] docids, String index, String query, String field){

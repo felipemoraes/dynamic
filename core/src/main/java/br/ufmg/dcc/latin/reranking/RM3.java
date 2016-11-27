@@ -155,6 +155,7 @@ public class RM3 extends InteractiveReranker {
 				 relevances.add((float) passages[j].getRelevance());
 			}
 		}
+		
 		termCounts.addAll(newTermCounts);
 		
 		// compute QLE for each passage
@@ -180,6 +181,9 @@ public class RM3 extends InteractiveReranker {
 		}
 		
 		for (int i = 0; i < weightedTerms.size(); i++) {
+			if (sumTotalWeights == 0) {
+				break;
+			}
 			weightedTerms.get(i).score /= sumTotalWeights;
 		}
 		
@@ -189,6 +193,9 @@ public class RM3 extends InteractiveReranker {
 	private float queryLikehoodTerm(String term, float termCount, float docLen, String field){
 		float score = 0;
 		score = termCount + muFB*collectionProbability(term,field);
+		if (score == 0) {
+			return 0;
+		}
 		score /= (docLen + muFB);
 		return score;
 	}
