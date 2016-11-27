@@ -24,6 +24,8 @@ public class xQuAD1 extends InteractiveReranker {
 	
 	String indexName;
 	
+	private float fieldWeight;
+	
 	private AspectMining aspectMining;
 	
 	public xQuAD1(String aspectMiningClassName){
@@ -65,8 +67,14 @@ public class xQuAD1 extends InteractiveReranker {
 		if (docSimCache[docid] != null) {
 			probs = docSimCache[docid];
 		} else {
-			probs = RetrievalController.getSimilarities(docids, docid);
-			probs = normalize(probs);
+			float[] newCacheTitle = RetrievalController.getSimilarities(docids, docid,"title");
+			float[] newCacheContent = RetrievalController.getSimilarities(docids, docid,"content");
+			newCacheTitle = normalize(newCacheTitle);
+			newCacheContent = normalize(newCacheContent);
+			probs = new float[newCacheContent.length];
+			for (int i = 0; i < newCacheContent.length; i++) {
+				probs[i] = (1-fieldWeight) *newCacheTitle[i] + fieldWeight*newCacheContent[i];
+			}
 			docSimCache[docid] = probs;
 		}	
 		

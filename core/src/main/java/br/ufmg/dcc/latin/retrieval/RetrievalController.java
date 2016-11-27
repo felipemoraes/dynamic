@@ -44,12 +44,13 @@ public class RetrievalController {
 	
 	private static Similarity similarity;
 	
-	public static Terms[] termsVector;
+	public static Map<String,Terms[]> termsVector;
 	
 	public static Map<String, TermStatistics> termStatistics;
 	
 	private static Map<String, Integer> docCount;
 	public static Map<String, Integer> sumTotalTerms;
+	
 	 
 	public static IndexSearcher getIndexSearcher(String indexName){
 		if (similarity == null) {
@@ -210,18 +211,18 @@ public class RetrievalController {
 	
 
 	
-	private static float tfidf(int docid1, int docid2, int docCount, TermStatistics termStatistics){
+	private static float tfidf(int docid1, int docid2, int docCount, TermStatistics termStatistics, String field){
 		float score = 0;
 		
 		TermsEnum termVector1 = null;
 		TermsEnum termVector2 = null;
 
 		try {
-			if (termsVector[docid1] == null || termsVector[docid2] == null ){
+			if (termsVector.get(field)[docid1] == null || termsVector.get(field)[docid2] == null ){
 				return 0;
 			}
-			termVector1 = termsVector[docid1].iterator();
-			termVector2 = termsVector[docid2].iterator();
+			termVector1 = termsVector.get(field)[docid1].iterator();
+			termVector2 = termsVector.get(field)[docid2].iterator();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -294,14 +295,14 @@ public class RetrievalController {
 	
 	public static float getIdf(String term){
 
-		int count = docCount.get(RetrievalCache.indexName);		
+		int count = docCount.get(RetrievalCache.indexName  + "_content" );		
 		float df = termStatistics.get(RetrievalCache.indexName + "_content").docFreq(term);
 			
 		float idf = (float) (Math.log(count)/(df+1));
 		return idf;
 	}
 	
-	public static float[] getSimilarities(int[] docids, int docid){
+	public static float[] getSimilarities(int[] docids, int docid, String field){
 		
 		int n = RetrievalCache.docids.length;
 	
@@ -314,21 +315,26 @@ public class RetrievalController {
 		
 		
 		if (termsVector == null){
-			termsVector = new Terms[n];
+			termsVector = new HashMap<String,Terms[]>();
+			Terms[] termsVectorContent = new Terms[n];
+			Terms[] termsVectorTitle = new Terms[n];
 			for (int i = 0; i < docids.length; i++) {
 				try {
-					termsVector[i] = reader.getTermVector(docids[i], "content");
+					termsVectorContent[i] = reader.getTermVector(docids[i], "content");
+					termsVectorTitle[i] = reader.getTermVector(docids[i], "title");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
+			termsVector.put("content", termsVectorContent);
+			termsVector.put("title", termsVectorTitle);
 		}
 		
 		float[] scores = new float[n];
-		int count = docCount.get(RetrievalCache.indexName);
-		TermStatistics contentTermStatistics = termStatistics.get(RetrievalCache.indexName+ "_content");
+		int count = docCount.get(RetrievalCache.indexName +"_" + field);
+		TermStatistics contentTermStatistics = termStatistics.get(RetrievalCache.indexName+ "_" + field);
 		for (int i = 0; i < docids.length; i++) {
-			scores[i] = tfidf(i,docid,count,contentTermStatistics);
+			scores[i] = tfidf(i,docid,count,contentTermStatistics,field);
 		}
 	    return scores;
 	}
