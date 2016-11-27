@@ -29,7 +29,7 @@ public class PassageAspectMining extends AspectMining {
 	
 	
 	@Override
-	public void miningFeedback(Feedback[] feedbacks) {
+	public void miningFeedback(String query, String index, Feedback[] feedbacks) {
 		
 		cacheFeedback(feedbacks);
 		
@@ -71,12 +71,12 @@ public class PassageAspectMining extends AspectMining {
 			}
 			int k = 0;
 			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
-				aspectComponent = RetrievalCache.query + " " + aspectComponent;
+				aspectComponent = query + " " + aspectComponent;
 				float[] scores = null;
 				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
 					scores = RetrievalCache.passageCache.get(aspectComponent);
 				} else {
-					scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids, QueryParser.escape(aspectComponent));
+					scores = RetrievalController.rerankResults(RetrievalCache.docids, index, QueryParser.escape(aspectComponent));
 					RetrievalCache.passageCache.put(aspectComponent, scores);
 				}
 				
@@ -104,7 +104,7 @@ public class PassageAspectMining extends AspectMining {
 	}
 
 	@Override
-	public void miningFeedbackForCube(Feedback[] feedbacks) {
+	public void miningFeedbackForCube(String query, String index, Feedback[] feedbacks) {
 		cacheFeedback(feedbacks);
 		if (flatAspectModel == null) {
 			flatAspectModel = new FlatAspectModel();
@@ -146,12 +146,12 @@ public class PassageAspectMining extends AspectMining {
 			}
 			int k = 0;
 			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
-				aspectComponent = RetrievalCache.query + " " + aspectComponent;
+				aspectComponent = query + " " + aspectComponent;
 				float[] scores = null;
 				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
 					scores = RetrievalCache.passageCache.get(aspectComponent);
 				} else {
-					scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids,  QueryParser.escape(aspectComponent));
+					scores = RetrievalController.rerankResults(RetrievalCache.docids, index, QueryParser.escape(aspectComponent));
 					RetrievalCache.passageCache.put(aspectComponent, scores);
 				}
 				

@@ -21,8 +21,8 @@ public abstract class AspectMining {
 	protected float[] s;
 	
 	
-	public abstract void miningFeedback(Feedback[] feedbacks);
-	public abstract void miningFeedbackForCube(Feedback[] feedbacks);
+	public abstract void miningFeedback(String index, String query, Feedback[] feedbacks);
+	public abstract void miningFeedbackForCube(String index,  String query, Feedback[] feedbacks);
 	
 	public float[][] getCoverage(){
 		return coverage;

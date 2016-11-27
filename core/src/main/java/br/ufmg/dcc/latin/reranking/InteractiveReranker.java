@@ -16,6 +16,9 @@ public abstract class InteractiveReranker implements Reranker {
 	
 	protected int depth;
 	
+	protected String query;
+	protected String indexName;
+	
 	protected SelectedSet selected;
 	
 	public abstract String debug(String topicid, int iteration);
@@ -66,6 +69,8 @@ public abstract class InteractiveReranker implements Reranker {
 	public abstract void update(Feedback[] feedback);
 	
 	public void start(String query, String index){
+		this.query = query;
+		this.indexName = index;
 		RetrievalController.setFiedlWeights(new float[]{0.15f,0.85f});
 		ResultSet result = RetrievalController.search(query, index);
 		docids = result.docids;

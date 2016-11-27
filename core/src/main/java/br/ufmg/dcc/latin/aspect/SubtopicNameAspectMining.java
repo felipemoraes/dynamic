@@ -60,7 +60,7 @@ public class SubtopicNameAspectMining extends AspectMining {
 
 
 	@Override
-	public void miningFeedback(Feedback[] feedbacks) {
+	public void miningFeedback(String query, String index, Feedback[] feedbacks) {
 		
 		cacheFeedback(feedbacks);
 		
@@ -103,13 +103,13 @@ public class SubtopicNameAspectMining extends AspectMining {
 
 
 		
-			String aspectComponent = RetrievalCache.query + " " + subtopicsNames.get(aspectId);
+			String aspectComponent = query + " " + subtopicsNames.get(aspectId);
 			
 			float[] scores = null;
 			if (RetrievalCache.subtopicsCache.containsKey(aspectComponent)) {
 				scores = RetrievalCache.subtopicsCache.get(aspectComponent);
 			} else {
-				scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids,  QueryParser.escape(aspectComponent));
+				scores = RetrievalController.rerankResults(RetrievalCache.docids,  index, QueryParser.escape(aspectComponent));
 				RetrievalCache.subtopicsCache.put(aspectComponent, scores);
 			}
 			scores = scaling(scores);
@@ -130,7 +130,7 @@ public class SubtopicNameAspectMining extends AspectMining {
 
 
 	@Override
-	public void miningFeedbackForCube(Feedback[] feedbacks) {
+	public void miningFeedbackForCube(String query, String index, Feedback[] feedbacks) {
 		cacheFeedback(feedbacks);
 		if (flatAspectModel == null) {
 			flatAspectModel = new FlatAspectModel();
@@ -167,13 +167,13 @@ public class SubtopicNameAspectMining extends AspectMining {
 
 		for (String aspectId : flatAspectModel.getAspects()) {
 	
-			String aspectComponent = RetrievalCache.query + " " + subtopicsNames.get(aspectId);
+			String aspectComponent = query + " " + subtopicsNames.get(aspectId);
 			
 			float[] scores = null;
 			if (RetrievalCache.subtopicsCache.containsKey(aspectComponent)) {
 				scores = RetrievalCache.subtopicsCache.get(aspectComponent);
 			} else {
-				scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids,  QueryParser.escape(aspectComponent));
+				scores = RetrievalController.rerankResults(RetrievalCache.docids, index, QueryParser.escape(aspectComponent));
 				RetrievalCache.subtopicsCache.put(aspectComponent, scores);
 			}
 			scores = scaling(scores);

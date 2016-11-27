@@ -28,7 +28,7 @@ public class WeightedPassageAspectMining extends AspectMining {
 	}
 
 	@Override
-	public void miningFeedback(Feedback[] feedbacks) {
+	public void miningFeedback(String query, String index, Feedback[] feedbacks) {
 		cacheFeedback(feedbacks);
 		if (flatAspectModel == null) {
 			flatAspectModel = new FlatAspectModel();
@@ -40,7 +40,7 @@ public class WeightedPassageAspectMining extends AspectMining {
 			}
 			Passage[] passages = feedbacks[i].getPassages();
 			for (int j = 0; j < passages.length; j++) {
-				flatAspectModel.addToAspect(passages[j].getAspectId(), RetrievalCache.query + " " + passages[j].getText(), passages[j].getRelevance());
+				flatAspectModel.addToAspect(passages[j].getAspectId(), query + " " + passages[j].getText(), passages[j].getRelevance());
 			}
 		}
 
@@ -77,7 +77,7 @@ public class WeightedPassageAspectMining extends AspectMining {
 				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
 					scores = RetrievalCache.passageCache.get(aspectComponent);
 				} else {
-					scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids,  QueryParser.escape(aspectComponent));
+					scores = RetrievalController.rerankResults(RetrievalCache.docids, index , QueryParser.escape(aspectComponent));
 					RetrievalCache.passageCache.put(aspectComponent, scores);
 				}
 				float passageWeight = flatAspectModel.getAspectWeight(aspectId, aspectComponent);
@@ -105,7 +105,7 @@ public class WeightedPassageAspectMining extends AspectMining {
 	}
 
 	@Override
-	public void miningFeedbackForCube(Feedback[] feedbacks) {
+	public void miningFeedbackForCube(String query, String index,Feedback[] feedbacks) {
 		cacheFeedback(feedbacks);
 		if (flatAspectModel == null) {
 			flatAspectModel = new FlatAspectModel();
@@ -117,7 +117,7 @@ public class WeightedPassageAspectMining extends AspectMining {
 			}
 			Passage[] passages = feedbacks[i].getPassages();
 			for (int j = 0; j < passages.length; j++) {
-				flatAspectModel.addToAspect(passages[j].getAspectId(), RetrievalCache.query + " " + passages[j].getText(),passages[j].getRelevance());
+				flatAspectModel.addToAspect(passages[j].getAspectId(), query + " " + passages[j].getText(),passages[j].getRelevance());
 			}
 		}
 
@@ -152,7 +152,7 @@ public class WeightedPassageAspectMining extends AspectMining {
 				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
 					scores = RetrievalCache.passageCache.get(aspectComponent);
 				} else {
-					scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids,  QueryParser.escape(aspectComponent));
+					scores = RetrievalController.rerankResults(RetrievalCache.docids,  index, QueryParser.escape(aspectComponent));
 					RetrievalCache.passageCache.put(aspectComponent, scores);
 				}
 				

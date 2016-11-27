@@ -15,7 +15,6 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
-import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
 import br.ufmg.dcc.latin.retrieval.RetrievalController;
@@ -28,6 +27,7 @@ public class RM3 extends InteractiveReranker {
 	Set<String> terms;
 	Map<String, List<Float>> queryLikelihoodForPassages;
 	String query;
+	String indexName;
 	
 	float mu;
 	float muFB;
@@ -63,7 +63,8 @@ public class RM3 extends InteractiveReranker {
 	public void start(String query, String index){
 		super.start(query,index);
 		this.query = query;
-		RetrievalController.loadDocFreqs();
+		this.indexName = index;
+		RetrievalController.loadDocFreqs(indexName);
 	}
 	
 	@Override
@@ -72,15 +73,15 @@ public class RM3 extends InteractiveReranker {
 		List<WeightedTerm> weightedTerms = ExpandRM1(feedback, "content",true);
 		weightedTerms = ExpandRM3(weightedTerms);
 		String complexQuery = getComplexQuery(weightedTerms);
-		float[] scoresContent = normalize(RetrievalController.getSimilaritiesRerank(docids, complexQuery,"content"));
+		float[] scoresContent = normalize(RetrievalController.rerankResults(docids, indexName, complexQuery,"content"));
 		
 		weightedTerms = ExpandRM1(feedback, "title",false);
 		weightedTerms = ExpandRM3(weightedTerms);
 		complexQuery = getComplexQuery(weightedTerms);
-		
-		float[] scoresTitle = normalize(RetrievalController.getSimilaritiesRerank(docids, complexQuery,"title"));
+		float[] fieldWeights = RetrievalController.getFiedlWeights();
+		float[] scoresTitle = normalize(RetrievalController.rerankResults(docids, indexName, complexQuery,"title"));
 		for (int i = 0; i < scoresTitle.length; i++) {
-			relevance[i] = 0.65f*scoresContent[i] + 0.35f*scoresTitle[i];
+			relevance[i] = fieldWeights[0]*scoresContent[i] + fieldWeights[1]*scoresTitle[i];
 		}
 	}
 	
@@ -172,7 +173,7 @@ public class RM3 extends InteractiveReranker {
 			float weight = 0;
 			for (int i = 0; i < termCounts.size(); ++i) {
 				float docLen = docLens.get(i);
-				weight += queryLikehoodTerm(term,termCounts.get(i).getOrDefault(term,0f), docLen,field)*queryLikelihoodForPassages.get(field).get(i) ;
+				weight += relevances.get(i)*queryLikehoodTerm(term,termCounts.get(i).getOrDefault(term,0f), docLen,field)*queryLikelihoodForPassages.get(field).get(i) ;
 			}
 			weightedTerms.add(new WeightedTerm(term, weight));
 			sumTotalWeights += weight;
@@ -207,8 +208,8 @@ public class RM3 extends InteractiveReranker {
 	}
 	
 	private float collectionProbability(String term, String field) {
-		float ttf = RetrievalController.termStatistics.get(RetrievalCache.indexName + "_" + field).totalTermFreq(term);
-		float sttf = RetrievalController.sumTotalTerms.get(RetrievalCache.indexName + "_" + field);
+		float ttf = RetrievalController.termStatistics.get(indexName + "_" + field).totalTermFreq(term);
+		float sttf = RetrievalController.sumTotalTerms.get(indexName + "_" + field);
 		return ttf/sttf;
 	}
 	

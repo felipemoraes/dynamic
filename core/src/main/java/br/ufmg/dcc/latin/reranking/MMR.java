@@ -1,6 +1,5 @@
 package br.ufmg.dcc.latin.reranking;
 
-import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
@@ -13,12 +12,9 @@ public class MMR extends InteractiveReranker {
 	
 	private float[][] docSimCache;
 	
-	private float fieldWeight;
 	
-	String indexName;
 	
 	public MMR(){
-		fieldWeight = 0.65f;
 	}
 
 	
@@ -27,13 +23,14 @@ public class MMR extends InteractiveReranker {
 		if (docSimCache[docid] != null) {
 			newCache = docSimCache[docid];
 		} else {
-			float[] newCacheTitle = RetrievalController.getSimilarities(docids, docid,"title");
-			float[] newCacheContent = RetrievalController.getSimilarities(docids, docid,"content");
+			float[] newCacheTitle = RetrievalController.getCosineSimilarities(docids, docid, indexName, "title");
+			float[] newCacheContent = RetrievalController.getCosineSimilarities(docids, docid,indexName, "content");
 			newCacheTitle = normalize(newCacheTitle);
 			newCacheContent = normalize(newCacheContent);
 			newCache = new float[newCacheContent.length];
+			float[] weights = RetrievalController.getFiedlWeights();
 			for (int i = 0; i < newCacheContent.length; i++) {
-				newCache[i] = (1-fieldWeight) *newCacheTitle[i] + fieldWeight*newCacheContent[i];
+				newCache[i] = weights[0] *newCacheTitle[i] + weights[1]*newCacheContent[i];
 			}
 			docSimCache[docid] = newCache;
 		}
@@ -46,6 +43,7 @@ public class MMR extends InteractiveReranker {
 		}
 	    
 	}
+	
 	@Override
 	public void start(String query, String index){
 		super.start(query,index);
@@ -57,8 +55,7 @@ public class MMR extends InteractiveReranker {
 	public void start(float[] params) {
 		super.start(params);
 		relevance = normalize(relevance);
-		docsContent = RetrievalCache.docsContent;
-		indexName = RetrievalCache.indexName;
+		
 		
 		lambda = params[1];
 		cacheSim = new float[relevance.length];

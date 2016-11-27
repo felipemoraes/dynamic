@@ -37,7 +37,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 	private FlatAspectModel flatAspectModel;
 	
 	@Override
-	public void miningFeedback(Feedback[] feedbacks) {
+	public void miningFeedback(String index, String query,  Feedback[] feedbacks) {
 		cacheFeedback(feedbacks);
 		if (flatAspectModel == null) {
 			flatAspectModel = new FlatAspectModel();
@@ -74,7 +74,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		Arrays.fill(getV(), 1.0f);
 		Arrays.fill(getS(), 1.0f);
 		
-		RetrievalController.loadDocFreqs();
+		RetrievalController.loadDocFreqs(index);
 		
 		int i = 0;
 		for (String aspectId : flatAspectModel.getAspects()) {
@@ -84,9 +84,9 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			}
 			
 			
-			String aspectComponent = getComplexAspectComponent(RetrievalCache.query, flatAspectModel.getAspectComponentsAndWeights(aspectId));
+			String aspectComponent = getComplexAspectComponent(query, index, flatAspectModel.getAspectComponentsAndWeights(aspectId));
 			
-			float[] scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids, aspectComponent);
+			float[] scores = RetrievalController.rerankResults(RetrievalCache.docids, index, aspectComponent);
 			scores = scaling(scores);
 		    for(int j = 0;j< n ;++j) {
 		    	coverage[j][i] = scores[j];
@@ -123,7 +123,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		
 	}
 
-	private String getComplexAspectComponent(String query, Map<String, List<Integer>> aspectComponentsAndWeights) {
+	private String getComplexAspectComponent(String query, String index, Map<String, List<Integer>> aspectComponentsAndWeights) {
 		String complexAspectComponent = "";
 		Analyzer analyzer = RetrievalController.getAnalyzer();
 		Map<String,Float> termFreqs = new HashMap<String,Float>();
@@ -144,7 +144,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		
 		float sum = 0;
 		for (Entry<String,Float> termEntry : termFreqs.entrySet()) {
-			float tfidf = termEntry.getValue()*RetrievalController.getIdf(termEntry.getKey());
+			float tfidf = termEntry.getValue()*RetrievalController.getIdf(index, "content", termEntry.getKey());
 			termFreqs.put(termEntry.getKey(), tfidf);
 			sum += tfidf;
 		}
@@ -172,7 +172,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 	}
 
 	@Override
-	public void miningFeedbackForCube(Feedback[] feedbacks) {
+	public void miningFeedbackForCube(String query, String index,Feedback[] feedbacks) {
 		cacheFeedback(feedbacks);
 		if (flatAspectModel == null) {
 			flatAspectModel = new FlatAspectModel();
@@ -195,7 +195,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			return;
 		}
 		
-		RetrievalController.loadDocFreqs();
+		RetrievalController.loadDocFreqs(index);
 		
 		importance = new float[aspectSize];
 		novelty = new float[aspectSize];
@@ -213,8 +213,8 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		for (String aspectId : flatAspectModel.getAspects()) {
 	
 			
-			String aspectComponent = getComplexAspectComponent(RetrievalCache.query, flatAspectModel.getAspectComponentsAndWeights(aspectId));
-			float[] scores = RetrievalController.getSimilaritiesRerank(RetrievalCache.docids, aspectComponent);
+			String aspectComponent = getComplexAspectComponent(query, index, flatAspectModel.getAspectComponentsAndWeights(aspectId));
+			float[] scores = RetrievalController.rerankResults(RetrievalCache.docids, index, aspectComponent);
 			scores = scaling(scores);
 		    for(int j = 0;j< n ;++j) {
 		    	coverage[j][i] = scores[j];

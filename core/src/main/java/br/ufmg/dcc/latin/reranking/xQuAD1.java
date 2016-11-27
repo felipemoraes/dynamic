@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import br.ufmg.dcc.latin.aspect.AspectMining;
 import br.ufmg.dcc.latin.aspect.AspectMiningFactory;
-import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
@@ -33,18 +32,26 @@ public class xQuAD1 extends InteractiveReranker {
 	}
 	
 	@Override
+	public void start(String query, String index){
+		super.start(query,index);
+		indexName = index;
+		RetrievalController.termsVector = null;
+		docSimCache = new float[relevance.length][];
+	}
+	
+	
+	
+	@Override
 	public void start(float[] params){
 		super.start(params);
 		relevance = normalize(relevance);
 		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName);
 		coverage = aspectMining.getCoverage();
 		importance = aspectMining.getImportance();
-		
-		docsContent = RetrievalCache.docsContent;
-		indexName = RetrievalCache.indexName;
+	
 		lambda = params[1];
 		novelty = new float[relevance.length];
-		docSimCache =  new float[relevance.length][];
+		
 		Arrays.fill(novelty, 1.0f);
 	}
 	
@@ -67,8 +74,8 @@ public class xQuAD1 extends InteractiveReranker {
 		if (docSimCache[docid] != null) {
 			probs = docSimCache[docid];
 		} else {
-			float[] newCacheTitle = RetrievalController.getSimilarities(docids, docid,"title");
-			float[] newCacheContent = RetrievalController.getSimilarities(docids, docid,"content");
+			float[] newCacheTitle = RetrievalController.getCosineSimilarities(docids, docid,indexName,"title");
+			float[] newCacheContent = RetrievalController.getCosineSimilarities(docids, docid,indexName,"content");
 			newCacheTitle = normalize(newCacheTitle);
 			newCacheContent = normalize(newCacheContent);
 			probs = new float[newCacheContent.length];
@@ -88,7 +95,7 @@ public class xQuAD1 extends InteractiveReranker {
 	
 	@Override
 	public void update(Feedback[] feedback) {
-		aspectMining.miningFeedback(feedback);
+		aspectMining.miningFeedback(indexName, query,feedback);
 		coverage = aspectMining.getCoverage();
 		importance = aspectMining.getImportance();
 	}

@@ -9,14 +9,11 @@ import br.ufmg.dcc.latin.querying.ResultSet;
 
 public class RetrievalCache {
 	
-	public static String[] docsContent;
+	
 	public static int[] docids;
 	public static float[] scores;
 	public static String[] docnos;
 	public static TopDocs topDocs;
-	
-	public static String indexName;	
-	public static String query;	
 	
 	public static Map<String,IndexSearcher> indices;
 	
@@ -26,11 +23,9 @@ public class RetrievalCache {
 	public static Map<String,float[]> subtopicsCache;
 	
 	public static void cache(ResultSet resultSet) {
-		docsContent = resultSet.docsContent;
 		docids = resultSet.docids;
 		scores = resultSet.scores;
 		docnos = resultSet.docnos;
-		
 	}
 	
 }

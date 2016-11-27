@@ -67,7 +67,7 @@ public class Cube extends InteractiveReranker {
 
 	@Override
 	public void update(Feedback[] feedback) {
-		aspectMining.miningFeedbackForCube(feedback);
+		aspectMining.miningFeedbackForCube(indexName, query,feedback);
 		coverage = aspectMining.getCoverage();
 		importance = aspectMining.getImportance();
 		novelty = aspectMining.getNovelty();
