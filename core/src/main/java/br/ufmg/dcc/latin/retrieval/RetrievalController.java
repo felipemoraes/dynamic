@@ -70,7 +70,7 @@ public class RetrievalController {
 		IndexSearcher searcher = null;
 		try {
 			reader = DirectoryReader.open(FSDirectory.open( new File("../etc/indices/" + indexName).toPath()) );
-			
+			System.out.println(indexName + " " + reader.numDocs());
 	
 			searcher = new IndexSearcher(reader);
 			
