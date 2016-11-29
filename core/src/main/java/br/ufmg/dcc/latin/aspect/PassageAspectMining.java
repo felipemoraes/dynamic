@@ -76,7 +76,6 @@ public class PassageAspectMining extends AspectMining {
 				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
 					scores = RetrievalCache.passageCache.get(aspectComponent);
 				} else {
-					System.out.println(index);
 					scores = RetrievalController.rerankResults(RetrievalCache.docids, index, QueryParser.escape(aspectComponent));
 					RetrievalCache.passageCache.put(aspectComponent, scores);
 				}
