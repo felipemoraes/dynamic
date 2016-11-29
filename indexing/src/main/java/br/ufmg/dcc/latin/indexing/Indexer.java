@@ -88,6 +88,7 @@ public class Indexer {
             Analyzer analyzer = createAnalyzer();
             
             IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
+    
             iwc.setSimilarity(new DPH());
             iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
             writer = new IndexWriter(dir, iwc);
