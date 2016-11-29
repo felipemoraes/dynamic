@@ -23,15 +23,15 @@ public class MMR extends InteractiveReranker {
 		if (docSimCache[docid] != null) {
 			newCache = docSimCache[docid];
 		} else {
-			float[] newCacheTitle = RetrievalController.getCosineSimilarities(docids, docid, indexName, "title");
-			float[] newCacheContent = RetrievalController.getCosineSimilarities(docids, docid,indexName, "content");
-			newCacheTitle = normalize(newCacheTitle);
-			newCacheContent = normalize(newCacheContent);
-			newCache = new float[newCacheContent.length];
-			float[] weights = RetrievalController.getFiedlWeights();
-			for (int i = 0; i < newCacheContent.length; i++) {
-				newCache[i] = weights[0] *newCacheTitle[i] + weights[1]*newCacheContent[i];
-			}
+			//float[] newCacheTitle = RetrievalController.getCosineSimilarities(docids, docid, indexName, "title");
+			newCache = RetrievalController.getCosineSimilarities(docids, docid,indexName, "content");
+			//newCacheTitle = normalize(newCacheTitle);
+			newCache = normalize(newCache);
+			//newCache = new float[newCacheContent.length];
+			//float[] weights = RetrievalController.getFiedlWeights();
+			//for (int i = 0; i < newCacheContent.length; i++) {
+			//	newCache[i] =  newCacheContent[i];
+			//}
 			docSimCache[docid] = newCache;
 		}
 
