@@ -29,7 +29,7 @@ public class PassageAspectMining extends AspectMining {
 	
 	
 	@Override
-	public void miningFeedback(String query, String index, Feedback[] feedbacks) {
+	public void miningFeedback(String index, String query, Feedback[] feedbacks) {
 		
 		cacheFeedback(feedbacks);
 		
@@ -76,6 +76,7 @@ public class PassageAspectMining extends AspectMining {
 				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
 					scores = RetrievalCache.passageCache.get(aspectComponent);
 				} else {
+					System.out.println(index);
 					scores = RetrievalController.rerankResults(RetrievalCache.docids, index, QueryParser.escape(aspectComponent));
 					RetrievalCache.passageCache.put(aspectComponent, scores);
 				}

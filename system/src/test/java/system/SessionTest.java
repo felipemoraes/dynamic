@@ -43,7 +43,7 @@ public class SessionTest {
 		Session session = new Session();
 		session.setParams(params);
 		
-		session.setReranker("BM25");
+		session.setReranker("xMMR PassageAspectMining");
 		session.run( "ebola16", "DD16-1", "US Military Crisis Response");
 		
 
