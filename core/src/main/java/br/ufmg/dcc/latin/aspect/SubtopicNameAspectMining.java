@@ -130,7 +130,7 @@ public class SubtopicNameAspectMining extends AspectMining {
 
 
 	@Override
-	public void miningFeedbackForCube( String index, String query, Feedback[] feedbacks) {
+	public void miningFeedbackForCube(String query, String index, Feedback[] feedbacks) {
 		cacheFeedback(feedbacks);
 		if (flatAspectModel == null) {
 			flatAspectModel = new FlatAspectModel();
