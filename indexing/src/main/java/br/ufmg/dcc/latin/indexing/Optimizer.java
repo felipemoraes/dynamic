@@ -47,7 +47,10 @@ public class Optimizer {
 			    Document doc = reader.document(i);
 			    String docno = doc.get("docno");
 			    if (indexDocNos.contains(docno)){
-			    	writer.tryDeleteDocument(reader, i);
+			    	long sucess = writer.tryDeleteDocument(reader, i);
+			    	if (sucess < 0){
+			    		System.out.println("Didn't worked");
+			    	}
 			    	count++;
 			    } else {
 			    	indexDocNos.add(docno);
