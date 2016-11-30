@@ -192,6 +192,11 @@ public class Indexer {
             	continue;
             }
 
+            if (indexDocuments.contains(key)){
+            	continue;
+            } 
+            
+            indexDocuments.add(key);
            
             String url = record.getHeader("WARC-Target-URI").value;
             url = normalizeUrl(url);
@@ -280,6 +285,7 @@ public class Indexer {
 	
 	public static Set<String> relevantDocuments = new HashSet<String>();
    
+	public static Set<String> indexDocuments = new HashSet<String>();
 	public static int indexedDocCounter = 0;
 	
 	public static void loadRelevantsFile(String relevantsFile){
