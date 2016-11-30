@@ -42,22 +42,28 @@ public class Optimizer {
 	        reader = DirectoryReader.open(dir); 
 			Set<String> indexDocNos = new HashSet<String>();
 			
-            
+            int initNumDocs = reader.numDocs();
 			for (int i=0; i<reader.maxDoc(); i++) {
 			    Document doc = reader.document(i);
 			    String docno = doc.get("docno");
 			    if (indexDocNos.contains(docno)){
-			    	// writer.deleteDocuments(new Term("id",String.format("%d", i)));
+			    	writer.deleteDocuments(new Term("id",String.format("%d", i)));
 			    	count++;
 			    } else {
 			    	indexDocNos.add(docno);
 			    }
 			    
 			    if ( i % 1000 == 0){
-			    	System.out.println("Checked: " + i + " documents, found " + count + " duplicates" );
+			    	System.out.println("Checked: " + i + " documents, found " + count + " duplicates, number of deleted documents " +  reader.numDeletedDocs() );
 			    }
 			
 			}
+			int finalNumber = reader.numDocs();
+			writer.close();
+			reader.close();
+			dir.close();
+			System.out.println("Original number of documents " + initNumDocs);
+			System.out.println("Final index size " + finalNumber);
 			System.out.println("Duplicated documents: " + count);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
