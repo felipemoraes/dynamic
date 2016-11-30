@@ -15,7 +15,6 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
-import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
 import br.ufmg.dcc.latin.retrieval.RetrievalController;
@@ -88,15 +87,10 @@ public class RM3 extends InteractiveReranker {
 		List<WeightedTerm> weightedTerms = ExpandRM1(feedback, "content",true);
 		weightedTerms = ExpandRM3(weightedTerms);
 		String complexQuery = getComplexQuery(weightedTerms);
-		float[] scoresContent = normalize(RetrievalController.rerankResults(docids, indexName, complexQuery,"content"));
+		float[] scores = normalize(RetrievalController.rerankResults(docids, indexName, complexQuery,"content"));
 		
-		weightedTerms = ExpandRM1(feedback, "title",false);
-		weightedTerms = ExpandRM3(weightedTerms);
-		complexQuery = getComplexQuery(weightedTerms);
-		float[] fieldWeights = RetrievalController.getFiedlWeights();
-		float[] scoresTitle = normalize(RetrievalController.rerankResults(docids, indexName, complexQuery,"title"));
-		for (int i = 0; i < scoresTitle.length; i++) {
-			relevance[i] = fieldWeights[0]*scoresContent[i] + fieldWeights[1]*scoresTitle[i];
+		for (int i = 0; i < scores.length; i++) {
+			relevance[i] = scores[i];
 		}
 	}
 	

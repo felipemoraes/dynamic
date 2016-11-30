@@ -35,16 +35,16 @@ public class SessionTest {
 
 	@Test
 	public void test() {
-		TrecUser.load("../share/truth_data_deduped.txt");
+		TrecUser.load("../share/truth_data.txt");
 		List<float[]> params = new ArrayList<float[]>();
-		float[] param = {100f, 0.5f};
+		float[] param = {100f, 0.15f};
 
 		params.add(param);
 		Session session = new Session();
 		session.setParams(params);
 		
-		session.setReranker("xMMR PassageAspectMining");
-		session.run( "ebola16", "DD16-1", "US Military Crisis Response");
+		session.setReranker("DPH");
+		session.run( "illicit_goods", "DD15-103", "Negative SEO");
 		
 
 		//session.setReranker("xMMR");

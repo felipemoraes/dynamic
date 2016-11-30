@@ -214,6 +214,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 	
 			
 			String aspectComponent = getComplexAspectComponent(query, index, flatAspectModel.getAspectComponentsAndWeights(aspectId));
+			
 			float[] scores = RetrievalController.rerankResults(RetrievalCache.docids, index, aspectComponent);
 			scores = scaling(scores);
 		    for(int j = 0;j< n ;++j) {
