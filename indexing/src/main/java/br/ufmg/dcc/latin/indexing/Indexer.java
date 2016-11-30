@@ -82,6 +82,7 @@ public class Indexer {
 	public static IndexWriter createWriter(String indexPath){
 		IndexWriter writer = null;
 		try {
+			
 			Directory dir = FSDirectory.open(Paths.get(indexPath));
             System.out.println("Indexing to directory '" + indexPath + "'...");
 
@@ -92,6 +93,8 @@ public class Indexer {
             iwc.setSimilarity(new DPH());
             iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
             writer = new IndexWriter(dir, iwc);
+            
+    
             
 		} catch (IOException e){
             System.out.println(" caught a " + e.getClass() +

@@ -20,6 +20,12 @@ task indexing(type: JavaExec, dependsOn: classes) {
     }
 }
 
-
+task optimizing(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.indexing.Indexer'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
 
 mainClassName = ' '
