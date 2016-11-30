@@ -27,12 +27,12 @@ public class Optimizer {
 	
 	public static void main(String[] args) {
 		
-		String indexName = args[0];
+		String indexPath = args[0];
 		IndexReader reader;
 		IndexWriter writer = null;
 		int count = 0;
 		try {
-			Directory dir = FSDirectory.open(Paths.get("../etc/indices/" + indexName));
+			Directory dir = FSDirectory.open(Paths.get(indexPath));
 		
 			IndexWriterConfig iwc = new IndexWriterConfig(createAnalyzer());
 			    
@@ -45,12 +45,16 @@ public class Optimizer {
             
 			for (int i=0; i<reader.maxDoc(); i++) {
 			    Document doc = reader.document(i);
-			    String docno = doc.get("doc");
+			    String docno = doc.get("docno");
 			    if (indexDocNos.contains(docno)){
 			    	// writer.deleteDocuments(new Term("id",String.format("%d", i)));
 			    	count++;
 			    } else {
 			    	indexDocNos.add(docno);
+			    }
+			    
+			    if ( i % 1000 == 0){
+			    	System.out.println("Checked: " + i + " documents, found " + count + " duplicates" );
 			    }
 			
 			}
