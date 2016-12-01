@@ -52,7 +52,7 @@ public class QueryLogIndexing {
 	}
 	
 	public static void main(String[] args) {
-		String queryLogFile = "/Users/felipemoraes/Developer/dynamic/etc/enwiki-latest-all-titles";
+		String queryLogFile = "/Users/felipemoraes/Developer/dynamic/etc/data/msn_queries.txt";
 		
 		int counter = 0;
         ft.setTokenized( true );
@@ -65,16 +65,17 @@ public class QueryLogIndexing {
 			while ((line = br.readLine()) != null) {
 				String[] splitLine = line.split("\t");
 				
-				String title = splitLine[1].replaceAll( "_", " ");
+				
+				String query = splitLine[1];
 				
 		        Document doc = new Document();
-		        Field titleField = new Field("title", title,ft);
-		        doc.add(titleField);
+		        Field queryField = new Field("query", query,ft);
+		        doc.add(queryField);
 		        
 		        writer.addDocument(doc);
 		        counter++;
 		        if (counter % 100000 == 0){
-		        	System.out.println("Indexed " +  counter +  " titles.");
+		        	System.out.println("Indexed " +  counter +  " queries.");
 		        }
 			}
 			writer.close();

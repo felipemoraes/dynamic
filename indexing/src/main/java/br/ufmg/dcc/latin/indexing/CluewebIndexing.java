@@ -89,7 +89,7 @@ public class CluewebIndexing {
             iwc.setSimilarity(new DPH());
             iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
             iwc.setRAMBufferSizeMB(32000);
-            
+            iwc.setMaxBufferedDocs(1000000);
             writer = new IndexWriter(dir, iwc);
             
     

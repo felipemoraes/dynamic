@@ -53,7 +53,7 @@ public class WikipediaIndexing {
 	}
 	
 	public static void main(String[] args) {
-		String wikipediaTitleFile = "/Users/felipemoraes/Developer/dynamic/etc/enwiki-latest-all-titles";
+		String wikipediaTitleFile = "/Users/felipemoraes/Developer/dynamic/etc/data/enwiki-latest-all-titles";
 		
 		int counter = 0;
         ft.setTokenized( true );
