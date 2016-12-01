@@ -11,6 +11,7 @@ import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.FieldType;
+import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.similarities.DPH;
@@ -52,9 +53,14 @@ public class QueryLogIndexing {
 	}
 	
 	public static void main(String[] args) {
-		String queryLogFile = "/Users/felipemoraes/Developer/dynamic/etc/data/msn_queries.txt";
+		String queryLogFile = "/Users/felipemoraes/Developer/dynamic/etc/indices/data/msn_queries.txt";
 		
 		int counter = 0;
+        ft.setIndexOptions( IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS );
+        ft.setStoreTermVectors( true );
+        ft.setStoreTermVectorOffsets( true );
+        ft.setStoreTermVectorPayloads( true );
+        ft.setStoreTermVectorPositions( true );
         ft.setTokenized( true );
         ft.setStored(true);
 		

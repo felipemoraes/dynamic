@@ -11,7 +11,6 @@ import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.FieldType;
-import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -53,12 +52,17 @@ public class WikipediaIndexing {
 	}
 	
 	public static void main(String[] args) {
-		String wikipediaTitleFile = "/Users/felipemoraes/Developer/dynamic/etc/data/enwiki-latest-all-titles";
+		String wikipediaTitleFile = "/Users/felipemoraes/Developer/dynamic/etc/indices/data/enwiki-latest-all-titles";
 		
 		int counter = 0;
+        ft.setIndexOptions( IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS );
+        ft.setStoreTermVectors( true );
+        ft.setStoreTermVectorOffsets( true );
+        ft.setStoreTermVectorPayloads( true );
+        ft.setStoreTermVectorPositions( true );
         ft.setTokenized( true );
         ft.setStored(true);
-		
+        
 		IndexWriter writer =  createWriter("/Users/felipemoraes/Developer/dynamic/etc/indices/wikipedia");
 		
 		try (BufferedReader br = new BufferedReader(new FileReader(wikipediaTitleFile))) {
