@@ -88,6 +88,8 @@ public class CluewebIndexing {
     
             iwc.setSimilarity(new DPH());
             iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+            iwc.setRAMBufferSizeMB(32000);
+            
             writer = new IndexWriter(dir, iwc);
             
     
@@ -190,17 +192,16 @@ public class CluewebIndexing {
             
             String key = "";
             try {
-            	
             	key = record.getHeader("WARC-TREC-ID").value;
             } catch (Exception e){
             	continue;
             }
-
+            
            
             String url = record.getHeader("WARC-Target-URI").value;
             url = normalizeUrl(url);
             
-           
+            
             content = IOUtils.toString(record.getPayloadContent()); 
           
         	
@@ -284,7 +285,7 @@ public class CluewebIndexing {
 
 	public static void main(String[] args) {
 		
-		String collectionPath = "/Users/felipemoraes/Developer/dynamic/DiskB/";
+		String collectionPath = "/Users/felipemoraes/Developer/DiskB/";
         String indexPath = "/Users/felipemoraes/DiskB_index";
         
         
