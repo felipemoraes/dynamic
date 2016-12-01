@@ -419,10 +419,6 @@ public class RetrievalController {
 			try {
 
 				 Document doc = searcher.doc(hits[i].doc);
-				 if ( i < 1) {
-					 System.out.println(doc.get("url"));
-					 System.out.println(doc.get("content"));
-				 }
 	             docnos[i] = doc.get("docno");
 	             scores[i] = hits[i].score;
 	             docids[i] = hits[i].doc;
