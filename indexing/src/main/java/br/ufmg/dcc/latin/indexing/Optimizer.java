@@ -1,6 +1,5 @@
 package br.ufmg.dcc.latin.indexing;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.HashSet;
@@ -13,7 +12,6 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.Term;
 import org.apache.lucene.search.similarities.DPH;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -42,31 +40,26 @@ public class Optimizer {
 	        reader = DirectoryReader.open(dir); 
 			Set<String> indexDocNos = new HashSet<String>();
 			
-            int initNumDocs = reader.numDocs();
+            
 			for (int i=0; i<reader.maxDoc(); i++) {
 			    Document doc = reader.document(i);
 			    String docno = doc.get("docno");
 			    if (indexDocNos.contains(docno)){
-			    	long sucess = writer.tryDeleteDocument(reader, i);
-			    	if (sucess < 0){
-			    		System.out.println("Didn't worked");
-			    	}
 			    	count++;
 			    } else {
 			    	indexDocNos.add(docno);
 			    }
 			    
 			    if ( i % 1000 == 0){
-			    	System.out.println("Checked: " + i + " documents, found " + count + " duplicates, number of deleted documents " +  reader.numDeletedDocs() );
+			    	System.out.println("Checked: " + i + " documents, found " + count + " duplicates " );
 			    }
 			
 			}
-			int finalNumber = reader.numDocs();
+			
 			writer.close();
 			reader.close();
 			dir.close();
-			System.out.println("Original number of documents " + initNumDocs);
-			System.out.println("Final index size " + finalNumber);
+			
 			System.out.println("Duplicated documents: " + count);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
