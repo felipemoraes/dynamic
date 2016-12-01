@@ -200,8 +200,8 @@ public class CluewebIndexing {
             }
             
            
-          //  String url = record.getHeader("WARC-Target-URI").value;
-           // url = normalizeUrl(url);
+            String url = record.getHeader("WARC-Target-URI").value;
+            url = normalizeUrl(url);
             
             
             content = IOUtils.toString(record.getPayloadContent()); 
@@ -243,11 +243,11 @@ public class CluewebIndexing {
             Document doc = new Document();
             Field docnoField = new StringField("docno", key, Field.Store.YES);
             doc.add(docnoField);
-           // Field urlField = new StringField("url", url, Field.Store.YES);
-           // doc.add(urlField);
+            Field urlField = new StringField("url", url, Field.Store.YES);
+            doc.add(urlField);
 
-           // Field contentField = new Field("content", content,ft);
-           // doc.add(contentField);
+            Field contentField = new Field("content", content,ft);
+            doc.add(contentField);
             
             Field titleField = new Field("title", title,ft);
             doc.add(titleField);
