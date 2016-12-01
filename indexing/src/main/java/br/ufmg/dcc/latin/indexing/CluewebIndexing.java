@@ -88,11 +88,11 @@ public class CluewebIndexing {
     
             iwc.setSimilarity(new DPH());
             iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
-            iwc.setRAMBufferSizeMB(32000);
+            
             
             System.out.println(iwc.getRAMBufferSizeMB());
             writer = new IndexWriter(dir, iwc);
-          
+            
             
     
             
