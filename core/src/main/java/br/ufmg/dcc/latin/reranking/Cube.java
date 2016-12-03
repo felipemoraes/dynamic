@@ -30,7 +30,7 @@ public class Cube extends InteractiveReranker {
 	public void start(float[] params){
 		super.start(params);
 		gamma = params[1];
-		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName);
+		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName);
 		coverage = aspectMining.getCoverage();
 		importance = aspectMining.getImportance();
 		novelty = aspectMining.getNovelty();

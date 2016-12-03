@@ -14,6 +14,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
+import br.ufmg.dcc.latin.aspect.external.TermWeight;
 import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.diversity.FlatAspectModel;
 import br.ufmg.dcc.latin.feedback.Feedback;
@@ -104,7 +105,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		
 	}
 	
-	public static List<String> tokenizeString(Analyzer analyzer, String str) {
+	protected List<String> tokenizeString(Analyzer analyzer, String str) {
 		List<String> result = new ArrayList<String>();
 		try {
 		      TokenStream stream  = analyzer.tokenStream(null, new StringReader(str));
@@ -126,49 +127,74 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 	private String getComplexAspectComponent(String query, String index, Map<String, List<Integer>> aspectComponentsAndWeights) {
 		String complexAspectComponent = "";
 		Analyzer analyzer = RetrievalController.getAnalyzer();
-		Map<String,Float> termFreqs = new HashMap<String,Float>();
-		List<String> queryTerms = tokenizeString(analyzer, query);
 		
-		for (String term : queryTerms) {
-			termFreqs.put(term,1f);
-		}
+		Map<String,Float> termFreqs = new HashMap<String,Float>();
+		
+		
+		
+		//List<String> queryTerms = tokenizeString(analyzer, query);
+		
+		//for (String term : queryTerms) {
+		//termFreqs.put(term,1f);
+		//}
+		
 		for(Entry<String,List<Integer>> entry : aspectComponentsAndWeights.entrySet()){
 			List<String> terms = tokenizeString(analyzer, entry.getKey());
-			for (String term : terms) {
-				if (!termFreqs.containsKey(term)){
-					termFreqs.put(term, 0f);
-				}
-				termFreqs.put(term, termFreqs.get(term) +  entry.getValue().size());
+			List<TermWeight> weights = computeTermWeights(terms,entry.getKey());
+			
+			float rel = 0;
+			for (int relValue : entry.getValue()) {
+				rel += relValue;
 			}
+			
+			rel = rel/entry.getValue().size();
+			
+			for (TermWeight termWeight : weights) {
+				if (!termFreqs.containsKey(termWeight.term)){
+					termFreqs.put(termWeight.term, 0f);
+				}
+				termFreqs.put(termWeight.term, termFreqs.get(termWeight.term) + termWeight.weight*rel);
+			}
+			
 		}
+		
+		
 		
 		float sum = 0;
-		for (Entry<String,Float> termEntry : termFreqs.entrySet()) {
-			float tfidf = termEntry.getValue()*RetrievalController.getIdf(index, "content", termEntry.getKey());
-			termFreqs.put(termEntry.getKey(), tfidf);
-			sum += tfidf;
-		}
-		
+	
 		int querySize = Math.min(20, termFreqs.size());
-		HashSet<String> selected = new HashSet<String>();
-		while (selected.size() < querySize ) {
+		Map<String,Float> selectedTerms = new HashMap<String,Float>();
+		while (selectedTerms.size() < querySize ) {
 			float maxFreq = Float.NEGATIVE_INFINITY;
 			String maxTerm = "-1";
 			for (Entry<String,Float> termEntry : termFreqs.entrySet()) {
-				if (selected.contains(termEntry.getKey())){
+				if (selectedTerms.containsKey(termEntry.getKey())){
 					continue;
 				}
-				if (maxFreq < termEntry.getValue()/sum){
-					maxFreq = termEntry.getValue()/sum;
+				
+				if (maxFreq < termEntry.getValue()){
+					maxFreq = termEntry.getValue();
 					maxTerm = termEntry.getKey();
 				}
 			}
-			selected.add(maxTerm);
-			complexAspectComponent += maxTerm + " ";
-			//complexAspectComponent += maxTerm + " ";
+			selectedTerms.put(maxTerm,maxFreq);
 			
+			sum += maxFreq;
 		}
+		
+		for (Entry<String,Float> term : selectedTerms.entrySet()) {
+			float score = term.getValue()/sum;
+			
+			complexAspectComponent += term.getKey() + String.format("^%.4f ", score);
+		}
+		
+		
 		return complexAspectComponent;
+	}
+
+	protected List<TermWeight> computeTermWeights(List<String> terms, String passage) {
+		System.out.println("This method need to be implemented by extension");
+		return null;
 	}
 
 	@Override
@@ -214,6 +240,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 	
 			
 			String aspectComponent = getComplexAspectComponent(query, index, flatAspectModel.getAspectComponentsAndWeights(aspectId));
+			
 			
 			float[] scores = RetrievalController.rerankResults(RetrievalCache.docids, index, aspectComponent);
 			scores = scaling(scores);

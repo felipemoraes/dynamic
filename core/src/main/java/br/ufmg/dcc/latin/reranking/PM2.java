@@ -86,7 +86,7 @@ public class PM2 extends InteractiveReranker {
 	public void start(float[] params){
 		super.start(params);
 		relevance = normalize(relevance);
-		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName);
+		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName);
 		coverage = aspectMining.getCoverage();
 		v = aspectMining.getV();
 		s = aspectMining.getS();
