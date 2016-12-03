@@ -245,7 +245,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			String aspectComponent = getComplexAspectComponent(query, index, flatAspectModel.getAspectComponentsAndWeights(aspectId));
 			
 			float[] scores = null;
-					
+			System.out.println(aspectComponent);
 			if (aspectComponent.length() == 0) {
 				scores = new float[n];
 				Arrays.fill(scores, 1);
