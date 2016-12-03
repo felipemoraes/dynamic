@@ -238,7 +238,8 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		*/
 		
 		for (Entry<String,Float> term : selectedTerms.entrySet()) {
-			complexAspectComponent += term.getKey() + String.format("^%.8f ", term.getValue());
+			//complexAspectComponent += term.getKey() + String.format("^%.8f ", term.getValue());
+			complexAspectComponent += term.getKey() + " ";
 		}
 		
 
