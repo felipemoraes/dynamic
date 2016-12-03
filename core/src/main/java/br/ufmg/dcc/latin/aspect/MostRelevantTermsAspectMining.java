@@ -149,6 +149,10 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 	
 		List<String> queryTerms = tokenizeString(analyzer, query);
 		
+		for (String term : queryTerms) {
+			termFreqs.put(term, 1f);
+		}
+		
 		for(Entry<String,List<Integer>> entry : aspectComponentsAndWeights.entrySet()){
 			List<String> terms = tokenizeString(analyzer, entry.getKey());
 			
@@ -236,10 +240,6 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			}
 		}
 		*/
-		
-		for (String term : queryTerms) {
-			complexAspectComponent += term + " ";
-		}
 		
 		for (Entry<String,Float> term : selectedTerms.entrySet()) {
 			//complexAspectComponent += term.getKey() + String.format("^%.8f ", term.getValue());
