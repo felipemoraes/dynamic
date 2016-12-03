@@ -15,8 +15,13 @@ public class CollectionAspectMining extends MostRelevantTermsAspectMining {
 	
 	private float computeIdf(String term){
 		float[] weights = RetrievalController.getFiedlWeights();
+		float idf = weights[0]*RetrievalController.getIdf(index, "title", term) + weights[1]*RetrievalController.getIdf(index, "content", term);
+		if (Float.isNaN(idf)) {
+			System.out.println("Computing idf");
+		}
 		
-		return weights[0]*RetrievalController.getIdf(index, "title", term) + weights[1]*RetrievalController.getIdf(index, "content", term);
+		return idf ;
+		
 	}
 	
 
