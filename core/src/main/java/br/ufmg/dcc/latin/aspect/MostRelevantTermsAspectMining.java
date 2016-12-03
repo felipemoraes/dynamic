@@ -237,8 +237,8 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		*/
 		
 		for (Entry<String,Double> term : selectedTerms.entrySet()) {
-			//complexAspectComponent += term.getKey() + String.format("^%.8f ", term.getValue());
-			complexAspectComponent += QueryParser.escape(term.getKey()).toString() + " ";
+			complexAspectComponent += QueryParser.escape(term.getKey()).toString() + String.format("^%.8f ", term.getValue());
+			//complexAspectComponent += QueryParser.escape(term.getKey()).toString() + " ";
 		}
 		
 		
