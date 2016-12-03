@@ -37,13 +37,13 @@ public class SessionTest {
 	public void test() {
 		TrecUser.load("../share/truth_data.txt");
 		List<float[]> params = new ArrayList<float[]>();
-		float[] param = {100f, 0.5f, 20f};
+		float[] param = {1000f, 0.5f, 20f};
 
 		params.add(param);
 		Session session = new Session();
 		session.setParams(params);
 		
-		session.setReranker("xQuAD DBPediaEntitiesAspectMining");
+		session.setReranker("xQuAD CollectionAspectMining");
 		session.run( "ebola16", "DD16-1", "US Military Crisis Response");
 		
 

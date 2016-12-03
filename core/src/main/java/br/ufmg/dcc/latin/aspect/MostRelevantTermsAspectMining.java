@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.queryparser.classic.QueryParser;
 
 import br.ufmg.dcc.latin.aspect.external.TermWeight;
 import br.ufmg.dcc.latin.cache.RetrievalCache;
@@ -237,10 +238,10 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		
 		for (Entry<String,Double> term : selectedTerms.entrySet()) {
 			//complexAspectComponent += term.getKey() + String.format("^%.8f ", term.getValue());
-			complexAspectComponent += term.getKey() + " ";
+			complexAspectComponent += QueryParser.escape(term.getKey()).toString() + " ";
 		}
 		
-
+		
 		return complexAspectComponent;
 	}
 
