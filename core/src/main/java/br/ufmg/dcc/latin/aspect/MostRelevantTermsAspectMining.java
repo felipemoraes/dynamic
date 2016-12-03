@@ -146,13 +146,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		Analyzer analyzer = RetrievalController.getAnalyzer();
 		
 		Map<String,Float> termFreqs = new HashMap<String,Float>();
-	
-		List<String> queryTerms = tokenizeString(analyzer, query);
-		
-		for (String term : queryTerms) {
-			termFreqs.put(term, 1f);
-		}
-		
+
 		for(Entry<String,List<Integer>> entry : aspectComponentsAndWeights.entrySet()){
 			List<String> terms = tokenizeString(analyzer, entry.getKey());
 			
