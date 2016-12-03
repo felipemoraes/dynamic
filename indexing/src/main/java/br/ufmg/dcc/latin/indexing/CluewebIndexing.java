@@ -28,7 +28,9 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.FieldType;
 import org.apache.lucene.document.StringField;
+import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexOptions;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.similarities.DPH;
@@ -87,7 +89,7 @@ public class CluewebIndexing {
             IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
     
             iwc.setSimilarity(new DPH());
-            iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+            iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
             
             
             System.out.println(iwc.getRAMBufferSizeMB());
@@ -199,6 +201,10 @@ public class CluewebIndexing {
             	continue;
             }
             
+            if (insertedDocuments.contains(key)){
+            	indexedDocCounter++;
+            	continue;
+            }
            
             String url = record.getHeader("WARC-Target-URI").value;
             url = normalizeUrl(url);
@@ -283,6 +289,8 @@ public class CluewebIndexing {
 	}
 
 	public static int indexedDocCounter = 0;
+	
+	public static Set<String> insertedDocuments;
 
 
 	public static void main(String[] args) {
@@ -308,6 +316,38 @@ public class CluewebIndexing {
                     "\n with message: " + e.getMessage());
        //     System.exit(1);
         }
+        
+        
+		try {
+			
+			IndexReader reader;
+			IndexWriter writer = null;
+			Directory dir = FSDirectory.open(Paths.get(indexPath));
+		
+			IndexWriterConfig iwc = new IndexWriterConfig(createAnalyzer());
+			    
+	        iwc.setSimilarity(new DPH());
+	        iwc.setOpenMode(IndexWriterConfig.OpenMode.APPEND);
+	        writer = new IndexWriter(dir, iwc);
+	        reader = DirectoryReader.open(dir); 
+	        
+			insertedDocuments = new HashSet<String>();
+
+			for (int i=0; i<reader.maxDoc(); i++) {
+			    Document doc = reader.document(i);
+			    String docno = doc.get("docno");
+			    insertedDocuments.add(docno);
+			}
+			
+			writer.close();
+			reader.close();
+			dir.close();
+		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
         
         int counter = 0;
         
