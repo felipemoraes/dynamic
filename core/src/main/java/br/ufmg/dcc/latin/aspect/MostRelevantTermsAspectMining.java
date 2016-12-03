@@ -87,7 +87,6 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			String aspectComponent = getComplexAspectComponent(query, index, flatAspectModel.getAspectComponentsAndWeights(aspectId));
 			
 			float[] scores = null;
-			System.out.println(aspectComponent);
 			if (aspectComponent.length() == 0) {
 				scores = new float[n];
 				Arrays.fill(scores, 1);
@@ -197,7 +196,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		for (Entry<String,Float> term : selectedTerms.entrySet()) {
 			float score = term.getValue()/sum;
 			
-			complexAspectComponent += term.getKey() + String.format("^%.4f ", score);
+			complexAspectComponent += term.getKey() + String.format("^%.8f ", score);
 		}
 		
 		
@@ -254,7 +253,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			String aspectComponent = getComplexAspectComponent(query, index, flatAspectModel.getAspectComponentsAndWeights(aspectId));
 			
 			float[] scores = null;
-			System.out.println(aspectComponent);
+			
 			if (aspectComponent.length() == 0) {
 				scores = new float[n];
 				Arrays.fill(scores, 1);
