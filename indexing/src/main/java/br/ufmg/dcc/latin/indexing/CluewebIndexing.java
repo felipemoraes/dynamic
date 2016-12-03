@@ -201,10 +201,6 @@ public class CluewebIndexing {
             	continue;
             }
             
-            if (insertedDocuments.contains(key)){
-            	indexedDocCounter++;
-            	continue;
-            }
            
             String url = record.getHeader("WARC-Target-URI").value;
             url = normalizeUrl(url);
@@ -223,7 +219,7 @@ public class CluewebIndexing {
             	parser.parse(htmlStream, handler, metadata, context);
             	title = metadata.get("title");
 				content = handler.toString();
-			} catch (SAXException | TikaException  e) {
+			} catch (Exception  e) {
 				//e.printStackTrace();
 		    	org.jsoup.nodes.Document html = null;
 		    	try {
@@ -289,8 +285,6 @@ public class CluewebIndexing {
 	}
 
 	public static int indexedDocCounter = 0;
-	
-	public static Set<String> insertedDocuments;
 
 
 	public static void main(String[] args) {
@@ -317,36 +311,6 @@ public class CluewebIndexing {
        //     System.exit(1);
         }
         
-        
-		try {
-			
-			IndexReader reader;
-			IndexWriter writer = null;
-			Directory dir = FSDirectory.open(Paths.get(indexPath));
-		
-			IndexWriterConfig iwc = new IndexWriterConfig(createAnalyzer());
-			    
-	        iwc.setSimilarity(new DPH());
-	        iwc.setOpenMode(IndexWriterConfig.OpenMode.APPEND);
-	        writer = new IndexWriter(dir, iwc);
-	        reader = DirectoryReader.open(dir); 
-	        
-			insertedDocuments = new HashSet<String>();
-
-			for (int i=0; i<reader.maxDoc(); i++) {
-			    Document doc = reader.document(i);
-			    String docno = doc.get("docno");
-			    insertedDocuments.add(docno);
-			}
-			
-			writer.close();
-			reader.close();
-			dir.close();
-		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
         
         int counter = 0;
