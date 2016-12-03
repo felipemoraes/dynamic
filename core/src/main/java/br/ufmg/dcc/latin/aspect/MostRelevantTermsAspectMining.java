@@ -186,6 +186,13 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			sum += maxFreq;
 		}
 		
+		
+		
+		for (Entry<String,Float> term : selectedTerms.entrySet()) {
+			float score = term.getValue()/sum;
+			selectedTerms.put(term.getKey(), score);
+		}
+		
 		List<String> queryTerms = tokenizeString(analyzer, query);
 		Map<String,Float> queryLikelihood = new HashMap<String, Float>();
 		
@@ -195,6 +202,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			}
 			queryLikelihood.put(term, 1+queryLikelihood.get(term));
 		}
+		
 		
 		for (String term : queryTerms) {
 			if (!selectedTerms.containsKey(term)) {
@@ -206,9 +214,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		
 		
 		for (Entry<String,Float> term : selectedTerms.entrySet()) {
-			float score = term.getValue()/sum;
-			
-			complexAspectComponent += term.getKey() + String.format("^%.8f ", score);
+			complexAspectComponent += term.getKey() + String.format("^%.8f ", term.getValue());
 		}
 		
 
