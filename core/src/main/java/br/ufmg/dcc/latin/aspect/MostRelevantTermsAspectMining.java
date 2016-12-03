@@ -95,8 +95,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 				scores = RetrievalController.rerankResults(RetrievalCache.docids, index, aspectComponent);
 			}
 			
-			
-			float[] scores = RetrievalController.rerankResults(RetrievalCache.docids, index, aspectComponent);
+		
 			scores = scaling(scores);
 		    for(int j = 0;j< n ;++j) {
 		    	coverage[j][i] = scores[j];
