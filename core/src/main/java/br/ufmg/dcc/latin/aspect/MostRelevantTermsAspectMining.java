@@ -193,7 +193,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			if (!queryLikelihood.containsKey(term)) {
 				queryLikelihood.put(term, 0f);
 			}
-			queryLikelihood.put(term, queryLikelihood.get(term));
+			queryLikelihood.put(term, 1+queryLikelihood.get(term));
 		}
 		
 		for (String term : queryTerms) {
