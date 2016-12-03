@@ -6,8 +6,8 @@ public interface Reranker {
 	
 	public ResultSet get();
 	
-	default float[] normalize(float[] values){
-		float sum = 0;
+	default double[] normalize(double[] values){
+		double sum = 0;
 		for (int i = 0; i < values.length; i++) {
 			sum += values[i];
 		}
@@ -20,15 +20,15 @@ public interface Reranker {
 		return values;
 	}
 	
-	default float[] scaling(float[] scores){
-		float min = Float.POSITIVE_INFINITY;
+	default double[] scaling(double[] scores){
+		double min = Double.POSITIVE_INFINITY;
 		for (int i = 0; i < scores.length; i++) {
 			if (scores[i] < min) {
 				min = scores[i];
 			}
 		}
 		
-		float max = Float.NEGATIVE_INFINITY;
+		double max = Double.NEGATIVE_INFINITY;
 		for (int i = 0; i < scores.length; i++) {
 			if (scores[i] > max) {
 				max = scores[i];

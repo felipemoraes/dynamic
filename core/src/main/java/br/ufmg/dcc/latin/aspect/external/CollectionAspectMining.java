@@ -14,9 +14,9 @@ public class CollectionAspectMining extends MostRelevantTermsAspectMining {
 		this.index = index;
 	}
 	
-	private float computeIdf(String term){
+	private double computeIdf(String term){
 		float[] weights = RetrievalController.getFiedlWeights();
-		float idf = weights[0]*RetrievalController.getIdf(index, "title", term) + weights[1]*RetrievalController.getIdf(index, "content", term);
+		double idf = weights[0]*RetrievalController.getIdf(index, "title", term) + weights[1]*RetrievalController.getIdf(index, "content", term);
 		return idf ;
 		
 	}

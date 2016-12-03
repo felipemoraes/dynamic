@@ -12,9 +12,9 @@ public class xQuAD2 extends InteractiveReranker {
 	
 	
 	
-	private float[] importance;
-	private float[] novelty;
-	private float[][] coverage;
+	private double[] importance;
+	private double[] novelty;
+	private double[][] coverage;
 	
 	int n;
 	private String aspectMiningClassName;
@@ -33,20 +33,20 @@ public class xQuAD2 extends InteractiveReranker {
 		coverage = aspectMining.getCoverage();
 		importance = aspectMining.getImportance();
 		lambda = params[1];
-		novelty = new float[relevance.length];
+		novelty = new double[relevance.length];
 		Arrays.fill(novelty, 1.0f);
 	}
 	
 
 	@Override
-	protected float score(int docid) {
-		float diversity = 0;
+	protected double score(int docid) {
+		double diversity = 0;
 		for (int i = 0; i < importance.length; i++) {
 			diversity +=  importance[i]*coverage[docid][i];
 		}
 		
 		
-		float score = (1-lambda)*relevance[docid] + lambda*diversity*novelty[docid];
+		double score = (1-lambda)*relevance[docid] + lambda*diversity*novelty[docid];
 		return score;
 	}
 
@@ -54,7 +54,7 @@ public class xQuAD2 extends InteractiveReranker {
 	@Override
 	public void update(int docid) {
 		
-		float[] probs = new float[n];
+		double[] probs = new double[n];
 	    Arrays.fill(probs, 0);
 
 	    for(int i = 0;i<probs.length;++i) {
@@ -72,10 +72,10 @@ public class xQuAD2 extends InteractiveReranker {
 		
 	}
 	
-	private float cosine(float[] v1, float[] v2){
-		float denom = 0;
-		float sum1 = 0;
-		float sum2  = 0;
+	private double cosine(double[] v1, double[] v2){
+		double denom = 0;
+		double sum1 = 0;
+		double sum2  = 0;
 		
 	
 		for (int i = 0; i < v2.length; i++) {
@@ -86,8 +86,8 @@ public class xQuAD2 extends InteractiveReranker {
 			sum1 += v1[i]*v1[i];
 			sum2 += v2[i]*v2[i];
 		}
-		sum1 = (float) Math.sqrt(sum1);
-		sum2 = (float) Math.sqrt(sum2);
+		sum1 = (double) Math.sqrt(sum1);
+		sum2 = (double) Math.sqrt(sum2);
 		
 		if (sum1*sum2 > 0){
 			return denom/(sum1*sum2);
@@ -102,7 +102,7 @@ public class xQuAD2 extends InteractiveReranker {
 		aspectMining.miningFeedback(indexName, query,feedback);
 		coverage = aspectMining.getCoverage();
 		importance = aspectMining.getImportance();
-		novelty = new float[n];
+		novelty = new double[n];
 		Arrays.fill(novelty, 1f);
 		updateNovelty();
 	}

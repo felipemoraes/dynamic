@@ -10,9 +10,9 @@ public class xQuAD extends InteractiveReranker {
 	
 	private AspectMining aspectMining;
 	
-	public float[] importance;
-	public float[] novelty;
-	public float[][] coverage;
+	public double[] importance;
+	public double[] novelty;
+	public double[][] coverage;
 	
 	private String aspectMiningClassName;
 	
@@ -22,13 +22,13 @@ public class xQuAD extends InteractiveReranker {
 	
 
 	@Override
-	public float score(int docid){
+	public double score(int docid){
 		float diversity = 0;
 		for (int i = 0; i < importance.length; i++) {
 			diversity +=  importance[i]*coverage[docid][i]*novelty[i];
 		}
 		
-		float score = (1-lambda)*relevance[docid] + lambda*diversity;
+		double score = (1-lambda)*relevance[docid] + lambda*diversity;
 		return score;
 	}
 	

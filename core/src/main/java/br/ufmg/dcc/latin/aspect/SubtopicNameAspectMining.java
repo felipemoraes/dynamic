@@ -27,12 +27,12 @@ public class SubtopicNameAspectMining extends AspectMining {
 	public SubtopicNameAspectMining(){
 		
 		n = RetrievalCache.docids.length;
-		importance = new float[0];
-		novelty = new float[0];
-		coverage = new float[n][0];
-		v = new float[0];
-		s = new float[0];
-		accumulatedRelevance = new float[0];
+		importance = new double[0];
+		novelty = new double[0];
+		coverage = new double[n][0];
+		v = new double[0];
+		s = new double[0];
+		accumulatedRelevance = new double[0];
 		
 		readAspectsName();
 	}
@@ -83,12 +83,12 @@ public class SubtopicNameAspectMining extends AspectMining {
 		if (aspectSize == 0) {
 			return;
 		}
-		importance = new float[aspectSize];
-		novelty = new float[aspectSize];
-		coverage = new float[n][aspectSize];
-		accumulatedRelevance = new float[aspectSize];
-		v = new float[aspectSize];
-		s = new float[aspectSize];
+		importance = new double[aspectSize];
+		novelty = new double[aspectSize];
+		coverage = new double[n][aspectSize];
+		accumulatedRelevance = new double[aspectSize];
+		v = new double[aspectSize];
+		s = new double[aspectSize];
 		
 		float uniformImportance = 1.0f/aspectSize;
 		
@@ -105,7 +105,7 @@ public class SubtopicNameAspectMining extends AspectMining {
 		
 			String aspectComponent = query + " " + subtopicsNames.get(aspectId);
 			
-			float[] scores = null;
+			double[] scores = null;
 			if (RetrievalCache.subtopicsCache.containsKey(aspectComponent)) {
 				scores = RetrievalCache.subtopicsCache.get(aspectComponent);
 			} else {
@@ -152,10 +152,10 @@ public class SubtopicNameAspectMining extends AspectMining {
 			return;
 		}
 		
-		importance = new float[aspectSize];
-		novelty = new float[aspectSize];
-		coverage = new float[n][aspectSize];
-		accumulatedRelevance = new float[aspectSize];
+		importance = new double[aspectSize];
+		novelty = new double[aspectSize];
+		coverage = new double[n][aspectSize];
+		accumulatedRelevance = new double[aspectSize];
 		
 		
 		float uniformImportance = 1.0f/aspectSize;
@@ -169,7 +169,7 @@ public class SubtopicNameAspectMining extends AspectMining {
 	
 			String aspectComponent = query + " " + subtopicsNames.get(aspectId);
 			
-			float[] scores = null;
+			double[] scores = null;
 			if (RetrievalCache.subtopicsCache.containsKey(aspectComponent)) {
 				scores = RetrievalCache.subtopicsCache.get(aspectComponent);
 			} else {
@@ -184,7 +184,7 @@ public class SubtopicNameAspectMining extends AspectMining {
 			for(int j = 0;j< n ;++j) {
 				if (this.feedbacks[j] != null) {
 					
-					float score = this.feedbacks[j].getRelevanceAspect(aspectId);
+					double score = this.feedbacks[j].getRelevanceAspect(aspectId);
 					coverage[j][i] = score;
 					
 					if (score > 0) {

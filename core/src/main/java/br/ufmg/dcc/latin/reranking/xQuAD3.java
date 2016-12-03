@@ -13,10 +13,10 @@ public class xQuAD3 extends InteractiveReranker {
 	
 	private AspectMining aspectMining;
 	
-	public float[] importance;
-	public float[][] novelty;
-	public float[][] coverage;
-	public float[][][] features;
+	public double[] importance;
+	public double[][] novelty;
+	public double[][] coverage;
+	public double[][][] features;
 	
 	int n;
 	
@@ -28,13 +28,13 @@ public class xQuAD3 extends InteractiveReranker {
 	
 	
 	@Override
-	public float score(int docid){
-		float diversity = 0;
+	public double score(int docid){
+		double diversity = 0;
 		for (int i = 0; i < importance.length; i++) {
 			diversity +=  importance[i]*coverage[docid][i]*novelty[i][docid];
 		}
 		
-		float score = (1-lambda)*relevance[docid] + lambda*diversity;
+		double score = (1-lambda)*relevance[docid] + lambda*diversity;
 		
 		return score;
 	}
@@ -48,14 +48,14 @@ public class xQuAD3 extends InteractiveReranker {
 		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName,(int) params[2]);
 		coverage = aspectMining.getCoverage();
 		importance = aspectMining.getImportance();
-		novelty = new float[0][n];
-		features = new float[n][0][0];
+		novelty = new double[0][n];
+		features = new double[n][0][0];
 	}
 
 	@Override
 	protected void update(int docid) {
 		for (int i = 0; i < novelty.length; i++) {
-			float[] probs = new float[n];
+			double[] probs = new double[n];
 			
 			for (int j = 0; j < probs.length; j++) {
 				probs[j] = cosine(features[docid][i], features[j][i]);
@@ -76,7 +76,7 @@ public class xQuAD3 extends InteractiveReranker {
 		importance = aspectMining.getImportance();
 		features = aspectMining.getFeatures();
 		int aspectSize = importance.length;
-		novelty = new float[aspectSize][n];
+		novelty = new double[aspectSize][n];
 		for (int i = 0; i < novelty.length; i++) {
 			Arrays.fill(novelty[i], 1f);
 		}
@@ -92,10 +92,10 @@ public class xQuAD3 extends InteractiveReranker {
 		}
 	}
 	
-	private float cosine(float[] v1, float[] v2){
-		float denom = 0;
-		float sum1 = 0;
-		float sum2  = 0;
+	private double cosine(double[] v1, double[] v2){
+		double denom = 0;
+		double sum1 = 0;
+		double sum2  = 0;
 		
 	
 		for (int i = 0; i < v2.length; i++) {
@@ -106,8 +106,8 @@ public class xQuAD3 extends InteractiveReranker {
 			sum1 += v1[i]*v1[i];
 			sum2 += v2[i]*v2[i];
 		}
-		sum1 = (float) Math.sqrt(sum1);
-		sum2 = (float) Math.sqrt(sum2);
+		sum1 = (double) Math.sqrt(sum1);
+		sum2 = (double) Math.sqrt(sum2);
 		
 		if (sum1*sum2 > 0){
 			return denom/(sum1*sum2);

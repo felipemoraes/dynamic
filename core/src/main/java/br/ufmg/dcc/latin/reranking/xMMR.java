@@ -9,15 +9,15 @@ import br.ufmg.dcc.latin.feedback.Feedback;
 
 public class xMMR extends InteractiveReranker {
 
-	private float[] cacheSim;
+	private double[] cacheSim;
 	
 	private int n;
 
 	private float lambda;
 	
-	private float[] relevance;
+	private double[] relevance;
 	
-	private float[][] coverage; 
+	private double[][] coverage; 
 
 	private AspectMining aspectMining;
 	private String aspectMiningClassName;
@@ -33,16 +33,16 @@ public class xMMR extends InteractiveReranker {
 		super.start(params);
 		relevance = normalize(RetrievalCache.scores);
 		n = relevance.length;
-		cacheSim = new float[n];
+		cacheSim = new double[n];
 		lambda = params[1];
 		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName,(int) params[2]);
 		coverage = aspectMining.getCoverage();
 	}
 
 	@Override
-	public float score(int docid) {
+	public double score(int docid) {
 		
-		float score = lambda*(relevance[docid]) - (1-lambda)*cacheSim[docid];
+		double score = lambda*(relevance[docid]) - (1-lambda)*cacheSim[docid];
 		return score;
 	}
 
@@ -50,7 +50,7 @@ public class xMMR extends InteractiveReranker {
 	@Override
 	public void update(int docid) {
 		
-		float[] newCache = new float[n];
+		double[] newCache = new double[n];
 	    Arrays.fill(newCache, 0);
 
 	    for(int i = 0;i<newCache.length;++i) {
@@ -68,10 +68,10 @@ public class xMMR extends InteractiveReranker {
 		
 	}
 	
-	private float cosine(float[] v1, float[] v2){
-		float denom = 0;
-		float sum1 = 0;
-		float sum2  = 0;
+	private double cosine(double[] v1, double[] v2){
+		double denom = 0;
+		double sum1 = 0;
+		double sum2  = 0;
 		
 	
 		for (int i = 0; i < v2.length; i++) {
@@ -82,8 +82,8 @@ public class xMMR extends InteractiveReranker {
 			sum1 += v1[i]*v1[i];
 			sum2 += v2[i]*v2[i];
 		}
-		sum1 = (float) Math.sqrt(sum1);
-		sum2 = (float) Math.sqrt(sum2);
+		sum1 = (double) Math.sqrt(sum1);
+		sum2 = (double) Math.sqrt(sum2);
 		
 		if (sum1*sum2 > 0){
 			return denom/(sum1*sum2);

@@ -130,10 +130,10 @@ public class RetrievalController {
 	}
 	
 	
-	public static float[] rerankResults(int[] docids, String index, String query, String field){
+	public static double[] rerankResults(int[] docids, String index, String query, String field){
 		
 		int n = RetrievalCache.docids.length;
-		float[] scores = new float[n];
+		double[] scores = new double[n];
 		Map<Integer,Integer> mapId = new HashMap<Integer, Integer>();
 		for (int i = 0; i < scores.length; i++) {
 			mapId.put(RetrievalCache.docids[i], i);
@@ -170,10 +170,10 @@ public class RetrievalController {
 	
 	
 	
-	public static float[] rerankResults(int[] docids, String index, String query){
+	public static double[] rerankResults(int[] docids, String index, String query){
 		
 		int n = RetrievalCache.docids.length;
-		float[] scores = new float[n];
+		double[] scores = new double[n];
 		Map<Integer,Integer> mapId = new HashMap<Integer, Integer>();
 		for (int i = 0; i < scores.length; i++) {
 			mapId.put(RetrievalCache.docids[i], i);
@@ -211,8 +211,8 @@ public class RetrievalController {
 	
 
 	
-	private static float tfidf(int docid1, int docid2, int docCount, TermStatistics termStatistics, String field){
-		float score = 0;
+	private static double tfidf(int docid1, int docid2, int docCount, TermStatistics termStatistics, String field){
+		double score = 0;
 		
 		TermsEnum termVector1 = null;
 		TermsEnum termVector2 = null;
@@ -229,8 +229,8 @@ public class RetrievalController {
 		
 		
 		
-		float docNorm1 = 0;
-		float docNorm2 = 0;
+		double docNorm1 = 0;
+		double docNorm2 = 0;
 		try {
 
 			BytesRef t1 = termVector1.next();
@@ -240,10 +240,10 @@ public class RetrievalController {
 				
 				PostingsEnum p1 = termVector1.postings( null, PostingsEnum.ALL );
 				p1.nextDoc();
-				float tf1 = p1.freq();
+				double tf1 = p1.freq();
 				PostingsEnum p2 = termVector2.postings( null, PostingsEnum.ALL );
 				p2.nextDoc();
-				float tf2 = p2.freq();
+				double tf2 = p2.freq();
 				
 				BytesRef term1 = termVector1.term();
 				BytesRef term2 = termVector2.term();
@@ -267,10 +267,10 @@ public class RetrievalController {
 
 	
 				String t = term1.utf8ToString();
-				float df = termStatistics.docFreq(t);
-				float idf = (float)(Math.log(docCount)/(df+1));
-				float weight1 = tf1*idf;
-				float weight2 = tf2*idf;
+				double df = termStatistics.docFreq(t);
+				double idf = (double)(Math.log(docCount)/(df+1));
+				double weight1 = tf1*idf;
+				double weight2 = tf2*idf;
 				docNorm1 += weight1*weight1;
 				docNorm2 += weight2*weight2;
 				
@@ -284,8 +284,8 @@ public class RetrievalController {
 			
 			e.printStackTrace();
 		}
-		docNorm1 = (float) Math.sqrt(docNorm1);
-		docNorm2 = (float) Math.sqrt(docNorm2);
+		docNorm1 = (double) Math.sqrt(docNorm1);
+		docNorm2 = (double) Math.sqrt(docNorm2);
 
 
 		score /= (docNorm1*docNorm2);
@@ -293,16 +293,16 @@ public class RetrievalController {
 		return score;
 	}
 	
-	public static float getIdf(String index, String field, String term){
+	public static double getIdf(String index, String field, String term){
 
 		int count = docCount.get(index  + "_" + field );		
-		float df = termStatistics.get(index  + "_" + field).docFreq(term);
+		double df = termStatistics.get(index  + "_" + field).docFreq(term);
 			
-		float idf = (float) (Math.log(count)/(df+1));
+		double idf = (float) (Math.log(count)/(df+1));
 		return idf;
 	}
 	
-	public static float[] getCosineSimilarities(int[] docids, int docid, String index, String field){
+	public static double[] getCosineSimilarities(int[] docids, int docid, String index, String field){
 		
 		int n = RetrievalCache.docids.length;
 	
@@ -330,7 +330,7 @@ public class RetrievalController {
 			termsVector.put("title", termsVectorTitle);
 		}
 		
-		float[] scores = new float[n];
+		double[] scores = new double[n];
 		int count = docCount.get(index +"_" + field);
 		TermStatistics contentTermStatistics = termStatistics.get(index+ "_" + field);
 		for (int i = 0; i < docids.length; i++) {
@@ -412,7 +412,7 @@ public class RetrievalController {
     	int[] docids = new int[n];
     	String[] docnos = new String[n];
     	String[] docsContent = new String[n];
-    	float[] scores = new float[n];
+    	double[] scores = new double[n];
     	
     	
         for(int i=0; i< n; i++){

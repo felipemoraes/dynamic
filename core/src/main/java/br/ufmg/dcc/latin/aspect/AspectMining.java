@@ -9,30 +9,30 @@ public abstract class AspectMining {
 
 	protected int n;
 	
-	protected float[] importance;
-	protected float[] novelty;
-	protected float[][] coverage;
+	protected double[] importance;
+	protected double[] novelty;
+	protected double[][] coverage;
 	
-	protected float[] accumulatedRelevance;
+	protected double[] accumulatedRelevance;
 	
-	protected float[][][] features;
+	protected double[][][] features;
 	
-	protected float[] v;
-	protected float[] s;
+	protected double[] v;
+	protected double[] s;
 	
 	
 	public abstract void miningFeedback(String index, String query, Feedback[] feedbacks);
 	public abstract void miningFeedbackForCube(String index,  String query, Feedback[] feedbacks);
 	
-	public float[][] getCoverage(){
+	public double[][] getCoverage(){
 		return coverage;
 	}
 	
-	public float[] getImportance(){
+	public double[] getImportance(){
 		return importance;
 	}
 	
-	public float[] getNovelty(){
+	public double[] getNovelty(){
 		return novelty; 
 	}
 	
@@ -62,7 +62,7 @@ public abstract class AspectMining {
 			
 			for (int j = 0; j < coverage.length; j++) {
 				if (sum > 0) {
-					float normValue = coverage[j][i]/sum;
+					double normValue = coverage[j][i]/sum;
 					coverage[j][i] = normValue;
 				}
 				
@@ -86,15 +86,14 @@ public abstract class AspectMining {
 		System.out.println();
 	}
 
-	protected float[] scaling(float[] scores){
-		float min = Float.POSITIVE_INFINITY;
+	protected double[] scaling(double[] scores){
+		double min = Double.POSITIVE_INFINITY;
 		for (int i = 0; i < scores.length; i++) {
 			if (scores[i] < min) {
 				min = scores[i];
 			}
 		}
-		
-		float max = Float.NEGATIVE_INFINITY;
+		double max = Double.NEGATIVE_INFINITY;
 		for (int i = 0; i < scores.length; i++) {
 			if (scores[i] > max) {
 				max = scores[i];
@@ -113,19 +112,19 @@ public abstract class AspectMining {
 		
 	}
 	
-	public float[] getV() {
+	public double[] getV() {
 		return v;
 	}
 
-	public float[] getS() {
+	public double[] getS() {
 		return s;
 	}
 	
-	public float[] getAccumulatedRelevance(){
+	public double[] getAccumulatedRelevance(){
 		return accumulatedRelevance;
 	}
 	
-	public float[][][] getFeatures(){
+	public double[][][] getFeatures(){
 		return features;
 	}
 }

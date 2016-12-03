@@ -5,12 +5,12 @@ import br.ufmg.dcc.latin.aspect.AspectMiningFactory;
 import br.ufmg.dcc.latin.feedback.Feedback;
 
 public class Cube extends InteractiveReranker {
-	float gamma;
-	private static float MaxHeight = 10.0f;
-	private float[] importance;
-	private float[] novelty;
-	private float[][] coverage;
-	private float[] accumalatedRelevance;
+	double gamma;
+	private static double MaxHeight = 5.0f;
+	private double[] importance;
+	private double[] novelty;
+	private double[][] coverage;
+	private double[] accumalatedRelevance;
 	
 	private String aspectMiningClassName;
 	
@@ -43,11 +43,11 @@ public class Cube extends InteractiveReranker {
 	}
 	
 	@Override
-	protected float score(int docid) {
+	protected double score(int docid) {
 		if (importance.length == 0) {
 			return relevance[docid];
 		}
-		float score = 0;
+		double score = 0;
 		for (int i = 0; i < importance.length; i++) {
 			
 			if (accumalatedRelevance[i] < MaxHeight) {

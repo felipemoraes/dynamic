@@ -11,16 +11,16 @@ public class RetrievalCache {
 	
 	
 	public static int[] docids;
-	public static float[] scores;
+	public static double[] scores;
 	public static String[] docnos;
 	public static TopDocs topDocs;
 	
 	public static Map<String,IndexSearcher> indices;
 	
-	public static Map<String,float[]> passageCache;
+	public static Map<String,double[]> passageCache;
 	
 	
-	public static Map<String,float[]> subtopicsCache;
+	public static Map<String,double[]> subtopicsCache;
 	
 	public static void cache(ResultSet resultSet) {
 		docids = resultSet.docids;

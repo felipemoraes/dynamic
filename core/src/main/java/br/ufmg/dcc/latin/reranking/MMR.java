@@ -8,9 +8,9 @@ public class MMR extends InteractiveReranker {
 	private float lambda;
 
 	protected String[] docsContent;
-	private float[] cacheSim;
+	private double[] cacheSim;
 	
-	private float[][] docSimCache;
+	private double[][] docSimCache;
 	
 	
 	
@@ -19,7 +19,7 @@ public class MMR extends InteractiveReranker {
 
 	
 	public void update(int docid) {
-		float[] newCache = null;
+		double[] newCache = null;
 		if (docSimCache[docid] != null) {
 			newCache = docSimCache[docid];
 		} else {
@@ -48,7 +48,7 @@ public class MMR extends InteractiveReranker {
 	public void start(String query, String index){
 		super.start(query,index);
 		RetrievalController.termsVector = null;
-		docSimCache = new float[relevance.length][];
+		docSimCache = new double[relevance.length][];
 	}
 
 	@Override
@@ -58,12 +58,12 @@ public class MMR extends InteractiveReranker {
 		
 		
 		lambda = params[1];
-		cacheSim = new float[relevance.length];
+		cacheSim = new double[relevance.length];
 	}
 
 	@Override
-	public float score(int docid) {
-		float score = lambda*(relevance[docid]) - (1-lambda)*cacheSim[docid];
+	public double score(int docid) {
+		double score = lambda*(relevance[docid]) - (1-lambda)*cacheSim[docid];
 		return score;
 	}
 

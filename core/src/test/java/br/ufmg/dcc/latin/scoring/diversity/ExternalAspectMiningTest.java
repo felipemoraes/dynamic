@@ -34,8 +34,8 @@ public class ExternalAspectMiningTest {
 
 	@Test
 	public void test() {
-		WikipediaAspectMining wikipediaAspectMining = new WikipediaAspectMining();
-		QuerylogAspectMining querylogAspectMining = new QuerylogAspectMining();
+		WikipediaAspectMining wikipediaAspectMining = new WikipediaAspectMining(20);
+		QuerylogAspectMining querylogAspectMining = new QuerylogAspectMining(20);
 		List<String> terms = new ArrayList<String>();
 		terms.add("ebola");
 	

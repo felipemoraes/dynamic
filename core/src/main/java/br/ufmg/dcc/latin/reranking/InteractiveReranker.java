@@ -10,7 +10,7 @@ import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
 public abstract class InteractiveReranker implements Reranker {
 	
-	protected float[] relevance;
+	protected double[] relevance;
 	protected int[] docids;
 	protected String[] docnos;
 	
@@ -23,7 +23,7 @@ public abstract class InteractiveReranker implements Reranker {
 	
 	public abstract String debug(String topicid, int iteration);
 	
-	protected abstract float score(int docid);
+	protected abstract double score(int docid);
 	
 	protected abstract void update(int docid);
 	
@@ -36,7 +36,7 @@ public abstract class InteractiveReranker implements Reranker {
 		int k = 0;
 		while(k < 5){
 			
-			float maxScore = Float.NEGATIVE_INFINITY;
+			double maxScore = Double.NEGATIVE_INFINITY;
 			int maxRank = -1;
 			
 			// for each unselected document
@@ -45,7 +45,7 @@ public abstract class InteractiveReranker implements Reranker {
 				if (selected.has(docids[i])){
 					continue;
 				}
-				float score = score(i);
+				double score = score(i);
 				if (score > maxScore) {
 					maxScore = score;
 					maxRank = i;
@@ -77,8 +77,8 @@ public abstract class InteractiveReranker implements Reranker {
 		relevance = result.scores;
 		docnos = result.docnos;
 		selected = new SelectedSet();
-		RetrievalCache.passageCache = new HashMap<String,float[]>();
-		RetrievalCache.subtopicsCache = new HashMap<String,float[]>();
+		RetrievalCache.passageCache = new HashMap<String,double[]>();
+		RetrievalCache.subtopicsCache = new HashMap<String,double[]>();
 	}
 	
 	public void start(float[] params){

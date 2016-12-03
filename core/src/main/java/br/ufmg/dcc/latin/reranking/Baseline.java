@@ -41,7 +41,7 @@ public class Baseline extends InteractiveReranker {
 		relevance = result.scores;
 		docnos = result.docnos;
 		selected = new SelectedSet();
-		RetrievalCache.passageCache = new HashMap<String,float[]>();
+		RetrievalCache.passageCache = new HashMap<String,double[]>();
 	}
 	
 	@Override
@@ -51,7 +51,7 @@ public class Baseline extends InteractiveReranker {
 	}
 
 	@Override
-	protected float score(int docid) {
+	protected double score(int docid) {
 		return relevance[docid];
 	}
 

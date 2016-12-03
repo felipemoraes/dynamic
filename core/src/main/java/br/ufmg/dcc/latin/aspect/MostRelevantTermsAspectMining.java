@@ -26,12 +26,12 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 	
 	public MostRelevantTermsAspectMining(int maxTerms) {
 		n = RetrievalCache.docids.length;
-		importance = new float[0];
-		novelty = new float[0];
-		coverage = new float[n][0];
-		s = new float[0];
-		v = new float[0];
-		accumulatedRelevance = new float[0];
+		importance = new double[0];
+		novelty = new double[0];
+		coverage = new double[n][0];
+		s = new double[0];
+		v = new double[0];
+		accumulatedRelevance = new double[0];
 		flatAspectModel = new FlatAspectModel();
 		this.maxTerms = maxTerms;
 	}
@@ -61,12 +61,12 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			return;
 		}
 		
-		importance = new float[aspectSize];
-		novelty = new float[aspectSize];
-		coverage = new float[n][aspectSize];
-		v = new float[aspectSize];
-		s = new float[aspectSize];
-		features = new float[n][aspectSize][];
+		importance = new double[aspectSize];
+		novelty = new double[aspectSize];
+		coverage = new double[n][aspectSize];
+		v = new double[aspectSize];
+		s = new double[aspectSize];
+		features = new double[n][aspectSize][];
 
 		
 		float uniformImportance = 1.0f/aspectSize;
@@ -82,15 +82,15 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		for (String aspectId : flatAspectModel.getAspects()) {
 			int s = flatAspectModel.getAspectComponents(aspectId).size();
 			for(int j = 0;j< n ;++j) {
-				features[j][i] = new float[s];
+				features[j][i] = new double[s];
 			}
 			
 			
 			String aspectComponent = getComplexAspectComponent(query, index, flatAspectModel.getAspectComponentsAndWeights(aspectId));
 			
-			float[] scores = null;
+			double[] scores = null;
 			if (aspectComponent.length() == 0) {
-				scores = new float[n];
+				scores = new double[n];
 				Arrays.fill(scores, 1);
 			} else {
 				scores = RetrievalController.rerankResults(RetrievalCache.docids, index, aspectComponent);
@@ -133,10 +133,10 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		
 	}
 	
-	private float getIdfFieldBased(String term, String index){
+	private double getIdfFieldBased(String term, String index){
 		
 		float[] weights = RetrievalController.getFiedlWeights();
-		float idf = weights[0]*RetrievalController.getIdf(index, "title", term) + weights[1]*RetrievalController.getIdf(index, "content", term);
+		double idf = weights[0]*RetrievalController.getIdf(index, "title", term) + weights[1]*RetrievalController.getIdf(index, "content", term);
 		return idf;
 	}
 
@@ -145,7 +145,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		String complexAspectComponent = "";
 		Analyzer analyzer = RetrievalController.getAnalyzer();
 		
-		Map<String,Float> termFreqs = new HashMap<String,Float>();
+		Map<String,Double> termFreqs = new HashMap<String,Double>();
 
 		for(Entry<String,List<Integer>> entry : aspectComponentsAndWeights.entrySet()){
 			List<String> terms = tokenizeString(analyzer, entry.getKey());
@@ -165,7 +165,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			
 			for (TermWeight termWeight : weights) {
 				if (!termFreqs.containsKey(termWeight.term)){
-					termFreqs.put(termWeight.term, 0f);
+					termFreqs.put(termWeight.term, 0d);
 				}
 				termFreqs.put(termWeight.term, termFreqs.get(termWeight.term) + termWeight.weight*rel);
 			}
@@ -174,14 +174,14 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		
 		
 		
-		float sum = 0;
+		double sum = 0;
 	
 		int querySize = Math.min(maxTerms, termFreqs.size());
-		Map<String,Float> selectedTerms = new HashMap<String,Float>();
+		Map<String,Double> selectedTerms = new HashMap<String,Double>();
 		while (selectedTerms.size() < querySize ) {
-			float maxFreq = Float.NEGATIVE_INFINITY;
+			double maxFreq = Double.NEGATIVE_INFINITY;
 			String maxTerm = "-1";
-			for (Entry<String,Float> termEntry : termFreqs.entrySet()) {
+			for (Entry<String,Double> termEntry : termFreqs.entrySet()) {
 				if (selectedTerms.containsKey(termEntry.getKey())){
 					continue;
 				}
@@ -198,8 +198,8 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		
 		
 		
-		for (Entry<String,Float> term : selectedTerms.entrySet()) {
-			float score = term.getValue()/sum;
+		for (Entry<String,Double> term : selectedTerms.entrySet()) {
+			double score = term.getValue()/sum;
 			selectedTerms.put(term.getKey(), score);
 		}
 		
@@ -235,7 +235,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		}
 		*/
 		
-		for (Entry<String,Float> term : selectedTerms.entrySet()) {
+		for (Entry<String,Double> term : selectedTerms.entrySet()) {
 			//complexAspectComponent += term.getKey() + String.format("^%.8f ", term.getValue());
 			complexAspectComponent += term.getKey() + " ";
 		}
@@ -275,10 +275,10 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		
 		RetrievalController.loadDocFreqs(index);
 		
-		importance = new float[aspectSize];
-		novelty = new float[aspectSize];
-		coverage = new float[n][aspectSize];
-		accumulatedRelevance = new float[aspectSize];
+		importance = new double[aspectSize];
+		novelty = new double[aspectSize];
+		coverage = new double[n][aspectSize];
+		accumulatedRelevance = new double[aspectSize];
 		
 		
 		float uniformImportance = 1.0f/aspectSize;
@@ -293,10 +293,10 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			
 			String aspectComponent = getComplexAspectComponent(query, index, flatAspectModel.getAspectComponentsAndWeights(aspectId));
 			
-			float[] scores = null;
+			double[] scores = null;
 			
 			if (aspectComponent.length() == 0) {
-				scores = new float[n];
+				scores = new double[n];
 				Arrays.fill(scores, 1);
 			} else {
 				scores = RetrievalController.rerankResults(RetrievalCache.docids, index, aspectComponent);

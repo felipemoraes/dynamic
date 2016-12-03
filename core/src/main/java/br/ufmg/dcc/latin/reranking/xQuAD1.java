@@ -15,10 +15,10 @@ public class xQuAD1 extends InteractiveReranker {
 	private String aspectMiningClassName;
 	
 	
-	private float[] importance;
-	private float[] novelty;
-	private float[][] coverage;
-	private float[][] docSimCache;
+	private double[] importance;
+	private double[] novelty;
+	private double[][] coverage;
+	private double[][] docSimCache;
 	protected String[] docsContent;
 	
 	String indexName;
@@ -36,7 +36,7 @@ public class xQuAD1 extends InteractiveReranker {
 		super.start(query,index);
 		indexName = index;
 		RetrievalController.termsVector = null;
-		docSimCache = new float[relevance.length][];
+		docSimCache = new double[relevance.length][];
 	}
 	
 	
@@ -50,35 +50,35 @@ public class xQuAD1 extends InteractiveReranker {
 		importance = aspectMining.getImportance();
 	
 		lambda = params[1];
-		novelty = new float[relevance.length];
+		novelty = new double[relevance.length];
 		
 		Arrays.fill(novelty, 1.0f);
 	}
 	
 	@Override
-	public float score(int docid) {
-		float diversity = 0;
+	public double score(int docid) {
+		double diversity = 0;
 		for (int i = 0; i < importance.length; i++) {
 			diversity +=  importance[i]*coverage[docid][i];
 		}
 		
-		float score = (1-lambda)*relevance[docid] + lambda*diversity*novelty[docid];
+		double score = (1-lambda)*relevance[docid] + lambda*diversity*novelty[docid];
 		return score;
 	}
 
 
 	@Override
 	public void update(int docid) {
-		float[] probs = null;
+		double[] probs = null;
 		
 		if (docSimCache[docid] != null) {
 			probs = docSimCache[docid];
 		} else {
-			float[] newCacheTitle = RetrievalController.getCosineSimilarities(docids, docid,indexName,"title");
-			float[] newCacheContent = RetrievalController.getCosineSimilarities(docids, docid,indexName,"content");
+			double[] newCacheTitle = RetrievalController.getCosineSimilarities(docids, docid,indexName,"title");
+			double[] newCacheContent = RetrievalController.getCosineSimilarities(docids, docid,indexName,"content");
 			newCacheTitle = normalize(newCacheTitle);
 			newCacheContent = normalize(newCacheContent);
-			probs = new float[newCacheContent.length];
+			probs = new double[newCacheContent.length];
 			for (int i = 0; i < newCacheContent.length; i++) {
 				probs[i] = (1-fieldWeight) *newCacheTitle[i] + fieldWeight*newCacheContent[i];
 			}
