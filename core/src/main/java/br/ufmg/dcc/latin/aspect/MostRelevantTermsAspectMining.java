@@ -147,7 +147,10 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			}
 			
 			rel = rel/entry.getValue().size();
-			System.out.println(rel);
+			
+			if (rel <= 0) {
+				continue;
+			}
 			
 			for (TermWeight termWeight : weights) {
 				if (!termFreqs.containsKey(termWeight.term)){
