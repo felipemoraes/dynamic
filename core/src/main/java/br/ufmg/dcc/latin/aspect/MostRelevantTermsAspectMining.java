@@ -147,6 +147,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			}
 			
 			rel = rel/entry.getValue().size();
+			System.out.println(rel);
 			
 			for (TermWeight termWeight : weights) {
 				if (!termFreqs.containsKey(termWeight.term)){
@@ -183,9 +184,6 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		
 		for (Entry<String,Float> term : selectedTerms.entrySet()) {
 			float score = term.getValue()/sum;
-			if (Float.isNaN(score)) {
-				System.out.println("Here is nan " + term.getValue() + " " + sum);
-			}
 			
 			complexAspectComponent += term.getKey() + String.format("^%.4f ", score);
 		}
