@@ -136,14 +136,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		Analyzer analyzer = RetrievalController.getAnalyzer();
 		
 		Map<String,Float> termFreqs = new HashMap<String,Float>();
-		
-		
-		
-		//List<String> queryTerms = tokenizeString(analyzer, query);
-		
-		//for (String term : queryTerms) {
-		//termFreqs.put(term,1f);
-		//}
+	
 		
 		for(Entry<String,List<Integer>> entry : aspectComponentsAndWeights.entrySet()){
 			List<String> terms = tokenizeString(analyzer, entry.getKey());
@@ -193,13 +186,32 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			sum += maxFreq;
 		}
 		
+		List<String> queryTerms = tokenizeString(analyzer, query);
+		Map<String,Float> queryLikelihood = new HashMap<String, Float>();
+		
+		for (String term : queryTerms) {
+			if (!queryLikelihood.containsKey(term)) {
+				queryLikelihood.put(term, 0f);
+			}
+			queryLikelihood.put(term, queryLikelihood.get(term));
+		}
+		
+		for (String term : queryTerms) {
+			if (!selectedTerms.containsKey(term)) {
+				selectedTerms.put(term, queryLikelihood.get(term)/queryTerms.size());
+			} else {
+				selectedTerms.put(term,selectedTerms.get(term) + queryLikelihood.get(term)/queryTerms.size());
+			}
+		}
+		
+		
 		for (Entry<String,Float> term : selectedTerms.entrySet()) {
 			float score = term.getValue()/sum;
 			
 			complexAspectComponent += term.getKey() + String.format("^%.8f ", score);
 		}
 		
-		
+
 		return complexAspectComponent;
 	}
 
