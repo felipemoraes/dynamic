@@ -5,7 +5,6 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -184,6 +183,9 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		
 		for (Entry<String,Float> term : selectedTerms.entrySet()) {
 			float score = term.getValue()/sum;
+			if (Float.isNaN(score)) {
+				System.out.println("Here is nan " + term.getValue() + " " + sum);
+			}
 			
 			complexAspectComponent += term.getKey() + String.format("^%.4f ", score);
 		}
