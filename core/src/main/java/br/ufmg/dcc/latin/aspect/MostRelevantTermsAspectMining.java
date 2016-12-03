@@ -130,16 +130,26 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		return result;
 		
 	}
+	
+	private float getIdfFieldBased(String term, String index){
+		
+		float[] weights = RetrievalController.getFiedlWeights();
+		float idf = weights[0]*RetrievalController.getIdf(index, "title", term) + weights[1]*RetrievalController.getIdf(index, "content", term);
+		return idf;
+	}
 
 	private String getComplexAspectComponent(String query, String index, Map<String, List<Integer>> aspectComponentsAndWeights) {
+		
 		String complexAspectComponent = "";
 		Analyzer analyzer = RetrievalController.getAnalyzer();
 		
 		Map<String,Float> termFreqs = new HashMap<String,Float>();
 	
+		List<String> queryTerms = tokenizeString(analyzer, query);
 		
 		for(Entry<String,List<Integer>> entry : aspectComponentsAndWeights.entrySet()){
 			List<String> terms = tokenizeString(analyzer, entry.getKey());
+			
 			List<TermWeight> weights = computeTermWeights(terms,entry.getKey());
 			
 			float rel = 0;
@@ -193,22 +203,34 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			selectedTerms.put(term.getKey(), score);
 		}
 		
-		List<String> queryTerms = tokenizeString(analyzer, query);
+		
 		Map<String,Float> queryLikelihood = new HashMap<String, Float>();
 		
 		for (String term : queryTerms) {
 			if (!queryLikelihood.containsKey(term)) {
 				queryLikelihood.put(term, 0f);
 			}
-			queryLikelihood.put(term, 1+queryLikelihood.get(term));
+			queryLikelihood.put(term, 1+ queryLikelihood.get(term));
+		}
+		
+		float sumNormQuery = 0;
+		for (String term : queryLikelihood.keySet()) {
+			float tfidf = queryLikelihood.get(term)*getIdfFieldBased(term,index);
+			queryLikelihood.put(term, queryLikelihood.get(term)*getIdfFieldBased(term,index));
+			sumNormQuery += tfidf;
+		}
+		
+		for (String term : queryLikelihood.keySet()) {
+			queryLikelihood.put(term, queryLikelihood.get(term)/sumNormQuery);
+		
 		}
 		
 		
 		for (String term : queryTerms) {
 			if (!selectedTerms.containsKey(term)) {
-				selectedTerms.put(term, queryLikelihood.get(term)/queryTerms.size());
+				selectedTerms.put(term, queryLikelihood.get(term));
 			} else {
-				selectedTerms.put(term,selectedTerms.get(term) + queryLikelihood.get(term)/queryTerms.size());
+				selectedTerms.put(term,selectedTerms.get(term) + queryLikelihood.get(term));
 			}
 		}
 		
