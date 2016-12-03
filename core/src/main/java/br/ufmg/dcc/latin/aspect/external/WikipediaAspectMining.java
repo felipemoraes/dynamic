@@ -9,7 +9,8 @@ import br.ufmg.dcc.latin.cache.ExternalKnowledgeCache;
 public class WikipediaAspectMining  extends MostRelevantTermsAspectMining {
 	
 	
-	public WikipediaAspectMining(){
+	public WikipediaAspectMining(int maxTerms){
+		super(maxTerms);
 		ExternalKnowledgeCache.init();
 	}
 

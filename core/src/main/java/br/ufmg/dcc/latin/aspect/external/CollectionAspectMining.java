@@ -9,7 +9,8 @@ import br.ufmg.dcc.latin.retrieval.RetrievalController;
 public class CollectionAspectMining extends MostRelevantTermsAspectMining {
 	String index;
 	
-	public CollectionAspectMining(String index){
+	public CollectionAspectMining(String index,int maxTerms){
+		super(maxTerms);
 		this.index = index;
 	}
 	

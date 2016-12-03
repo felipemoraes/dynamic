@@ -8,7 +8,8 @@ import br.ufmg.dcc.latin.cache.ExternalKnowledgeCache;
 
 public class QuerylogAspectMining extends MostRelevantTermsAspectMining {
 	
-	public QuerylogAspectMining(){
+	public QuerylogAspectMining(int maxTerms){
+		super(maxTerms);
 		ExternalKnowledgeCache.init();
 		
 	}

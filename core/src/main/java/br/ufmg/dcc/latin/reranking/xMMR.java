@@ -35,7 +35,7 @@ public class xMMR extends InteractiveReranker {
 		n = relevance.length;
 		cacheSim = new float[n];
 		lambda = params[1];
-		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName);
+		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName,(int) params[2]);
 		coverage = aspectMining.getCoverage();
 	}
 

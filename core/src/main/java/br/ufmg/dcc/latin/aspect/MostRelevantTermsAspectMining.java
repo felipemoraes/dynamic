@@ -22,8 +22,9 @@ import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
 public class MostRelevantTermsAspectMining  extends AspectMining {
 
+	private int maxTerms;
 	
-	public MostRelevantTermsAspectMining() {
+	public MostRelevantTermsAspectMining(int maxTerms) {
 		n = RetrievalCache.docids.length;
 		importance = new float[0];
 		novelty = new float[0];
@@ -32,6 +33,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		v = new float[0];
 		accumulatedRelevance = new float[0];
 		flatAspectModel = new FlatAspectModel();
+		this.maxTerms = maxTerms;
 	}
 	
 	private FlatAspectModel flatAspectModel;
@@ -176,7 +178,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 		
 		float sum = 0;
 	
-		int querySize = Math.min(20, termFreqs.size());
+		int querySize = Math.min(maxTerms, termFreqs.size());
 		Map<String,Float> selectedTerms = new HashMap<String,Float>();
 		while (selectedTerms.size() < querySize ) {
 			float maxFreq = Float.NEGATIVE_INFINITY;

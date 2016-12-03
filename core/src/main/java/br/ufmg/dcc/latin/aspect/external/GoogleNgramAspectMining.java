@@ -8,7 +8,8 @@ import br.ufmg.dcc.latin.cache.ExternalKnowledgeCache;
 
 public class GoogleNgramAspectMining extends MostRelevantTermsAspectMining {
 
-	public GoogleNgramAspectMining(){
+	public GoogleNgramAspectMining(int maxTerms){
+		super(maxTerms);
 		ExternalKnowledgeCache.init();
 	}
 	

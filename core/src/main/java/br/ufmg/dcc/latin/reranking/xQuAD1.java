@@ -45,7 +45,7 @@ public class xQuAD1 extends InteractiveReranker {
 	public void start(float[] params){
 		super.start(params);
 		relevance = normalize(relevance);
-		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName);
+		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName,(int) params[2]);
 		coverage = aspectMining.getCoverage();
 		importance = aspectMining.getImportance();
 	

@@ -6,7 +6,8 @@ import br.ufmg.dcc.latin.aspect.MostRelevantTermsAspectMining;
 import br.ufmg.dcc.latin.cache.ExternalKnowledgeCache;
 
 public class DBPediaEntitiesAspectMining extends MostRelevantTermsAspectMining {
-	public DBPediaEntitiesAspectMining(){
+	public DBPediaEntitiesAspectMining(int maxTerms){
+		super(maxTerms);
 		ExternalKnowledgeCache.init();
 	}
 	
