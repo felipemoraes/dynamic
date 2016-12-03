@@ -203,7 +203,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			selectedTerms.put(term.getKey(), score);
 		}
 		
-		
+		/*
 		Map<String,Float> queryLikelihood = new HashMap<String, Float>();
 		
 		for (String term : queryTerms) {
@@ -233,7 +233,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 				selectedTerms.put(term,selectedTerms.get(term) + queryLikelihood.get(term));
 			}
 		}
-		
+		*/
 		
 		for (Entry<String,Float> term : selectedTerms.entrySet()) {
 			complexAspectComponent += term.getKey() + String.format("^%.8f ", term.getValue());
