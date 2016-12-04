@@ -15,6 +15,8 @@ public class RetrievalCache {
 	public static String[] docnos;
 	public static TopDocs topDocs;
 	
+	public static String topicId;
+	
 	public static Map<String,IndexSearcher> indices;
 	
 	public static Map<String,double[]> passageCache;

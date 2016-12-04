@@ -31,7 +31,10 @@ public class AspectMiningFactory {
 		
 		} else if (className.equals("CollectionAspectMining")){
 			aspectMining = new CollectionAspectMining(index, maxTerms);
+		}else if (className.equals("OracleAspectMining")){
+			aspectMining = new OracleAspectMining();
 		}
+		
 		
 
 		

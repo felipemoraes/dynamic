@@ -29,6 +29,7 @@ public class xQuAD extends InteractiveReranker {
 		}
 		
 		double score = (1-lambda)*relevance[docid] + lambda*diversity;
+		
 		return score;
 	}
 	

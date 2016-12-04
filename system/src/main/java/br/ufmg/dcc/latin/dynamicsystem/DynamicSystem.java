@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.ufmg.dcc.latin.cache.RetrievalCache;
+
 public class DynamicSystem {
 	
 	private static DynamicSystemParameters parameters;
@@ -33,7 +35,7 @@ public class DynamicSystem {
 	    	String[] splitLine = line.split(" ",3);
 	    	
         	String topicId = splitLine[1];
-        	
+        	RetrievalCache.topicId = topicId;
         	//if (!topicId.equals("DD16-1")){
         	//	continue;
         	//}

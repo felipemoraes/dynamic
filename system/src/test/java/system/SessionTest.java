@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.dynamicsystem.Session;
 import br.ufmg.dcc.latin.dynamicsystem.TrecUser;
 
@@ -42,8 +43,8 @@ public class SessionTest {
 		params.add(param);
 		Session session = new Session();
 		session.setParams(params);
-		
-		session.setReranker("xQuAD CollectionAspectMining");
+		RetrievalCache.topicId = "DD16-1";
+		session.setReranker("xQuAD OracleAspectMining");
 		session.run( "ebola16", "DD16-1", "US Military Crisis Response");
 		
 

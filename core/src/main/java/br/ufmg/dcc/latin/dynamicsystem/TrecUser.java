@@ -70,5 +70,14 @@ public class TrecUser implements User {
 		}
 		return feedbacks;
 	}
+
+	public static double[] get(String[] docnos, String topicId, String aspectId) {
+		double[] scores = new double[docnos.length];
+		for (int i = 0; i < docnos.length; i++) {
+			Feedback feedback = TrecUser.get(docnos[i], topicId);
+			scores[i] = feedback.getRelevanceAspect(aspectId);
+		}
+		return scores;
+	}
 	
 }
