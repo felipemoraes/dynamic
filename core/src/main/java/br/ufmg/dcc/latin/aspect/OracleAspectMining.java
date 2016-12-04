@@ -2,14 +2,11 @@ package br.ufmg.dcc.latin.aspect;
 
 import java.util.Arrays;
 
-import org.apache.lucene.queryparser.classic.QueryParser;
-
 import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.diversity.FlatAspectModel;
 import br.ufmg.dcc.latin.dynamicsystem.TrecUser;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
-import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
 public class OracleAspectMining extends AspectMining {
 
