@@ -340,8 +340,6 @@ public class CluewebIndexing {
 		String collectionPath = "/Users/felipemoraes/Developer/DiskB/";
 		String indexPath = "/Users/felipemoraes/DiskB_index";
 		
-		insertIndexedDocs(indexPath);
-		
 		ft.setIndexOptions( IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS );
 		ft.setStoreTermVectors( true );
 		ft.setStoreTermVectorOffsets( true );
@@ -359,6 +357,8 @@ public class CluewebIndexing {
 		            "\n with message: " + e.getMessage());
 		//     System.exit(1);
 		}
+		
+		insertIndexedDocs(indexPath);
 
         int counter = 0;
         

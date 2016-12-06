@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.custom.CustomAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
@@ -24,7 +23,6 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Rescorer;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.similarities.DPH;
 import org.apache.lucene.search.similarities.LMDirichlet;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.FSDirectory;
@@ -264,10 +262,8 @@ public class RetrievalController {
 				if (t1 == null || t2 == null) {
 					break;
 				}
-
-	
-				String t = term1.utf8ToString();
-				double df = termStatistics.docFreq(t);
+				
+				double df = termStatistics.docFreq(term1);
 				double idf = (double)(Math.log(docCount)/(df+1));
 				double weight1 = tf1*idf;
 				double weight2 = tf2*idf;
@@ -293,7 +289,7 @@ public class RetrievalController {
 		return score;
 	}
 	
-	public static double getIdf(String index, String field, String term){
+	public static double getIdf(String index, String field, BytesRef term){
 
 		int count = docCount.get(index  + "_" + field );		
 		double df = termStatistics.get(index  + "_" + field).docFreq(term);
@@ -364,22 +360,21 @@ public class RetrievalController {
 				TermStatistics contentTermStatistics = new TermStatistics();
 				TermsEnum termsEnum = MultiFields.getTerms(reader, "content").iterator();
 		        while ((term = termsEnum.next()) != null) {
-		        	contentTermStatistics.docFreq(term.utf8ToString(), (float) termsEnum.docFreq());
-		        	contentTermStatistics.totalTermFreq(term.utf8ToString(), (float) termsEnum.totalTermFreq());
+		        	contentTermStatistics.docFreq(term, (float) termsEnum.docFreq());
+		        	contentTermStatistics.totalTermFreq(term, (float) termsEnum.totalTermFreq());
 		        }
 		        termStatistics.put(index + "_content", contentTermStatistics);
 				TermStatistics titleTermStatistics = new TermStatistics();
 				
 				termsEnum = MultiFields.getTerms(reader, "title").iterator();
 		        while ((term = termsEnum.next()) != null) {
-		        	titleTermStatistics.docFreq(term.utf8ToString(), (float) termsEnum.docFreq());
-		        	titleTermStatistics.totalTermFreq(term.utf8ToString(), (float) termsEnum.totalTermFreq());
+		        	titleTermStatistics.docFreq(term, (float) termsEnum.docFreq());
+		        	titleTermStatistics.totalTermFreq(term, (float) termsEnum.totalTermFreq());
 		        }
 		        termStatistics.put(index + "_title", titleTermStatistics);
 				
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 			
 		}

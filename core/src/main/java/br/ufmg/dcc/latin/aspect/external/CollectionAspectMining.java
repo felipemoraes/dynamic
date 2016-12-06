@@ -3,6 +3,8 @@ package br.ufmg.dcc.latin.aspect.external;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.lucene.util.BytesRef;
+
 import br.ufmg.dcc.latin.aspect.MostRelevantTermsAspectMining;
 import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
@@ -15,8 +17,9 @@ public class CollectionAspectMining extends MostRelevantTermsAspectMining {
 	}
 	
 	private double computeIdf(String term){
+		BytesRef termRef = new BytesRef(term);
 		float[] weights = RetrievalController.getFiedlWeights();
-		double idf = weights[0]*RetrievalController.getIdf(index, "title", term) + weights[1]*RetrievalController.getIdf(index, "content", term);
+		double idf = weights[0]*RetrievalController.getIdf(index, "title", termRef) + weights[1]*RetrievalController.getIdf(index, "content", termRef);
 		return idf ;
 		
 	}

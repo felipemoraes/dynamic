@@ -13,6 +13,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.util.BytesRef;
 
 import br.ufmg.dcc.latin.aspect.external.TermWeight;
 import br.ufmg.dcc.latin.cache.RetrievalCache;
@@ -137,7 +138,8 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 	private double getIdfFieldBased(String term, String index){
 		
 		float[] weights = RetrievalController.getFiedlWeights();
-		double idf = weights[0]*RetrievalController.getIdf(index, "title", term) + weights[1]*RetrievalController.getIdf(index, "content", term);
+		BytesRef termRef = new BytesRef(term);
+		double idf = weights[0]*RetrievalController.getIdf(index, "title", termRef) + weights[1]*RetrievalController.getIdf(index, "content", termRef);
 		return idf;
 	}
 

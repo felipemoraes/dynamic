@@ -3,29 +3,31 @@ package br.ufmg.dcc.latin.retrieval;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.lucene.util.BytesRef;
+
 public class TermStatistics {
 	
-	private Map<String,Double> docFreq;
-	private Map<String,Double> totalTermFreq;
+	private Map<BytesRef,Double> docFreq;
+	private Map<BytesRef,Double> totalTermFreq;
 	
 	public TermStatistics(){
-		docFreq = new HashMap<String,Double>();
-		totalTermFreq = new HashMap<String,Double>();
+		docFreq = new HashMap<BytesRef,Double>();
+		totalTermFreq = new HashMap<BytesRef,Double>();
 	}
 	
-	public double docFreq(String term){
+	public double docFreq(BytesRef term){
 		return docFreq.getOrDefault(term, 0d);
 	}
 	
-	public double totalTermFreq(String term){
+	public double totalTermFreq(BytesRef term){
 		return totalTermFreq.getOrDefault(term, 0d);
 	}
 	
-	public void docFreq(String term, double docFreq){
+	public void docFreq(BytesRef term, double docFreq){
 		this.docFreq.put(term, docFreq);
 	}
 	
-	public void totalTermFreq(String term, double totalTermFreq){
+	public void totalTermFreq(BytesRef term, double totalTermFreq){
 		this.totalTermFreq.put(term, totalTermFreq);
 	}
 }
