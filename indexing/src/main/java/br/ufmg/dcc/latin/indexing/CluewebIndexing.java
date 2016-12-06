@@ -89,7 +89,7 @@ public class CluewebIndexing {
             IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
     
             iwc.setSimilarity(new DPH());
-            iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
+            iwc.setOpenMode(IndexWriterConfig.OpenMode.APPEND);
             
             
             System.out.println(iwc.getRAMBufferSizeMB());
@@ -201,6 +201,10 @@ public class CluewebIndexing {
             	continue;
             }
             
+            if (indexedDocs.contains(key)) {
+            	indexedDocCounter++;
+				continue;
+			}
            
             String url = record.getHeader("WARC-Target-URI").value;
             url = normalizeUrl(url);
@@ -286,33 +290,76 @@ public class CluewebIndexing {
 
 	public static int indexedDocCounter = 0;
 
+	static Set<String> indexedDocs; 
+	
+	public static void insertIndexedDocs(String indexPath){
+		IndexReader reader;
+		IndexWriter writer = null;
 
+		try {
+			Directory dir = FSDirectory.open(Paths.get(indexPath));
+		
+			IndexWriterConfig iwc = new IndexWriterConfig(createAnalyzer());
+			    
+	        iwc.setSimilarity(new DPH());
+	        iwc.setOpenMode(IndexWriterConfig.OpenMode.APPEND);
+	        writer = new IndexWriter(dir, iwc);
+	        reader = DirectoryReader.open(dir); 
+			Set<String> indexDocNos = new HashSet<String>();
+		
+			for (int i=0; i<reader.maxDoc(); i++) {
+			    Document doc = reader.document(i);
+			    String docno = doc.get("docno");
+			    if (indexDocNos.contains(docno)){
+			    	indexedDocs.add(docno);
+			    	
+			    } else {
+			    	indexDocNos.add(docno);
+			    }
+			   
+			
+			}
+			
+			writer.close();
+			reader.close();
+			dir.close();
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
+	}
+	
 	public static void main(String[] args) {
 		
+		indexedDocs = new HashSet<String>();
+
 		String collectionPath = "/Users/felipemoraes/Developer/DiskB/";
-        String indexPath = "/Users/felipemoraes/DiskB_index";
-        
-        
-        ft.setIndexOptions( IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS );
-        ft.setStoreTermVectors( true );
-        ft.setStoreTermVectorOffsets( true );
-        ft.setStoreTermVectorPayloads( true );
-        ft.setStoreTermVectorPositions( true );
-        ft.setTokenized( true );
-        ft.setStored(true);
-      
-        try {
-        	collectionPath = args[0];
-        	indexPath = args[1];
-        	
-        } catch(Exception e){
-            System.out.println(" caught a " + e.getClass() +
-                    "\n with message: " + e.getMessage());
-       //     System.exit(1);
-        }
-        
+		String indexPath = "/Users/felipemoraes/DiskB_index";
 		
-        
+		insertIndexedDocs(indexPath);
+		
+		ft.setIndexOptions( IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS );
+		ft.setStoreTermVectors( true );
+		ft.setStoreTermVectorOffsets( true );
+		ft.setStoreTermVectorPayloads( true );
+		ft.setStoreTermVectorPositions( true );
+		ft.setTokenized( true );
+		ft.setStored(true);
+		
+		try {
+			collectionPath = args[0];
+			indexPath = args[1];
+			
+		} catch(Exception e){
+		    System.out.println(" caught a " + e.getClass() +
+		            "\n with message: " + e.getMessage());
+		//     System.exit(1);
+		}
+
         int counter = 0;
         
         try {
