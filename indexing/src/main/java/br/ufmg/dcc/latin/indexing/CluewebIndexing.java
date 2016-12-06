@@ -89,7 +89,7 @@ public class CluewebIndexing {
             IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
     
             iwc.setSimilarity(new DPH());
-            iwc.setOpenMode(IndexWriterConfig.OpenMode.APPEND);
+            iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
             
             
             System.out.println(iwc.getRAMBufferSizeMB());
@@ -201,10 +201,10 @@ public class CluewebIndexing {
             	continue;
             }
             
-            if (indexedDocs.contains(key)) {
-            	indexedDocCounter++;
-				continue;
-			}
+           // if (indexedDocs.contains(key)) {
+           // 	indexedDocCounter++;
+		//		continue;
+		//	}
            
             String url = record.getHeader("WARC-Target-URI").value;
             url = normalizeUrl(url);
@@ -352,7 +352,7 @@ public class CluewebIndexing {
 		//     System.exit(1);
 		}
 		
-		insertIndexedDocs(indexPath);
+		//insertIndexedDocs(indexPath);
 
         int counter = 0;
         
