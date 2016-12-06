@@ -294,16 +294,10 @@ public class CluewebIndexing {
 	
 	public static void insertIndexedDocs(String indexPath){
 		IndexReader reader;
-		IndexWriter writer = null;
 
 		try {
 			Directory dir = FSDirectory.open(Paths.get(indexPath));
-		
-			IndexWriterConfig iwc = new IndexWriterConfig(createAnalyzer());
-			    
-	        iwc.setSimilarity(new DPH());
-	        iwc.setOpenMode(IndexWriterConfig.OpenMode.APPEND);
-	        writer = new IndexWriter(dir, iwc);
+	     
 	        reader = DirectoryReader.open(dir); 
 			Set<String> indexDocNos = new HashSet<String>();
 		
@@ -320,7 +314,7 @@ public class CluewebIndexing {
 			
 			}
 			
-			writer.close();
+			
 			reader.close();
 			dir.close();
 			
