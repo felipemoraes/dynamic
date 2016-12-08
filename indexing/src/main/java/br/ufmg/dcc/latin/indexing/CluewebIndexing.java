@@ -174,93 +174,103 @@ public class CluewebIndexing {
     
     
     
-    public static List<Document> createDocumentsFromFile(String file) throws IOException{
+    public static List<Document> createDocumentsFromFile(String file) {
     	System.out.println("Parsing file " + file);
     	
     	List<Document> docs = new ArrayList<Document>();
 		
-		InputStream fp = new FileInputStream(file);
-		
-		if (file.endsWith(".gz")) {
-			fp = new GZIPInputStream(fp);
+		InputStream fp = null;
+		try {
+			fp = new FileInputStream(file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
 		
-    	WarcReader reader = WarcReaderFactory.getReader(fp);
-		WarcRecord record;
-		
-		while ( (record = reader.getNextRecord()) != null ) {
-
-			
-            String content = "";
-            String title = "";
-            
-            String key = "";
-            try {
-            	key = record.getHeader("WARC-TREC-ID").value;
-            } catch (Exception e){
-            	continue;
-            }
-            
-           // if (indexedDocs.contains(key)) {
-           // 	indexedDocCounter++;
-		//		continue;
-		//	}
-           
-            String url = record.getHeader("WARC-Target-URI").value;
-            url = normalizeUrl(url);
-            
-            
-            content = IOUtils.toString(record.getPayloadContent()); 
-          
-        	
-        	try {
-        		Parser parser = new AutoDetectParser();
-            	Metadata metadata = new Metadata();
-                ContentHandler handler = new BodyContentHandler(-1);
-                ParseContext context = new ParseContext();
-            	String utfHtmlContent = new String(content.getBytes(),"UTF-8");
-            	InputStream htmlStream = new ByteArrayInputStream(utfHtmlContent.getBytes());
-            	parser.parse(htmlStream, handler, metadata, context);
-            	title = metadata.get("title");
-				content = handler.toString();
-			} catch (Exception  e) {
-				//e.printStackTrace();
-		    	org.jsoup.nodes.Document html = null;
-		    	try {
-		    		html = Jsoup.parse(content,"", org.jsoup.parser.Parser.xmlParser());
-		    		html = Jsoup.parse(html.html());
-				} catch (Exception e_in) {
-					html = Jsoup.parse(flattenToAscii(content));
+		if (file.endsWith(".gz")) {
+			try {
+				if (fp != null) {
+					fp = new GZIPInputStream(fp);
 				}
-		    	if (html != null) {
-		    		content = html.text();
-		    		title = html.title();
-		    	}
-				
-			} 
-        	
-        	if (title == null) {
-        		title = "";
-        	}
-        	if (content == null) {
-        		content = "";
-        	}
-            
-            Document doc = new Document();
-            Field docnoField = new StringField("docno", key, Field.Store.YES);
-            doc.add(docnoField);
-            Field urlField = new StringField("url", url, Field.Store.YES);
-            doc.add(urlField);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	
+		
+		
+		try {
+			WarcReader reader = WarcReaderFactory.getReader(fp);
+			WarcRecord record;
+			while ( (record = reader.getNextRecord()) != null ) {
 
-            Field contentField = new Field("content", content,ft);
-            doc.add(contentField);
-            
-            Field titleField = new Field("title", title,ft);
-            doc.add(titleField);
-            
-            
-            docs.add(doc);
-            
+				
+			    String content = "";
+			    String title = "";
+			    
+			    String key = "";
+			    try {
+			    	key = record.getHeader("WARC-TREC-ID").value;
+			    } catch (Exception e){
+			    	continue;
+			    }
+			   
+			    String url = record.getHeader("WARC-Target-URI").value;
+			    url = normalizeUrl(url);
+			    
+				content = IOUtils.toString(record.getPayloadContent());
+				
+				try {
+					Parser parser = new AutoDetectParser();
+			    	Metadata metadata = new Metadata();
+			        ContentHandler handler = new BodyContentHandler(-1);
+			        ParseContext context = new ParseContext();
+			    	String utfHtmlContent = new String(content.getBytes(),"UTF-8");
+			    	InputStream htmlStream = new ByteArrayInputStream(utfHtmlContent.getBytes());
+			    	parser.parse(htmlStream, handler, metadata, context);
+			    	title = metadata.get("title");
+					content = handler.toString();
+				} catch (Exception  e) {
+					//e.printStackTrace();
+			    	org.jsoup.nodes.Document html = null;
+			    	try {
+			    		html = Jsoup.parse(content,"", org.jsoup.parser.Parser.xmlParser());
+			    		html = Jsoup.parse(html.html());
+					} catch (Exception e_in) {
+						html = Jsoup.parse(flattenToAscii(content));
+					}
+			    	if (html != null) {
+			    		content = html.text();
+			    		title = html.title();
+			    	}
+					
+				} 
+				
+				if (title == null) {
+					title = "";
+				}
+				if (content == null) {
+					content = "";
+				}
+			    
+			    Document doc = new Document();
+			    Field docnoField = new StringField("docno", key, Field.Store.YES);
+			    doc.add(docnoField);
+			    Field urlField = new StringField("url", url, Field.Store.YES);
+			    doc.add(urlField);
+
+			    Field contentField = new Field("content", content,ft);
+			    doc.add(contentField);
+			    
+			    Field titleField = new Field("title", title,ft);
+			    doc.add(titleField);
+			    
+			    
+			    docs.add(doc);
+			    
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
         return docs;
@@ -272,17 +282,13 @@ public class CluewebIndexing {
 	private static void indexDocumentsFromFile(IndexWriter writer, String file) {
 			System.out.println("Indexing file " + file);
 			List<Document> docs;
-			try {
-				docs = createDocumentsFromFile(file);
-				for (Document doc : docs) {
-					addDocumentToIndex(doc,writer);
-					indexedDocCounter++;
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			
+			docs = createDocumentsFromFile(file);
+			for (Document doc : docs) {
+				addDocumentToIndex(doc,writer);
+				indexedDocCounter++;
 			}
-
+		
 		
 		
 		
