@@ -39,7 +39,7 @@ public class CubeTest {
 				String subtopic = splitedLine[1];
 				String docno = splitedLine[2];
 				
-				int judgment = Integer.parseInt(splitedLine[3]);
+				int judgment = Integer.parseInt(splitedLine[4]);
 				if (judgment == 0) {
 					judgment = 1;
 				}
@@ -50,7 +50,7 @@ public class CubeTest {
 				
 				if (!tmpQrels.get(topic).containsKey(docno)){
 					
-					tmpQrels.get(topic).put(subtopic, new HashMap<String, List<Integer> > ());
+					tmpQrels.get(topic).put(docno, new HashMap<String, List<Integer> > ());
 				}
 				
 				if (!tmpQrels.get(topic).get(docno).containsKey(subtopic)){
@@ -82,12 +82,13 @@ public class CubeTest {
 			for (Entry<String, Map<String, List<Integer>>> entryDocno: entryTopic.getValue().entrySet()){
 				String docno = entryDocno.getKey();
 				if (!qrels.get(topic).containsKey(docno)){
-					qrels.put(topic, new HashMap<String, Map<String, Double > >());
+					qrels.get(topic).put(docno, new HashMap<String, Double >());
 				}
 				
 				for(Entry<String, List<Integer>> entrySubtopic: entryDocno.getValue().entrySet()){
 					
-					String subtopic = entrySubtopic.getKey();
+					String subtopic = entrySubtopic.getKey();	
+					Collections.sort(entrySubtopic.getValue());
 					Collections.reverse(entrySubtopic.getValue()); 
 					List<Integer> rels = entrySubtopic.getValue();
 					double rel = 0;
@@ -132,12 +133,12 @@ public class CubeTest {
 			for (int j = 0; j < docnos[i].length; j++) {
 				double gain = getDocGain(topic,docnos[i][j]);
 				score += gain;
-				
 			}
 			
 		}
+		
 		double ct = score/MAX_HEIGHT;
-		double ctSpeed = ct/(iteration+1);
+		double ctSpeed = ct/(iteration);
 		return ctSpeed;
 	}
 	
@@ -145,15 +146,18 @@ public class CubeTest {
 		double docGain = 0;
 		for (Entry<String,Double> subtopicEntry : subtopicWeight.get(topic).entrySet()) {
 			String subtopic = subtopicEntry.getKey();
+			
 			if (!currentGainHeight.containsKey(subtopic)){
 				currentGainHeight.put(subtopic, 0d);
 				subtopicCover.put(subtopic, 0);
 				
 			}
+			
 			if (qrels.get(topic).containsKey(docno)){
 				if (!qrels.get(topic).get(docno).containsKey(subtopic)){
 					continue;
 				}
+
 			} else {
 				continue;
 			}
@@ -162,6 +166,7 @@ public class CubeTest {
 			int nrel = subtopicCover.get(subtopic);
 			double hightKeepfilling = getHightKeepFilling(topic,docno,subtopic,nrel+1);
 			docGain += area*hightKeepfilling;
+			
 			subtopicCover.put(subtopic, nrel+1);
 		}
 		return docGain;
@@ -180,6 +185,7 @@ public class CubeTest {
 		double currentGain = currentGainHeight.get(subtopic);
 		
 		double gain = getHightDiscount(nrel)*rel;
+		
 		if (currentGain + gain > MAX_HEIGHT){
 			gain = MAX_HEIGHT - currentGain;
 		}
