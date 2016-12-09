@@ -3,25 +3,20 @@ package br.ufmg.dcc.latin.feedback;
 public class Passage {
 	
 	private String aspectId;
-	private String text;
+	private int passageId;
 	private int relevance;
 	
 	public Passage(){
 		
 	}
 	
-	public Passage(String aspectId, String text, int relevance){
+	public Passage(String aspectId, int passageId, int relevance){
 		this.aspectId = aspectId;
-		this.text = text;
+		this.passageId = passageId;
 		this.relevance = relevance;
 	}
 
-	public String getText() {
-		return text;
-	}
-	public void setText(String text) {
-		this.text = text;
-	}
+
 	public int getRelevance() {
 		return relevance;
 	}
@@ -33,5 +28,13 @@ public class Passage {
 	}
 	public void setAspectId(String aspectId) {
 		this.aspectId = aspectId;
+	}
+
+	public int getPassageId() {
+		return passageId;
+	}
+
+	public void setPassageId(int passageId) {
+		this.passageId = passageId;
 	}
 }

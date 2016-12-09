@@ -25,7 +25,10 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.similarities.LMDirichlet;
 import org.apache.lucene.search.similarities.Similarity;
+import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.IOContext;
+import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.BytesRef;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
@@ -50,7 +53,40 @@ public class RetrievalController {
 	private static Map<String, Integer> docCount;
 	public static Map<String, Integer> sumTotalTerms;
 	
-	 
+	private static Directory passageDir;
+	private static IndexReader passageReader;
+	
+	
+	public static String getPassage(int passageId){
+		if (passageDir == null){
+			try {
+				passageDir = new RAMDirectory(FSDirectory.open(new File("../etc/indices/passages").toPath()), IOContext.DEFAULT);
+				passageReader = DirectoryReader.open(passageDir);
+				return passageReader.document(passageId).get("passage");
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		return null;
+	}
+	
+	public static Terms getPassageTerms(int passageId){
+		if (passageDir == null){
+			try {
+				passageDir = new RAMDirectory(FSDirectory.open(new File("../etc/indices/passages").toPath()), IOContext.DEFAULT);
+				passageReader = DirectoryReader.open(passageDir);
+				Terms termVector = passageReader.getTermVector(passageId, "passage");
+				return termVector;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		return null;
+	}
+			
 	public static IndexSearcher getIndexSearcher(String indexName){
 		if (similarity == null) {
 			similarity = new LMDirichlet(2000f);

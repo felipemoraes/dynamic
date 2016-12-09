@@ -22,7 +22,7 @@ public class TrecUser implements User {
 			String line;
 			while ((line = br.readLine()) != null) {
 		    	String[] splitLine = line.split(",",5);
-		    	Passage passage = new Passage(splitLine[2],splitLine[4],Integer.parseInt(splitLine[3]));
+		    	Passage passage = new Passage(splitLine[2],Integer.parseInt(splitLine[4]),Integer.parseInt(splitLine[3]));
 		    	if (!repository.containsKey(splitLine[0])){
 		    		repository.put(splitLine[0], new RelevanceSet());
 		    	} 

@@ -14,6 +14,8 @@ import java.util.Set;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.index.Terms;
+import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.util.BytesRef;
 
 import br.ufmg.dcc.latin.feedback.Feedback;
@@ -159,7 +161,7 @@ public class RM3 extends InteractiveReranker {
 			}
 			Passage[] passages = feedback[i].getPassages();
 			for (int j = 0; j < passages.length; j++) {
-				 Map<BytesRef,Double> counts = extractCounts(passages[j].getText());
+				 Map<BytesRef,Double> counts = extractCounts(RetrievalController.getPassageTerms(passages[j].getPassageId()));
 				 newTermCounts.add(counts);
 				 docLens.add(getDocLen(counts));
 				 relevances.add((double) passages[j].getRelevance());
@@ -200,6 +202,23 @@ public class RM3 extends InteractiveReranker {
 		return weightedTerms;
 	}
 	
+	private Map<BytesRef, Double> extractCounts(Terms terms) {
+		Map<BytesRef,Double> counts = new HashMap<BytesRef,Double>();
+
+		try {
+			TermsEnum termsEnum = terms.iterator();
+			BytesRef term;
+			term = termsEnum.next();
+			while( term != null) {
+				counts.put(termsEnum.term(), (double) termsEnum.totalTermFreq());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return counts;
+	}
+
 	private double queryLikehoodTerm(BytesRef term, double termCount, double docLen, String field){
 		double score = 0;
 		score = termCount + muFB*collectionProbability(term,field);

@@ -7,6 +7,7 @@ import br.ufmg.dcc.latin.diversity.FlatAspectModel;
 import br.ufmg.dcc.latin.dynamicsystem.TrecUser;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
+import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
 public class OracleAspectMining extends AspectMining {
 
@@ -34,7 +35,7 @@ public class OracleAspectMining extends AspectMining {
 			}
 			Passage[] passages = feedbacks[i].getPassages();
 			for (int j = 0; j < passages.length; j++) {
-				flatAspectModel.addToAspect(passages[j].getAspectId(), passages[j].getText(),passages[j].getRelevance());
+				flatAspectModel.addToAspect(passages[j].getAspectId(), RetrievalController.getPassage(passages[j].getPassageId()) ,passages[j].getRelevance());
 			}
 		}
 
@@ -93,7 +94,7 @@ public class OracleAspectMining extends AspectMining {
 			}
 			Passage[] passages = feedbacks[i].getPassages();
 			for (int j = 0; j < passages.length; j++) {
-				flatAspectModel.addToAspect(passages[j].getAspectId(), passages[j].getText(),passages[j].getRelevance());
+				flatAspectModel.addToAspect(passages[j].getAspectId(),RetrievalController.getPassage(passages[j].getPassageId()),passages[j].getRelevance());
 			}
 		}
 

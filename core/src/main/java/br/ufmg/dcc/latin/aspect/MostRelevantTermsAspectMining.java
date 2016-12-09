@@ -53,7 +53,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			}
 			Passage[] passages = feedbacks[i].getPassages();
 			for (int j = 0; j < passages.length; j++) {
-				flatAspectModel.addToAspect(passages[j].getAspectId(), passages[j].getText(), passages[j].getRelevance());
+				flatAspectModel.addToAspect(passages[j].getAspectId(), RetrievalController.getPassage(passages[j].getPassageId()), passages[j].getRelevance());
 			}
 		}
 
@@ -266,7 +266,7 @@ public class MostRelevantTermsAspectMining  extends AspectMining {
 			}
 			Passage[] passages = feedbacks[i].getPassages();
 			for (int j = 0; j < passages.length; j++) {
-				flatAspectModel.addToAspect(passages[j].getAspectId(), passages[j].getText(),passages[j].getRelevance());
+				flatAspectModel.addToAspect(passages[j].getAspectId(), RetrievalController.getPassage(passages[j].getPassageId()),passages[j].getRelevance());
 			}
 		}
 
