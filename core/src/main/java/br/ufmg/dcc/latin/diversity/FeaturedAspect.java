@@ -55,7 +55,7 @@ public class FeaturedAspect  {
 		// compute vector 2-norm
 		double norm = 0.0;
 		for (int i = 0; i < vector.length; i++) {
-			norm += 1/ (1-Math.exp(vector[i])) ;
+			norm += 1/ (1+Math.exp(-vector[i])) ;
 		}
 		
 
@@ -63,7 +63,7 @@ public class FeaturedAspect  {
 			Arrays.fill(vector, 1);
 		} else {
 			for (int i = 0; i < vector.length; i++) {
-				vector[i] = 1/ (1-Math.exp(vector[i])) / norm;
+				vector[i] =( 1/ (1+Math.exp(-vector[i]))) / norm;
 			}
 		}
 		return vector;
