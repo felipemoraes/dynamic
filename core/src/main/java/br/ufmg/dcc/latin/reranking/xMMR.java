@@ -13,7 +13,7 @@ public class xMMR extends InteractiveReranker {
 	
 	private int n;
 
-	private float lambda;
+	private double lambda;
 	
 	private double[] relevance;
 	
@@ -29,13 +29,13 @@ public class xMMR extends InteractiveReranker {
 
 
 	@Override
-	public void start(float[] params) {
+	public void start(double[] params) {
 		super.start(params);
 		relevance = normalize(RetrievalCache.scores);
 		n = relevance.length;
 		cacheSim = new double[n];
 		lambda = params[1];
-		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName,(int) params[2]);
+		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName);
 		coverage = aspectMining.getCoverage();
 	}
 

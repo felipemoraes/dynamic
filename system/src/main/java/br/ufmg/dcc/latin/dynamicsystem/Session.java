@@ -12,13 +12,13 @@ public class Session {
 	
 	String rerankerName;
 
-	private List<float[]> params;
+	private List<double[]> params;
 	InteractiveReranker reranker;
 	
 	public Session(){
 	}
 	
-	private String getName(float[] params){
+	private String getName(double[] params){
 		String[] rerankerSplit = rerankerName.split(" ");
 		String name = "";
 		if (rerankerSplit.length > 1) {
@@ -37,13 +37,13 @@ public class Session {
 		
 		reranker.start(query, index);
 		
-		for (float[] param : params) {
+		for (double[] param : params) {
 			String name = getName(param);
 			run(topicId, name, param);
 		}
 	}
 	
-	public void run( String topicId, String name, float[] params){
+	public void run( String topicId, String name, double[] params){
 		reranker.start(params);
 		for (int i = 0; i < 10; i++) {
 			ResultSet resultSet = reranker.get();
@@ -65,11 +65,11 @@ public class Session {
 		
 	}
 
-	public List<float[]> getParams() {
+	public List<double[]> getParams() {
 		return params;
 	}
 
-	public void setParams(List<float[]> params) {
+	public void setParams(List<double[]> params) {
 		this.params = params;
 	}
 

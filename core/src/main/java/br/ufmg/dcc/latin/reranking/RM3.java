@@ -38,7 +38,7 @@ public class RM3 extends InteractiveReranker {
 	
 	float mu;
 	float muFB;
-	float lambda;
+	double lambda;
 	int numberOfTerms;
 
 	@Override
@@ -51,7 +51,7 @@ public class RM3 extends InteractiveReranker {
 	}
 	
 	@Override
-	public void start(float[] params){
+	public void start(double[] params){
 		super.start(params);
 		mu = 2000f;
 		muFB = 2000f;

@@ -51,8 +51,14 @@ public class FeaturedAspectModel {
 		
 	}
 
-	public String getAspectQuery(String string, double[] weights) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getAspectQuery(String aspectId, double[] weights) {
+		
+		FeaturedAspect termsFeatures = featuredAspectes.get(aspectId);
+		List<TermFeatures> topTerms = termsFeatures.getTopTerms(weights);
+		String query = "";
+		for (int i = 0; i < topTerms.size(); i++) {
+			query += topTerms.get(i).term.utf8ToString() + " ";
+		}
+		return query;
 	}
 }

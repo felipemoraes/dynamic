@@ -12,9 +12,7 @@ import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
 public class FeaturedAspectMining  extends AspectMining {
 	
-	private double[] aspectWeights;
-	
-	public FeaturedAspectMining(double[] aspectWeights) {
+	public FeaturedAspectMining() {
 		n = RetrievalCache.docids.length;
 		importance = new double[0];
 		novelty = new double[0];
@@ -59,8 +57,8 @@ public class FeaturedAspectMining  extends AspectMining {
 		
 		Arrays.fill(importance, uniformImportance);
 		Arrays.fill(novelty, 1.0f);
-		Arrays.fill(getV(), 1.0f);
-		Arrays.fill(getS(), 1.0f);
+		Arrays.fill(v, 1.0f);
+		Arrays.fill(s, 1.0f);
 		
 		RetrievalController.loadDocFreqs(index);
 		
@@ -175,17 +173,5 @@ public class FeaturedAspectMining  extends AspectMining {
 		
 		
 	}
-	
-	
-	
-
-	public double[] getAspectWeights() {
-		return aspectWeights;
-	}
-
-	public void setAspectWeights(double[] aspectWeights) {
-		this.aspectWeights = aspectWeights;
-	}
-
 
 }

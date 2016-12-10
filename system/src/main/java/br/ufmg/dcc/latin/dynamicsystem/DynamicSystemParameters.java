@@ -4,5 +4,5 @@ import java.util.List;
 
 public class DynamicSystemParameters {
 	String reranker;
-	List<float[]> experimentalParameters;
+	List<double[]> experimentalParameters;
 }

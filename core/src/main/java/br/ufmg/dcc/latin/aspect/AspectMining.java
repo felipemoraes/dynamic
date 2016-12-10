@@ -20,6 +20,8 @@ public abstract class AspectMining {
 	protected double[] v;
 	protected double[] s;
 	
+	protected double[] aspectWeights;
+	
 	
 	public abstract void miningFeedback(String index, String query, Feedback[] feedbacks);
 	public abstract void miningFeedbackForCube(String index,  String query, Feedback[] feedbacks);
@@ -51,6 +53,14 @@ public abstract class AspectMining {
 		}
 	}
 	
+
+	public double[] getAspectWeights() {
+		return aspectWeights;
+	}
+
+	public void setAspectWeights(double[] aspectWeights) {
+		this.aspectWeights = aspectWeights;
+	}
 
 	
 	protected void normalizeCoverage(){

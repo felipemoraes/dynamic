@@ -8,6 +8,7 @@ import br.ufmg.dcc.latin.retrieval.RetrievalController;
 public class TermFeatures {
 	public BytesRef term;
 	public double[] features;
+	public double weight;
 	
 	public TermFeatures(BytesRef term, int passageId, int relevance){
 		
@@ -68,7 +69,7 @@ public class TermFeatures {
 
 
 	private double collectionIdf() {
-		float[] weights = RetrievalController.getFiedlWeights();
+		double[] weights = RetrievalController.getFiedlWeights();
 		double idf = weights[0]*RetrievalController.getIdf("title", term)
 					+ weights[1]*RetrievalController.getIdf( "content", term);
 		return idf ;

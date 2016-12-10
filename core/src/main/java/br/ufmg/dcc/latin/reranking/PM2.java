@@ -8,7 +8,7 @@ import br.ufmg.dcc.latin.feedback.Feedback;
 
 public class PM2 extends InteractiveReranker {
 
-	float lambda;
+	double lambda;
 	int[] highestAspect;
 	
 	private double[] v;
@@ -83,10 +83,10 @@ public class PM2 extends InteractiveReranker {
 	}
 	
 	@Override
-	public void start(float[] params){
+	public void start(double[] params){
 		super.start(params);
 		relevance = normalize(relevance);
-		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName,(int) params[2]);
+		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName);
 		coverage = aspectMining.getCoverage();
 		v = aspectMining.getV();
 		s = aspectMining.getS();

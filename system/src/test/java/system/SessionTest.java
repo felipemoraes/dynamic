@@ -37,8 +37,8 @@ public class SessionTest {
 	@Test
 	public void test() {
 		TrecUser.load("../share/truth_data.txt");
-		List<float[]> params = new ArrayList<float[]>();
-		float[] param = {1000f, 0.5f};
+		List<double[]> params = new ArrayList<double[]>();
+		double[] param = {1000d, 0.5d};
 
 		params.add(param);
 		Session session = new Session();

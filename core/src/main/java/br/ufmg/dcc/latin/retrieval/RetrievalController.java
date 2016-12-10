@@ -40,7 +40,7 @@ public class RetrievalController {
 	
 	public static QueryParser parser;
 	
-	private static float[] fiedlWeights;
+	private static double[] fiedlWeights;
 	
 	private static Analyzer analyzer;
 	
@@ -125,8 +125,8 @@ public class RetrievalController {
 			getAnalyzer();
 		}
 		Map<String,Float> boosts = new HashMap<String,Float>();
-		boosts.put("title", fiedlWeights[0]);
-		boosts.put("content", fiedlWeights[1]);
+		boosts.put("title", (float) fiedlWeights[0]);
+		boosts.put("content", (float) fiedlWeights[1]);
 		parser = new MultiFieldQueryParser(new String[]{"title", "content"}, analyzer, boosts);
 		return parser;
 	}
@@ -479,11 +479,11 @@ public class RetrievalController {
 		similarity = sim;
 	}
 
-	public static float[] getFiedlWeights() {
+	public static double[] getFiedlWeights() {
 		return fiedlWeights;
 	}
 
-	public static void setFiedlWeights(float[] fiedlWeights) {
+	public static void setFiedlWeights(double[] fiedlWeights) {
 		RetrievalController.fiedlWeights = fiedlWeights;
 	}
 }

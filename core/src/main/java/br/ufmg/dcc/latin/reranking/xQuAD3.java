@@ -9,7 +9,7 @@ import br.ufmg.dcc.latin.feedback.Feedback;
 
 public class xQuAD3 extends InteractiveReranker {
 
-	float lambda;
+	double lambda;
 	
 	private AspectMining aspectMining;
 	
@@ -40,12 +40,12 @@ public class xQuAD3 extends InteractiveReranker {
 	}
 	
 	@Override
-	public void start(float[] params){
+	public void start(double[] params){
 		super.start(params);
 		relevance = normalize(relevance);
 		lambda = params[1];
 		n = relevance.length;
-		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName,(int) params[2]);
+		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName);
 		coverage = aspectMining.getCoverage();
 		importance = aspectMining.getImportance();
 		novelty = new double[0][n];

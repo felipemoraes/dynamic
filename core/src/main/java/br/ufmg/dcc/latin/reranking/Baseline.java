@@ -28,10 +28,10 @@ public class Baseline extends InteractiveReranker {
 	}
 	
 	@Override
-	public void start(float[] params) {
+	public void start(double[] params) {
 		
 		super.start(params);
-		float[] fiedlWeights = new float[2];
+		double[] fiedlWeights = new double[2];
 		fiedlWeights[0] = params[1];
 		fiedlWeights[1] = 1-params[1];
 		RetrievalController.setFiedlWeights(fiedlWeights);

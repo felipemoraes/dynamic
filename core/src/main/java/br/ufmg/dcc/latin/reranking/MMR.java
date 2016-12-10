@@ -5,7 +5,7 @@ import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
 public class MMR extends InteractiveReranker {
 
-	private float lambda;
+	private double lambda;
 
 	protected String[] docsContent;
 	private double[] cacheSim;
@@ -52,7 +52,7 @@ public class MMR extends InteractiveReranker {
 	}
 
 	@Override
-	public void start(float[] params) {
+	public void start(double[] params) {
 		super.start(params);
 		relevance = normalize(relevance);
 		

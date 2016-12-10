@@ -2,7 +2,7 @@ package br.ufmg.dcc.latin.aspect;
 
 public class AspectMiningFactory {
 	
-	public static AspectMining getInstance(String className, String index, int maxTerms){
+	public static AspectMining getInstance(String className, String index){
 		AspectMining aspectMining = null;
 
 		if (className.equals("PassageAspectMining")){
@@ -13,6 +13,8 @@ public class AspectMiningFactory {
 			aspectMining = new SubtopicNameAspectMining();
 		}else if (className.equals("OracleAspectMining")){
 			aspectMining = new OracleAspectMining();
+		}else if (className.equals("FeaturedAspectMining")){
+			aspectMining = new FeaturedAspectMining();
 		}
 		
 		return aspectMining;

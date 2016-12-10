@@ -71,7 +71,7 @@ public abstract class InteractiveReranker implements Reranker {
 	public void start(String query, String index){
 		this.query = query;
 		this.indexName = index;
-		RetrievalController.setFiedlWeights(new float[]{0.25f,0.75f});
+		RetrievalController.setFiedlWeights(new double[]{0.15f,0.85f});
 		ResultSet result = RetrievalController.search(query, index);
 		docids = result.docids;
 		relevance = result.scores;
@@ -81,10 +81,13 @@ public abstract class InteractiveReranker implements Reranker {
 		RetrievalCache.subtopicsCache = new HashMap<String,double[]>();
 	}
 	
-	public void start(float[] params){
+	public void start(double[] params){
 		depth = (int) params[0];
 		selected = new SelectedSet();
 	}
 
+	public void setParams(double[] params){
+		depth = (int) params[0];
+	}
 
 }

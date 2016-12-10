@@ -11,17 +11,17 @@ public class ParametersController {
 	
 	public static DynamicSystemParameters getParameters(String parametersFile){
 		DynamicSystemParameters parameters = new DynamicSystemParameters();
-		List<List<Float>> lists = new ArrayList<List<Float>>();
+		List<List<Double>> lists = new ArrayList<List<Double>>();
 		try (BufferedReader br = new BufferedReader(new FileReader(parametersFile))) {
 			String line =  br.readLine();
 			parameters.reranker = line.replace("\n", "");
 			
 			while ((line = br.readLine()) != null) {
 				
-				List<Float> list = new ArrayList<Float>();
+				List<Double> list = new ArrayList<Double>();
 		    	String[] splitLine = line.split(" ");
 		    	for (int i = 0; i < splitLine.length; i++) {
-					list.add(Float.parseFloat(splitLine[i]));
+					list.add(Double.parseDouble(splitLine[i]));
 				}
 		    	lists.add(list);
 			}
@@ -35,11 +35,11 @@ public class ParametersController {
 			e.printStackTrace();
 		}
 		
-		List<List<Float>> product = cartesianProduct(lists);
-		List<float[]> experimentalParameters = new ArrayList<float[]>();
-		for (List<Float> list : product) {
+		List<List<Double>> product = cartesianProduct(lists);
+		List<double[]> experimentalParameters = new ArrayList<double[]>();
+		for (List<Double> list : product) {
 			int n = list.size();
-			float[] params = new float[n];
+			double[] params = new double[n];
 			for (int i = 0; i < n; i++) {
 				params[i] = list.get(i);
 			}
