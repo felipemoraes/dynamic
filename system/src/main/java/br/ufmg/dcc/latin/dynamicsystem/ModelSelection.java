@@ -32,7 +32,7 @@ public class ModelSelection {
 				System.out.println("Best score found it " + score);
 				bestScore = score;
 				bestParam = param;
-				weights = bestWeights;
+				bestWeights = weights;
 			}
 		}
 		
@@ -67,12 +67,12 @@ public class ModelSelection {
 		List<Double> iterations = new ArrayList<Double>();
 		List<Double> lambdas = new ArrayList<Double>();
 		double step = 0.2;
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 2; i++) {
 			alphas.add(step*(i+1));
 			deltas.add(step*(i+1));
 			lambdas.add(step*(i+1));
 		}
-		iterations.add(100d);
+		iterations.add(150d);
 
 		List<List<Double>> lists = new ArrayList<List<Double>>();
 		lists.add(alphas);

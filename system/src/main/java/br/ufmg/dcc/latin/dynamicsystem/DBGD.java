@@ -176,7 +176,7 @@ public class DBGD {
 		if (totalMetric > 0) {
 			totalMetric /= validationSet.size();
 		}
-		return 0;
+		return totalMetric;
 	}
 	
 	public double[] initVector(){
