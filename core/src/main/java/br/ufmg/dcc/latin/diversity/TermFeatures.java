@@ -1,17 +1,15 @@
 package br.ufmg.dcc.latin.diversity;
 
-import org.apache.lucene.util.BytesRef;
-
 import br.ufmg.dcc.latin.cache.ExternalKnowledgeCache;
 import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
 public class TermFeatures {
-	public BytesRef term;
+	
+	public String term;
 	public double[] features;
 	public double weight;
 	
-	public TermFeatures(BytesRef term, int passageId, int relevance){
-		
+	public TermFeatures(String term, int passageId, int relevance){
 		this.term = term;
 		this.features = new double[8];
 		this.features[0] = collectionIdf();
@@ -20,25 +18,25 @@ public class TermFeatures {
 		this.features[3] = googleNgram();
 		this.features[4] = wikipediaTitles();
 		this.features[5] = queryLog();
-		this.features[6] = dbPediaEntities(term,passageId);
-		this.features[7] = msEntities(term,passageId);
+		this.features[6] = dbPediaEntities(passageId);
+		this.features[7] = msEntities(passageId);
 
 	}
 	
 	public void updateTerm(int passageId, int relevance){
 		this.features[1] += 1;
 		this.features[2] += relevance;
-		this.features[6] += dbPediaEntities(term,passageId);
-		this.features[7] += msEntities(term,passageId);
+		this.features[6] += dbPediaEntities(passageId);
+		this.features[7] += msEntities(passageId);
 	}
 	
-	private double msEntities(BytesRef term, int passageId) {
+	private double msEntities( int passageId) {
 		return ExternalKnowledgeCache.msEntityLinkingCollection.getKeyWordScore(term, passageId);
 	}
 
 
 
-	private double dbPediaEntities(BytesRef term, int passageId) {
+	private double dbPediaEntities(int passageId) {
 		return ExternalKnowledgeCache.dbpediaEntityLinkingCollection.getKeyWordScore(term, passageId);
 	}
 

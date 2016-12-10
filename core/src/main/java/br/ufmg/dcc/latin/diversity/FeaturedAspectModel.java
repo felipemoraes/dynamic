@@ -25,11 +25,12 @@ public class FeaturedAspectModel {
 			featuredAspectes.put(aspectId, new FeaturedAspect());
 		}
 		Terms passageTerms = RetrievalController.getPassageTerms(passageId);
+		
 		try {
 			TermsEnum terms = passageTerms.iterator();
 			BytesRef term = terms.next();
 			while( term != null) {
-				featuredAspectes.get(aspectId).putTerm(term,passageId,relevance);
+				featuredAspectes.get(aspectId).putTerm(term.utf8ToString(),passageId,relevance);
 				term = terms.next();
 			}
 		} catch (IOException e) {
@@ -57,8 +58,10 @@ public class FeaturedAspectModel {
 		List<TermFeatures> topTerms = termsFeatures.getTopTerms(weights);
 		String query = "";
 		for (int i = 0; i < topTerms.size(); i++) {
-			query += topTerms.get(i).term.utf8ToString() + " ";
+			query += topTerms.get(i).term + "^" + String.format("%.8f ", topTerms.get(i).weight);
+			
 		}
+		System.out.println(aspectId + " : " + query);
 		return query;
 	}
 }

@@ -34,9 +34,7 @@ public class Session {
 	}
 
 	public void run(String index, String topicId, String query){
-		
 		reranker.start(query, index);
-		
 		for (double[] param : params) {
 			String name = getName(param);
 			run(topicId, name, param);

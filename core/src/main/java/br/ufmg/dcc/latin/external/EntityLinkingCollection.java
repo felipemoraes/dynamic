@@ -11,11 +11,11 @@ import org.apache.lucene.util.BytesRef;
 
 public class EntityLinkingCollection {
 	
-	Map<BytesRef, Map<Integer,Double> > invertedEntityIndex;
+	Map<String, Map<Integer,Double> > invertedEntityIndex;
 	
 	public EntityLinkingCollection(String filename) {
 		
-		invertedEntityIndex = new HashMap<BytesRef, Map<Integer,Double> >();
+		invertedEntityIndex = new HashMap<String, Map<Integer,Double> >();
 		
 		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
 			String line = br.readLine();
@@ -27,9 +27,12 @@ public class EntityLinkingCollection {
 				Map<Integer,Double> map = new HashMap<Integer,Double>();
 				for (String occur : occurrences) {
 					String[] splitOccur = occur.split(":");
+					if (splitOccur.length < 2) {
+						continue;
+					}
 					map.put(Integer.parseInt(splitOccur[0]), Double.parseDouble(splitOccur[1]));
 				}
-				invertedEntityIndex.put(new BytesRef(keyword), map);
+				invertedEntityIndex.put(keyword, map);
 		    			
 			}
 			
@@ -43,7 +46,7 @@ public class EntityLinkingCollection {
 		}
 	}
 
-	public double getKeyWordScore(BytesRef term, int passageId){
+	public double getKeyWordScore(String term, int passageId){
 		if (invertedEntityIndex.containsKey(term)){
 			return invertedEntityIndex.get(term).getOrDefault(passageId, 0d);
 		}

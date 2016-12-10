@@ -13,11 +13,11 @@ public class NgramCollection {
 
 	private long sumTotalTermFreq;
 	
-	private Map<BytesRef,Integer> totalTermFreq;
+	private Map<String,Integer> totalTermFreq;
 	
 	public NgramCollection(){
 	
-		totalTermFreq =  new HashMap<BytesRef,Integer>();
+		totalTermFreq =  new HashMap<String,Integer>();
 		
 		try (BufferedReader br = new BufferedReader(new FileReader("../share/googlengram_counts.txt"))) {
 			String line = br.readLine();
@@ -25,7 +25,7 @@ public class NgramCollection {
 			sumTotalTermFreq = Long.parseLong(line);
 			while ((line = br.readLine()) != null) {
 		    	String[] splitLine = line.split(" ",2);
-		    	totalTermFreq.put(new BytesRef(splitLine[0]), Integer.parseInt(splitLine[1]));
+		    	totalTermFreq.put(splitLine[0], Integer.parseInt(splitLine[1]));
 		    			
 			}
 			
@@ -39,7 +39,7 @@ public class NgramCollection {
 		}
 	}
 	
-	public int getTotalTermFreq(BytesRef term){
+	public int getTotalTermFreq(String term){
 		return totalTermFreq.getOrDefault(term, 0);
 	}
 

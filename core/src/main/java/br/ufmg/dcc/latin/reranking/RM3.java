@@ -24,10 +24,10 @@ import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
 public class RM3 extends InteractiveReranker {
 	
-	List<Map<BytesRef,Double>> termCounts;
+	List<Map<String,Double>> termCounts;
 	List<Double> relevances;
 	List<Double> docLens;
-	Set<BytesRef> terms;
+	Set<String> terms;
 	Map<String, List<Double>> queryLikelihoodForPassages;
 	String query;
 	String indexName;
@@ -57,10 +57,10 @@ public class RM3 extends InteractiveReranker {
 		muFB = 2000f;
 		numberOfTerms = (int) params[1];
 		lambda = params[2];
-		termCounts = new ArrayList<Map<BytesRef,Double>>();
+		termCounts = new ArrayList<Map<String,Double>>();
 		relevances = new ArrayList<Double>();
 		docLens = new ArrayList<Double>();
-		terms = new HashSet<BytesRef>();
+		terms = new HashSet<String>();
 		
 		for (int i = 0; i < relevance.length; i++) {
 			relevance[i] = originalRelevance[i];
@@ -100,7 +100,7 @@ public class RM3 extends InteractiveReranker {
 	private String getComplexQuery(List<WeightedTerm> weightTerms){
 		String q = "";
 		for (int i = 0; i < weightTerms.size(); i++) {
-			q += weightTerms.get(i).term.utf8ToString() + "^" + String.format("%.6f", weightTerms.get(i).score ) + " ";
+			q += weightTerms.get(i).term + "^" + String.format("%.6f", weightTerms.get(i).score ) + " ";
 		}
 		return q;
 	}
@@ -148,9 +148,9 @@ public class RM3 extends InteractiveReranker {
 
 	private List<WeightedTerm> ExpandRM1(Feedback[] feedback, String field, boolean addFeedback){
 		// compute count for 
-		Map<BytesRef,Double> queryCounts = extractCounts(query);
+		Map<String,Double> queryCounts = extractCounts(query);
 		
-		List<Map<BytesRef,Double>> newTermCounts = new ArrayList<Map<BytesRef,Double>>();
+		List<Map<String,Double>> newTermCounts = new ArrayList<Map<String,Double>>();
  		// for each document and passage in feedback, compute counts
 		for (int i = 0; i < feedback.length; i++) {
 			if (!addFeedback){
@@ -161,7 +161,7 @@ public class RM3 extends InteractiveReranker {
 			}
 			Passage[] passages = feedback[i].getPassages();
 			for (int j = 0; j < passages.length; j++) {
-				 Map<BytesRef,Double> counts = extractCounts(RetrievalController.getPassageTerms(passages[j].getPassageId()));
+				 Map<String,Double> counts = extractCounts(RetrievalController.getPassageTerms(passages[j].getPassageId()));
 				 newTermCounts.add(counts);
 				 docLens.add(getDocLen(counts));
 				 relevances.add((double) passages[j].getRelevance());
@@ -171,7 +171,7 @@ public class RM3 extends InteractiveReranker {
 		termCounts.addAll(newTermCounts);
 		
 		// compute QLE for each passage
-		for (Map<BytesRef,Double> passageCounts : newTermCounts) {
+		for (Map<String,Double> passageCounts : newTermCounts) {
 			double qle = queryLikehood(queryCounts,passageCounts,"content");
 			queryLikelihoodForPassages.get("content").add(qle);
 			qle = queryLikehood(queryCounts,passageCounts,"title");
@@ -182,7 +182,7 @@ public class RM3 extends InteractiveReranker {
 		List<WeightedTerm> weightedTerms = new ArrayList<WeightedTerm>();
 		
 		double sumTotalWeights = 0;
-		for (BytesRef  term: terms) {
+		for (String  term: terms) {
 			double weight = 0;
 			for (int i = 0; i < termCounts.size(); ++i) {
 				double docLen = docLens.get(i);
@@ -202,15 +202,15 @@ public class RM3 extends InteractiveReranker {
 		return weightedTerms;
 	}
 	
-	private Map<BytesRef, Double> extractCounts(Terms terms) {
-		Map<BytesRef,Double> counts = new HashMap<BytesRef,Double>();
+	private Map<String, Double> extractCounts(Terms terms) {
+		Map<String,Double> counts = new HashMap<String,Double>();
 
 		try {
 			TermsEnum termsEnum = terms.iterator();
 			BytesRef term;
 			term = termsEnum.next();
 			while( term != null) {
-				counts.put(termsEnum.term(), (double) termsEnum.totalTermFreq());
+				counts.put(termsEnum.term().utf8ToString(), (double) termsEnum.totalTermFreq());
 				term = termsEnum.next();
 			}
 		} catch (IOException e) {
@@ -220,7 +220,7 @@ public class RM3 extends InteractiveReranker {
 		return counts;
 	}
 
-	private double queryLikehoodTerm(BytesRef term, double termCount, double docLen, String field){
+	private double queryLikehoodTerm(String term, double termCount, double docLen, String field){
 		double score = 0;
 		score = termCount + muFB*collectionProbability(term,field);
 		if (score == 0) {
@@ -230,13 +230,13 @@ public class RM3 extends InteractiveReranker {
 		return score;
 	}
 	
-	private double queryLikehood(Map<BytesRef,Double> queryCounts, Map<BytesRef,Double> passageCounts, String field){
+	private double queryLikehood(Map<String,Double> queryCounts, Map<String,Double> passageCounts, String field){
 		double score = 1;
 		double docLen = 0;
 		for (double v : passageCounts.values()) {
 			docLen += v;
 		}
-		for (Entry<BytesRef,Double> entry : queryCounts.entrySet()) {
+		for (Entry<String,Double> entry : queryCounts.entrySet()) {
 			double s = passageCounts.getOrDefault(entry.getKey(), 0d) + mu*collectionProbability(entry.getKey(), field);
 			s /= (docLen + mu);
 			score *= s;
@@ -244,13 +244,13 @@ public class RM3 extends InteractiveReranker {
 		return score;
 	}
 	
-	private double collectionProbability(BytesRef term, String field) {
+	private double collectionProbability(String term, String field) {
 		double ttf = RetrievalController.termStatistics.get(indexName + "_" + field).totalTermFreq(term);
 		double sttf = RetrievalController.sumTotalTerms.get(indexName + "_" + field);
 		return ttf/sttf;
 	}
 	
-	private double getDocLen(Map<BytesRef,Double> counts){
+	private double getDocLen(Map<String,Double> counts){
 		double docLen = 0;
 		for (double v : counts.values()) {
 			docLen += v;
@@ -258,13 +258,13 @@ public class RM3 extends InteractiveReranker {
 		return docLen;
 	}
 
-	private Map<BytesRef,Double> extractCounts(String text){
+	private Map<String,Double> extractCounts(String text){
 		List<BytesRef> grams = tokenizeString(RetrievalController.getAnalyzer(), text);
-		Map<BytesRef,Double> counts = new HashMap<BytesRef,Double>();
+		Map<String,Double> counts = new HashMap<String,Double>();
 		for (BytesRef gram : grams) {
-			terms.add(gram);
-			double count = counts.getOrDefault(gram, 0d);
-			counts.put(gram, count+1);
+			terms.add(gram.utf8ToString());
+			double count = counts.getOrDefault(gram.utf8ToString(), 0d);
+			counts.put(gram.utf8ToString(), count+1);
 		}
 		return counts;
 	}
@@ -296,17 +296,17 @@ public class RM3 extends InteractiveReranker {
 	
 	
 	  public static class WeightedTerm implements Comparable<WeightedTerm>{
-		    public BytesRef term;
+		    public String term;
 		    public double score;
 
-		    public WeightedTerm(BytesRef term, double score) {
+		    public WeightedTerm(String term, double score) {
 		    	this.score = score;
 		      
 		    	this.term = term;
 		    }
 
 
-		    public BytesRef getTerm() {
+		    public String getTerm() {
 		      return term;
 		    }
 		    

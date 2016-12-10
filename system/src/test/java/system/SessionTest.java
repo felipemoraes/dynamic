@@ -38,17 +38,16 @@ public class SessionTest {
 	public void test() {
 		TrecUser.load("../share/truth_data.txt");
 		List<double[]> params = new ArrayList<double[]>();
-		double[] param = {1000d, 0.5d};
+		double[] param = {1000d, 0.5d, 1d, 1d,1d,1d,1d, 1d,1d,1d};
 
 		params.add(param);
 		Session session = new Session();
 		session.setParams(params);
 		RetrievalCache.topicId = "DD16-1";
-		session.setReranker("MMR");
+		RetrievalCache.index = "ebola16";
+		session.setReranker("xQuAD FeaturedAspectMining");
 		session.run( "ebola16", "DD16-1", "US Military Crisis Response");
-		session.run( "ebola16", "DD16-2", "Ebola Conspiracy Theories");
-		session.run( "ebola16", "DD16-3", "healthcare impacts of ebola");
-		
+
 
 		//session.setReranker("xMMR");
 		//session.run("US Military Crisis Response", "ebola16", "DD16-1");

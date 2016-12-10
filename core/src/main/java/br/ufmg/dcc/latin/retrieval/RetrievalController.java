@@ -23,6 +23,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Rescorer;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.similarities.DPH;
 import org.apache.lucene.search.similarities.LMDirichlet;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.Directory;
@@ -73,23 +74,24 @@ public class RetrievalController {
 	}
 	
 	public static Terms getPassageTerms(int passageId){
-		if (passageDir == null){
-			try {
+		try {
+			if (passageDir == null){
 				passageDir = new RAMDirectory(FSDirectory.open(new File("../etc/indices/passages").toPath()), IOContext.DEFAULT);
 				passageReader = DirectoryReader.open(passageDir);
-				Terms termVector = passageReader.getTermVector(passageId, "passage");
-				return termVector;
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
-			
+			Terms termVector = passageReader.getTermVector(passageId, "passage");
+			return termVector;
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+			
+	
 		return null;
 	}
 			
 	public static IndexSearcher getIndexSearcher(String indexName){
 		if (similarity == null) {
-			similarity = new LMDirichlet(2000f);
+			similarity = new DPH();
 		}
 		if (RetrievalCache.indices == null) {
 			RetrievalCache.indices = new HashMap<String,IndexSearcher>();
@@ -299,7 +301,7 @@ public class RetrievalController {
 					break;
 				}
 				
-				double df = termStatistics.docFreq(term1);
+				double df = termStatistics.docFreq(term1.utf8ToString());
 				double idf = (double)(Math.log(docCount)/(df+1));
 				double weight1 = tf1*idf;
 				double weight2 = tf2*idf;
@@ -325,8 +327,8 @@ public class RetrievalController {
 		return score;
 	}
 	
-	public static double getIdf(String field, BytesRef term){
-
+	public static double getIdf(String field, String term){
+		loadDocFreqs(RetrievalCache.index);
 		int count = docCount.get(RetrievalCache.index  + "_" + field );		
 		double df = termStatistics.get(RetrievalCache.index  + "_" + field).docFreq(term);
 			
@@ -396,16 +398,18 @@ public class RetrievalController {
 				TermStatistics contentTermStatistics = new TermStatistics();
 				TermsEnum termsEnum = MultiFields.getTerms(reader, "content").iterator();
 		        while ((term = termsEnum.next()) != null) {
-		        	contentTermStatistics.docFreq(term, (float) termsEnum.docFreq());
-		        	contentTermStatistics.totalTermFreq(term, (float) termsEnum.totalTermFreq());
+		        	String t = term.utf8ToString();
+		        	contentTermStatistics.docFreq(t, (float) termsEnum.docFreq());
+		        	contentTermStatistics.totalTermFreq(t, (float) termsEnum.totalTermFreq());
 		        }
 		        termStatistics.put(index + "_content", contentTermStatistics);
 				TermStatistics titleTermStatistics = new TermStatistics();
 				
 				termsEnum = MultiFields.getTerms(reader, "title").iterator();
 		        while ((term = termsEnum.next()) != null) {
-		        	titleTermStatistics.docFreq(term, (float) termsEnum.docFreq());
-		        	titleTermStatistics.totalTermFreq(term, (float) termsEnum.totalTermFreq());
+		        	String t = term.utf8ToString();
+		        	titleTermStatistics.docFreq(t, (float) termsEnum.docFreq());
+		        	titleTermStatistics.totalTermFreq(t, (float) termsEnum.totalTermFreq());
 		        }
 		        termStatistics.put(index + "_title", titleTermStatistics);
 				
