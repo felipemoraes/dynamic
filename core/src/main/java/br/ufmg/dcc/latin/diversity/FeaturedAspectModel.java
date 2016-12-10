@@ -58,7 +58,11 @@ public class FeaturedAspectModel {
 		List<TermFeatures> topTerms = termsFeatures.getTopTerms(weights);
 		String query = "";
 		for (int i = 0; i < topTerms.size(); i++) {
-			query += topTerms.get(i).term + "^" + String.format("%.8f ", topTerms.get(i).weight);
+			double weight = topTerms.get(i).weight;
+			if (weight < 0) {
+				weight = 0;
+			}
+			query += topTerms.get(i).term + "^" + String.format("%.8f ", weight);
 			
 		}
 		return query;
