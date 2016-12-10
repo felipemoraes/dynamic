@@ -96,7 +96,7 @@ public class DBGD {
 			}
 			
 			nextQuery();
-			System.out.println(topic);
+			
 			reranker.start(query, index);
 			reranker.start(w0);
 			RetrievalCache.topicId = topic;
