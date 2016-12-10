@@ -66,15 +66,15 @@ public class ModelSelection {
 		List<Double> deltas = new ArrayList<Double>();
 		List<Double> iterations = new ArrayList<Double>();
 		List<Double> lambdas = new ArrayList<Double>();
-		double step = 0.1;
-		for (int i = 0; i < 10; i++) {
+		double step = 0.2;
+		for (int i = 0; i < 5; i++) {
 			alphas.add(step*(i+1));
 			deltas.add(step*(i+1));
 			lambdas.add(step*(i+1));
 		}
 		step = 50;
-		for (int i = 0; i < 6; i++) {
-			iterations.add(step*(i+1));
+		for (int i = 0; i < 3; i++) {
+			iterations.add(100+step*(i+1));
 		}
 		List<List<Double>> lists = new ArrayList<List<Double>>();
 		lists.add(alphas);
