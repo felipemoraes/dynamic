@@ -24,7 +24,9 @@ public class ModelSelection {
 		learner.setupReranker(args[3]);
 		learner.loadTrainingSet(trainingFilename);
 		learner.loadValidationSet(validationFilename);
-		for (double[] param: getParams()){
+		int i = 0;
+		List<double[]> params = getParams();
+		for (double[] param: params){
 			learner.setParam(param);
 			double[] weights = learner.train();
 			double score = learner.validate(weights);
@@ -34,6 +36,7 @@ public class ModelSelection {
 				bestParam = param;
 				bestWeights = weights;
 			}
+			System.out.println("Processed " + i + " of " + params.size() );
 		}
 		
 		dumpModel(modelFile, bestParam,bestWeights);
@@ -67,9 +70,12 @@ public class ModelSelection {
 		List<Double> iterations = new ArrayList<Double>();
 		List<Double> lambdas = new ArrayList<Double>();
 		double step = 0.2;
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 5; i++) {
 			alphas.add(step*(i+1));
 			deltas.add(step*(i+1));
+		}
+		step = 0.1;
+		for (int i = 0; i < 5; i++) {
 			lambdas.add(step*(i+1));
 		}
 		iterations.add(100d);
