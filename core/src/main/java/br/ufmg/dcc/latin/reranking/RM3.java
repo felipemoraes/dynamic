@@ -211,6 +211,7 @@ public class RM3 extends InteractiveReranker {
 			term = termsEnum.next();
 			while( term != null) {
 				counts.put(termsEnum.term(), (double) termsEnum.totalTermFreq());
+				term = termsEnum.next();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

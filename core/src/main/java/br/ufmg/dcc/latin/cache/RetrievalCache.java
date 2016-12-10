@@ -23,6 +23,7 @@ public class RetrievalCache {
 	
 	
 	public static Map<String,double[]> subtopicsCache;
+	public static String index;
 	
 	public static void cache(ResultSet resultSet) {
 		docids = resultSet.docids;

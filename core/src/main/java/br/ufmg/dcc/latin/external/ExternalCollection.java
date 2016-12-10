@@ -7,18 +7,20 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.lucene.util.BytesRef;
+
 public class ExternalCollection {
 	
 	private int numDocs;
 	private int sumDocFreq;
 	private int sumTotalTermFreq;
 	
-	private Map<String,Integer> docFreq;
-	private Map<String,Integer> totalTermFreq;
+	private Map<BytesRef,Integer> docFreq;
+	private Map<BytesRef,Integer> totalTermFreq;
 	
 	public ExternalCollection(String filename){
-		docFreq = new HashMap<String,Integer>();
-		totalTermFreq =  new HashMap<String,Integer>();
+		docFreq = new HashMap<BytesRef,Integer>();
+		totalTermFreq =  new HashMap<BytesRef,Integer>();
 		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
 			String line = br.readLine();
 			
@@ -28,8 +30,9 @@ public class ExternalCollection {
 			setSumTotalTermFreq(Integer.parseInt(splitLine[2]));
 			while ((line = br.readLine()) != null) {
 		    	splitLine = line.split(" ",3);
-		    	docFreq.put(splitLine[0], Integer.parseInt(splitLine[1]));
-		    	totalTermFreq.put(splitLine[1], Integer.parseInt(splitLine[2]));
+		    	BytesRef term = new BytesRef(splitLine[0]);
+		    	docFreq.put(term, Integer.parseInt(splitLine[1]));
+		    	totalTermFreq.put(term, Integer.parseInt(splitLine[2]));
 		    			
 			}
 			
@@ -43,11 +46,11 @@ public class ExternalCollection {
 		}
 	}
 	
-	public int getDocFreq(String term){
+	public int getDocFreq(BytesRef term){
 		return docFreq.getOrDefault(term, 0);
 	}
 	
-	public int getTotalTermFreq(String term){
+	public int getTotalTermFreq(BytesRef term){
 		return totalTermFreq.getOrDefault(term, 0);
 	}
 

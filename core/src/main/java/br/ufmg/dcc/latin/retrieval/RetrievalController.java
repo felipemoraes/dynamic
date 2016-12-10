@@ -325,10 +325,10 @@ public class RetrievalController {
 		return score;
 	}
 	
-	public static double getIdf(String index, String field, BytesRef term){
+	public static double getIdf(String field, BytesRef term){
 
-		int count = docCount.get(index  + "_" + field );		
-		double df = termStatistics.get(index  + "_" + field).docFreq(term);
+		int count = docCount.get(RetrievalCache.index  + "_" + field );		
+		double df = termStatistics.get(RetrievalCache.index  + "_" + field).docFreq(term);
 			
 		double idf = (float) (Math.log(count)/(df+1));
 		return idf;
