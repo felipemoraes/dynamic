@@ -72,10 +72,8 @@ public class ModelSelection {
 			deltas.add(step*(i+1));
 			lambdas.add(step*(i+1));
 		}
-		step = 50;
-		for (int i = 0; i < 3; i++) {
-			iterations.add(100+step*(i+1));
-		}
+		iterations.add(100d);
+
 		List<List<Double>> lists = new ArrayList<List<Double>>();
 		lists.add(alphas);
 		lists.add(deltas);

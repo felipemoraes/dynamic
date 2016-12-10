@@ -1,6 +1,7 @@
 package br.ufmg.dcc.latin.diversity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,25 @@ public class FeaturedAspect  {
 		}
 		return finalSelectedTerms;
 	}
+	
+	public static double[] normalizeL2(double[] vector) {
+		// compute vector 2-norm
+		double norm2 = 0.0;
+		for (int i = 0; i < vector.length; i++) {
+			norm2 += vector[i] * vector[i];
+		}
+		norm2 = (double) Math.sqrt(norm2);
+
+		if (norm2 == 0) {
+			Arrays.fill(vector, 1);
+		} else {
+			for (int i = 0; i < vector.length; i++) {
+				vector[i] = vector[i] / norm2;
+			}
+		}
+		return vector;
+	}
+
 
 	private List<TermFeatures> generateCandidateTerms(double[] weights) {
 		
@@ -74,15 +94,17 @@ public class FeaturedAspect  {
 			minFeatures[i] = min;
 			maxFeatures[i] = max;
 		}
+		
+		double[] weightsNorm = normalizeL2(weights);
 		for (int i = 0; i < termsCandidates.size(); i++) {
 			double weight = 0;
 			double[] features = termsCandidates.get(i).features;
 			for (int j = 0; j < minFeatures.length; j++) {
 				if (maxFeatures[j]-minFeatures[j]  > 0) {
 					double scaledFeature = (features[j] -  minFeatures[j])/(maxFeatures[j]-minFeatures[j]);
-					weight += scaledFeature*weights[j];
+					weight += scaledFeature*weightsNorm[j];
 				} else {
-					weight += features[j]*weights[j];
+					weight += features[j]*weightsNorm[j];
 				}
 				
 			}

@@ -90,6 +90,11 @@ public class DBGD {
 		
 		System.out.println("Starting training ...");
 		for (int i = 0; i < iterations*trainingSet.size(); i++) {
+			
+			if (i % 100 == 0) {
+				System.out.println(i + " of " + iterations*trainingSet.size());
+			}
+			
 			nextQuery();
 			System.out.println(topic);
 			reranker.start(query, index);
