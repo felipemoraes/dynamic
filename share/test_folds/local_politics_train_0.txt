@@ -1,0 +1,27 @@
+local_politics DD15-23 Poppy Box Thievery
+local_politics DD15-3 Victoria Stafford - murder trial of Michael Thomas Rafferty
+local_politics DD15-20 Ralph Dannenberg Puyallup
+local_politics DD15-11 Bellingham bans plastic bags
+local_politics DD15-33 Australian Nursing Home Fire
+local_politics DD15-15 Paul and Cathy Lee Martin
+local_politics DD15-4 Bainbridge Island residents seek to lower energy use
+local_politics DD15-2 Washington liquor sale privatization
+local_politics DD15-26 Downtown Easton Missing Women
+local_politics DD15-13 Pebble Mine opposition 
+local_politics DD15-27 Rob Ford Toronto Cut The Waist
+local_politics DD15-6 Spokane Tribe seeks to build casino.
+local_politics DD15-25 Chihuly Garden and Glass
+local_politics DD15-9 Legislative redistricting in Washington State
+local_politics DD15-1 Columbia-Snake salmon dam controversery
+local_politics DD15-40 Shafia Canal Lock Murder Trial
+local_politics DD15-30 Stockbroker Richard Finger 
+local_politics DD15-5 Attawapiskat First Nation Housing Crisis
+local_politics DD15-38 Washington all-mail election
+local_politics DD15-41 The McCleary decision
+local_politics DD15-36 Rob McKenna gubernatorial candidate
+local_politics DD15-16 Duwamish tribal recognition 
+local_politics DD15-18 White Supremacists in Washington State
+local_politics DD15-46 Salmon virus
+local_politics DD15-48 Muckleshoot Indian Tribe
+local_politics DD15-37 snohomish high school cannon explosion
+local_politics DD15-19 Radar Ridge wind project

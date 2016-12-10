@@ -1,0 +1,9 @@
+local_politics DD15-13 Pebble Mine opposition 
+local_politics DD15-27 Rob Ford Toronto Cut The Waist
+local_politics DD15-6 Spokane Tribe seeks to build casino.
+local_politics DD15-25 Chihuly Garden and Glass
+local_politics DD15-9 Legislative redistricting in Washington State
+local_politics DD15-1 Columbia-Snake salmon dam controversery
+local_politics DD15-40 Shafia Canal Lock Murder Trial
+local_politics DD15-30 Stockbroker Richard Finger 
+local_politics DD15-5 Attawapiskat First Nation Housing Crisis

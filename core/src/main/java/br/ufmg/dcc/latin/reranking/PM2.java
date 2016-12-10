@@ -75,7 +75,7 @@ public class PM2 extends InteractiveReranker {
 	
 	public void updateNovelty(){
 		for (int j = 0; j < docids.length; ++j) {
-			if (! selected.has(docids[j])) {
+			if (! selected.has(docnos[j])) {
 				continue;
 			}
 			update(j);
@@ -101,6 +101,7 @@ public class PM2 extends InteractiveReranker {
 
 	@Override
 	public void update(Feedback[] feedback) {
+		super.update(feedback);
 		aspectMining.miningFeedback(indexName, query,feedback);
 		coverage = aspectMining.getCoverage();
 		v = aspectMining.getV();

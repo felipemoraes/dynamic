@@ -61,7 +61,6 @@ public class FeaturedAspectModel {
 			query += topTerms.get(i).term + "^" + String.format("%.8f ", topTerms.get(i).weight);
 			
 		}
-		System.out.println(aspectId + " : " + query);
 		return query;
 	}
 }

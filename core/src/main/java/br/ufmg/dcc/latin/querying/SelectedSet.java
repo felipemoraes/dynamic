@@ -7,22 +7,22 @@ import java.util.List;
 import java.util.Set;
 
 public class SelectedSet {
-	Set<Integer> set;
+	Set<String> set;
 	public SelectedSet(){
-		set = new HashSet<Integer>();
+		set = new HashSet<String>();
 	}
 	
-	public boolean has(int d){
+	public boolean has(String d){
 		return set.contains(d);
 	}
 	
-	public void put(int d){
+	public void put(String d){
 		set.add(d);
 	}
 	
-	public List<Integer> getAll(){
-		List<Integer> all = new ArrayList<Integer>();
-		Iterator<Integer> it = set.iterator();
+	public List<String> getAll(){
+		List<String> all = new ArrayList<String>();
+		Iterator<String> it = set.iterator();
 		while(it.hasNext()){
 			all.add(it.next());
 		}

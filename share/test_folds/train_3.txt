@@ -1,0 +1,105 @@
+ebola15 DD15-52 Lofa containment strategy
+ebola15 DD15-87 Nigeria Eradicates Ebola
+ebola15 DD15-76 Riots, protests, strikes
+ebola15 DD15-79 Witchdoctor ebola involvement 
+ebola15 DD15-49 Community Care Centers
+ebola15 DD15-66 Community health workers
+ebola15 DD15-53 ppe personal protective equipment
+ebola15 DD15-82 Acquired Immunity
+ebola15 DD15-78 Health workers contaminated by Ebola
+ebola15 DD15-83 Cultural challenges for health workers in controlling transmission
+ebola15 DD15-63 Availability of mobile Ebola labs in West Africa
+ebola15 DD15-62 Outbreaks of Other Diseases in West Africa
+ebola15 DD15-50 Ebola Orphans in Guinea, Liberia and Sierra Leone
+ebola15 DD15-77 Location of Medical Treatment Centers for Ebola in Liberia
+ebola15 DD15-67 Ebola and Bushmeat
+ebola15 DD15-84 Last Mile Health
+ebola15 DD15-71 Ebola Symptoms
+ebola15 DD15-72 disposition of bodies
+ebola15 DD15-85 Ebola Riots
+ebola15 DD15-68 animal host reservoirs
+ebola15 DD15-86 Nano Silver
+ebola15 DD15-70 Health Care Workers infected with Ebola in Sierra Leone
+ebola15 DD15-65 Ebola in Liberian Armed Forces
+ebola15 DD15-51 border closings
+illicit_goods DD15-109 article spinner spinning
+illicit_goods DD15-106 Making money on freecycle
+illicit_goods DD15-89 Spamming can be helpful
+illicit_goods DD15-93 Counterfeit products sold on internet
+illicit_goods DD15-105 Squeeze Pages
+illicit_goods DD15-100 Facebook Accounts
+illicit_goods DD15-98 review
+illicit_goods DD15-103 Negative SEO
+illicit_goods DD15-104 Liberty Reserve
+illicit_goods DD15-102 Telemarketing
+illicit_goods DD15-110 SERP Scraper
+illicit_goods DD15-97 Wiki Backlinks
+illicit_goods DD15-113 Paying for Amazon book reviews
+illicit_goods DD15-117 Online piracy of copyrighted materials 
+illicit_goods DD15-111 paypal accounts
+illicit_goods DD15-91  Bitcoins provide anonymity on the internet 
+illicit_goods DD15-101 Cookie Stuffing
+illicit_goods DD15-118 Stealth PayPal
+local_politics DD15-47 Sea Shepherd Conservation Society clashes with Japanese whalers
+local_politics DD15-12 Consolidation of Postal Centers
+local_politics DD15-35 Tacoma City Manager
+local_politics DD15-7 Robert Jesse Hill Tacoma
+local_politics DD15-17 Coyote Encounters in Urban and Suburban Areas
+local_politics DD15-43 Zehm Case Upends Spokane County Government
+local_politics DD15-8 Controversy surrounding Rick Hansen's appointment to Mayor of Puyallup, WA
+local_politics DD15-22 Toronto Zoo elephant move controversy
+local_politics DD15-39 Kalakala ferry
+local_politics DD15-31 Millionaire janitor joins school board
+local_politics DD15-42 Phoenix Jones Seattle
+local_politics DD15-45 occupy vancouver
+local_politics DD15-28 Convicted killer Russell Williams is sued
+local_politics DD15-32 Fracking's water and tremor problems
+local_politics DD15-14 Enbridge-Gitsan deal controversy
+local_politics DD15-44 Runaway BNSF train 
+local_politics DD15-29 Muskingum County Animal Farm
+local_politics DD15-21 Nancy Wilhelm-Morden
+local_politics DD15-34 Bellingham export facility
+local_politics DD15-10 Squamish Canada Land Dispute
+local_politics DD15-24 Survival of the Gray Wolf in Washington State
+local_politics DD15-23 Poppy Box Thievery
+local_politics DD15-3 Victoria Stafford - murder trial of Michael Thomas Rafferty
+local_politics DD15-20 Ralph Dannenberg Puyallup
+local_politics DD15-11 Bellingham bans plastic bags
+local_politics DD15-33 Australian Nursing Home Fire
+local_politics DD15-15 Paul and Cathy Lee Martin
+local_politics DD15-4 Bainbridge Island residents seek to lower energy use
+local_politics DD15-2 Washington liquor sale privatization
+local_politics DD15-26 Downtown Easton Missing Women
+ebola16 DD16-19 Attacks on ebola aid
+ebola16 DD16-1 US Military Crisis Response
+ebola16 DD16-22 radio school
+ebola16 DD16-2 Ebola Conspiracy Theories
+ebola16 DD16-8 Dr. Olivet Buck
+ebola16 DD16-17 Kenema District Government Hospital
+ebola16 DD16-27 kaci hickox
+ebola16 DD16-4 Daniel Berehulak
+ebola16 DD16-5 Ewedu as an Ebola Treatment
+ebola16 DD16-23 Crowdfunding Crowdsourcing
+ebola16 DD16-7 Urbanisation/Urbanization 
+ebola16 DD16-14 T.B. Joshua
+ebola16 DD16-21 Ebola medical waste
+ebola16 DD16-16 Modeling
+ebola16 DD16-11 U.S. healthcare workers
+ebola16 DD16-12 is there a natural immunity to ebola
+ebola16 DD16-3 healthcare impacts of ebola
+polar DD16-45 How will subsistence fishing and hunting be impacted by changes in Arctic sea ice characteristics?
+polar DD16-33 sea-level rise and coastal erosion
+polar DD16-36 Is the rate of snow accumulation changing in Antarctica?
+polar DD16-39 How will shipping be impacted by changes in Arctic sea ice characteristics?
+polar DD16-40 Polar terrestrial ecosystems CO2 trace gas
+polar DD16-31 sea level rise change strom surge
+polar DD16-29 ice sheet sea level rise
+polar DD16-32 polar oceans freshwater sensitivity
+polar DD16-47 Arctic sea ice thickness
+polar DD16-42 How will offshore mineral extraction be impacted by changes in Arctic sea ice characteristics?
+polar DD16-52 albedo feedback future climate change Poles
+polar DD16-51 How will changes in sea-level rise affect coastal freshwater supply
+polar DD16-35 snow accumulation rate Greenland
+polar DD16-46 Are changes occurring the coverage of the Arctic Sea ice
+polar DD16-43 Is ice sheet elevation changing
+polar DD16-34 melting ice sheet ocean circulation

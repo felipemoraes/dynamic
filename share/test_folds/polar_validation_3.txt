@@ -1,0 +1,5 @@
+polar DD16-28 Is the distribution of permafrost changing in the Arctic?
+polar DD16-41 Artic sea ice fishery
+polar DD16-44 Are changes occurring in the distribution and productivity of Arctic vegetation?
+polar DD16-53 climate change polar bears
+polar DD16-30 Where are basal boundary conditions in East Antarctica?

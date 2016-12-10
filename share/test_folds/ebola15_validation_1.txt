@@ -1,0 +1,8 @@
+ebola15 DD15-78 Health workers contaminated by Ebola
+ebola15 DD15-83 Cultural challenges for health workers in controlling transmission
+ebola15 DD15-63 Availability of mobile Ebola labs in West Africa
+ebola15 DD15-62 Outbreaks of Other Diseases in West Africa
+ebola15 DD15-50 Ebola Orphans in Guinea, Liberia and Sierra Leone
+ebola15 DD15-77 Location of Medical Treatment Centers for Ebola in Liberia
+ebola15 DD15-67 Ebola and Bushmeat
+ebola15 DD15-84 Last Mile Health

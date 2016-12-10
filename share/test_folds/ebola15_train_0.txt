@@ -1,0 +1,24 @@
+ebola15 DD15-71 Ebola Symptoms
+ebola15 DD15-72 disposition of bodies
+ebola15 DD15-85 Ebola Riots
+ebola15 DD15-68 animal host reservoirs
+ebola15 DD15-86 Nano Silver
+ebola15 DD15-70 Health Care Workers infected with Ebola in Sierra Leone
+ebola15 DD15-65 Ebola in Liberian Armed Forces
+ebola15 DD15-51 border closings
+ebola15 DD15-59 Diagnostic Tests
+ebola15 DD15-74 medical personnel infected
+ebola15 DD15-64 Hand washing importance
+ebola15 DD15-55 Ebola and Contact Tracing
+ebola15 DD15-58 Ebola Treatment: Supportive Care
+ebola15 DD15-80 Ebola survivors' situation in the community
+ebola15 DD15-60 vaccines drugs vaccine drug
+ebola15 DD15-81 Drug protocols for Ebola treatment
+ebola15 DD15-57 The Ebola scare in the United States
+ebola15 DD15-54 Airborne Transmission
+ebola15 DD15-75 Impact of Ebola Crisis on Stability of Liberian Government
+ebola15 DD15-69 Ebola songs
+ebola15 DD15-56 Solar powered radios
+ebola15 DD15-61 medical waste 
+ebola15 DD15-88 Ebola Slum, West Point
+ebola15 DD15-73 mortality and survival rates

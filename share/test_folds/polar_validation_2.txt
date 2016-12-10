@@ -1,0 +1,5 @@
+polar DD16-51 How will changes in sea-level rise affect coastal freshwater supply
+polar DD16-35 snow accumulation rate Greenland
+polar DD16-46 Are changes occurring the coverage of the Arctic Sea ice
+polar DD16-43 Is ice sheet elevation changing
+polar DD16-34 melting ice sheet ocean circulation

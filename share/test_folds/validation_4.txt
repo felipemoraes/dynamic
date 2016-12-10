@@ -1,0 +1,33 @@
+ebola15 DD15-57 The Ebola scare in the United States
+ebola15 DD15-54 Airborne Transmission
+ebola15 DD15-75 Impact of Ebola Crisis on Stability of Liberian Government
+ebola15 DD15-69 Ebola songs
+ebola15 DD15-56 Solar powered radios
+ebola15 DD15-61 medical waste 
+ebola15 DD15-88 Ebola Slum, West Point
+ebola15 DD15-73 mortality and survival rates
+illicit_goods DD15-108 Improve Conversion Rates
+illicit_goods DD15-115 Proxy Sales
+illicit_goods DD15-116 Internet sellers of pornography
+illicit_goods DD15-114 Xrumer
+illicit_goods DD15-90 Silk Road 1 marketplace shut down
+illicit_goods DD15-107 twitter accounts
+local_politics DD15-38 Washington all-mail election
+local_politics DD15-41 The McCleary decision
+local_politics DD15-36 Rob McKenna gubernatorial candidate
+local_politics DD15-16 Duwamish tribal recognition 
+local_politics DD15-18 White Supremacists in Washington State
+local_politics DD15-46 Salmon virus
+local_politics DD15-48 Muckleshoot Indian Tribe
+local_politics DD15-37 snohomish high school cannon explosion
+local_politics DD15-19 Radar Ridge wind project
+ebola16 DD16-9 Thomas Eric Duncan
+ebola16 DD16-20 Pauline Cafferkey
+ebola16 DD16-13 Dr. Steven Hatch
+ebola16 DD16-26 Effects of African Culture
+ebola16 DD16-24 Olu-Ibukun Koye Spread EVD to Port Harcourt
+polar DD16-49 Are changes occurring in the circulation of the Arctic Sea
+polar DD16-50 planning for sea level rise
+polar DD16-48 polar ocean global ocean circulation
+polar DD16-38 Are significant changes occurring in ocean productivity
+polar DD16-37 west antarctic ice sheet

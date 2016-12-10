@@ -1,0 +1,8 @@
+ebola15 DD15-52 Lofa containment strategy
+ebola15 DD15-87 Nigeria Eradicates Ebola
+ebola15 DD15-76 Riots, protests, strikes
+ebola15 DD15-79 Witchdoctor ebola involvement 
+ebola15 DD15-49 Community Care Centers
+ebola15 DD15-66 Community health workers
+ebola15 DD15-53 ppe personal protective equipment
+ebola15 DD15-82 Acquired Immunity

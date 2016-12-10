@@ -1,0 +1,18 @@
+illicit_goods DD15-113 Paying for Amazon book reviews
+illicit_goods DD15-117 Online piracy of copyrighted materials 
+illicit_goods DD15-111 paypal accounts
+illicit_goods DD15-91  Bitcoins provide anonymity on the internet 
+illicit_goods DD15-101 Cookie Stuffing
+illicit_goods DD15-118 Stealth PayPal
+illicit_goods DD15-96 Deep Web Description, Illegal Activity, and SEO
+illicit_goods DD15-92 Site Flipping
+illicit_goods DD15-99 Ticketmaster proxies
+illicit_goods DD15-112 CAPTCHA Services
+illicit_goods DD15-95 MoneyPak codes
+illicit_goods DD15-94 Rootkits root kits
+illicit_goods DD15-108 Improve Conversion Rates
+illicit_goods DD15-115 Proxy Sales
+illicit_goods DD15-116 Internet sellers of pornography
+illicit_goods DD15-114 Xrumer
+illicit_goods DD15-90 Silk Road 1 marketplace shut down
+illicit_goods DD15-107 twitter accounts

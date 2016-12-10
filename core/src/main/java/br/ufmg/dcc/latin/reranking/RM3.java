@@ -86,7 +86,7 @@ public class RM3 extends InteractiveReranker {
 	
 	@Override
 	public void update(Feedback[] feedback) {
-		
+		super.update(feedback);
 		List<WeightedTerm> weightedTerms = ExpandRM1(feedback, "content",true);
 		weightedTerms = ExpandRM3(weightedTerms);
 		String complexQuery = getComplexQuery(weightedTerms);

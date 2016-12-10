@@ -1,0 +1,33 @@
+ebola15 DD15-52 Lofa containment strategy
+ebola15 DD15-87 Nigeria Eradicates Ebola
+ebola15 DD15-76 Riots, protests, strikes
+ebola15 DD15-79 Witchdoctor ebola involvement 
+ebola15 DD15-49 Community Care Centers
+ebola15 DD15-66 Community health workers
+ebola15 DD15-53 ppe personal protective equipment
+ebola15 DD15-82 Acquired Immunity
+illicit_goods DD15-109 article spinner spinning
+illicit_goods DD15-106 Making money on freecycle
+illicit_goods DD15-89 Spamming can be helpful
+illicit_goods DD15-93 Counterfeit products sold on internet
+illicit_goods DD15-105 Squeeze Pages
+illicit_goods DD15-100 Facebook Accounts
+local_politics DD15-47 Sea Shepherd Conservation Society clashes with Japanese whalers
+local_politics DD15-12 Consolidation of Postal Centers
+local_politics DD15-35 Tacoma City Manager
+local_politics DD15-7 Robert Jesse Hill Tacoma
+local_politics DD15-17 Coyote Encounters in Urban and Suburban Areas
+local_politics DD15-43 Zehm Case Upends Spokane County Government
+local_politics DD15-8 Controversy surrounding Rick Hansen's appointment to Mayor of Puyallup, WA
+local_politics DD15-22 Toronto Zoo elephant move controversy
+local_politics DD15-39 Kalakala ferry
+ebola16 DD16-19 Attacks on ebola aid
+ebola16 DD16-1 US Military Crisis Response
+ebola16 DD16-22 radio school
+ebola16 DD16-2 Ebola Conspiracy Theories
+ebola16 DD16-8 Dr. Olivet Buck
+polar DD16-45 How will subsistence fishing and hunting be impacted by changes in Arctic sea ice characteristics?
+polar DD16-33 sea-level rise and coastal erosion
+polar DD16-36 Is the rate of snow accumulation changing in Antarctica?
+polar DD16-39 How will shipping be impacted by changes in Arctic sea ice characteristics?
+polar DD16-40 Polar terrestrial ecosystems CO2 trace gas

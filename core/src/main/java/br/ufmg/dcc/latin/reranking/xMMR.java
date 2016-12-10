@@ -94,6 +94,7 @@ public class xMMR extends InteractiveReranker {
 
 	@Override
 	public void update(Feedback[] feedback) {
+		super.update(feedback);
 		aspectMining.miningFeedback(indexName, query, feedback);
 		coverage = aspectMining.getCoverage();
 		

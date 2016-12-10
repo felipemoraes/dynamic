@@ -30,8 +30,8 @@ public abstract class InteractiveReranker implements Reranker {
 	@Override
 	public ResultSet get(){
 		ResultSet result = new ResultSet(5);
-		int depth = Math.min(relevance.length, this.depth+selected.size());
-		
+		int depth = Math.min(relevance.length, this.depth+selected.size());	
+		SelectedSet localSelectedSet = new SelectedSet();
 		// greedily diversify the top documents
 		int k = 0;
 		while(k < 5){
@@ -42,7 +42,7 @@ public abstract class InteractiveReranker implements Reranker {
 			// for each unselected document
 			for (int i = 0; i < depth; ++i ){ 
 				// skip already selected documents
-				if (selected.has(docids[i])){
+				if (selected.has(docnos[i]) || localSelectedSet.has(docnos[i])){
 					continue;
 				}
 				double score = score(i);
@@ -58,7 +58,7 @@ public abstract class InteractiveReranker implements Reranker {
 			result.docids[k] = docids[maxRank];
 			result.docnos[k] = docnos[maxRank];
 			// mark as selected
-			selected.put(docids[maxRank]);
+			localSelectedSet.put(docnos[maxRank]);
 			update(maxRank);
 			k++;
 		}
@@ -66,7 +66,11 @@ public abstract class InteractiveReranker implements Reranker {
 		return result;
 	}
 	
-	public abstract void update(Feedback[] feedback);
+	public void update(Feedback[] feedback){
+		for (int i = 0; i < feedback.length; i++) {
+			selected.put(feedback[i].getDocno());
+		}
+	}
 	
 	public void start(String query, String index){
 		this.query = query;

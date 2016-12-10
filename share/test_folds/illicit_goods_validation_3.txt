@@ -1,0 +1,6 @@
+illicit_goods DD15-96 Deep Web Description, Illegal Activity, and SEO
+illicit_goods DD15-92 Site Flipping
+illicit_goods DD15-99 Ticketmaster proxies
+illicit_goods DD15-112 CAPTCHA Services
+illicit_goods DD15-95 MoneyPak codes
+illicit_goods DD15-94 Rootkits root kits

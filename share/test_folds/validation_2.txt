@@ -1,0 +1,33 @@
+ebola15 DD15-71 Ebola Symptoms
+ebola15 DD15-72 disposition of bodies
+ebola15 DD15-85 Ebola Riots
+ebola15 DD15-68 animal host reservoirs
+ebola15 DD15-86 Nano Silver
+ebola15 DD15-70 Health Care Workers infected with Ebola in Sierra Leone
+ebola15 DD15-65 Ebola in Liberian Armed Forces
+ebola15 DD15-51 border closings
+illicit_goods DD15-113 Paying for Amazon book reviews
+illicit_goods DD15-117 Online piracy of copyrighted materials 
+illicit_goods DD15-111 paypal accounts
+illicit_goods DD15-91  Bitcoins provide anonymity on the internet 
+illicit_goods DD15-101 Cookie Stuffing
+illicit_goods DD15-118 Stealth PayPal
+local_politics DD15-23 Poppy Box Thievery
+local_politics DD15-3 Victoria Stafford - murder trial of Michael Thomas Rafferty
+local_politics DD15-20 Ralph Dannenberg Puyallup
+local_politics DD15-11 Bellingham bans plastic bags
+local_politics DD15-33 Australian Nursing Home Fire
+local_politics DD15-15 Paul and Cathy Lee Martin
+local_politics DD15-4 Bainbridge Island residents seek to lower energy use
+local_politics DD15-2 Washington liquor sale privatization
+local_politics DD15-26 Downtown Easton Missing Women
+ebola16 DD16-21 Ebola medical waste
+ebola16 DD16-16 Modeling
+ebola16 DD16-11 U.S. healthcare workers
+ebola16 DD16-12 is there a natural immunity to ebola
+ebola16 DD16-3 healthcare impacts of ebola
+polar DD16-51 How will changes in sea-level rise affect coastal freshwater supply
+polar DD16-35 snow accumulation rate Greenland
+polar DD16-46 Are changes occurring the coverage of the Arctic Sea ice
+polar DD16-43 Is ice sheet elevation changing
+polar DD16-34 melting ice sheet ocean circulation

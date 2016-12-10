@@ -1,0 +1,16 @@
+polar DD16-31 sea level rise change strom surge
+polar DD16-29 ice sheet sea level rise
+polar DD16-32 polar oceans freshwater sensitivity
+polar DD16-47 Arctic sea ice thickness
+polar DD16-42 How will offshore mineral extraction be impacted by changes in Arctic sea ice characteristics?
+polar DD16-52 albedo feedback future climate change Poles
+polar DD16-51 How will changes in sea-level rise affect coastal freshwater supply
+polar DD16-35 snow accumulation rate Greenland
+polar DD16-46 Are changes occurring the coverage of the Arctic Sea ice
+polar DD16-43 Is ice sheet elevation changing
+polar DD16-34 melting ice sheet ocean circulation
+polar DD16-28 Is the distribution of permafrost changing in the Arctic?
+polar DD16-41 Artic sea ice fishery
+polar DD16-44 Are changes occurring in the distribution and productivity of Arctic vegetation?
+polar DD16-53 climate change polar bears
+polar DD16-30 Where are basal boundary conditions in East Antarctica?

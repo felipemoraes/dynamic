@@ -1,0 +1,33 @@
+ebola15 DD15-59 Diagnostic Tests
+ebola15 DD15-74 medical personnel infected
+ebola15 DD15-64 Hand washing importance
+ebola15 DD15-55 Ebola and Contact Tracing
+ebola15 DD15-58 Ebola Treatment: Supportive Care
+ebola15 DD15-80 Ebola survivors' situation in the community
+ebola15 DD15-60 vaccines drugs vaccine drug
+ebola15 DD15-81 Drug protocols for Ebola treatment
+illicit_goods DD15-96 Deep Web Description, Illegal Activity, and SEO
+illicit_goods DD15-92 Site Flipping
+illicit_goods DD15-99 Ticketmaster proxies
+illicit_goods DD15-112 CAPTCHA Services
+illicit_goods DD15-95 MoneyPak codes
+illicit_goods DD15-94 Rootkits root kits
+local_politics DD15-13 Pebble Mine opposition 
+local_politics DD15-27 Rob Ford Toronto Cut The Waist
+local_politics DD15-6 Spokane Tribe seeks to build casino.
+local_politics DD15-25 Chihuly Garden and Glass
+local_politics DD15-9 Legislative redistricting in Washington State
+local_politics DD15-1 Columbia-Snake salmon dam controversery
+local_politics DD15-40 Shafia Canal Lock Murder Trial
+local_politics DD15-30 Stockbroker Richard Finger 
+local_politics DD15-5 Attawapiskat First Nation Housing Crisis
+ebola16 DD16-18 Robots
+ebola16 DD16-6 Alleged Alternative Treatments for Ebola
+ebola16 DD16-25 Emory University's role in Ebola treatment
+ebola16 DD16-10 Economic impact of ebola
+ebola16 DD16-15 Maurice Iwu
+polar DD16-28 Is the distribution of permafrost changing in the Arctic?
+polar DD16-41 Artic sea ice fishery
+polar DD16-44 Are changes occurring in the distribution and productivity of Arctic vegetation?
+polar DD16-53 climate change polar bears
+polar DD16-30 Where are basal boundary conditions in East Antarctica?

@@ -1,0 +1,9 @@
+local_politics DD15-38 Washington all-mail election
+local_politics DD15-41 The McCleary decision
+local_politics DD15-36 Rob McKenna gubernatorial candidate
+local_politics DD15-16 Duwamish tribal recognition 
+local_politics DD15-18 White Supremacists in Washington State
+local_politics DD15-46 Salmon virus
+local_politics DD15-48 Muckleshoot Indian Tribe
+local_politics DD15-37 snohomish high school cannon explosion
+local_politics DD15-19 Radar Ridge wind project

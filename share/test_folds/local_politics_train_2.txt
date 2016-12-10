@@ -1,0 +1,30 @@
+local_politics DD15-38 Washington all-mail election
+local_politics DD15-41 The McCleary decision
+local_politics DD15-36 Rob McKenna gubernatorial candidate
+local_politics DD15-16 Duwamish tribal recognition 
+local_politics DD15-18 White Supremacists in Washington State
+local_politics DD15-46 Salmon virus
+local_politics DD15-48 Muckleshoot Indian Tribe
+local_politics DD15-37 snohomish high school cannon explosion
+local_politics DD15-19 Radar Ridge wind project
+local_politics DD15-47 Sea Shepherd Conservation Society clashes with Japanese whalers
+local_politics DD15-12 Consolidation of Postal Centers
+local_politics DD15-35 Tacoma City Manager
+local_politics DD15-7 Robert Jesse Hill Tacoma
+local_politics DD15-17 Coyote Encounters in Urban and Suburban Areas
+local_politics DD15-43 Zehm Case Upends Spokane County Government
+local_politics DD15-8 Controversy surrounding Rick Hansen's appointment to Mayor of Puyallup, WA
+local_politics DD15-22 Toronto Zoo elephant move controversy
+local_politics DD15-39 Kalakala ferry
+local_politics DD15-31 Millionaire janitor joins school board
+local_politics DD15-42 Phoenix Jones Seattle
+local_politics DD15-45 occupy vancouver
+local_politics DD15-28 Convicted killer Russell Williams is sued
+local_politics DD15-32 Fracking's water and tremor problems
+local_politics DD15-14 Enbridge-Gitsan deal controversy
+local_politics DD15-44 Runaway BNSF train 
+local_politics DD15-29 Muskingum County Animal Farm
+local_politics DD15-21 Nancy Wilhelm-Morden
+local_politics DD15-34 Bellingham export facility
+local_politics DD15-10 Squamish Canada Land Dispute
+local_politics DD15-24 Survival of the Gray Wolf in Washington State
