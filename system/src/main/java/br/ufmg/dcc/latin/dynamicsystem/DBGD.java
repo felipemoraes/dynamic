@@ -156,7 +156,7 @@ public class DBGD {
 		for (String[] queryInfo: validationSet) {
 			this.index = queryInfo[0];
 			this.topic = queryInfo[1];
-			this.query = queryInfo[3];
+			this.query = queryInfo[2];
 			String[][] result = new String[n][5];
 			reranker.start(query, index);
 			reranker.start(weight);
