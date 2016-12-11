@@ -21,6 +21,7 @@ subtopic_cover = {}
 
 #### Read qrels file(groundtruth), check format, and sort
 def prepare_qrels(qrelsfile):
+    global qrels, subtopic_weight, current_gain_height, subtopic_cover
     # $topic $docno $subtopic $judgement
     qrels = {}
     #$topic $subtopic $area
