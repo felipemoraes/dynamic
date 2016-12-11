@@ -162,8 +162,6 @@ def evaluate_run(runfile,iterations):
                 ct_speed = ct/(iteration+1)
                 all_ct[iteration] += ct_speed
                 all_act[iteration] += ct_accu/time
-
-    ntopics = len(results)
     cts = []
     acts = []
     for i in range(iterations):
@@ -217,10 +215,6 @@ def evaluate_run_q(runfile,iterations):
         cts[topic] = ct_speed
         acts[topic] = ct_accu/time
 
-    ntopics = len(results)
-    for i in range(iterations):
-        cts.append(all_ct[i]/ntopics)
-        acts.append(all_act[i]/ntopics)
     return cts, acts
 
 def main():
