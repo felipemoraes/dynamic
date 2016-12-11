@@ -122,7 +122,7 @@ def get_max_weight(topic):
     return max_weight
 
 
-def evaluate_run(iterations):
+def evaluate_run(runfile,iterations):
     #### Process runs: compute measures for each topic and average
     results = OrderedDict()
     for line in open(runfile):
@@ -171,7 +171,7 @@ def evaluate_run(iterations):
         acts.append(all_act[i]/ntopics)
     return cts, acts
 
-def evaluate_run_q(iterations):
+def evaluate_run_q(runfile,iterations):
     #### Process runs: compute measures for each topic and average
     results = OrderedDict()
     for line in open(runfile):
@@ -226,7 +226,7 @@ def evaluate_run_q(iterations):
 def main():
     if len(sys.argv) < 3:
         print "Usage: python cubeTest.py qrels runfile iterations"
-        
+
     qrelsfile = sys.argv[1]
     runfile = sys.argv[2]
     iterations = int(sys.argv[3])
