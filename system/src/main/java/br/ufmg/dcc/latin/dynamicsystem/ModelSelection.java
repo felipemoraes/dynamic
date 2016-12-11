@@ -37,6 +37,7 @@ public class ModelSelection {
 				bestWeights = weights;
 			}
 			System.out.println("Processed " + i + " of " + params.size() );
+			i++;
 		}
 		
 		dumpModel(modelFile, bestParam,bestWeights);
