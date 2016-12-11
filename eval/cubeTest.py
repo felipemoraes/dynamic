@@ -16,13 +16,19 @@ subtopic_weight = {}
 current_gain_height = {}
 # $topic $subtopic $occurrences
 subtopic_cover = {}
-# $docID $docLength
-docLengthMap = {}
 
 #########################################
 
 #### Read qrels file(groundtruth), check format, and sort
 def prepare_qrels(qrelsfile):
+    # $topic $docno $subtopic $judgement
+    qrels = {}
+    #$topic $subtopic $area
+    subtopic_weight = {}
+    # $topic $subtopic $gainHeights
+    current_gain_height = {}
+    # $topic $subtopic $occurrences
+    subtopic_cover = {}
     tmp_qrels = {}
     count = 0
     for line in open(qrelsfile):
@@ -122,7 +128,8 @@ def get_max_weight(topic):
     return max_weight
 
 
-def evaluate_run(runfile,iterations):
+def evaluate_run(qrelsfile,runfile,iterations):
+    prepare_qrels(qrelsfile)
     #### Process runs: compute measures for each topic and average
     results = OrderedDict()
     for line in open(runfile):
@@ -169,7 +176,8 @@ def evaluate_run(runfile,iterations):
         acts.append(all_act[i]/ntopics)
     return cts, acts
 
-def evaluate_run_q(runfile,iterations):
+def evaluate_run_q(qrelsfile, runfile,iterations):
+    prepare_qrels(qrelsfile)
     #### Process runs: compute measures for each topic and average
     results = OrderedDict()
     for line in open(runfile):
