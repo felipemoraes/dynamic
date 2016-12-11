@@ -48,7 +48,6 @@ public class Test {
 		for (int i = 0; i < splitLine.length; i++) {
 			bestWeights[i+2] = Double.parseDouble(splitLine[i]);
 		}
-		testSet.add(splitLine);
 		br.close();
 	}
 
@@ -78,7 +77,7 @@ public class Test {
 			reranker.start(bestWeights);
 			RetrievalCache.topicId = topic;
 			RetrievalCache.index = index;
-			
+			System.out.println(topic);
 			for (int j = 0; j < 10; j++) {
 				ResultSet resultSet = reranker.get();
 				Evaluator.writeToFile(runname, topic, resultSet, j);
