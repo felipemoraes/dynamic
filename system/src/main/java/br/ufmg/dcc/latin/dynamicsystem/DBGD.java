@@ -108,8 +108,6 @@ public class DBGD {
 				double[] disturb = getDisturb(8);
 				for (int k = 2; k < resultsSoFar.length; k++) {
 					w1[k] = w0[k] + (delta*disturb[k-2]);
-					if(w1[k] > 1) w1[k] = 1;
-					if(w1[k] < -1) w1[k] = -1;
 				}
 				
 				reranker.setParams(w0);
@@ -128,11 +126,6 @@ public class DBGD {
 					for (int k = 2; k < resultsSoFar.length; k++) {
 						w0[k] = w0[k] + (alpha*disturb[k-2]);
 						
-						if(w0[k] > 1) {
-							w0[k] = 1;
-						} else if(w0[k] < -1) {
-							w0[k] = -1;
-						}
 						System.out.print(w0[k] + " ");
 						
 					}
@@ -183,8 +176,9 @@ public class DBGD {
 		double[] weights = new double[10];
 		weights[0] = 1000d;
 		weights[1] = lambda;
+		double[] rand = getDisturb(8);
 		for (int i = 2; i < weights.length; i++) {
-			weights[i] = 1d;
+			weights[i] = rand[i-2];
 		}
 		return weights;
 	}
