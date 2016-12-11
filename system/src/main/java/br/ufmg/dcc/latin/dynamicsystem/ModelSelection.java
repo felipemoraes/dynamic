@@ -79,7 +79,7 @@ public class ModelSelection {
 		alphas.add(0.1d);
 		deltas.add(0.2d);
 		step = 0.1;
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 10; i++) {
 			lambdas.add(step*(i+1));
 		}
 		iterations.add(100d);
