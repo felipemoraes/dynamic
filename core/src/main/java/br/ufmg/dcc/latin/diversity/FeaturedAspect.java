@@ -51,11 +51,11 @@ public class FeaturedAspect  {
 		return finalSelectedTerms;
 	}
 	
-	public static double[] sigmoid(double[] vector) {
+	public static double[] softmax(double[] vector) {
 		// compute vector 2-norm
 		double norm = 0.0;
 		for (int i = 0; i < vector.length; i++) {
-			norm += 1/ (1+Math.exp(-vector[i])) ;
+			norm += Math.exp(vector[i]) ;
 		}
 		
 
@@ -63,7 +63,7 @@ public class FeaturedAspect  {
 			Arrays.fill(vector, 1);
 		} else {
 			for (int i = 0; i < vector.length; i++) {
-				vector[i] =( 1/ (1+Math.exp(-vector[i]))) / norm;
+				vector[i] = Math.exp(vector[i]) / norm;
 			}
 		}
 		return vector;
@@ -95,7 +95,7 @@ public class FeaturedAspect  {
 			maxFeatures[i] = max;
 		}
 		
-		double[] weightsNorm = sigmoid(weights);
+		double[] weightsNorm = softmax(weights);
 		for (int i = 0; i < termsCandidates.size(); i++) {
 			double weight = 0;
 			double[] features = termsCandidates.get(i).features;
