@@ -23,4 +23,12 @@ task modelSelection(type: JavaExec, dependsOn: classes) {
     }
 }
 
+task Test(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.dynamicsystem.Test'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
+
 mainClassName = ' '
