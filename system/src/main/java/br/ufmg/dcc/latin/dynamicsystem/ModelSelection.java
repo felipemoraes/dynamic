@@ -40,7 +40,6 @@ public class ModelSelection {
 			}
 			i++;
 			System.out.println("Processed " + i + " of " + params.size() );
-			
 		}
 		
 		dumpModel(modelFile, bestParam,bestWeights);

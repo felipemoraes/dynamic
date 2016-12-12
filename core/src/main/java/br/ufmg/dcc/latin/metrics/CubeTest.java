@@ -214,11 +214,13 @@ public class CubeTest {
 				double gain = getDocGain(topic,docnos[i][j]);
 				score += gain;
 				double act = score/MAX_HEIGHT;
+				//System.out.println(docnos[i][j]);
 				ctAccu += act/(i+1);
 				time++;
 			}
 			
 		}
+		//System.out.println();
 		return ctAccu/time;
 	}
 }
