@@ -28,7 +28,7 @@ public class WeightedPassageAspectMining extends AspectMining {
 	}
 
 	@Override
-	public void miningFeedback(String index,String query,Feedback[] feedbacks) {
+	public void sendFeedback(String index,String query,Feedback[] feedbacks) {
 		cacheFeedback(feedbacks);
 		if (flatAspectModel == null) {
 			flatAspectModel = new FlatAspectModel();
@@ -183,6 +183,12 @@ public class WeightedPassageAspectMining extends AspectMining {
 			
 			i++;
 		}
+		
+	}
+
+	@Override
+	public void updateAspects(String index) {
+		// TODO Auto-generated method stub
 		
 	}
 

@@ -102,7 +102,7 @@ public class PM2 extends InteractiveReranker {
 	@Override
 	public void update(Feedback[] feedback) {
 		super.update(feedback);
-		aspectMining.miningFeedback(indexName, query,feedback);
+		aspectMining.sendFeedback(indexName, query,feedback);
 		coverage = aspectMining.getCoverage();
 		v = aspectMining.getV();
 		s = aspectMining.getS();

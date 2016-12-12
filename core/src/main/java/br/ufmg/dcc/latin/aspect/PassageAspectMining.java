@@ -29,7 +29,7 @@ public class PassageAspectMining extends AspectMining {
 	
 	
 	@Override
-	public void miningFeedback(String index, String query, Feedback[] feedbacks) {
+	public void sendFeedback(String index, String query, Feedback[] feedbacks) {
 		
 		cacheFeedback(feedbacks);
 		
@@ -181,6 +181,13 @@ public class PassageAspectMining extends AspectMining {
 			
 			i++;
 		}
+	}
+
+
+	@Override
+	public void updateAspects(String index) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

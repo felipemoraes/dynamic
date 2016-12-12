@@ -27,9 +27,10 @@ public class FeaturedAspectMining  extends AspectMining {
 	private FeaturedAspectModel featuredAspectModel;
 	
 	@Override
-	public void miningFeedback(String index, String query,  Feedback[] feedbacks) {
+	public void sendFeedback(String index, String query,  Feedback[] feedbacks) {
 		
 		cacheFeedback(feedbacks);
+		
 		for (int i = 0; i < feedbacks.length; i++) {
 			if (!feedbacks[i].isOnTopic()){
 				continue;
@@ -39,58 +40,6 @@ public class FeaturedAspectMining  extends AspectMining {
 				featuredAspectModel.addToAspect(passages[j].getAspectId(),passages[j].getPassageId(), passages[j].getRelevance());
 			}
 		}
-
-		
-		int aspectSize = featuredAspectModel.numAspects();
-		if (aspectSize == 0) {
-			return;
-		}
-		
-		importance = new double[aspectSize];
-		novelty = new double[aspectSize];
-		coverage = new double[n][aspectSize];
-		v = new double[aspectSize];
-		s = new double[aspectSize];
-
-		
-		float uniformImportance = 1.0f/aspectSize;
-		
-		Arrays.fill(importance, uniformImportance);
-		Arrays.fill(novelty, 1.0f);
-		Arrays.fill(v, 1.0f);
-		Arrays.fill(s, 1.0f);
-		
-		RetrievalController.loadDocFreqs(index);
-		
-		
-		List<String> aspectsId = featuredAspectModel.getAspects();
-		for (int i = 0; i < aspectsId.size(); ++i ) {
-			String getAspectQuery = featuredAspectModel.getAspectQuery(aspectsId.get(i), aspectWeights );
-			
-			double[] scores = null;
-			if (getAspectQuery.length() == 0) {
-				scores = new double[n];
-				Arrays.fill(scores, 1);
-			} else {
-				scores = RetrievalController.rerankResults(RetrievalCache.docids, index, getAspectQuery);
-			}
-			
-		
-			scores = scaling(scores);
-		    for(int j = 0;j< n ;++j) {
-		    	coverage[j][i] = scores[j];
-		    }
-		    
-		    
-
-			for(int j = 0;j< n ;++j) {
-				if (this.feedbacks[j] != null) {
-					float score = this.feedbacks[j].getRelevanceAspect(aspectsId.get(i));
-					coverage[j][i] = score;
-				}
-			}
-		}
-		normalizeCoverage();
 		
 	}
 	
@@ -171,6 +120,63 @@ public class FeaturedAspectMining  extends AspectMining {
 			
 		}
 		
+		
+	}
+
+
+	@Override
+	public void updateAspects(String index) {
+		int aspectSize = featuredAspectModel.numAspects();
+		if (aspectSize == 0) {
+			return;
+		}
+		
+		importance = new double[aspectSize];
+		novelty = new double[aspectSize];
+		coverage = new double[n][aspectSize];
+		v = new double[aspectSize];
+		s = new double[aspectSize];
+
+		
+		float uniformImportance = 1.0f/aspectSize;
+		
+		Arrays.fill(importance, uniformImportance);
+		Arrays.fill(novelty, 1.0f);
+		Arrays.fill(v, 1.0f);
+		Arrays.fill(s, 1.0f);
+		
+		RetrievalController.loadDocFreqs(index);
+		
+		
+		List<String> aspectsId = featuredAspectModel.getAspects();
+		for (int i = 0; i < aspectsId.size(); ++i ) {
+			String getAspectQuery = featuredAspectModel.getAspectQuery(aspectsId.get(i), aspectWeights );
+			
+			double[] scores = null;
+			if (getAspectQuery.length() == 0) {
+				scores = new double[n];
+				Arrays.fill(scores, 1);
+			} else {
+				scores = RetrievalController.rerankResults(RetrievalCache.docids, index, getAspectQuery);
+			}
+			
+		
+			scores = scaling(scores);
+		    for(int j = 0;j< n ;++j) {
+		    	coverage[j][i] = scores[j];
+		    }
+		    
+		    
+
+			for(int j = 0;j< n ;++j) {
+				if (this.feedbacks[j] != null) {
+					float score = this.feedbacks[j].getRelevanceAspect(aspectsId.get(i));
+					coverage[j][i] = score;
+				}
+			}
+		}
+		
+		normalizeCoverage();
 		
 	}
 

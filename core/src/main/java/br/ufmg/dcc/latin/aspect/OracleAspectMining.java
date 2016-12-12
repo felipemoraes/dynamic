@@ -25,7 +25,7 @@ public class OracleAspectMining extends AspectMining {
 	}
 	
 	@Override
-	public void miningFeedback(String index, String query, Feedback[] feedbacks) {
+	public void sendFeedback(String index, String query, Feedback[] feedbacks) {
 		
 		cacheFeedback(feedbacks);
 		
@@ -134,6 +134,12 @@ public class OracleAspectMining extends AspectMining {
 			i++;
 		}
 
+	}
+
+	@Override
+	public void updateAspects(String index) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

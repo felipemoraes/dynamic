@@ -116,6 +116,7 @@ public class DBGD {
 				double metric0 = cubeTest.getAverageCubeTest(j+1, topic, resultsSoFar);
 				reranker.setParams(w1);
 				ResultSet resultSet1 = reranker.get();
+
 				resultsSoFar[j] = resultSet1.docnos;
 				for (int k = 0; k < 5; k++) {
 					resultsSoFar[j][k] = resultSet1.docnos[k];
@@ -123,6 +124,10 @@ public class DBGD {
 				double metric1 = cubeTest.getAverageCubeTest(j+1, topic, resultsSoFar);
 				double d = metric1 - metric0;
 				if (d>0) {
+					System.out.println(metric1 + "  " + metric0);
+					for (int k = 0; k < resultSet0.docnos.length; k++) {
+						System.out.println(resultSet0.docnos[k] + " " + resultSet1.docnos[k]) ;
+					}
 					for (int k = 2; k < resultsSoFar.length; k++) {
 						w0[k] = w0[k] + (alpha*disturb[k-2]);
 						

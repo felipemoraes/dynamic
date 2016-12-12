@@ -420,8 +420,22 @@ public class RetrievalController {
 		}
 	}
 	
-	public static ResultSet search(String queryTerms, String index) {
+	public static ResultSet search(String topicId, String queryTerms, String index) {
 
+		if (RetrievalCache.resultSetCache == null) {
+			RetrievalCache.resultSetCache = new HashMap<String, ResultSet>();
+		}
+		
+		if (RetrievalCache.resultSetCache.containsKey(topicId)){
+			ResultSet result = RetrievalCache.resultSetCache.get(topicId);
+			RetrievalCache.docids = result.docids;
+			RetrievalCache.scores = result.scores;
+			RetrievalCache.docnos = result.docnos;
+			RetrievalCache.topDocs = result.topDocs;
+			return result;
+		}
+		
+		
 		int size = 1000;
 		
 		IndexSearcher searcher = getIndexSearcher(index);
@@ -471,11 +485,14 @@ public class RetrievalController {
 		resultSet.scores = scores;
 		resultSet.docnos = docnos;
 		resultSet.docsContent = docsContent;
+		resultSet.topDocs = results;
 	
 		RetrievalCache.docids = docids;
 		RetrievalCache.scores = scores;
 		RetrievalCache.docnos = docnos;
 		RetrievalCache.topDocs = results;
+		
+		RetrievalCache.resultSetCache.put(topicId, resultSet);
 		return resultSet;
 	}
 

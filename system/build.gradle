@@ -16,6 +16,7 @@ task main(type: JavaExec, dependsOn: classes) {
 }
 
 task modelSelection(type: JavaExec, dependsOn: classes) {
+ 	maxHeapSize = "4g"
     main = 'br.ufmg.dcc.latin.dynamicsystem.ModelSelection'
     classpath = sourceSets.main.runtimeClasspath
      if(project.hasProperty('Xargs')){

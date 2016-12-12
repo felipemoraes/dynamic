@@ -23,6 +23,8 @@ public class RetrievalCache {
 	
 	
 	public static Map<String,double[]> subtopicsCache;
+	
+	public static Map<String, ResultSet> resultSetCache;
 	public static String index;
 	
 	public static void cache(ResultSet resultSet) {

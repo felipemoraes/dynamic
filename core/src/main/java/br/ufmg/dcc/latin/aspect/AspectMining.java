@@ -23,7 +23,8 @@ public abstract class AspectMining {
 	protected double[] aspectWeights;
 	
 	
-	public abstract void miningFeedback(String index, String query, Feedback[] feedbacks);
+	public abstract void sendFeedback(String index, String query, Feedback[] feedbacks);
+	public abstract void updateAspects(String index);
 	public abstract void miningFeedbackForCube(String index,  String query, Feedback[] feedbacks);
 	
 	public double[][] getCoverage(){
