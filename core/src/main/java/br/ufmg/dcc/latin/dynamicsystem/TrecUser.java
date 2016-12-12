@@ -23,6 +23,9 @@ public class TrecUser implements User {
 			while ((line = br.readLine()) != null) {
 		    	String[] splitLine = line.split(",",5);
 		    	Passage passage = new Passage(splitLine[2],Integer.parseInt(splitLine[4]),Integer.parseInt(splitLine[3]));
+		    	if (passage.getRelevance() == 0 ) {
+		    		passage.setRelevance(1);
+		    	}
 		    	if (!repository.containsKey(splitLine[0])){
 		    		repository.put(splitLine[0], new RelevanceSet());
 		    	} 

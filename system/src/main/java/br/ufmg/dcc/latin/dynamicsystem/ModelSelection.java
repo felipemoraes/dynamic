@@ -30,7 +30,7 @@ public class ModelSelection {
 			learner.setParam(param);
 			double[] weights = learner.train();
 			double score = learner.validate(weights);
-			
+			System.out.println("Score found: " + score);
 			if (score > bestScore) {
 				System.out.println("Best score found it " + score);
 				bestScore = score;
@@ -38,8 +38,9 @@ public class ModelSelection {
 				bestWeights = weights;
 				dumpModel(modelFile, bestParam,bestWeights);
 			}
-			System.out.println("Processed " + i + " of " + params.size() );
 			i++;
+			System.out.println("Processed " + i + " of " + params.size() );
+			
 		}
 		
 		dumpModel(modelFile, bestParam,bestWeights);

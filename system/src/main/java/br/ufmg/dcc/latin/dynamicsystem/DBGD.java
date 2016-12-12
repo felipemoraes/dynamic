@@ -89,6 +89,7 @@ public class DBGD {
 		CubeTest cubeTest = new CubeTest();
 		
 		System.out.println("Starting training ...");
+		
 		for (int i = 0; i < iterations*trainingSet.size(); i++) {
 			
 			if (i % 100 == 0) {
