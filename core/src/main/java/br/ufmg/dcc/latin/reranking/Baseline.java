@@ -8,6 +8,7 @@ import org.apache.lucene.search.similarities.LMDirichlet;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.feedback.Feedback;
+import br.ufmg.dcc.latin.querying.BooleanSelectedSet;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.querying.SelectedSet;
 import br.ufmg.dcc.latin.retrieval.RetrievalController;
@@ -40,7 +41,7 @@ public class Baseline extends InteractiveReranker {
 		docids = result.docids;
 		relevance = result.scores;
 		docnos = result.docnos;
-		selected = new SelectedSet();
+		selected = new BooleanSelectedSet(docnos.length);
 		RetrievalCache.passageCache = new HashMap<String,double[]>();
 	}
 	

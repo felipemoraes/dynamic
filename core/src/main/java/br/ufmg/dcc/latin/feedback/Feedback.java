@@ -6,6 +6,7 @@ public class Feedback {
 	private String docno;
 	private Passage[] passages;
 	private boolean onTopic;
+	private int index;
 	
 	public String getTopicId() {
 		return topicId;
@@ -46,6 +47,12 @@ public class Feedback {
 	}
 	public void setDocno(String docno) {
 		this.docno = docno;
+	}
+	public int getIndex() {
+		return index;
+	}
+	public void setIndex(int index) {
+		this.index = index;
 	}
 	
  }

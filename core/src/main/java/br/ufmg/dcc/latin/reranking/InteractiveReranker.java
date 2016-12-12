@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.feedback.Feedback;
+import br.ufmg.dcc.latin.querying.BooleanSelectedSet;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.querying.SelectedSet;
 import br.ufmg.dcc.latin.retrieval.RetrievalController;
@@ -19,7 +20,7 @@ public abstract class InteractiveReranker implements Reranker {
 	protected String query;
 	protected String indexName;
 	
-	protected SelectedSet selected;
+	protected BooleanSelectedSet selected;
 	
 	public abstract String debug(String topicid, int iteration);
 	
@@ -31,7 +32,7 @@ public abstract class InteractiveReranker implements Reranker {
 	public ResultSet get(){
 		ResultSet result = new ResultSet(5);
 		int depth = Math.min(relevance.length, this.depth+selected.size());	
-		SelectedSet localSelectedSet = new SelectedSet();
+		BooleanSelectedSet localSelectedSet = new BooleanSelectedSet(docnos.length);
 		// greedily diversify the top documents
 		int k = 0;
 		while(k < 5){
@@ -42,7 +43,7 @@ public abstract class InteractiveReranker implements Reranker {
 			// for each unselected document
 			for (int i = 0; i < depth; ++i ){ 
 				// skip already selected documents
-				if (selected.has(docnos[i]) || localSelectedSet.has(docnos[i])){
+				if (selected.has(i) || localSelectedSet.has(i)){
 					continue;
 				}
 				double score = score(i);
@@ -57,8 +58,9 @@ public abstract class InteractiveReranker implements Reranker {
 			result.scores[k] = maxScore;
 			result.docids[k] = docids[maxRank];
 			result.docnos[k] = docnos[maxRank];
+			result.indices[k] = maxRank;
 			// mark as selected
-			localSelectedSet.put(docnos[maxRank]);
+			localSelectedSet.put(maxRank);
 			update(maxRank);
 			k++;
 		}
@@ -68,7 +70,7 @@ public abstract class InteractiveReranker implements Reranker {
 	
 	public void update(Feedback[] feedback){
 		for (int i = 0; i < feedback.length; i++) {
-			selected.put(feedback[i].getDocno());
+			selected.put(feedback[i].getIndex());
 		}
 	}
 	
@@ -80,14 +82,14 @@ public abstract class InteractiveReranker implements Reranker {
 		docids = result.docids;
 		relevance = result.scores;
 		docnos = result.docnos;
-		selected = new SelectedSet();
+		selected = new BooleanSelectedSet(docnos.length);
 		RetrievalCache.passageCache = new HashMap<String,double[]>();
 		RetrievalCache.subtopicsCache = new HashMap<String,double[]>();
 	}
 	
 	public void start(double[] params){
 		depth = (int) params[0];
-		selected = new SelectedSet();
+		selected = new BooleanSelectedSet(docnos.length);
 	}
 
 	public void setParams(double[] params){

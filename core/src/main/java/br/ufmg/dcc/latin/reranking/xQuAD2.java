@@ -110,7 +110,7 @@ public class xQuAD2 extends InteractiveReranker {
 	
 	public void updateNovelty(){
 		for (int j = 0; j < docids.length; ++j) {
-			if (! selected.has(docnos[j])) {
+			if (! selected.has(j)) {
 				continue;
 			}
 			update(j);

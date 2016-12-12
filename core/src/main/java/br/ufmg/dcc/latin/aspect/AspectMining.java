@@ -45,12 +45,9 @@ public abstract class AspectMining {
 			this.feedbacks = new Feedback[n];
 		}
 		
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < feedbacks.length; j++) {
-				if (feedbacks[j].getDocno().equals(RetrievalCache.docnos[i])){
-					this.feedbacks[i] = feedbacks[j]; 
-				}
-			}
+		for (int j = 0; j < feedbacks.length; j++) {
+			int i = feedbacks[j].getIndex();
+			this.feedbacks[i] = feedbacks[j]; 
 		}
 	}
 	

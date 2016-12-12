@@ -9,12 +9,14 @@ public class ResultSet{
 	public String[] docnos;
 	public String[] docsContent;
 	public TopDocs topDocs;
+	public int indices[];
+	
 	public ResultSet(int size){
 		docids = new int[size];
 		scores = new double[size];
 		docnos = new String[size];
 		docsContent = new String[size];
-		
+		indices = new int[size];
 	}
 	
 	public ResultSet(){

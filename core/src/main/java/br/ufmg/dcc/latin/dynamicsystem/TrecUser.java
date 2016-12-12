@@ -67,6 +67,7 @@ public class TrecUser implements User {
 		Feedback[] feedbacks = new Feedback[n];
 		for (int i = 0; i < resultSet.docids.length; i++) {
 			feedbacks[i] = TrecUser.get(resultSet.docnos[i], topicId);
+			feedbacks[i].setIndex(resultSet.indices[i]);
 		}
 		return feedbacks;
 	}
