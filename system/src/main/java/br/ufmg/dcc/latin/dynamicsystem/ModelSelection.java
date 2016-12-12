@@ -30,6 +30,7 @@ public class ModelSelection {
 			learner.setParam(param);
 			double[] weights = learner.train();
 			double score = learner.validate(weights);
+			
 			if (score > bestScore) {
 				System.out.println("Best score found it " + score);
 				bestScore = score;

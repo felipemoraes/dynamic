@@ -44,8 +44,8 @@ public class xQuAD extends InteractiveReranker {
 		for (int i = 2; i < params.length; i++) {
 			aspectWeights[i-2] = params[i];
 		}
-		
 		aspectMining.setAspectWeights(aspectWeights);
+		aspectMining.updateAspects(indexName);
 		coverage = aspectMining.getCoverage();
 		importance = aspectMining.getImportance();
 		novelty = aspectMining.getNovelty();
