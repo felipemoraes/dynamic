@@ -14,7 +14,9 @@ import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.diversity.FlatAspectModel;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
+import br.ufmg.dcc.latin.retrieval.ReScorerController;
 import br.ufmg.dcc.latin.retrieval.RetrievalController;
+import gnu.trove.map.hash.TIntDoubleHashMap;
 
 public class SubtopicNameAspectMining extends AspectMining {
 
@@ -109,8 +111,8 @@ public class SubtopicNameAspectMining extends AspectMining {
 			if (RetrievalCache.subtopicsCache.containsKey(aspectComponent)) {
 				scores = RetrievalCache.subtopicsCache.get(aspectComponent);
 			} else {
-				scores = RetrievalController.rerankResults(RetrievalCache.docids,  index, QueryParser.escape(aspectComponent));
-				RetrievalCache.subtopicsCache.put(aspectComponent, scores);
+				TIntDoubleHashMap complexQuery = ReScorerController.getComplexQuery(aspectComponent);
+				scores = ReScorerController.rescore(complexQuery);
 			}
 			scores = scaling(scores);
 		    for(int j = 0;j< n ;++j) {
@@ -173,8 +175,8 @@ public class SubtopicNameAspectMining extends AspectMining {
 			if (RetrievalCache.subtopicsCache.containsKey(aspectComponent)) {
 				scores = RetrievalCache.subtopicsCache.get(aspectComponent);
 			} else {
-				scores = RetrievalController.rerankResults(RetrievalCache.docids, index, QueryParser.escape(aspectComponent));
-				RetrievalCache.subtopicsCache.put(aspectComponent, scores);
+				TIntDoubleHashMap complexQuery = ReScorerController.getComplexQuery(aspectComponent);
+				scores = ReScorerController.rescore(complexQuery);
 			}
 			scores = scaling(scores);
 		    for(int j = 0;j< n ;++j) {

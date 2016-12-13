@@ -37,11 +37,20 @@ import org.apache.lucene.util.BytesRef;
  * 
  * @lucene.experimental
  */
-public class LMDirichlet extends LMDirichletSimilarity {
+public class LMDirichlet extends LMDirichletSimilarity implements ReScoreSimilarity {
 
   public LMDirichlet(float mu) {
 	  super(mu);
   }
+  
+  @Override
+  public float score(BasicStats stats, float freq, float docLen) {
+    float score = stats.getBoost() * (float)(Math.log(1 + freq /
+        (getMu() * ((LMStats)stats).getCollectionProbability())) +
+        Math.log(getMu()  / (docLen + getMu() )));
+    return score > 0.0f ? score : 0.0f;
+  }
+  
   @Override
   public SimScorer simScorer(SimWeight stats, LeafReaderContext context) throws IOException {
     if (stats instanceof MultiSimilarity.MultiStats) {
@@ -82,8 +91,11 @@ public class LMDirichlet extends LMDirichletSimilarity {
     
     @Override
     public Explanation explain(int doc, Explanation freq) {
+  
       return LMDirichlet.this.explain(stats, doc, freq, norms.get(doc));
     }
+    
+    
     
     @Override
     public float computeSlopFactor(int distance) {

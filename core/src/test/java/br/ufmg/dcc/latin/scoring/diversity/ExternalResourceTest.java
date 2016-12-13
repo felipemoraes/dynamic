@@ -32,7 +32,7 @@ public class ExternalResourceTest {
 	@Test
 	public void test() {
 		ExternalKnowledgeCache.init();
-		System.out.println(ExternalKnowledgeCache.msEntityLinkingCollection.getKeyWordScore("crude", 18223));
+		System.out.println(ExternalKnowledgeCache.msEntityLinkingCollection.getKeyWordScore(1, 18223));
 	}
 
 }

@@ -1,7 +1,7 @@
 package br.ufmg.dcc.latin.reranking;
 
 import br.ufmg.dcc.latin.feedback.Feedback;
-import br.ufmg.dcc.latin.retrieval.RetrievalController;
+import br.ufmg.dcc.latin.retrieval.ReScorerController;
 
 public class MMR extends InteractiveReranker {
 
@@ -24,7 +24,7 @@ public class MMR extends InteractiveReranker {
 			newCache = docSimCache[docid];
 		} else {
 			//float[] newCacheTitle = RetrievalController.getCosineSimilarities(docids, docid, indexName, "title");
-			newCache = RetrievalController.getCosineSimilarities(docids, docid,indexName, "content");
+			newCache = ReScorerController.sim(docids, docid);
 			//newCacheTitle = normalize(newCacheTitle);
 			newCache = normalize(newCache);
 			//newCache = new float[newCacheContent.length];
@@ -47,7 +47,6 @@ public class MMR extends InteractiveReranker {
 	@Override
 	public void start(String query, String index){
 		super.start(query,index);
-		RetrievalController.termsVector = null;
 		docSimCache = new double[relevance.length][];
 	}
 

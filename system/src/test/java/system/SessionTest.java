@@ -44,7 +44,7 @@ public class SessionTest {
 		Session session = new Session();
 		session.setParams(params);
 		RetrievalCache.topicId = "DD16-1";
-		RetrievalCache.index = "ebola16";
+		RetrievalCache.indexName = "ebola16";
 		session.setReranker("xQuAD FeaturedAspectMining");
 		session.run( "ebola16", "DD16-1", "US Military Crisis Response");
 

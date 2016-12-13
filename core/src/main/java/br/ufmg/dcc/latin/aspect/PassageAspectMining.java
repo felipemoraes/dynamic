@@ -2,13 +2,13 @@ package br.ufmg.dcc.latin.aspect;
 
 import java.util.Arrays;
 
-import org.apache.lucene.queryparser.classic.QueryParser;
-
 import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.diversity.FlatAspectModel;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
+import br.ufmg.dcc.latin.retrieval.ReScorerController;
 import br.ufmg.dcc.latin.retrieval.RetrievalController;
+import gnu.trove.map.hash.TIntDoubleHashMap;
 
 
 public class PassageAspectMining extends AspectMining {
@@ -76,7 +76,8 @@ public class PassageAspectMining extends AspectMining {
 				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
 					scores = RetrievalCache.passageCache.get(aspectComponent);
 				} else {
-					scores = RetrievalController.rerankResults(RetrievalCache.docids, index, QueryParser.escape(aspectComponent));
+					TIntDoubleHashMap complexQuery = ReScorerController.getComplexQuery(query);
+					scores = ReScorerController.rescore(complexQuery);
 					RetrievalCache.passageCache.put(aspectComponent, scores);
 				}
 				
@@ -151,8 +152,8 @@ public class PassageAspectMining extends AspectMining {
 				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
 					scores = RetrievalCache.passageCache.get(aspectComponent);
 				} else {
-					scores = RetrievalController.rerankResults(RetrievalCache.docids, index, QueryParser.escape(aspectComponent));
-					RetrievalCache.passageCache.put(aspectComponent, scores);
+					TIntDoubleHashMap complexQuery = ReScorerController.getComplexQuery(query);
+					scores = ReScorerController.rescore(complexQuery);
 				}
 				
 			    scores = scaling(scores);

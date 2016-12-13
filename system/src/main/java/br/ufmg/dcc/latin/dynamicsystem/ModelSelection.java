@@ -78,6 +78,7 @@ public class ModelSelection {
 		//	deltas.add(step*(i+1));
 		//}
 		alphas.add(0.1d);
+		
 		deltas.add(0.2d);
 		step = 0.1;
 		for (int i = 0; i < 10	; i++) {

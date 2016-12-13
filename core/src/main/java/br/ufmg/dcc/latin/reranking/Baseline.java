@@ -24,7 +24,7 @@ public class Baseline extends InteractiveReranker {
 		} else if (sim.equals("DPH")){
 			RetrievalController.setSimilarity(new DPH());
 		} else if (sim.equals("BM25")){
-			RetrievalController.setSimilarity(new BM25());
+			//RetrievalController.setSimilarity(new BM25());
 		} 
 	}
 	

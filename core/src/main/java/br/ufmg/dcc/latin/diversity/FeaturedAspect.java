@@ -6,43 +6,45 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gnu.trove.map.hash.TIntObjectHashMap;
+
 
 public class FeaturedAspect  {
-	Map<String, TermFeatures> termsFeatures;
+	TIntObjectHashMap<TermFeatures> termsFeatures;
 	
 	public FeaturedAspect(){
-		termsFeatures = new HashMap<String, TermFeatures>();
+		termsFeatures = new TIntObjectHashMap<TermFeatures>();
 	}
 
-	public void putTerm(String term, int passageId, int relevance) {
-		if (!termsFeatures.containsKey(term)){
-			termsFeatures.put(term, new TermFeatures(term, passageId, relevance));
+	public void putTerm(int termId, int passageId, int relevance) {
+		if (!termsFeatures.containsKey(termId)){
+			termsFeatures.put(termId, new TermFeatures(termId, passageId, relevance));
 		}
-		termsFeatures.get(term).updateTerm(passageId, relevance);
+		termsFeatures.get(termId).updateTerm(passageId, relevance);
 	}
 
 	public List<TermFeatures> getTopTerms(double[] weights) {
-		List<TermFeatures> candidateTerms = generateCandidateTerms(weights);
+		TermFeatures[] candidateTerms = generateCandidateTerms(weights);
+		int querySize = Math.min(20, candidateTerms.length);
 		
-		int querySize = Math.min(20, candidateTerms.size());
-		Map<String,TermFeatures> selectedTerms = new HashMap<String,TermFeatures>();
+		Map<Integer,TermFeatures> selectedTerms = new HashMap<Integer,TermFeatures>();
 		while (selectedTerms.size() < querySize) {
 			int maxRank = -1;
 			double maxScore = Double.NEGATIVE_INFINITY;
-			for (int i = 0; i < candidateTerms.size(); i++) {
+			for (int i = 0; i < candidateTerms.length; i++) {
 				
-				if (selectedTerms.containsKey(candidateTerms.get(i).term)){
+				if (selectedTerms.containsKey(candidateTerms[i].termId)){
 					continue;
 				}
 				
 				
-				if (maxScore < candidateTerms.get(i).weight){
+				if (maxScore < candidateTerms[i].weight){
 					maxRank = i;
-					maxScore = candidateTerms.get(i).weight;
+					maxScore = candidateTerms[i].weight;
 				}
 			}
-			
-			selectedTerms.put(candidateTerms.get(maxRank).term, candidateTerms.get(maxRank));
+	
+			selectedTerms.put(candidateTerms[maxRank].termId, candidateTerms[maxRank]);
 		}
 		List<TermFeatures> finalSelectedTerms = new ArrayList<TermFeatures>();
 		for (TermFeatures termFeatures : selectedTerms.values()) {
@@ -70,25 +72,23 @@ public class FeaturedAspect  {
 	}
 
 
-	private List<TermFeatures> generateCandidateTerms(double[] weights) {
+	private TermFeatures[] generateCandidateTerms(double[] weights) {
 		
-		List<TermFeatures> termsCandidates = new ArrayList<TermFeatures>();
-		for (TermFeatures termFeatures: termsFeatures.values()) {
-			termsCandidates.add(termFeatures);
-		}
+		TermFeatures[] termsCandidates = new TermFeatures[termsFeatures.size()];
+		termsFeatures.values(termsCandidates);
 	
 		double[] maxFeatures = new double[8];
 		double[] minFeatures = new double[8];
 		for (int i = 0; i < minFeatures.length; i++) {
 			double max = Double.MIN_VALUE;
 			double min = Double.MAX_VALUE;
-			for (int j = 0; j < termsCandidates.size(); j++) {
+			for (int j = 0; j < termsCandidates.length; j++) {
 				
-				if (termsCandidates.get(j).features[i] < min) {
-					min = termsCandidates.get(j).features[i];
+				if (termsCandidates[j].features[i] < min) {
+					min = termsCandidates[j].features[i];
 				}
-				if (termsCandidates.get(j).features[i] > max) {
-					max = termsCandidates.get(j).features[i];
+				if (termsCandidates[j].features[i] > max) {
+					max = termsCandidates[j].features[i];
 				}			
 			}
 			minFeatures[i] = min;
@@ -96,9 +96,9 @@ public class FeaturedAspect  {
 		}
 		
 		double[] weightsNorm = softmax(weights);
-		for (int i = 0; i < termsCandidates.size(); i++) {
+		for (int i = 0; i < termsCandidates.length; i++) {
 			double weight = 0;
-			double[] features = termsCandidates.get(i).features;
+			double[] features = termsCandidates[i].features;
 			for (int j = 0; j < minFeatures.length; j++) {
 				if (maxFeatures[j]-minFeatures[j]  > 0) {
 					double scaledFeature = (features[j] -  minFeatures[j])/(maxFeatures[j]-minFeatures[j]);
@@ -109,7 +109,7 @@ public class FeaturedAspect  {
 				
 			}
 			
-			termsCandidates.get(i).weight = weight/features.length;
+			termsCandidates[i].weight = weight/features.length;
 		}
 		return termsCandidates;
 	}

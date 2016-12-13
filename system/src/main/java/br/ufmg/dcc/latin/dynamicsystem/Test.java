@@ -76,7 +76,7 @@ public class Test {
 			reranker.start(query, index);
 			reranker.start(bestWeights);
 			RetrievalCache.topicId = topic;
-			RetrievalCache.index = index;
+			RetrievalCache.indexName = index;
 			System.out.println(topic);
 			for (int j = 0; j < 10; j++) {
 				ResultSet resultSet = reranker.get();

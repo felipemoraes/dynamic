@@ -8,18 +8,20 @@ import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.diversity.FeaturedAspectModel;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
-import br.ufmg.dcc.latin.retrieval.RetrievalController;
+import br.ufmg.dcc.latin.retrieval.ReScorerController;
+import gnu.trove.map.hash.TIntDoubleHashMap;
 
 public class FeaturedAspectMining  extends AspectMining {
 	
 	public FeaturedAspectMining() {
+		
 		n = RetrievalCache.docids.length;
-		importance = new double[0];
-		novelty = new double[0];
-		coverage = new double[n][0];
-		s = new double[0];
-		v = new double[0];
-		accumulatedRelevance = new double[0];
+		importance = new double[20];
+		novelty = new double[20];
+		coverage = new double[n][20];
+		s = new double[20];
+		v = new double[20];
+		accumulatedRelevance = new double[20];
 		featuredAspectModel = new FeaturedAspectModel();
 		ExternalKnowledgeCache.init();
 	}
@@ -64,32 +66,23 @@ public class FeaturedAspectMining  extends AspectMining {
 			return;
 		}
 		
-		importance = new double[aspectSize];
-		novelty = new double[aspectSize];
-		coverage = new double[n][aspectSize];
-		accumulatedRelevance = new double[aspectSize];
-
-		
 		float uniformImportance = 1.0f/aspectSize;
 		
 		Arrays.fill(importance, uniformImportance);
 		Arrays.fill(novelty, 1.0f);
-		Arrays.fill(getV(), 1.0f);
-		Arrays.fill(getS(), 1.0f);
-		
-		RetrievalController.loadDocFreqs(index);
-		
+		Arrays.fill(v, 1.0f);
+		Arrays.fill(s, 1.0f);
 		
 		List<String> aspectsId = featuredAspectModel.getAspects();
 		for (int i = 0; i < aspectsId.size(); ++i ) {
-			String getAspectQuery = featuredAspectModel.getAspectQuery(aspectsId.get(i), aspectWeights);
-			
+	
+			TIntDoubleHashMap getAspectQuery = featuredAspectModel.getAspectQuery(aspectsId.get(i), aspectWeights);
 			double[] scores = null;
-			if (getAspectQuery.length() == 0) {
+			if (getAspectQuery.size() == 0) {
 				scores = new double[n];
 				Arrays.fill(scores, 1);
 			} else {
-				scores = RetrievalController.rerankResults(RetrievalCache.docids, index, getAspectQuery);
+				scores =  ReScorerController.rescore(getAspectQuery);
 			}
 			
 		
@@ -131,35 +124,25 @@ public class FeaturedAspectMining  extends AspectMining {
 			return;
 		}
 		
-		importance = new double[aspectSize];
-		novelty = new double[aspectSize];
-		coverage = new double[n][aspectSize];
-		v = new double[aspectSize];
-		s = new double[aspectSize];
-
-		
 		float uniformImportance = 1.0f/aspectSize;
 		
 		Arrays.fill(importance, uniformImportance);
 		Arrays.fill(novelty, 1.0f);
 		Arrays.fill(v, 1.0f);
 		Arrays.fill(s, 1.0f);
-		
-		RetrievalController.loadDocFreqs(index);
-		
-		
+
 		List<String> aspectsId = featuredAspectModel.getAspects();
 		for (int i = 0; i < aspectsId.size(); ++i ) {
-			String getAspectQuery = featuredAspectModel.getAspectQuery(aspectsId.get(i), aspectWeights );
+
 			
+			TIntDoubleHashMap getAspectQuery = featuredAspectModel.getAspectQuery(aspectsId.get(i), aspectWeights);
 			double[] scores = null;
-			if (getAspectQuery.length() == 0) {
+			if (getAspectQuery.size() == 0) {
 				scores = new double[n];
 				Arrays.fill(scores, 1);
 			} else {
-				scores = RetrievalController.rerankResults(RetrievalCache.docids, index, getAspectQuery);
+				scores =  ReScorerController.rescore(getAspectQuery);
 			}
-			
 		
 			scores = scaling(scores);
 		    for(int j = 0;j< n ;++j) {

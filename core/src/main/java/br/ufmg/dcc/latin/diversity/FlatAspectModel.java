@@ -48,7 +48,7 @@ public class FlatAspectModel {
 			sum += value;
 		}
 		if (sum > 0) {
-			return sum/rels.size()/4;
+			return (sum/rels.size())/4;
 		}
 		
 		return 0;

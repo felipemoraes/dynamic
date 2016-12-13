@@ -1,16 +1,17 @@
 package br.ufmg.dcc.latin.diversity;
 
 import br.ufmg.dcc.latin.cache.ExternalKnowledgeCache;
+import br.ufmg.dcc.latin.retrieval.ReScorerController;
 import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
 public class TermFeatures {
 	
-	public String term;
+	public int termId;
 	public double[] features;
 	public double weight;
 	
-	public TermFeatures(String term, int passageId, int relevance){
-		this.term = term;
+	public TermFeatures(int termId, int passageId, int relevance){
+		this.termId = termId;
 		this.features = new double[8];
 		this.features[0] = collectionIdf();
 		this.features[1] = 1f;
@@ -31,20 +32,20 @@ public class TermFeatures {
 	}
 	
 	private double msEntities( int passageId) {
-		return ExternalKnowledgeCache.msEntityLinkingCollection.getKeyWordScore(term, passageId);
+		return ExternalKnowledgeCache.msEntityLinkingCollection.getKeyWordScore(termId, passageId);
 	}
 
 
 
 	private double dbPediaEntities(int passageId) {
-		return ExternalKnowledgeCache.dbpediaEntityLinkingCollection.getKeyWordScore(term, passageId);
+		return ExternalKnowledgeCache.dbpediaEntityLinkingCollection.getKeyWordScore(termId, passageId);
 	}
 
 
 
 	private double queryLog() {
 		float numDocs = ExternalKnowledgeCache.queryLog.getNumDocs();
-		float docFreq = ExternalKnowledgeCache.queryLog.getDocFreq(term);
+		float docFreq = ExternalKnowledgeCache.queryLog.getDocFreq(termId);
 		return (float) Math.log(numDocs/(docFreq+1));
 	}
 
@@ -52,7 +53,7 @@ public class TermFeatures {
 
 	private double wikipediaTitles() {
 		float numDocs = ExternalKnowledgeCache.wikipedia.getNumDocs();
-		float docFreq = ExternalKnowledgeCache.wikipedia.getDocFreq(term);
+		float docFreq = ExternalKnowledgeCache.wikipedia.getDocFreq(termId);
 		return (float) Math.log(numDocs/(docFreq+1));
 	}
 
@@ -60,7 +61,7 @@ public class TermFeatures {
 
 	private double googleNgram() {
 		float sumTotalTermFreq = ExternalKnowledgeCache.ngram.getSumTotalTermFreq();
-		float ttf = ExternalKnowledgeCache.ngram.getTotalTermFreq(term);
+		float ttf = ExternalKnowledgeCache.ngram.getTotalTermFreq(termId);
 		return (float) Math.log(sumTotalTermFreq/(ttf+1));
 	}
 
@@ -68,8 +69,8 @@ public class TermFeatures {
 
 	private double collectionIdf() {
 		double[] weights = RetrievalController.getFiedlWeights();
-		double idf = weights[0]*RetrievalController.getIdf("title", term)
-					+ weights[1]*RetrievalController.getIdf( "content", term);
+		double idf = weights[0]*ReScorerController.getIdf("title", termId)
+					+ weights[1]*ReScorerController.getIdf( "content", termId);
 		return idf ;
 	}
 }

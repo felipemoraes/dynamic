@@ -99,7 +99,7 @@ public class DBGD {
 			nextQuery();
 			
 			RetrievalCache.topicId = topic;
-			RetrievalCache.index = index;
+			RetrievalCache.indexName = index;
 			reranker.start(query, index);
 			reranker.start(w0);
 			
@@ -163,7 +163,7 @@ public class DBGD {
 			this.query = queryInfo[2];
 			String[][] result = new String[n][5];
 			RetrievalCache.topicId = topic;
-			RetrievalCache.index = index;
+			RetrievalCache.indexName = index;
 			reranker.start(query, index);
 			reranker.start(weight);
 			for (int i = 0; i < n; i++) {

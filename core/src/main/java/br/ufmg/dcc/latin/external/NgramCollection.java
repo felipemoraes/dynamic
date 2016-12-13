@@ -4,20 +4,18 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.apache.lucene.util.BytesRef;
+import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
 public class NgramCollection {
 
 	private long sumTotalTermFreq;
 	
-	private Map<String,Integer> totalTermFreq;
+	private int[] totalTermFreq;
 	
 	public NgramCollection(){
-	
-		totalTermFreq =  new HashMap<String,Integer>();
+		int n = RetrievalController.vocab[0].size();
+		totalTermFreq = new int[n];
 		
 		try (BufferedReader br = new BufferedReader(new FileReader("../share/googlengram_counts.txt"))) {
 			String line = br.readLine();
@@ -25,8 +23,11 @@ public class NgramCollection {
 			sumTotalTermFreq = Long.parseLong(line);
 			while ((line = br.readLine()) != null) {
 		    	String[] splitLine = line.split(" ",2);
-		    	totalTermFreq.put(splitLine[0], Integer.parseInt(splitLine[1]));
-		    			
+		    	int termId = RetrievalController.vocab[0].getId(splitLine[0]);
+		    	if (termId == -1) {
+		    		continue;
+		    	}
+		    	totalTermFreq[termId] = Integer.parseInt(splitLine[1]);
 			}
 			
 
@@ -39,8 +40,8 @@ public class NgramCollection {
 		}
 	}
 	
-	public int getTotalTermFreq(String term){
-		return totalTermFreq.getOrDefault(term, 0);
+	public int getTotalTermFreq(int termId){
+		return totalTermFreq[termId];
 	}
 
 	public long getSumTotalTermFreq() {

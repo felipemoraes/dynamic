@@ -4,10 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.apache.lucene.util.BytesRef;
+import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
 public class ExternalCollection {
 	
@@ -15,12 +13,13 @@ public class ExternalCollection {
 	private int sumDocFreq;
 	private int sumTotalTermFreq;
 	
-	private Map<String,Integer> docFreq;
-	private Map<String,Integer> totalTermFreq;
+	private  int[] docFreq;
+	private int[] totalTermFreq;
 	
 	public ExternalCollection(String filename){
-		docFreq = new HashMap<String,Integer>();
-		totalTermFreq =  new HashMap<String,Integer>();
+		int n = RetrievalController.vocab[0].size();
+		docFreq = new int[n];
+		totalTermFreq =  new int[n];
 		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
 			String line = br.readLine();
 			
@@ -31,8 +30,12 @@ public class ExternalCollection {
 			while ((line = br.readLine()) != null) {
 		    	splitLine = line.split(" ",3);
 		    	String term = splitLine[0];
-		    	docFreq.put(term, Integer.parseInt(splitLine[1]));
-		    	totalTermFreq.put(term, Integer.parseInt(splitLine[2]));
+		    	int termId = RetrievalController.vocab[0].getId(term);
+		    	if (termId == -1) {
+		    		continue;
+		    	}
+		    	docFreq[termId] =  Integer.parseInt(splitLine[1]);
+		    	totalTermFreq[termId] = Integer.parseInt(splitLine[2]);
 		    			
 			}
 			
@@ -46,12 +49,12 @@ public class ExternalCollection {
 		}
 	}
 	
-	public int getDocFreq(String term){
-		return docFreq.getOrDefault(term, 0);
+	public int getDocFreq(int termId){
+		return docFreq[termId];
 	}
 	
-	public int getTotalTermFreq(String term){
-		return totalTermFreq.getOrDefault(term, 0);
+	public int getTotalTermFreq(int termId){
+		return totalTermFreq[termId];
 	}
 
 	public int getNumDocs() {

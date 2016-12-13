@@ -4,18 +4,18 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.apache.lucene.util.BytesRef;
+import br.ufmg.dcc.latin.retrieval.RetrievalController;
+import gnu.trove.map.hash.TIntDoubleHashMap;
 
 public class EntityLinkingCollection {
 	
-	Map<String, Map<Integer,Double> > invertedEntityIndex;
+	TIntDoubleHashMap[] invertedEntityIndex;
 	
 	public EntityLinkingCollection(String filename) {
 		
-		invertedEntityIndex = new HashMap<String, Map<Integer,Double> >();
+		int n = RetrievalController.vocab[0].size();
+		invertedEntityIndex = new TIntDoubleHashMap[n];
 		
 		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
 			String line = br.readLine();
@@ -23,8 +23,9 @@ public class EntityLinkingCollection {
 			while ((line = br.readLine()) != null) {
 				String[] splitLine = line.split(",",2);
 				String keyword = splitLine[0];
+				int termId = RetrievalController.vocab[0].getId(keyword);
 				String[] occurrences = splitLine[1].split(",");
-				Map<Integer,Double> map = new HashMap<Integer,Double>();
+				TIntDoubleHashMap map = new TIntDoubleHashMap();
 				for (String occur : occurrences) {
 					String[] splitOccur = occur.split(":");
 					if (splitOccur.length < 2) {
@@ -32,7 +33,10 @@ public class EntityLinkingCollection {
 					}
 					map.put(Integer.parseInt(splitOccur[0]), Double.parseDouble(splitOccur[1]));
 				}
-				invertedEntityIndex.put(keyword, map);
+		    	if (termId == -1) {
+		    		continue;
+		    	}
+				invertedEntityIndex[termId] = map;
 		    			
 			}
 			
@@ -46,9 +50,12 @@ public class EntityLinkingCollection {
 		}
 	}
 
-	public double getKeyWordScore(String term, int passageId){
-		if (invertedEntityIndex.containsKey(term)){
-			return invertedEntityIndex.get(term).getOrDefault(passageId, 0d);
+	public double getKeyWordScore(int termId, int passageId){
+		if (invertedEntityIndex[termId] == null) {
+			return 0d;
+		}
+		if (invertedEntityIndex[termId].containsKey(passageId)){
+			return invertedEntityIndex[termId].get(passageId);
 		}
 		return 0d;
 	}

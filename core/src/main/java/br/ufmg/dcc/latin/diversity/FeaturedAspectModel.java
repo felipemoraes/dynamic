@@ -1,16 +1,13 @@
 package br.ufmg.dcc.latin.diversity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.lucene.index.Terms;
-import org.apache.lucene.index.TermsEnum;
-import org.apache.lucene.util.BytesRef;
-
+import br.ufmg.dcc.latin.index.DocVec;
 import br.ufmg.dcc.latin.retrieval.RetrievalController;
+import gnu.trove.map.hash.TIntDoubleHashMap;
 
 public class FeaturedAspectModel {
 	
@@ -24,19 +21,13 @@ public class FeaturedAspectModel {
 		if (!featuredAspectes.containsKey(aspectId)){
 			featuredAspectes.put(aspectId, new FeaturedAspect());
 		}
-		Terms passageTerms = RetrievalController.getPassageTerms(passageId);
 		
-		try {
-			TermsEnum terms = passageTerms.iterator();
-			BytesRef term = terms.next();
-			while( term != null) {
-				featuredAspectes.get(aspectId).putTerm(term.utf8ToString(),passageId,relevance);
-				term = terms.next();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		DocVec passageDocVec = RetrievalController.getPassageTerms(passageId);
+		int[] terms = passageDocVec.getTerms();
+		for (int i = 0; i < terms.length; i++) {
+			
+			featuredAspectes.get(aspectId).putTerm(terms[i],passageId,relevance);
 		}
-
 	}
 
 	public int numAspects() {
@@ -52,19 +43,19 @@ public class FeaturedAspectModel {
 		
 	}
 
-	public String getAspectQuery(String aspectId, double[] weights) {
+	public TIntDoubleHashMap getAspectQuery(String aspectId, double[] weights) {
 		
 		FeaturedAspect termsFeatures = featuredAspectes.get(aspectId);
 		List<TermFeatures> topTerms = termsFeatures.getTopTerms(weights);
-		String query = "";
+		TIntDoubleHashMap complexQuery = new TIntDoubleHashMap();
 		for (int i = 0; i < topTerms.size(); i++) {
 			double weight = topTerms.get(i).weight;
 			if (weight < 0) {
 				weight = 0;
 			}
-			query += topTerms.get(i).term + "^" + String.format("%.8f ", weight);
+			complexQuery.put(topTerms.get(i).termId, weight);
 			
 		}
-		return query;
+		return complexQuery;
 	}
 }
