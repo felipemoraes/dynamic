@@ -31,13 +31,13 @@ public class ModelSelection {
 			double score = learner.validate(weights);
 			System.out.println("Score found: " + score);
 			if (score > bestScore) {
-				System.out.println("Best score found it " + score);
 				bestScore = score;
 				bestParam = param;
 				bestWeights = weights;
 				learner.dumpModel(modelFile, bestParam,bestWeights);
 			}
 			i++;
+			System.out.println("Best score: " + score);
 			System.out.println("Processed " + i + " of " + params.size() );
 		}
 		learner.dumpModel(modelFile, bestParam,bestWeights);

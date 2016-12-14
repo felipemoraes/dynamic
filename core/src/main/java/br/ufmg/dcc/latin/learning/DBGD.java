@@ -34,6 +34,7 @@ public class DBGD implements OnlineLearner {
 	private List<String[]> trainingSet;
 	private List<String[]> validationSet;
 	
+	private double metric;
 	int nextIndex;
 	
 	InteractiveReranker reranker;
@@ -80,6 +81,8 @@ public class DBGD implements OnlineLearner {
 	public void nextQuery(){
 		
 		if (nextIndex == trainingSet.size()){
+			System.out.println("ACT:" + metric/trainingSet.size());
+			metric = 0;
 			nextIndex = 0;
 			Collections.shuffle(trainingSet);
 		}
@@ -138,17 +141,10 @@ public class DBGD implements OnlineLearner {
 				double d = metric1 - metric0;
 				
 				if (d>0) {
-					System.out.println(metric1 + "  " + metric0);
-					for (int k = 0; k < resultSet0.docnos.length; k++) {
-						System.out.println(resultSet0.docnos[k] + " " + resultSet1.docnos[k]) ;
-					}
 					for (int k = 2; k < resultsSoFar.length; k++) {
 						w0[k] = w0[k] + (alpha*disturb[k-2]);
-						
-						System.out.print(w0[k] + " ");
-						
 					}
-					System.out.println();
+
 					reranker.setParams(w0);
 					resultSet0 = reranker.get();
 					for (int k = 0; k < 5; k++) {
@@ -160,7 +156,9 @@ public class DBGD implements OnlineLearner {
 					Feedback[] feedback = TrecUser.get(resultSet0, topic);
 					reranker.update(feedback);
 				}
+					
 			}
+			metric += cubeTest.getAverageCubeTest(10, topic, resultsSoFar);
 			
 		}
 			
