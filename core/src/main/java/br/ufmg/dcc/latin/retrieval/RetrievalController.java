@@ -37,6 +37,7 @@ import br.ufmg.dcc.latin.index.InMemoryDirectedIndex;
 import br.ufmg.dcc.latin.index.InMemoryTermStats;
 import br.ufmg.dcc.latin.index.InMemoryVocabulary;
 import br.ufmg.dcc.latin.querying.ResultSet;
+import gnu.trove.list.array.TIntArrayList;
 
 
 public class RetrievalController {
@@ -185,7 +186,7 @@ public class RetrievalController {
 	public static IndexSearcher getIndexSearcher(String indexName){
 		
 		if (similarity == null) {
-			similarity = new DPH();
+			similarity = new LMDirichlet(2000f);
 		}
 		
 		IndexReader reader;
@@ -264,8 +265,9 @@ public class RetrievalController {
 		for (int i = 0; i < docids.length; i++) {
 			try {
 				directedIndex[0].docVecs[i] = processDocVec(vocab[0], reader.getTermVector(docids[i], "content"));
+				invertDoc(directedIndex[0].docVecs[i],i,0);
 				directedIndex[1].docVecs[i] = processDocVec(vocab[1], reader.getTermVector(docids[i], "title"));
-				
+				invertDoc(directedIndex[1].docVecs[i],i,1);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -276,6 +278,12 @@ public class RetrievalController {
 		
 	}
 	
+	private static void invertDoc(DocVec docVec, int docPos, int pos){
+		int terms[] = docVec.getTerms();
+		for (int i = 0; i < terms.length; i++) {
+			directedIndex[pos].invertedIndex[terms[i]].add(docPos);
+		}
+	}
 
 	
 	private static DocVec processDocVec(InMemoryVocabulary vocab, Terms terms) {
@@ -293,8 +301,8 @@ public class RetrievalController {
 				int termId = vocab.getId(t);
 				if (termId != -1){
 					docVec.add(termId,(int) iterator.totalTermFreq());
-					doclen += iterator.totalTermFreq();
 				}
+				doclen += iterator.totalTermFreq();
 				term = iterator.next();
 			}
 		} catch (IOException e) {
@@ -349,6 +357,7 @@ public class RetrievalController {
     	
         for(int i=0; i< n; i++){
 			try {
+				
 				 Document doc = searcher.doc(hits[i].doc);
 	             docnos[i] = doc.get("docno");
 	             scores[i] = hits[i].score;

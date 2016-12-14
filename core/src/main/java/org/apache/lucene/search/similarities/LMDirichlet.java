@@ -6,6 +6,7 @@ import org.apache.lucene.index.FieldInvertState;
 import org.apache.lucene.index.LeafReaderContext;
 import org.apache.lucene.index.NumericDocValues;
 import org.apache.lucene.search.Explanation;
+import org.apache.lucene.search.similarities.LMSimilarity.LMStats;
 import org.apache.lucene.util.BytesRef;
 
 /*
@@ -91,7 +92,7 @@ public class LMDirichlet extends LMDirichletSimilarity implements ReScoreSimilar
     
     @Override
     public Explanation explain(int doc, Explanation freq) {
-  
+    	System.out.println(((LMStats)stats).getCollectionProbability());
       return LMDirichlet.this.explain(stats, doc, freq, norms.get(doc));
     }
     

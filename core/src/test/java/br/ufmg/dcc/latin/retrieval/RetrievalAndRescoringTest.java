@@ -39,9 +39,12 @@ public class RetrievalAndRescoringTest {
 		for (int i = 0; i < 5; i++) {
 			System.out.println(resultSet.docnos[i] + " " + resultSet.scores[i] );
 		}
-		
+		System.out.println();
 		TIntDoubleHashMap complexQuery = ReScorerController.getComplexQuery("US Military Crisis Response");
-		
+		double[] scores = ReScorerController.rescore(complexQuery);
+		for (int i = 0; i < 5; i++) {
+			System.out.println(resultSet.docnos[i] + " " + scores[i] );
+		}
 		
 	}
 

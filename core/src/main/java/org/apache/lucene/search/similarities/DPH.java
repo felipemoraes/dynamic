@@ -92,6 +92,8 @@ public class DPH extends SimilarityBase implements ReScoreSimilarity{
     
     @Override
     public Explanation explain(int doc, Explanation freq) {
+    	
+    	
       
       return DPH.this.explain(stats, doc, freq,
           norms == null ? 1F : norms.get(doc));

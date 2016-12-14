@@ -54,64 +54,83 @@ public class ReScorerController {
 		return queryProb;
 	}
 	
+	private static BoostedBasicStats[] stats;
+	
 	public static double[] rescore(TIntDoubleHashMap complexQuery) {
 		
 		int n = RetrievalCache.docids.length;
-		double[] scores = new double[n];
+		float[] scores = new float[n];
 		int[] terms = complexQuery.keys();
-		BoostedBasicStats stats = new BoostedBasicStats("");
-		stats.setNumberOfDocuments(RetrievalController.directedIndex[0].getDocCount());
+		
+		if (stats == null) {
+			stats = new BoostedBasicStats[2];
+			stats[0] = new BoostedBasicStats("content");
+			stats[1] = new BoostedBasicStats("title");
+			
+			float sttf = ((Number) RetrievalController.directedIndex[0].sumTotalTermsFreq()).floatValue();
+			stats[0].setNumberOfDocuments(RetrievalController.directedIndex[0].getDocCount());
+			float avgFieldLength  = (float) (sttf / stats[0].getNumberOfDocuments());
+			stats[0].setAvgFieldLength(avgFieldLength);
+			stats[0].setNumberOfFieldTokens((long) RetrievalController.directedIndex[0].sumTotalTermsFreq());
+			sttf = ((Number) RetrievalController.directedIndex[1].sumTotalTermsFreq()).floatValue();
+			stats[1].setNumberOfDocuments(RetrievalController.directedIndex[1].getDocCount());
+			avgFieldLength  = (float) (sttf / stats[1].getNumberOfDocuments());
+			stats[1].setAvgFieldLength(avgFieldLength);
+			stats[1].setNumberOfFieldTokens((long) RetrievalController.directedIndex[1].sumTotalTermsFreq());
+			
+		}
 		
 		for (int i = 0; i < terms.length; i++) {
 		
 			
-			stats.setBoost((float) (complexQuery.get(terms[i])*RetrievalController.getFiedlWeights()[0]));
-			stats.setDocFreq(RetrievalController.termStats[0].docFreq(terms[i]));
-			stats.setTotalTermFreq(RetrievalController.termStats[0].totalTermFreq(terms[i]));
-			stats.setNumberOfFieldTokens((long) RetrievalController.directedIndex[0].sumTotalTermsFreq());
+			stats[0].setBoost((float) (RetrievalController.getFiedlWeights()[0]));
+			stats[0].setDocFreq(RetrievalController.termStats[0].docFreq(terms[i]));
+			stats[0].setTotalTermFreq(RetrievalController.termStats[0].totalTermFreq(terms[i]));
 			
-			float collectionProbability = (stats.getTotalTermFreq()+1F);
-			collectionProbability /= (stats.getNumberOfFieldTokens()+1F);
+			float collectionProbability = (stats[0].getTotalTermFreq()+1F);
+			collectionProbability /= (stats[0].getNumberOfFieldTokens()+1F);
+			stats[0].setCollectionProbability(collectionProbability);
 			
-			stats.setCollectionProbability(collectionProbability);
-			double sttf = ((Number) RetrievalController.directedIndex[0].sumTotalTermsFreq()).doubleValue();
-			double avgFieldLength  = sttf / (double) RetrievalController.directedIndex[0].getDocCount();
-			stats.setAvgFieldLength((float) avgFieldLength);
+			TIntArrayList docs = RetrievalController.directedIndex[0].invertedIndex[terms[i]];
 			
-			for (int j = 0; j < scores.length; j++) {
-				
-				int freq = RetrievalController.directedIndex[0].docVecs[j].getFreq(terms[i]);
-				int docLen = (int) RetrievalController.directedIndex[0].docVecs[j].docLen();
-				
+			for (int j = 0; j < docs.size(); j++) {
+				int doc = docs.get(j);
+				int freq = RetrievalController.directedIndex[0].docVecs[doc].getFreq(terms[i]);
+				int docLen = (int) RetrievalController.directedIndex[0].docVecs[doc].docLen();
 				if (freq > 0) {
-					scores[j] += RetrievalController.similarity.score(stats, freq, docLen);
+					scores[doc] += RetrievalController.similarity.score(stats[0], freq, docLen);
 				}
 			}
 
-			stats.setBoost((float) (complexQuery.get(terms[i])*RetrievalController.getFiedlWeights()[1]));
-			stats.setDocFreq(RetrievalController.termStats[1].docFreq(terms[i]));
-			stats.setTotalTermFreq(RetrievalController.termStats[1].totalTermFreq(terms[i]));
-			stats.setNumberOfFieldTokens((long) RetrievalController.directedIndex[1].sumTotalTerms());
-			sttf = ((Number) RetrievalController.directedIndex[1].sumTotalTermsFreq()).doubleValue();
+			stats[1].setBoost((float) (RetrievalController.getFiedlWeights()[1]));
+			stats[1].setDocFreq(RetrievalController.termStats[1].docFreq(terms[i]));
+			stats[1].setTotalTermFreq(RetrievalController.termStats[1].totalTermFreq(terms[i]));
 			
-			avgFieldLength  = sttf / (double) RetrievalController.directedIndex[1].getDocCount();
-			stats.setAvgFieldLength((float) avgFieldLength);
+			collectionProbability = (stats[1].getTotalTermFreq()+1F);
+			collectionProbability /= (stats[1].getNumberOfFieldTokens()+1F);
+			stats[1].setCollectionProbability(collectionProbability);
 			
-			collectionProbability = (stats.getTotalTermFreq()+1F);
-			collectionProbability /= (stats.getNumberOfFieldTokens()+1F);
-			stats.setCollectionProbability(collectionProbability);
+			docs = RetrievalController.directedIndex[1].invertedIndex[terms[i]];
 			
-			
-			for (int j = 0; j < scores.length; j++) {
-				int freq = RetrievalController.directedIndex[1].docVecs[j].getFreq(terms[i]);
-				int docLen = (int) RetrievalController.directedIndex[1].docVecs[j].docLen();
+			for (int j = 0; j < docs.size(); j++) {
+				int doc = docs.get(j);
+		
+				int freq = RetrievalController.directedIndex[1].docVecs[doc].getFreq(terms[i]);
+				int docLen = (int) RetrievalController.directedIndex[1].docVecs[doc].docLen();
+
 				if (freq > 0) {
-					scores[j] += RetrievalController.similarity.score(stats, freq, docLen);
+					scores[doc] += RetrievalController.similarity.score(stats[1], freq, docLen);
+
 				}
 			}
 		}
 		
-		return scores;
+		double[] newScores = new double[n];
+		for (int j = 0; j < newScores.length; j++) {
+			newScores[j] = scores[j];
+		}
+		
+		return newScores;
 	}
 	
 	public static TIntArrayList tokenizeString(Analyzer analyzer, String str) {
