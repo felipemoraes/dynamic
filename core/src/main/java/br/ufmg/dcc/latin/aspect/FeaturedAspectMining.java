@@ -147,7 +147,6 @@ public class FeaturedAspectMining  extends AspectMining {
 		    	coverage[j][i] = scores[j];
 		    }
 		    
-		    
 
 			for(int j = 0;j< n ;++j) {
 				if (this.feedbacks[j] != null) {

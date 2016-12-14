@@ -137,7 +137,6 @@ public class DBGD implements OnlineLearner {
 				double metric1 = cubeTest.getAverageCubeTest(j+1, topic, resultsSoFar);
 				double d = metric1 - metric0;
 				
-				
 				if (d>0) {
 					System.out.println(metric1 + "  " + metric0);
 					for (int k = 0; k < resultSet0.docnos.length; k++) {
