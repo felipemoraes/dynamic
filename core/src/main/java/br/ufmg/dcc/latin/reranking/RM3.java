@@ -170,7 +170,7 @@ public class RM3 extends InteractiveReranker {
 			for (int j = 0; j < passages.length; j++) {
 				 DocVec counts = RetrievalController.getPassageTerms(passages[j].getPassageId());
 				 newTermCounts.add(counts);
-				 docLens.add(counts.docLen());
+				 docLens.add(counts.docLen);
 				 relevances.add(passages[j].getRelevance());
 			}
 		}
@@ -193,7 +193,7 @@ public class RM3 extends InteractiveReranker {
 			double weight = 0;
 			for (int i = 0; i < termCounts.size(); ++i) {
 				double docLen = docLens.get(i);
-				weight += relevances.get(i)*queryLikehoodTerm(termId,termCounts.get(i).getFreq(termId), docLen,field)*queryLikelihoodForPassages[ix].get(i) ;
+				weight += relevances.get(i)*queryLikehoodTerm(termId,termCounts.get(i).vec.get(termId), docLen,field)*queryLikelihoodForPassages[ix].get(i) ;
 			}
 			weightedTerms.add(new WeightedTerm(termId, weight));
 			sumTotalWeights += weight;
@@ -222,11 +222,11 @@ public class RM3 extends InteractiveReranker {
 	
 	private double queryLikehood(TIntIntHashMap queryCounts, DocVec passageDocVec, String field){
 		double score = 1;
-		double docLen = passageDocVec.docLen();
+		double docLen = passageDocVec.docLen;
 		int[] terms = queryCounts.keys();
 		for (int i = 0; i < terms.length; i++) {
 	
-			double s = passageDocVec.getFreq(terms[i]) + mu*collectionProbability(terms[i], field);
+			double s = passageDocVec.vec.get(terms[i]) + mu*collectionProbability(terms[i], field);
 			s /= (docLen + mu);
 			score *= s;
 		}
@@ -235,8 +235,8 @@ public class RM3 extends InteractiveReranker {
 	
 	private double collectionProbability(int termId, String field) {
 		int ix = field.equals("content") ? 0 : 1;
-		double ttf = RetrievalController.termStats[ix].totalTermFreq(termId);
-		double sttf = RetrievalController.directedIndex[ix].sumTotalTerms();
+		double ttf = RetrievalController.termStats[ix].docFreq[termId];
+		double sttf = RetrievalController.directedIndex[ix].sumDocFreq;
 		return ttf/sttf;
 	}
 	

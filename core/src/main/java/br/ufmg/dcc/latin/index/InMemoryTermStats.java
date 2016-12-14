@@ -10,8 +10,8 @@ import org.apache.lucene.util.BytesRef;
 
 public class InMemoryTermStats {
 	
-	int[] docFreq;
-	long[] totalTermFreq;
+	public int[] docFreq;
+	public long[] totalTermFreq;
 	
 	public InMemoryTermStats(Terms terms, InMemoryVocabulary vocab) {
 		try {
@@ -35,14 +35,6 @@ public class InMemoryTermStats {
 			e.printStackTrace();
 		}
 
-	}
-	
-	public int docFreq(int termId){
-		return docFreq[termId];
-	}
-	
-	public long totalTermFreq(int termId){
-		return totalTermFreq[termId];
 	}
 	
 }

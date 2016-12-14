@@ -5,9 +5,9 @@ import gnu.trove.list.array.TIntArrayList;
 public class InMemoryDirectedIndex {
 	
 	public DocVec[] docVecs;
-	long sumTotalTermFreq;
-	long sumDocFreq;
-	int docCount;
+	public long sumTotalTermFreq;
+	public long sumDocFreq;
+	public int docCount;
 	public TIntArrayList[] invertedIndex;
 	
 	
@@ -20,18 +20,5 @@ public class InMemoryDirectedIndex {
 		for (int i = 0; i < vocabSize; i++) {
 			invertedIndex[i] = new TIntArrayList();
 		}
-	}
-
-	public long getDocCount(){
-		return docCount;
-	}
-
-
-	public double sumTotalTerms() {
-		return sumDocFreq;
-	}
-
-	public long sumTotalTermsFreq() {
-		return sumTotalTermFreq;
 	}
 }

@@ -245,11 +245,11 @@ public class RetrievalController {
 	static void initInvertedIndex(int[] docids){
 		
 		for (int i = 0; i < docids.length; i++) {
-			int[] terms = directedIndex[0].docVecs[i].getTerms();
+			int[] terms = directedIndex[0].docVecs[i].vec.keys();
 			for (int j = 0; j < terms.length; j++) {
 				directedIndex[0].invertedIndex[terms[j]].add(i);
 			}
-			terms = directedIndex[1].docVecs[i].getTerms();
+			terms = directedIndex[1].docVecs[i].vec.keys();
 			for (int j = 0; j < terms.length; j++) {
 				directedIndex[1].invertedIndex[terms[j]].add(i);
 				
@@ -318,7 +318,7 @@ public class RetrievalController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		docVec.docLen(doclen);
+		docVec.docLen = doclen;
 		return docVec;
 	}
 

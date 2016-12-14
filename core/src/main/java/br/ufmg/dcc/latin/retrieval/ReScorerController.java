@@ -8,7 +8,6 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.search.similarities.BoostedBasicStats;
-import org.apache.lucene.search.similarities.LMSimilarity.LMStats;
 import org.apache.lucene.util.BytesRef;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
@@ -25,7 +24,7 @@ public class ReScorerController {
 		int n = RetrievalCache.docids.length;
 		
 		double[] scores = new double[n];
-		int count = (int) RetrievalController.directedIndex[0].getDocCount();
+		int count = (int) RetrievalController.directedIndex[0].docCount;
 		
 		for (int i = 0; i < docids.length; i++) {
 			scores[i] = tfidf(i,docid,count,RetrievalController.vocab[0]);
@@ -68,16 +67,16 @@ public class ReScorerController {
 			stats[0] = new BoostedBasicStats("content");
 			stats[1] = new BoostedBasicStats("title");
 			
-			float sttf = ((Number) RetrievalController.directedIndex[0].sumTotalTermsFreq()).floatValue();
-			stats[0].setNumberOfDocuments(RetrievalController.directedIndex[0].getDocCount());
+			float sttf = ((Number) RetrievalController.directedIndex[0].sumTotalTermFreq).floatValue();
+			stats[0].setNumberOfDocuments(RetrievalController.directedIndex[0].docCount);
 			float avgFieldLength  = (float) (sttf / stats[0].getNumberOfDocuments());
 			stats[0].setAvgFieldLength(avgFieldLength);
-			stats[0].setNumberOfFieldTokens((long) RetrievalController.directedIndex[0].sumTotalTermsFreq());
-			sttf = ((Number) RetrievalController.directedIndex[1].sumTotalTermsFreq()).floatValue();
-			stats[1].setNumberOfDocuments(RetrievalController.directedIndex[1].getDocCount());
+			stats[0].setNumberOfFieldTokens((long) RetrievalController.directedIndex[0].sumTotalTermFreq);
+			sttf = ((Number) RetrievalController.directedIndex[1].sumTotalTermFreq).floatValue();
+			stats[1].setNumberOfDocuments(RetrievalController.directedIndex[1].docCount);
 			avgFieldLength  = (float) (sttf / stats[1].getNumberOfDocuments());
 			stats[1].setAvgFieldLength(avgFieldLength);
-			stats[1].setNumberOfFieldTokens((long) RetrievalController.directedIndex[1].sumTotalTermsFreq());
+			stats[1].setNumberOfFieldTokens((long) RetrievalController.directedIndex[1].sumTotalTermFreq);
 			
 		}
 		
@@ -85,8 +84,8 @@ public class ReScorerController {
 		
 			
 			stats[0].setBoost((float) (RetrievalController.getFiedlWeights()[0]));
-			stats[0].setDocFreq(RetrievalController.termStats[0].docFreq(terms[i]));
-			stats[0].setTotalTermFreq(RetrievalController.termStats[0].totalTermFreq(terms[i]));
+			stats[0].setDocFreq(RetrievalController.termStats[0].docFreq[terms[i]]);
+			stats[0].setTotalTermFreq(RetrievalController.termStats[0].totalTermFreq[terms[i]]);
 			
 			float collectionProbability = (stats[0].getTotalTermFreq()+1F);
 			collectionProbability /= (stats[0].getNumberOfFieldTokens()+1F);
@@ -97,16 +96,16 @@ public class ReScorerController {
 				int doc = docs.get(j);
 
 				
-				int freq = RetrievalController.directedIndex[0].docVecs[doc].getFreq(terms[i]);
-				int docLen = (int) RetrievalController.directedIndex[0].docVecs[doc].docLen();
+				int freq = RetrievalController.directedIndex[0].docVecs[doc].vec.get(terms[i]);
+				int docLen = (int) RetrievalController.directedIndex[0].docVecs[doc].docLen;
 				if (freq > 0) {
 					scores[doc] += RetrievalController.similarity.score(stats[0], freq, docLen);
 				}
 			}
 
 			stats[1].setBoost((float) (RetrievalController.getFiedlWeights()[1]));
-			stats[1].setDocFreq(RetrievalController.termStats[1].docFreq(terms[i]));
-			stats[1].setTotalTermFreq(RetrievalController.termStats[1].totalTermFreq(terms[i]));
+			stats[1].setDocFreq(RetrievalController.termStats[1].docFreq[terms[i]]);
+			stats[1].setTotalTermFreq(RetrievalController.termStats[1].totalTermFreq[terms[i]]);
 			
 			collectionProbability = (stats[1].getTotalTermFreq()+1F);
 			collectionProbability /= (stats[1].getNumberOfFieldTokens()+1F);
@@ -117,8 +116,8 @@ public class ReScorerController {
 			for (int j = 0; j < docs.size(); j++) {
 				int doc = docs.get(j);
 		
-				int freq = RetrievalController.directedIndex[1].docVecs[doc].getFreq(terms[i]);
-				int docLen = (int) RetrievalController.directedIndex[1].docVecs[doc].docLen();
+				int freq = RetrievalController.directedIndex[1].docVecs[doc].vec.get(terms[i]);
+				int docLen = (int) RetrievalController.directedIndex[1].docVecs[doc].docLen;
 
 				if (freq > 0) {
 					scores[doc] += RetrievalController.similarity.score(stats[1], freq, docLen);
@@ -168,13 +167,13 @@ public class ReScorerController {
 		double docNorm2 = 0;
 
 
-		int[] terms = doc1.getTerms().length < doc2.getTerms().length ? doc1.getTerms() : doc2.getTerms();
+		int[] terms = doc1.vec.size() < doc2.vec.size() ? doc1.vec.keys() : doc2.vec.keys();
 
 		for (int i = 0; i < terms.length; i++) {
 			
-			double tf1 = doc1.getFreq(terms[i]);
-			double tf2 = doc2.getFreq(terms[i]);
-			double df = RetrievalController.termStats[0].docFreq(terms[i]);
+			double tf1 = doc1.vec.get(terms[i]);
+			double tf2 = doc2.vec.get(terms[i]);
+			double df = RetrievalController.termStats[0].docFreq[terms[i]];
 			double idf = (double)(Math.log(docCount)/(df+1));
 			double weight1 = tf1*idf;
 			double weight2 = tf2*idf;
@@ -197,8 +196,8 @@ public class ReScorerController {
 	
 	public static double getIdf(String field, int termId){
 		
-		int count = (int) RetrievalController.directedIndex[0].getDocCount();		
-		double df = RetrievalController.termStats[0].docFreq(termId);
+		int count = (int) RetrievalController.directedIndex[0].docCount;		
+		double df = RetrievalController.termStats[0].docFreq[termId];
 			
 		double idf = (float) (Math.log(count)/(df+1));
 		return idf;

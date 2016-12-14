@@ -23,7 +23,7 @@ public class FeaturedAspectModel {
 		}
 		
 		DocVec passageDocVec = RetrievalController.getPassageTerms(passageId);
-		int[] terms = passageDocVec.getTerms();
+		int[] terms = passageDocVec.vec.keys();
 		for (int i = 0; i < terms.length; i++) {
 			
 			featuredAspectes.get(aspectId).putTerm(terms[i],passageId,relevance);
