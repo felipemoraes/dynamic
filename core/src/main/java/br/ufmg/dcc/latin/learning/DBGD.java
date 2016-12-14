@@ -1,8 +1,11 @@
-package br.ufmg.dcc.latin.dynamicsystem;
+package br.ufmg.dcc.latin.learning;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,13 +13,14 @@ import java.util.List;
 import java.util.Random;
 
 import br.ufmg.dcc.latin.cache.RetrievalCache;
+import br.ufmg.dcc.latin.dynamicsystem.TrecUser;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.metrics.CubeTest;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.reranking.InteractiveReranker;
 import br.ufmg.dcc.latin.reranking.InteractiveRerankerFactory;
 
-public class DBGD {
+public class DBGD implements OnlineLearner {
 	
 	private int n;
 	private double alpha;
@@ -40,32 +44,40 @@ public class DBGD {
 		reranker = InteractiveRerankerFactory.getInstance(rerankerName, "FeaturedAspectMining");
 	}
 	
-	public void loadTrainingSet(String trainingFilename) throws IOException{
+	public void loadTrainingSet(String trainingFilename){
 		trainingSet = new ArrayList<String[]>();
-		
-		BufferedReader br = new BufferedReader(new FileReader(trainingFilename));
-		String line;
-		while ((line = br.readLine()) != null) {
-		    String[] splitLine = line.split(" ",3);
-		    trainingSet.add(splitLine);
+	
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(trainingFilename));
+			String line;
+			while ((line = br.readLine()) != null) {
+			    String[] splitLine = line.split(" ",3);
+			    trainingSet.add(splitLine);
+			}
+			br.close();
+			Collections.shuffle(trainingSet);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		br.close();
-		Collections.shuffle(trainingSet);
 		nextIndex = 0;
 	}
 	
-	public void loadValidationSet(String validationFilename) throws IOException {
+	public void loadValidationSet(String validationFilename) {
 		validationSet = new ArrayList<String[]>();
-		BufferedReader br = new BufferedReader(new FileReader(validationFilename));
-		String line;
-		while ((line = br.readLine()) != null) {
-		    String[] splitLine = line.split(" ",3);
-		    validationSet.add(splitLine);
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(validationFilename));
+			String line;
+			while ((line = br.readLine()) != null) {
+			    String[] splitLine = line.split(" ",3);
+			    validationSet.add(splitLine);
+			}
+			br.close();
+		} catch (IOException e) {
+				e.printStackTrace();
 		}
-		br.close();
 	}
 	
-	private void nextQuery(){
+	public void nextQuery(){
 		
 		if (nextIndex == trainingSet.size()){
 			nextIndex = 0;
@@ -124,6 +136,8 @@ public class DBGD {
 				}
 				double metric1 = cubeTest.getAverageCubeTest(j+1, topic, resultsSoFar);
 				double d = metric1 - metric0;
+				
+				
 				if (d>0) {
 					System.out.println(metric1 + "  " + metric0);
 					for (int k = 0; k < resultSet0.docnos.length; k++) {
@@ -148,6 +162,7 @@ public class DBGD {
 					reranker.update(feedback);
 				}
 			}
+			
 		}
 			
 		return w0;
@@ -172,6 +187,7 @@ public class DBGD {
 				Feedback[] feedback = TrecUser.get(resultSet, topic);
 				reranker.update(feedback);
 			}
+			System.out.println(topic + " " + cubeTest.getAverageCubeTest(n, topic, result));
 			totalMetric += cubeTest.getAverageCubeTest(n, topic, result);
 		}
 		if (totalMetric > 0) {
@@ -226,6 +242,64 @@ public class DBGD {
 		iterations = (int) param[2];
 		lambda = param[3];
 		n = 10;
+	}
+	
+	public List<double[]> getParams(){
+		List<Double> alphas = new ArrayList<Double>();
+		List<Double> deltas = new ArrayList<Double>();
+		List<Double> iterations = new ArrayList<Double>();
+		List<Double> lambdas = new ArrayList<Double>();
+		double step = 0.2;
+		//for (int i = 0; i < 5; i++) {
+		//	alphas.add(step*(i+1));
+		//	deltas.add(step*(i+1));
+		//}
+		alphas.add(0.1d);
+		
+		deltas.add(0.2d);
+		step = 0.1;
+		for (int i = 0; i < 10	; i++) {
+			lambdas.add(step*(i+1));
+		}
+		iterations.add(100d);
+
+		List<List<Double>> lists = new ArrayList<List<Double>>();
+		lists.add(alphas);
+		lists.add(deltas);
+		lists.add(iterations);
+		lists.add(lambdas);
+		List<List<Double>> product = cartesianProduct(lists);
+		List<double[]> experimentalParameters = new ArrayList<double[]>();
+		for (List<Double> list : product) {
+			int n = list.size();
+			double[] params = new double[n];
+			for (int i = 0; i < n; i++) {
+				params[i] = list.get(i);
+			}
+			experimentalParameters.add(params);
+		}
+		return experimentalParameters;
+	}
+	
+	public void dumpModel(String modelFile, double[] bestParam, double[] bestWeights) {
+		try(FileWriter fw = new FileWriter(modelFile);
+				BufferedWriter bw = new BufferedWriter(fw);
+				 PrintWriter out = new PrintWriter(bw)) {
+			for (int i = 0; i < bestParam.length; i++) {
+				out.write(bestParam[i] + " ");
+			}
+			out.write("\n");
+			
+			for (int i = 2; i < bestWeights.length; i++) {
+				out.write(bestWeights[i] + " ");
+			}
+			out.write("\n");
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
 	}
 	
 }

@@ -133,8 +133,6 @@ public class FeaturedAspectMining  extends AspectMining {
 
 		List<String> aspectsId = featuredAspectModel.getAspects();
 		for (int i = 0; i < aspectsId.size(); ++i ) {
-
-			
 			TIntDoubleHashMap getAspectQuery = featuredAspectModel.getAspectQuery(aspectsId.get(i), aspectWeights);
 			double[] scores = null;
 			if (getAspectQuery.size() == 0) {

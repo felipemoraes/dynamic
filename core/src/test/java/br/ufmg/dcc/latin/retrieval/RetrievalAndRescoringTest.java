@@ -32,6 +32,11 @@ public class RetrievalAndRescoringTest {
 
 	@Test
 	public void test() {
+		boolean[] selected = new boolean[10];
+		for (int i = 0; i < selected.length; i++) {
+			System.out.println(selected[i]);
+		}
+		/*
 		ResultSet resultSet = RetrievalController.search("DD16-1", "US Military Crisis Response", "ebola16");
 		RetrievalCache.indexName = "ebola16";
 		RetrievalController.initRestricted("DD16-1");
@@ -44,7 +49,7 @@ public class RetrievalAndRescoringTest {
 		double[] scores = ReScorerController.rescore(complexQuery);
 		for (int i = 0; i < 5; i++) {
 			System.out.println(resultSet.docnos[i] + " " + scores[i] );
-		}
+		}*/
 		
 	}
 

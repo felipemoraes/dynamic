@@ -3,6 +3,7 @@ package br.ufmg.dcc.latin.reranking;
 import br.ufmg.dcc.latin.aspect.AspectMining;
 import br.ufmg.dcc.latin.aspect.AspectMiningFactory;
 import br.ufmg.dcc.latin.feedback.Feedback;
+import br.ufmg.dcc.latin.querying.ResultSet;
 
 public class xQuAD extends InteractiveReranker {
 
@@ -33,6 +34,11 @@ public class xQuAD extends InteractiveReranker {
 		return score;
 	}
 	
+	@Override
+	public ResultSet get(){
+		aspectMining.updateAspects(indexName);
+		return super.get();
+	}
 	
 	@Override
 	public void start(double[] params){
@@ -45,7 +51,6 @@ public class xQuAD extends InteractiveReranker {
 			aspectWeights[i-2] = params[i];
 		}
 		aspectMining.setAspectWeights(aspectWeights);
-		aspectMining.updateAspects(indexName);
 		coverage = aspectMining.getCoverage();
 		importance = aspectMining.getImportance();
 		novelty = aspectMining.getNovelty();

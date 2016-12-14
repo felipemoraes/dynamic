@@ -35,7 +35,10 @@ public class FeaturedAspect  {
 	        }
 	    }
 	    TermFeatures[] res = new TermFeatures[k];
-	    for (int i =0; i < k; i++) res[i] = pq.poll();
+	    for (int i =0; i < k; i++) {
+	    		res[i] = pq.poll();
+	    }
+	    
 	    return res;
 
 	}
@@ -46,7 +49,22 @@ public class FeaturedAspect  {
 		TermFeatures[] candidateTerms = generateCandidateTerms(weights);
 		
 		int querySize = Math.min(20, candidateTerms.length);
-		return findTopKHeap(candidateTerms,querySize);
+		TermFeatures[] topTerms = findTopKHeap(candidateTerms,querySize);
+		double sum = 0;
+		for (int i = 0; i < topTerms.length; i++) {
+			sum += topTerms[i].weight;
+		}
+		
+		for (int i = 0; i < topTerms.length; i++) {
+			if (sum > 0) {
+				topTerms[i].weight /= sum;
+			} else{
+				topTerms[i].weight = 1F/(topTerms.length);
+			}
+			
+		}
+		
+		return topTerms;
 		/*
 		TIntObjectHashMap<TermFeatures> selectedTerms = new TIntObjectHashMap<>();
 		while (selectedTerms.size() < querySize) {

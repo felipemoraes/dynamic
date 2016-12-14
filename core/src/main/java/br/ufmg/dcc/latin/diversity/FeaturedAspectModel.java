@@ -48,14 +48,16 @@ public class FeaturedAspectModel {
 		FeaturedAspect termsFeatures = featuredAspectes.get(aspectId);
 		TermFeatures[] topTerms = termsFeatures.getTopTerms(weights);
 		TIntDoubleHashMap complexQuery = new TIntDoubleHashMap();
+		
 		for (int i = 0; i < topTerms.length; i++) {
 			double weight = topTerms[i].weight;
 			if (weight < 0) {
 				weight = 0;
 			}
+			//System.out.print(RetrievalController.vocab[0].getTerm(topTerms[i].termId) + " " + weight + " ");
 			complexQuery.put(topTerms[i].termId, weight);
-			
 		}
+		//System.out.println();
 		return complexQuery;
 	}
 }
