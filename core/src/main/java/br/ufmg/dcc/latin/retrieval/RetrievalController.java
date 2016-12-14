@@ -132,9 +132,9 @@ public class RetrievalController {
 	
 	public static void initInMemoryIndex(String indexName){
 		
-		if (directedIndex == null){
-			directedIndex = new InMemoryDirectedIndex[2];
-		}
+		
+		directedIndex = new InMemoryDirectedIndex[2];
+		
 		IndexReader indexReader = getIndexSearcher(indexName).getIndexReader();
 		try {
 			directedIndex[0] = new InMemoryDirectedIndex(vocab[0].size(), indexReader.getDocCount("content")
@@ -240,7 +240,24 @@ public class RetrievalController {
         return analyzer = new EnglishAnalyzer();
 
 	}
+	
+	
+	static void initInvertedIndex(int[] docids){
+		
+		for (int i = 0; i < docids.length; i++) {
+			int[] terms = directedIndex[0].docVecs[i].getTerms();
+			for (int j = 0; j < terms.length; j++) {
+				directedIndex[0].invertedIndex[terms[j]].add(i);
+			}
+			terms = directedIndex[1].docVecs[i].getTerms();
+			for (int j = 0; j < terms.length; j++) {
+				directedIndex[1].invertedIndex[terms[j]].add(i);
+				
+			}
+		}
 
+
+	}
 	
 	static void initDocsVec(String topicId, int[] docids, String index) {
 		
@@ -258,31 +275,24 @@ public class RetrievalController {
 		IndexReader reader = searcher.getIndexReader();
 
 		
-		if (directedIndex == null){
-			initInMemoryIndex(index);
-		}
+		
+		initInMemoryIndex(index);
+		
 			
 		for (int i = 0; i < docids.length; i++) {
 			try {
 				directedIndex[0].docVecs[i] = processDocVec(vocab[0], reader.getTermVector(docids[i], "content"));
-				invertDoc(directedIndex[0].docVecs[i],i,0);
 				directedIndex[1].docVecs[i] = processDocVec(vocab[1], reader.getTermVector(docids[i], "title"));
-				invertDoc(directedIndex[1].docVecs[i],i,1);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		
+		initInvertedIndex(RetrievalCache.docids);
+		
 		RetrievalCache.directedIndexCache.put(topicId, directedIndex);
 		
 		
-	}
-	
-	private static void invertDoc(DocVec docVec, int docPos, int pos){
-		int terms[] = docVec.getTerms();
-		for (int i = 0; i < terms.length; i++) {
-			directedIndex[pos].invertedIndex[terms[i]].add(docPos);
-		}
 	}
 
 	

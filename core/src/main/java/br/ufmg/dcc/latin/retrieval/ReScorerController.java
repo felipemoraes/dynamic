@@ -59,7 +59,8 @@ public class ReScorerController {
 	public static double[] rescore(TIntDoubleHashMap complexQuery) {
 		
 		int n = RetrievalCache.docids.length;
-		float[] scores = new float[n];
+		
+		double[] scores = new double[n];
 		int[] terms = complexQuery.keys();
 		
 		if (stats == null) {
@@ -92,9 +93,10 @@ public class ReScorerController {
 			stats[0].setCollectionProbability(collectionProbability);
 			
 			TIntArrayList docs = RetrievalController.directedIndex[0].invertedIndex[terms[i]];
-			
 			for (int j = 0; j < docs.size(); j++) {
 				int doc = docs.get(j);
+
+				
 				int freq = RetrievalController.directedIndex[0].docVecs[doc].getFreq(terms[i]);
 				int docLen = (int) RetrievalController.directedIndex[0].docVecs[doc].docLen();
 				if (freq > 0) {
@@ -125,12 +127,7 @@ public class ReScorerController {
 			}
 		}
 		
-		double[] newScores = new double[n];
-		for (int j = 0; j < newScores.length; j++) {
-			newScores[j] = scores[j];
-		}
-		
-		return newScores;
+		return scores;
 	}
 	
 	public static TIntArrayList tokenizeString(Analyzer analyzer, String str) {
