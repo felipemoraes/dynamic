@@ -46,7 +46,7 @@ public abstract class AspectMining {
 		}
 		
 		for (int j = 0; j < feedbacks.length; j++) {
-			int i = feedbacks[j].getIndex();
+			int i = feedbacks[j].index;
 			this.feedbacks[i] = feedbacks[j]; 
 		}
 	}

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 import gnu.trove.map.hash.TIntObjectHashMap;
 
@@ -23,11 +24,31 @@ public class FeaturedAspect  {
 		termsFeatures.get(termId).updateTerm(passageId, relevance);
 	}
 
-	public List<TermFeatures> getTopTerms(double[] weights) {
-		TermFeatures[] candidateTerms = generateCandidateTerms(weights);
-		int querySize = Math.min(20, candidateTerms.length);
+	
+	public static TermFeatures[] findTopKHeap(TermFeatures[] arr, int k) { 
+	    PriorityQueue<TermFeatures> pq = new PriorityQueue<TermFeatures>();
+	    for (TermFeatures x : arr) { 
+	        if (pq.size() < k) pq.add(x);
+	        else if (pq.peek().compareTo(x) > 0) {
+	            pq.poll();
+	            pq.add(x);
+	        }
+	    }
+	    TermFeatures[] res = new TermFeatures[k];
+	    for (int i =0; i < k; i++) res[i] = pq.poll();
+	    return res;
+
+	}
+	
+	
+	public TermFeatures[] getTopTerms(double[] weights) {
 		
-		Map<Integer,TermFeatures> selectedTerms = new HashMap<Integer,TermFeatures>();
+		TermFeatures[] candidateTerms = generateCandidateTerms(weights);
+		
+		int querySize = Math.min(20, candidateTerms.length);
+		return findTopKHeap(candidateTerms,querySize);
+		/*
+		TIntObjectHashMap<TermFeatures> selectedTerms = new TIntObjectHashMap<>();
 		while (selectedTerms.size() < querySize) {
 			int maxRank = -1;
 			double maxScore = Double.NEGATIVE_INFINITY;
@@ -46,11 +67,11 @@ public class FeaturedAspect  {
 	
 			selectedTerms.put(candidateTerms[maxRank].termId, candidateTerms[maxRank]);
 		}
-		List<TermFeatures> finalSelectedTerms = new ArrayList<TermFeatures>();
-		for (TermFeatures termFeatures : selectedTerms.values()) {
-			finalSelectedTerms.add(termFeatures);
-		}
-		return finalSelectedTerms;
+		
+		TermFeatures[] finalSelectedTerms = new TermFeatures[selectedTerms.size()];
+		selectedTerms.values(finalSelectedTerms);
+		
+		return finalSelectedTerms;*/
 	}
 	
 	public static double[] softmax(double[] vector) {

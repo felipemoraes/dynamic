@@ -37,12 +37,12 @@ public class WeightedPassageAspectMining extends AspectMining {
 		}
 		
 		for (int i = 0; i < feedbacks.length; i++) {
-			if (!feedbacks[i].isOnTopic()){
+			if (!feedbacks[i].onTopic){
 				continue;
 			}
-			Passage[] passages = feedbacks[i].getPassages();
+			Passage[] passages = feedbacks[i].passages;
 			for (int j = 0; j < passages.length; j++) {
-				flatAspectModel.addToAspect(passages[j].getAspectId(), query + " " + RetrievalController.getPassage(passages[j].getPassageId()), passages[j].getRelevance());
+				flatAspectModel.addToAspect(passages[j].aspectId, query + " " + RetrievalController.getPassage(passages[j].passageId), passages[j].relevance);
 			}
 		}
 
@@ -114,12 +114,12 @@ public class WeightedPassageAspectMining extends AspectMining {
 		}
 		
 		for (int i = 0; i < feedbacks.length; i++) {
-			if (!feedbacks[i].isOnTopic()){
+			if (!feedbacks[i].onTopic){
 				continue;
 			}
-			Passage[] passages = feedbacks[i].getPassages();
+			Passage[] passages = feedbacks[i].passages;
 			for (int j = 0; j < passages.length; j++) {
-				flatAspectModel.addToAspect(passages[j].getAspectId(), query + " " + RetrievalController.getPassage(passages[j].getPassageId()) ,passages[j].getRelevance());
+				flatAspectModel.addToAspect(passages[j].aspectId, query + " " + RetrievalController.getPassage(passages[j].passageId) ,passages[j].relevance);
 			}
 		}
 

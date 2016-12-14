@@ -34,12 +34,12 @@ public class FeaturedAspectMining  extends AspectMining {
 		cacheFeedback(feedbacks);
 		
 		for (int i = 0; i < feedbacks.length; i++) {
-			if (!feedbacks[i].isOnTopic()){
+			if (!feedbacks[i].onTopic){
 				continue;
 			}
-			Passage[] passages = feedbacks[i].getPassages();
+			Passage[] passages = feedbacks[i].passages;
 			for (int j = 0; j < passages.length; j++) {
-				featuredAspectModel.addToAspect(passages[j].getAspectId(),passages[j].getPassageId(), passages[j].getRelevance());
+				featuredAspectModel.addToAspect(passages[j].aspectId,passages[j].passageId, passages[j].relevance);
 			}
 		}
 		
@@ -51,12 +51,12 @@ public class FeaturedAspectMining  extends AspectMining {
 		
 		cacheFeedback(feedbacks);
 		for (int i = 0; i < feedbacks.length; i++) {
-			if (!feedbacks[i].isOnTopic()){
+			if (!feedbacks[i].onTopic){
 				continue;
 			}
-			Passage[] passages = feedbacks[i].getPassages();
+			Passage[] passages = feedbacks[i].passages;
 			for (int j = 0; j < passages.length; j++) {
-				featuredAspectModel.addToAspect(passages[j].getAspectId(), passages[j].getPassageId(), passages[j].getRelevance());
+				featuredAspectModel.addToAspect(passages[j].aspectId, passages[j].passageId, passages[j].relevance);
 			}
 		}
 

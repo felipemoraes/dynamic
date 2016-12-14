@@ -23,8 +23,8 @@ public class TrecUser implements User {
 			while ((line = br.readLine()) != null) {
 		    	String[] splitLine = line.split(",",5);
 		    	Passage passage = new Passage(splitLine[2],Integer.parseInt(splitLine[4]),Integer.parseInt(splitLine[3]));
-		    	if (passage.getRelevance() == 0 ) {
-		    		passage.setRelevance(1);
+		    	if (passage.relevance == 0 ) {
+		    		passage.relevance = 1;
 		    	}
 		    	if (!repository.containsKey(splitLine[0])){
 		    		repository.put(splitLine[0], new RelevanceSet());
@@ -46,21 +46,21 @@ public class TrecUser implements User {
 	
 	public static Feedback get(String docId, String topicId){
 		Feedback feedback = new Feedback();
-		feedback.setTopicId(topicId);
-		feedback.setDocno(docId);
+		feedback.topicId = topicId;
+		feedback.docno = docId;
 		if (!repository.containsKey(docId)){
-			feedback.setOnTopic(false);
+			feedback.onTopic = false;
 			
 			return feedback;
 		} 
 		Passage[] passages = repository.get(docId).get(topicId);
 		if (passages == null) {
-			feedback.setOnTopic(false);
+			feedback.onTopic = false;
 			return feedback;
 		} else {
 			
-			feedback.setPassages(passages);
-			feedback.setOnTopic(true);
+			feedback.passages = passages;
+			feedback.onTopic = true;
 		}
 		return feedback;
 	}
@@ -70,7 +70,7 @@ public class TrecUser implements User {
 		Feedback[] feedbacks = new Feedback[n];
 		for (int i = 0; i < resultSet.docids.length; i++) {
 			feedbacks[i] = TrecUser.get(resultSet.docnos[i], topicId);
-			feedbacks[i].setIndex(resultSet.indices[i]);
+			feedbacks[i].index = resultSet.indices[i];
 		}
 		return feedbacks;
 	}

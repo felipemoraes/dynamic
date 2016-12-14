@@ -4,7 +4,7 @@ import br.ufmg.dcc.latin.cache.ExternalKnowledgeCache;
 import br.ufmg.dcc.latin.retrieval.ReScorerController;
 import br.ufmg.dcc.latin.retrieval.RetrievalController;
 
-public class TermFeatures {
+public class TermFeatures implements Comparable<TermFeatures>{
 	
 	public int termId;
 	public double[] features;
@@ -72,5 +72,15 @@ public class TermFeatures {
 		double idf = weights[0]*ReScorerController.getIdf("title", termId)
 					+ weights[1]*ReScorerController.getIdf( "content", termId);
 		return idf ;
+	}
+
+	@Override
+	public int compareTo(TermFeatures o) {
+		if (this.weight > o.weight) {
+			return -1;
+		}  else if (this.weight < o.weight){
+			return 1;
+		}
+		return 0;
 	}
 }

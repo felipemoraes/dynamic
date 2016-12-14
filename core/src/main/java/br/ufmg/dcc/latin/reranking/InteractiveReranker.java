@@ -70,7 +70,7 @@ public abstract class InteractiveReranker implements Reranker {
 	
 	public void update(Feedback[] feedback){
 		for (int i = 0; i < feedback.length; i++) {
-			selected.put(feedback[i].getIndex());
+			selected.put(feedback[i].index);
 		}
 	}
 	

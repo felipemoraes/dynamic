@@ -163,15 +163,15 @@ public class RM3 extends InteractiveReranker {
 			if (!addFeedback){
 				break;
 			}
-			if (!feedback[i].isOnTopic()){
+			if (!feedback[i].onTopic){
 				continue;
 			}
-			Passage[] passages = feedback[i].getPassages();
+			Passage[] passages = feedback[i].passages;
 			for (int j = 0; j < passages.length; j++) {
-				 DocVec counts = RetrievalController.getPassageTerms(passages[j].getPassageId());
+				 DocVec counts = RetrievalController.getPassageTerms(passages[j].passageId);
 				 newTermCounts.add(counts);
 				 docLens.add(counts.docLen);
-				 relevances.add(passages[j].getRelevance());
+				 relevances.add(passages[j].relevance);
 			}
 		}
 		

@@ -19,13 +19,13 @@ public class Evaluator {
 				float score = (float) ((1000.0-iteration-i)/1000.0);
 				String wline = topicId + "\t" + iteration +"\t" + docnos[i] + "\t" + String.format("%.12f", score) + "\t";
 				Feedback feedback = TrecUser.get(docnos[i], topicId);
-				if (!feedback.isOnTopic()){
+				if (!feedback.onTopic){
 					wline += "0\tNULL";
 				} else {
 					wline += "1" +  "\t";
-					for (int j = 0; j < feedback.getPassages().length; j++) {
+					for (int j = 0; j < feedback.passages.length; j++) {
 						
-						wline += feedback.getPassages()[j].getAspectId() + ":" + feedback.getPassages()[j].getRelevance() + "|";
+						wline += feedback.passages[j].aspectId + ":" + feedback.passages[j].aspectId + "|";
 					}
 					wline = wline.substring(0,wline.length()-1);
 				}
