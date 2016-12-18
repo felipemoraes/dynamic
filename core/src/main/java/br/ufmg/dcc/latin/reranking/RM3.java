@@ -279,7 +279,7 @@ public class RM3 extends InteractiveReranker {
 	}
 	
 	@Override
-	public String debug(String topicid, int iteration) {
+	public String debug() {
 		return null;
 	}
 	

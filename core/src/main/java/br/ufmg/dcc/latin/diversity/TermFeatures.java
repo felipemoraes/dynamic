@@ -13,22 +13,62 @@ public class TermFeatures implements Comparable<TermFeatures>{
 	public TermFeatures(int termId, int passageId, int relevance){
 		this.termId = termId;
 		this.features = new double[8];
-		this.features[0] = collectionIdf();
-		this.features[1] = 1f;
-		this.features[2] = relevance;
-		this.features[3] = googleNgram();
-		this.features[4] = wikipediaTitles();
-		this.features[5] = queryLog();
-		this.features[6] = dbPediaEntities(passageId);
-		this.features[7] = msEntities(passageId);
-
+		
+		this.features[0] = collectionIdf(); // 2
+		this.features[1] = 1f;  // 3
+		this.features[2] = collectionIdf();  // 4
+		this.features[3] = relevance; // 5
+		this.features[4] = googleNgram(); // 6
+		this.features[5] = wikipediaTitles(); // 7
+		this.features[6] = queryLog(); // 8
+		this.features[7] = 0; // 9 // this term is in query
+		if (RetrievalController.queryTermsSet.contains(termId)){
+			this.features[7] = 1; 
+		}
+		
+		
+		
+		//this.features[6] = dbPediaEntities(passageId); // 8
+		//this.features[7] = msEntities(passageId); // 9
+	//	this.features[6] = 0; // 8
+	//	this.features[7] = 0; // 9
+	}
+	
+	public TermFeatures(int termId){
+		this.termId = termId;
+		this.features = new double[8];
+		this.features[0] = collectionIdf(); // 2
+		this.features[1] = 1f;  // 3
+		this.features[2] = collectionIdf(); // 4
+		this.features[3] = 4; // 4
+		this.features[4] = googleNgram(); // 5
+		this.features[5] = wikipediaTitles(); // 6
+		this.features[6] = queryLog(); // 7
+		this.features[7] = 0; // 8
+		if (RetrievalController.queryTermsSet.contains(termId)){
+			this.features[7] = 1; 
+		}
+		
+		//this.features[6] = dbPediaEntities(passageId); // 8
+		//this.features[7] = msEntities(passageId); // 9
+	//	this.features[6] = 0; // 8
+	//	this.features[7] = 0; // 9
 	}
 	
 	public void updateTerm(int passageId, int relevance){
 		this.features[1] += 1;
-		this.features[2] += relevance;
-		this.features[6] += dbPediaEntities(passageId);
-		this.features[7] += msEntities(passageId);
+		this.features[2] += collectionIdf();
+		this.features[3] += relevance;
+	//	this.features[6] += dbPediaEntities(passageId);
+	//	this.features[7] += msEntities(passageId);
+	}
+	
+	public void updateTerm(){
+		this.features[1] += 1;
+		this.features[2] += collectionIdf();
+		this.features[3] += 4;
+	//	this.features[6] += dbPediaEntities(passageId);
+	//	this.features[7] += msEntities(passageId);
 	}
 	
 	private double msEntities( int passageId) {

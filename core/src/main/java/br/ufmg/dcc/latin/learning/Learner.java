@@ -3,7 +3,8 @@ package br.ufmg.dcc.latin.learning;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface OnlineLearner {
+public interface Learner {
+	
 	void setupReranker(String rerankerName);
 	void loadTrainingSet(String trainingFilename);
 	void loadValidationSet(String validationFilename);

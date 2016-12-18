@@ -21,13 +21,20 @@ public class FeaturedAspectModel {
 		if (!featuredAspectes.containsKey(aspectId)){
 			featuredAspectes.put(aspectId, new FeaturedAspect());
 		}
+
 		
 		DocVec passageDocVec = RetrievalController.getPassageTerms(passageId);
 		int[] terms = passageDocVec.vec.keys();
 		for (int i = 0; i < terms.length; i++) {
 			
 			featuredAspectes.get(aspectId).putTerm(terms[i],passageId,relevance);
+			//if (aspectId.equals("DD16-1.3")) {
+			//	System.out.print(RetrievalController.vocab[0].getTerm(terms[i]) + " ");
+			//}
 		}
+		//if (aspectId.equals("DD16-1.3")) {
+		//	System.out.println(terms.length);
+		//}
 	}
 
 	public int numAspects() {
@@ -51,9 +58,7 @@ public class FeaturedAspectModel {
 		
 		for (int i = 0; i < topTerms.length; i++) {
 			double weight = topTerms[i].weight;
-			if (weight < 0) {
-				weight = 0;
-			}
+
 			//System.out.print(RetrievalController.vocab[0].getTerm(topTerms[i].termId) + " " + weight + " ");
 			complexQuery.put(topTerms[i].termId, weight);
 		}

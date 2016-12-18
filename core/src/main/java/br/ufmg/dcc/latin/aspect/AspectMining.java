@@ -25,6 +25,9 @@ public abstract class AspectMining {
 	
 	public abstract void sendFeedback(String index, String query, Feedback[] feedbacks);
 	public abstract void updateAspects(String index);
+	public void debug(){
+		
+	}
 	public abstract void miningFeedbackForCube(String index,  String query, Feedback[] feedbacks);
 	
 	public double[][] getCoverage(){

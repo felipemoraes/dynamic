@@ -2,16 +2,20 @@ package br.ufmg.dcc.latin.retrieval;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.MultiFields;
-import org.apache.lucene.index.Term;
 import org.apache.lucene.index.Terms;
 import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
@@ -37,7 +41,8 @@ import br.ufmg.dcc.latin.index.InMemoryDirectedIndex;
 import br.ufmg.dcc.latin.index.InMemoryTermStats;
 import br.ufmg.dcc.latin.index.InMemoryVocabulary;
 import br.ufmg.dcc.latin.querying.ResultSet;
-import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.set.TIntSet;
+import gnu.trove.set.hash.TIntHashSet;
 
 
 public class RetrievalController {
@@ -59,6 +64,8 @@ public class RetrievalController {
 	
 	private static Directory passageDir;
 	private static IndexReader passageReader;
+	
+	public static TIntSet queryTermsSet;
 	
 	
 	public static void initVocab(String index, String field){
@@ -163,6 +170,7 @@ public class RetrievalController {
 		if (passageDocs != null){
 			return;
 		}
+		
 		int n = passageReader.numDocs();
 		passageDocs = new DocVec[n];
 		for (int i = 0; i <n; i++) {
@@ -175,6 +183,7 @@ public class RetrievalController {
 			}
 
 		}
+		
 	}
 
 	public static DocVec getPassageTerms(int passageId){
@@ -186,7 +195,7 @@ public class RetrievalController {
 	public static IndexSearcher getIndexSearcher(String indexName){
 		
 		if (similarity == null) {
-			similarity = new LMDirichlet(2000f);
+			similarity = new DPH();
 		}
 		
 		IndexReader reader;
@@ -255,8 +264,18 @@ public class RetrievalController {
 				
 			}
 		}
-
-
+	}
+	
+	public static void initQueryTerms(String queryTerms){
+		queryTermsSet = new TIntHashSet();
+		
+		List<String> terms = tokenizeText(queryTerms);
+		for (String term : terms) {
+			int termId = vocab[0].getId(term);
+			if (termId != -1){
+				queryTermsSet.add(termId);
+			}
+		}
 	}
 	
 	static void initDocsVec(String topicId, int[] docids, String index) {
@@ -311,7 +330,7 @@ public class RetrievalController {
 				int termId = vocab.getId(t);
 				if (termId != -1){
 					docVec.add(termId,(int) iterator.totalTermFreq());
-				}
+				} 
 				doclen += iterator.totalTermFreq();
 				term = iterator.next();
 			}
@@ -321,7 +340,27 @@ public class RetrievalController {
 		docVec.docLen = doclen;
 		return docVec;
 	}
-
+	
+	public static List<String> tokenizeText(String text){
+		List<String> result = new ArrayList<String>();
+		try {
+		      TokenStream stream  = RetrievalController.getAnalyzer().tokenStream(null, new StringReader(text));
+		      stream.reset();
+		      
+		      while (stream.incrementToken()) {
+		    	  BytesRef term = new BytesRef(stream.getAttribute(CharTermAttribute.class).toString());
+		    	  result.add(term.utf8ToString());
+		      } 
+		      stream.close();
+		
+		} catch (IOException e) {
+			      throw new RuntimeException(e);
+		}
+		return result;
+	}
+	
+	
+	
 	public static ResultSet search(String topicId, String queryTerms, String index) {
 
 		if (RetrievalCache.resultSetCache == null) {
@@ -333,6 +372,7 @@ public class RetrievalController {
 			RetrievalCache.docids = result.docids;
 			RetrievalCache.scores = result.scores;
 			RetrievalCache.docnos = result.docnos;
+			
 			return result;
 		}
 		
@@ -367,10 +407,9 @@ public class RetrievalController {
     	
         for(int i=0; i< n; i++){
 			try {
-				
 				 Document doc = searcher.doc(hits[i].doc);
 	             docnos[i] = doc.get("docno");
-	             scores[i] = hits[i].score;
+	             scores[i] = Double.parseDouble(Float.toString(hits[i].score));
 	             docids[i] = hits[i].doc;
 	             
 			} catch (IOException e) {

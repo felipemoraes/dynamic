@@ -47,6 +47,7 @@
 09 68 68
 091 1 1
 099 6 6
+0f 76 76
 0s 7 7
 1 15579 16149
 1,000 54 54
@@ -115,6 +116,7 @@
 109th 10 10
 10cm 1 1
 10k 194 194
+10m 3 3
 10th 252 252
 10x 31 31
 10yr 1 1
@@ -140,6 +142,7 @@
 118th 7 7
 119 94 94
 11am 1 1
+11c 4 4
 11th 220 220
 12 5743 5796
 12,000 17 17
@@ -211,6 +214,7 @@
 15.99 1 1
 150 1022 1024
 1500 703 703
+150a2 3 3
 150gb 3 3
 152 56 56
 1550 30 30
@@ -334,7 +338,9 @@
 1999 1672 1674
 19th 338 339
 1a 116 116
+1a12 1 1
 1b 56 56
+1c 8 8
 1i 2 2
 1in 6 6
 1k 15 15
@@ -426,7 +432,6 @@
 2293 4 4
 22nd 72 72
 23 1084 1085
-23.5 4 4
 230 166 166
 233 45 45
 234 31 31
@@ -500,6 +505,7 @@
 299 32 32
 29th 82 82
 2a 110 110
+2ac 2 2
 2c 70 74
 2checkout 1 1
 2for 1 1
@@ -510,6 +516,7 @@
 2min 1 1
 2nd 948 953
 2pm 2 2
+2s 12 12
 3 19232 19390
 3,000 17 17
 3,300 1 1
@@ -563,6 +570,7 @@
 3360 6 6
 337 35 35
 338 57 57
+33c 2 2
 33pm 1 1
 33rd 44 44
 34 452 453
@@ -685,8 +693,10 @@
 4920 5 5
 496 33 33
 498 12 12
+4f 8 8
 4k 10 10
 4pm 2 2
+4s 12 12
 4th 1092 1094
 4x 84 84
 4x4 836 847
@@ -716,6 +726,7 @@
 501 232 232
 501st 13 13
 5053 3 3
+50c 3 3
 50k 5 5
 50mhz 1 1
 50p 3 3
@@ -922,7 +933,9 @@
 8950 2 2
 896 7 7
 89th 12 12
+8a 23 23
 8am 1 1
+8c 7 8
 8m 9 10
 8p 3 3
 8th 982 985
@@ -980,15 +993,40 @@ a.d 101 104
 a.k 7 7
 a.k.a 25 26
 a.m 236 236
+a1 338 343
+a12 3 3
+a1m 1 1
+a20 11 11
+a21 1 1
+a300 17 18
 a4 194 199
+a50 3 3
+a65 19 19
 aa 1588 1595
+aaa 3616 3616
+aaaa 32 32
+aaami 1 1
 aaaron 3 3
+aabout 2 2
+aadvanc 1 1
+aafrica 1 1
+aafter 1 1
+aall 5 5
+aamerican 15 15
 aami 12 12
+aan 12 12
+aand 37 37
+aanim 3 3
+aanoth 2 2
 aap 79 79
+aar 76 76
 aaron 1504 1504
+aat 22 22
 ab 2293 2297
 aback 1 1
 abandon 347 347
+abas 3 3
+abash 1 1
 abass 2 2
 abba 261 261
 abbr 12 12
@@ -1011,6 +1049,7 @@ abi 124 124
 abia 6 6
 abid 24 24
 abidjan 11 11
+abig 8 8
 abil 224 224
 abject 6 6
 abl 388 388
@@ -1019,11 +1058,13 @@ abnorm 382 382
 aboard 66 66
 abolish 22 22
 abolit 35 35
+abord 1 1
 aborigin 115 116
 abort 1321 1321
 abound 6 6
 about 14204 14276
 about.com 283 284
+abouta 1 1
 abov 1587 1588
 aboveground 44 44
 abraham 858 859
@@ -1048,6 +1089,7 @@ ac 5783 5788
 ac.uk 1 1
 academ 792 792
 academi 7519 7522
+acar 38 38
 acc 547 548
 accecpt 2 2
 acceler 583 583
@@ -1085,12 +1127,16 @@ acet 151 151
 ach 495 501
 acheiv 43 43
 achiev 591 591
+achim 4 4
 acid 2702 2716
 acid.html 1 1
 acidif 1 1
+aciti 1 1
 acknowledg 78 78
 acl 413 413
 aclu 136 136
+acommun 1 1
+acorpor 1 1
 acp 121 121
 acquaint 18 18
 acquir 115 115
@@ -1133,6 +1179,7 @@ adgroup 4 4
 adher 35 35
 adhes 675 675
 adi 180 180
+adid 12 12
 adjac 14 14
 adjourn 5 5
 adjud 55 55
@@ -1147,6 +1194,7 @@ admir 384 384
 admiss 656 656
 admit 67 67
 adnew 1 1
+ado 156 157
 adolf 269 269
 adon 5 5
 adopt 3607 3615
@@ -1170,6 +1218,8 @@ advoc 1224 1224
 advocaci 240 240
 adwar 440 443
 adword 40 40
+aemail 1 1
+aend 2 2
 aeo 8 8
 aerial 720 722
 aeromed 4 4
@@ -1191,7 +1241,9 @@ afghan 238 238
 afghani 2 2
 afghanistan 422 422
 afield 8 8
+afli 3 3
 afloat 10 10
+afor 8 8
 afp 69 69
 afr 66 66
 afraid 121 121
@@ -1212,9 +1264,11 @@ ag 9331 9357
 again 1142 1188
 against 1656 1659
 agaist 4 4
+aganga 1 1
 aganist 11 11
 agatha 88 88
 agenc 7193 7201
+agencya 1 1
 agenda 212 212
 agent 3837 3846
 ager 60 60
@@ -1228,6 +1282,7 @@ agit 50 50
 agn 214 214
 ago 209 211
 agon 11 11
+agood 2 2
 agora 40 40
 agp 144 144
 agraw 5 5
@@ -1241,20 +1296,31 @@ agu 27 28
 aguirr 23 23
 agyemang 4 4
 ah 299 310
+ahad 2 2
+ahav 1 1
 ahead 334 339
 ahearn 18 18
+ahi 40 40
 ahm 73 73
 ahold 20 20
+ahom 10 10
+ahot 1 1
+ahow 3 3
 ahref 8 8
 ahv 3 3
 ai 890 890
+aiam 1 1
 aid 6217 6234
+aida 130 130
+aif 16 16
 aiir 1 1
 ail 145 145
 ailment 49 49
 aim 6674 6678
+ain 71 71
 ain't 312 317
 ainsli 1 1
+aint 318 323
 aintre 9 9
 air 31772 32255
 airasia 3 3
@@ -1278,10 +1344,16 @@ airtel 6 6
 airtight 8 8
 airwai 2941 2942
 airwav 393 393
+airwaya 1 1
+ait 78 78
+aita 4 4
 aj 669 669
 ajax 120 120
+ajon 1 1
 ak 1263 1266
 aka 189 190
+akei 1 1
+aken 18 18
 akin 250 252
 akron 1469 1479
 akwa 1 1
@@ -1310,9 +1382,12 @@ alder 103 103
 alderman 36 36
 aldou 14 14
 aldrich 142 142
+alean 13 13
+aleg 46 46
 alert 1876 1888
 alertpai 3 3
 alessandro 23 23
+aleta 11 11
 aleutian 43 43
 alex 1527 1527
 alexand 1891 1891
@@ -1328,11 +1403,14 @@ ali 1065 1065
 alia 692 692
 alic 1425 1429
 alien 1205 1210
+alif 10 10
 align 329 331
 alik 131 137
 alisdair 2 2
 alison 317 317
+aliter 1 1
 aliti 6 6
+alittl 10 12
 aliv 1080 1082
 alkaloid 8 8
 all 18499 18616
@@ -1343,6 +1421,7 @@ allegheni 968 968
 allegori 46 46
 allei 897 897
 allen 4936 4945
+allena 2 2
 allentown 658 658
 allerg 305 305
 allergen 62 62
@@ -1370,6 +1449,7 @@ along 530 533
 alongsid 1 1
 alot 175 175
 aloud 48 48
+alow 9 9
 alpha 1568 1829
 alpin 1203 1207
 alreadi 225 226
@@ -1397,10 +1477,13 @@ am 6182 6239
 ama 731 732
 amad 10 10
 amadu 1 1
+amai 3 3
+amak 3 3
 amalgam 65 65
 amanda 1229 1233
 amap 7 7
 amara 26 26
+amass 3 3
 amateur 1302 1330
 amaz 2243 2246
 amazingli 4 4
@@ -1422,6 +1505,7 @@ amend 796 796
 amenorrhea 26 26
 ameri 225 225
 america 38526 38557
+americaa 3 3
 american 78630 78673
 amero 11 11
 amex 216 216
@@ -1443,6 +1527,7 @@ amnesti 286 286
 amok 3 3
 among 327 327
 amongst 11 11
+amor 726 731
 amoung 17 17
 amount 565 568
 amp 1616 1623
@@ -1458,6 +1543,7 @@ amtrak 2209 2209
 amundsen 14 14
 amundson 13 13
 amus 1277 1277
+amust 3 3
 amwai 86 86
 amzn 17 17
 ana 1351 1351
@@ -1471,7 +1557,9 @@ analysi 2175 2178
 analyst 341 342
 analyt 215 215
 analyz 452 452
+anano 1 1
 anarchi 95 95
+anat 17 17
 anatomi 4864 4867
 anc 83 83
 ancestor 160 160
@@ -1481,6 +1569,7 @@ anchor 1183 1186
 anchorag 1546 1549
 ancient 2352 2352
 ancillari 10 10
+anda 32 32
 ander 79 79
 anderson 5824 5842
 andi 1868 1872
@@ -1539,7 +1628,9 @@ anomal 3 3
 anomali 51 51
 anon 140 140
 anonym 909 909
+anot 12 12
 anoth 1166 1174
+anow 2 2
 anox 14 14
 answer 1849 1849
 ant 1384 1391
@@ -1592,8 +1683,10 @@ anyth 407 421
 anytim 139 139
 anywai 95 96
 anywher 393 393
+aoh 13 13
 aoki 19 19
 aol 33152 33158
+aon 132 132
 aorn 50 50
 ap 1612 1618
 apart 17859 17879
@@ -1607,6 +1700,7 @@ apocalyps 127 127
 apocalypt 2 2
 apolog 131 131
 apologis 1 1
+aport 10 10
 app 597 599
 appalachian 379 379
 appar 147 147
@@ -1637,20 +1731,24 @@ approx 6 6
 approxim 29 29
 apr 176 176
 april 1498 1504
+apriv 1 1
 aprn 11 11
 apron 247 247
 aproov 1 1
 aprov 19 19
 aprox 2 2
+aput 1 1
 aqua 1187 1187
 aquacultur 34 34
 aquarium 2701 2702
 aquat 691 691
 aquif 45 45
 aquir 44 44
+aquit 4 4
 ar 4477 4483
 arab 1202 1215
 arabia 285 287
+arac 46 46
 arafat 10 10
 arc 928 928
 arcgi 7 7
@@ -1664,6 +1762,8 @@ arcti 1 1
 arctic 531 531
 ardwai 1 1
 area 17881 17925
+areaa 5 5
+areal 21 21
 arel 3 3
 arellano 17 17
 aren 48 48
@@ -1691,6 +1791,7 @@ armor 1108 1109
 armour 374 374
 armstrong 1811 1816
 arnold 1529 1534
+arol 3 3
 aromat 45 45
 aros 8 8
 around 2456 2467
@@ -1715,6 +1816,7 @@ articul 130 130
 artid 10 10
 artifici 573 574
 artist 5323 5324
+artista 49 49
 artwork 623 623
 arun 6 6
 arvind 1 1
@@ -1725,7 +1827,10 @@ ascertain 1 1
 ascet 4 4
 ascii 156 156
 ascorb 22 22
+aseattl 1 1
 asept 29 29
+aseri 1 1
+aset 13 13
 ash 1364 1377
 asham 10 10
 ashanti 307 307
@@ -1741,6 +1846,10 @@ ask 17514 17526
 aski 3 3
 asleep 111 111
 asn 24 24
+aso 52 52
+asob 2 2
+asolut 1 1
+asom 28 28
 asotin 12 12
 aspect 155 156
 aspen 928 928
@@ -1770,17 +1879,26 @@ assumpt 168 168
 assur 591 591
 assword 1 1
 ast 143 143
+astar 14 14
 asthenia 9 9
 astonish 6 6
 astound 6 6
+astrict 1 1
 astring 7 7
 astronom 56 56
 asu 793 793
 asymptomat 5 5
 at 323 323
+atak 6 6
+atel 17 17
+aten 22 22
 ath 69 69
 athabasca 22 22
+athei 8 8
 atheism 12 12
+athen 1554 1571
+ather 31 31
+athi 4 4
 athlet 4627 4630
 athor 63 63
 ation 90 90
@@ -1789,10 +1907,14 @@ atlant 5137 5143
 atlanta 14480 14500
 atleast 10 10
 atm 320 320
+atma 13 13
 atment 3 3
 atmospher 277 277
+ato 59 59
 atom 1231 1240
 atop 47 47
+atrap 2 2
+atri 7 7
 attach 1165 1165
 attack 5747 5754
 attain 25 25
@@ -1808,6 +1930,7 @@ attitud 341 341
 attornei 7351 7383
 attract 2428 2430
 attribut 310 310
+aturn 7 7
 atyp 82 82
 au 542 545
 auburn 2049 2078
@@ -1858,18 +1981,22 @@ autorespond 15 15
 autosav 11 11
 autotroph 5 5
 autumn 462 462
+auw 2 2
 auxiliari 98 98
 av 3136 3147
 ava 262 265
 avacado 87 87
 avaibl 7 7
 avail 1130 1130
+avalid 31 31
 avalon 979 991
+avalu 1 1
 avatar 936 937
 avelar 5 5
 aveng 492 492
 avenu 3179 3183
 averag 2552 2558
+averi 1083 1084
 avers 12 12
 avert 8 8
 avg 924 925
@@ -1886,20 +2013,26 @@ awai 2198 2213
 await 16 16
 awak 68 68
 awaken 155 155
+awal 6 6
 awar 992 993
 award 5751 5760
 awaren 7 7
 awash 2 2
+awear 5 5
 aweb 5 5
 awesom 467 467
+awhen 1 1
 awhil 37 37
 awi 21 21
+awil 1 1
 awkward 7 7
+aworld 3 3
 awri 2 2
 ax 382 384
 axi 374 379
 axl 730 731
 ay 296 311
+ayesa 4 4
 ayodel 2 2
 az 10748 10760
 aza 27 27
@@ -2069,6 +2202,7 @@ bazemor 17 17
 bb 2418 2438
 bbb 595 597
 bbc 2272 2272
+bbca 5 5
 bbm 6 6
 bc 1665 1672
 bch 83 83
@@ -2280,6 +2414,7 @@ biologist 65 65
 biomark 3 3
 biomass 44 44
 biomed 152 152
+biomerieux 13 13
 biomolecular 3 3
 biondi 7 7
 biop 4 4
@@ -2558,6 +2693,7 @@ bravo 1047 1047
 brawl 284 284
 brazen 9 9
 brazil 2326 2327
+brazila 1 1
 brazilian 1117 1117
 brea 358 360
 breach 88 88
@@ -2773,6 +2909,7 @@ button 1678 1679
 buyer 1298 1300
 buzz 933 936
 buzzer 35 35
+bya 7 7
 bylaw 76 76
 bypass 892 892
 byproduct 16 16
@@ -2803,10 +2940,10 @@ cadav 38 38
 cadet 867 867
 cadr 18 18
 caesar 911 917
+cafe 4860 4861
 cafeteria 161 161
 caffein 256 256
 caffrei 16 16
-café 48 48
 cage 1325 1326
 caha 4 4
 caitlin 84 84
@@ -2858,8 +2995,10 @@ can 11568 11687
 can't 1654 1673
 cana 527 528
 canada 8946 8967
+canadaa 1 1
 canadian 2841 2847
 canal 1238 1242
+canat 2 2
 cancel 838 841
 cancer 10132 10182
 candac 197 197
@@ -2883,7 +3022,6 @@ cant 567 574
 cantwel 29 29
 canvi 5 5
 canyon 3722 3730
-can’t 9 9
 cap 3483 3485
 capabl 170 170
 capac 691 691
@@ -2960,6 +3098,7 @@ caseload 1 1
 caseon 1 1
 cash 4620 4695
 casino 11959 12065
+casinoa 2 2
 casket 153 153
 cassava 71 71
 cassel 55 55
@@ -3009,6 +3148,7 @@ caviti 155 155
 caza 46 46
 cb 6914 6918
 cbc 298 298
+cbca 6 6
 cbd 73 73
 cbo 13 13
 cbrn 6 6
@@ -3022,6 +3162,7 @@ cd 10662 10750
 cd4 8 8
 cd8 4 4
 cdc 862 862
+cdca 1 1
 cdom 2 2
 cdr 125 125
 cdt 50 50
@@ -3029,6 +3170,7 @@ ce 1136 1150
 cea 49 49
 ceas 47 47
 cece 56 56
+cecil 387 388
 cedar 4439 4456
 cede 23 23
 cei 30 30
@@ -3052,6 +3194,7 @@ censorship 112 112
 censu 1274 1275
 cent 1473 1481
 center 51584 51682
+centera 6 6
 centerpiec 555 555
 centigrad 30 30
 centimet 292 292
@@ -3079,6 +3222,7 @@ cfr 428 428
 ch 586 586
 ch4 5 5
 chad 792 796
+chada 3 3
 chai 111 111
 chain 3179 3184
 chair 5757 5782
@@ -3181,6 +3325,7 @@ childbirth 169 169
 childhood 1012 1012
 childish 9 9
 children 21572 21612
+childrenin 1 1
 chile 1112 1115
 chili 2259 2260
 chill 297 297
@@ -3241,6 +3386,7 @@ chronic 983 984
 chronicl 2851 2851
 chronolog 112 112
 chu 100 102
+chua 13 13
 chuck 1884 1888
 chuckanut 8 8
 chug 11 11
@@ -3275,6 +3421,7 @@ citat 772 772
 cite 562 562
 citi 86994 87570
 citizen 4358 4363
+citizena 3 3
 citizenship 430 430
 citru 656 656
 civic 2454 2460
@@ -3321,6 +3468,7 @@ clearwat 1268 1272
 cleaver 84 84
 clein 15 15
 cleland 12 12
+clement 648 651
 clergi 62 62
 cleric 147 147
 clerk 4417 4423
@@ -3338,6 +3486,7 @@ climatolog 4 4
 climb 850 850
 cline 365 366
 clinic 8119 8131
+clinica 78 78
 clinician 25 25
 clinton 2344 2368
 clip 17267 17276
@@ -3358,6 +3507,7 @@ clove 60 60
 clover 504 505
 clown 1016 1020
 club 39925 39991
+cluba 6 6
 clue 448 448
 clueless 31 31
 clump 21 21
@@ -3425,6 +3575,7 @@ coke 1059 1061
 col 298 298
 cola 1489 1489
 cold 3360 3380
+colda 5 5
 coldcal 1 1
 colder 30 30
 coldest 24 24
@@ -3494,6 +3645,7 @@ commerci 7531 7534
 commi 11 11
 commiss 3800 3801
 commission 641 641
+commissiona 1 1
 commit 383 384
 committe 630 630
 commmun 31 31
@@ -3681,6 +3833,7 @@ context 138 141
 contextu 12 12
 contin 358 362
 continent 4631 4632
+continenta 8 8
 conting 130 130
 contino 2 2
 continu 1238 1240
@@ -3771,6 +3924,7 @@ cosbi 1114 1114
 cosford 2 2
 cosmet 2223 2247
 cost 7148 7180
+costa 3423 3429
 costco 4058 4058
 costli 16 16
 costum 3233 3239
@@ -3783,7 +3937,6 @@ cough 686 694
 could 1710 1729
 couldn't 38 38
 couldnt 6 6
-couldn’t 1 1
 coun 14 14
 council 3369 3373
 councillor 3 3
@@ -3817,6 +3970,7 @@ cour 158 158
 courag 257 257
 cours 10559 10572
 court 22266 22356
+courta 2 2
 courtesi 200 200
 courthous 1453 1454
 courtroom 39 39
@@ -3857,6 +4011,7 @@ cradl 414 419
 craft 8068 8075
 crafti 38 38
 craig 9607 9613
+craiga 3 3
 craiglist 1289 1289
 craigslist 9020 9020
 cram 58 58
@@ -3929,6 +4084,7 @@ crop 629 631
 cross 11747 11768
 crossbow 121 121
 crosscut 18 18
+crosss 11 11
 crotch 145 145
 crouch 77 77
 crow 1522 1523
@@ -4050,8 +4206,6 @@ cytomegaloviru 22 22
 cytopath 1 1
 czar 49 49
 czech 364 364
-câ 1 1
-côte 6 6
 d 11550 12312
 d'amor 18 18
 d'ivoir 12 12
@@ -4094,11 +4248,11 @@ danel 13 13
 danger 1268 1272
 dangl 45 45
 daniel 4949 4952
+daniela 73 73
 danish 220 220
 dank 26 26
 dannel 4 4
 danni 1188 1188
-dar 156 156
 darbi 227 227
 dare 528 532
 dari 27 27
@@ -4205,7 +4359,6 @@ decept 215 215
 decid 121 121
 decidu 108 108
 decim 302 303
-decin 3 3
 decis 639 640
 deck 4495 4505
 declar 499 502
@@ -4271,7 +4424,6 @@ degener 445 445
 degrad 31 31
 degre 3758 3802
 dehydr 249 251
-dekalb 1110 1112
 del 4929 4956
 delai 480 484
 delawar 5031 5042
@@ -4342,7 +4494,9 @@ dentistri 570 573
 denton 948 955
 denver 9051 9069
 depart 34225 34253
+departmenta 1 1
 departur 122 122
+depat 95 95
 depend 579 579
 depict 30 30
 deplet 55 55
@@ -4458,6 +4612,7 @@ dialogu 69 69
 dialysi 355 355
 diamet 262 262
 diamond 6609 6654
+diamonda 2 2
 diana 1543 1546
 diann 146 146
 diaper 1414 1420
@@ -4476,10 +4631,8 @@ dictatori 1 1
 dictionari 19931 19933
 did 3583 3592
 didier 10 10
-didn 1 1
 didn't 269 277
 didnt 50 50
-didn’t 7 13
 die 1974 1993
 diegan 1 1
 diego 11931 11945
@@ -4579,6 +4732,8 @@ discu 104 104
 discuss 549 549
 disea 26 26
 diseas 8523 8532
+diseasea 3 3
+diseaseand 1 1
 disengag 9 9
 disgrac 9 9
 disguis 30 30
@@ -4692,6 +4847,7 @@ doce 44 44
 docil 4 4
 dock 1152 1154
 doctor 6402 6425
+doctora 7 7
 doctrin 220 220
 document 4426 4481
 documentari 252 252
@@ -4701,10 +4857,8 @@ dodgi 1 1
 doe 8994 9018
 doens't 1 1
 does'nt 2 2
-doesn 4 4
 doesn't 437 437
 doesnt 109 109
-doesn’t 1 1
 dof 25 25
 doff 4 4
 dog 32225 32544
@@ -4737,8 +4891,8 @@ donnelli 124 124
 donor 306 306
 dont 1221 1246
 donut 879 879
-don’t 19 20
 doom 484 484
+dooma 1 1
 doomsdai 40 40
 door 12055 12174
 doorbel 54 54
@@ -4751,8 +4905,8 @@ dorothi 468 471
 dosag 465 465
 dose 488 489
 dot 2998 3068
+dota 32 32
 dott 11 11
-dou 12 12
 douala 3 3
 doubl 3243 3266
 doubleclick 15 15
@@ -4837,6 +4991,7 @@ drove 25 25
 drown 440 440
 drudg 5206 5206
 drug 9750 9810
+druga 4 4
 druglord 3 3
 drugscreen 2 2
 drugstor 167 167
@@ -4918,9 +5073,8 @@ dynam 1099 1100
 dysenteri 6 6
 dysfunct 286 288
 dyspepsia 15 15
-dã 1 1
-d’ivoir 1 1
 e 31301 31611
+e.a 8 8
 e.g 35 35
 ea 636 636
 each 562 562
@@ -4942,6 +5096,7 @@ earnest 133 133
 earth 5777 5797
 earthen 10 10
 earthquak 1353 1353
+earthth 2 2
 eas 176 176
 easi 4903 4910
 easier 55 55
@@ -5066,6 +5221,7 @@ eleg 692 692
 element 1830 1833
 elementari 6554 6563
 eleph 1211 1211
+elephanta 1 1
 elev 1200 1205
 eleven 238 239
 eli 786 786
@@ -5315,7 +5471,7 @@ esitm 1 1
 esl 412 412
 esn 19 19
 esp 197 198
-español 216 217
+espanol 1085 1086
 especi 84 84
 espinosa 12 12
 espous 1 1
@@ -5355,6 +5511,7 @@ eur 30 30
 eureka 938 942
 euro 1292 1298
 europ 2158 2162
+europea 12 12
 european 1562 1565
 eusti 109 112
 euthan 41 41
@@ -5593,6 +5750,7 @@ fascism 18 18
 fascist 15 15
 fashion 5879 5884
 fast 4598 4621
+fasta 6 6
 fasten 700 701
 faster 339 341
 fastest 507 508
@@ -5628,6 +5786,7 @@ fb 195 199
 fbi 825 825
 fcuk 23 23
 fda 626 626
+fdaa 2 2
 fdi 18 18
 fe 2143 2158
 fear 2427 2449
@@ -5703,8 +5862,8 @@ ffp 17 17
 fg 100 100
 fi 845 850
 fia 56 56
+fianc 83 83
 fiance 19 20
-fiancé 1 1
 fiat 160 160
 fiberboard 16 16
 fichtner 7 7
@@ -5720,6 +5879,7 @@ fifti 439 445
 fig 254 256
 fig3 1 1
 fight 5472 5485
+fighta 1 1
 fighter 1483 1486
 figur 2292 2302
 figurehead 1 1
@@ -5727,6 +5887,7 @@ filament 37 37
 file 17684 17918
 filer 46 46
 fill 1466 1470
+filla 2 2
 filler 251 251
 film 4478 4494
 filmmak 26 26
@@ -5744,6 +5905,7 @@ finder 4660 4676
 findlai 242 243
 fine 2679 2694
 finer 54 54
+fing 20 20
 finger 2390 2404
 fingerprint 354 354
 fingertip 36 36
@@ -5856,7 +6018,6 @@ fluvial 1 1
 flux 182 183
 fly 5867 5883
 flyer 1148 1154
-flynn 262 263
 fm 5388 5398
 fmp 15 15
 fo 507 508
@@ -5898,6 +6059,7 @@ foothold 3 3
 footnot 96 96
 footprint 521 521
 footwear 622 625
+for.a 1 1
 fora 14 14
 forag 58 58
 forb 465 466
@@ -5907,6 +6069,7 @@ forbidden 161 161
 forc 7061 7084
 forcibl 9 9
 ford 23860 23906
+forda 1 1
 fore 215 215
 forec 6 6
 forecast 2480 2488
@@ -5985,6 +6148,7 @@ frame 4547 4563
 framebord 1 1
 framework 1009 1009
 franc 3838 3841
+francai 73 73
 franch 17 17
 franchis 1816 1816
 franci 1960 1963
@@ -5997,7 +6161,6 @@ franklin 5028 5050
 franklyn 30 30
 frantic 14 14
 franz 206 206
-françai 18 18
 fraser 208 209
 fraud 1165 1166
 fraudul 34 34
@@ -6069,6 +6232,7 @@ fron 46 46
 front 3835 3840
 frontal 122 122
 frontenac 38 38
+frontia 2 2
 frontier 2417 2417
 frontlin 373 373
 frontman 3 3
@@ -6170,6 +6334,7 @@ gambia 50 50
 gambian 4 4
 gambl 1443 1490
 game 77809 78327
+gamea 11 11
 gamer 238 238
 gamma 349 351
 gams 40 40
@@ -6247,11 +6412,13 @@ gene 1081 1083
 genealog 1524 1524
 gener 16316 16389
 genera 10 10
+generala 2 2
 generos 12 12
 genesi 873 874
 genet 788 789
 geneticist 8 8
 geneva 946 953
+genevia 4 4
 geni 482 482
 genistein 1 1
 genitourinari 3 3
@@ -6325,6 +6492,7 @@ gigi 121 121
 gil 247 247
 gile 175 175
 gill 396 396
+gilla 2 2
 gillam 1 1
 gillard 5 5
 gillespi 111 111
@@ -6338,6 +6506,7 @@ gire 7 7
 girl 42096 43180
 girlfriend 1178 1182
 girli 173 173
+girlsa 1 1
 gist 36 36
 give 2740 2761
 giveawai 264 264
@@ -6445,6 +6614,7 @@ gorton 28 28
 got 2091 2131
 gotta 248 250
 gotten 11 11
+gottingen 2 2
 gouger 2 2
 gough 40 40
 gould 385 386
@@ -6455,7 +6625,6 @@ government 57 57
 governor 1505 1507
 govexec 4 4
 govt 175 175
-gov’t 1 1
 gown 2077 2079
 gp 2561 2568
 gp120 1 1
@@ -6522,6 +6691,7 @@ graviti 489 489
 graze 43 43
 gre 283 283
 great 11412 11435
+greata 2 2
 greater 1324 1324
 greatest 1075 1076
 greatli 2 2
@@ -6579,6 +6749,7 @@ groun 20 20
 ground 5458 5462
 groundwat 50 50
 group 21647 21728
+groupa 3 3
 groupon 1 1
 groupth 1 1
 grous 72 72
@@ -6643,6 +6814,7 @@ gulu 6 7
 gum 975 976
 gummer 7 7
 gun 10791 10823
+guna 5 5
 gunfir 5 5
 gunman 7 7
 gunmen 10 10
@@ -6679,6 +6851,7 @@ had 1120 1124
 hadi 10 10
 hadlei 125 125
 hadn't 7 7
+hadnt 2 2
 haemorrhag 9 9
 haf 8 8
 hafford 2 2
@@ -6732,6 +6905,7 @@ handler 325 325
 handmad 386 388
 handout 116 116
 handov 3 3
+handsa 1 1
 handshak 43 43
 handsoff 2 2
 handwash 74 74
@@ -6810,6 +6984,7 @@ hauler 473 473
 haunt 1575 1577
 hav 16 16
 have 8056 8219
+havea 1 1
 havebett 1 1
 haven 2500 2506
 haven't 30 30
@@ -6859,8 +7034,10 @@ headwat 28 28
 heal 1174 1175
 healer 140 140
 heali 109 109
+heall 1 1
 health 28180 28540
 health24 1 1
+healtha 3 3
 healthcar 3678 3686
 healthi 2179 2192
 healthier 49 49
@@ -6959,7 +7136,6 @@ heterotroph 8 8
 hewlett 1018 1018
 heydai 3 3
 heymann 8 8
-he’ll 1 1
 hf 127 127
 hfc 82 82
 hg 166 168
@@ -6986,6 +7162,7 @@ hijack 142 142
 hike 1046 1048
 hilari 888 888
 hill 18358 18409
+hilla 8 8
 hillari 806 806
 hilli 36 36
 hillsid 332 332
@@ -7106,6 +7283,7 @@ horton 752 752
 hose 1457 1464
 hosp 230 230
 hospit 31451 31496
+hospitala 1 1
 hospitali 5 5
 hospitalis 1 1
 host 2945 2977
@@ -7130,13 +7308,16 @@ hound 1041 1043
 hour 3521 3534
 hourli 186 187
 hous 45621 45858
+housea 1 1
 household 1313 1313
 housekeep 278 278
 housem 2 2
 houston 19526 19555
 hover 118 118
 how 68994 69155
+howa 22 22
 howard 5510 5515
+howd 2 2
 howdi 45 45
 howev 15 15
 howl 163 164
@@ -7249,6 +7430,8 @@ i'm 1809 1887
 i'v 307 311
 i. 54 55
 i.v 11 11
+i12 3 3
+i3 17 17
 i56 1 1
 i79 1 1
 ia 2545 2552
@@ -7264,6 +7447,7 @@ iatrogen 3 3
 ib 413 415
 iberostar 182 182
 ibm 1178 1183
+ibma 3 3
 ibom 2 2
 ibrahim 29 29
 ibsen 53 53
@@ -7290,6 +7474,7 @@ icu 66 66
 id 6460 6485
 ida 245 245
 idaho 7981 8053
+idd 12 12
 idea 9362 9367
 ideal 758 758
 iden 100 101
@@ -7398,6 +7583,7 @@ improv 2721 2728
 improvis 33 33
 impur 4 4
 in 2157 2159
+ina 128 129
 inabl 20 20
 inaccess 24 24
 inaccur 15 15
@@ -7465,6 +7651,7 @@ index 5285 5298
 index.php 1044 1044
 indi 3218 3218
 india 3488 3524
+indiaa 1 1
 indian 9419 9445
 indic 646 646
 indict 119 119
@@ -7697,6 +7884,7 @@ intrus 42 43
 intub 29 29
 intuit 207 209
 inund 3 3
+inupiat 5 5
 inurl 31 31
 invad 342 342
 invalid 569 574
@@ -7725,6 +7913,7 @@ iom 11 11
 ion 696 704
 ionic 270 271
 iowa 14300 14427
+iowaa 1 1
 ip 1951 1958
 ipad 7 7
 ipb 24 24
@@ -7789,10 +7978,14 @@ istock 9 9
 it 1885 1921
 it'd 1 1
 it'll 2 2
+it.a 1 1
+ita 66 66
+ital 50 50
 itali 4603 4615
 italian 4988 4998
 itch 496 496
 itchi 231 231
+iteach 2 2
 item 2650 2673
 iter 33 33
 ith 20 20
@@ -7801,21 +7994,19 @@ itinerari 74 74
 itm 34 34
 itr 26 26
 itrad 3 3
+itsa 3 3
 itself 96 96
 itun 1590 1590
 itv 41 41
 iu 185 188
 iv 1538 1542
 ivi 1780 1781
-ivoir 6 6
 ivori 442 458
 ivorian 1 1
 iwil 6 6
 iwu 5 5
 ix 172 173
 iy 10 10
-i’d 2 2
-i’m 10 10
 j 10552 10880
 j.a 19 19
 j.g 7 7
@@ -7933,6 +8124,7 @@ jimmi 3323 3345
 jingl 169 172
 jit 72 72
 jj 466 467
+jja 5 5
 jma 12 12
 jnj 33 33
 jo 1269 1369
@@ -7952,6 +8144,7 @@ johan 51 51
 johann 196 196
 johannesburg 73 73
 john 26336 26424
+johna 3 3
 johnni 3170 3172
 johnson 7543 7840
 johnsonvil 47 47
@@ -7976,6 +8169,7 @@ joomla 39 39
 jordan 4154 4168
 jordon 177 177
 jorgenson 31 31
+josa 1 1
 jose 3166 3187
 joseph 4314 4318
 josephin 176 176
@@ -8134,6 +8328,7 @@ kgh 16 16
 khaki 98 98
 khalil 35 35
 khan 316 317
+khana 16 16
 khandi 6 6
 khruschev 13 13
 khyber 5 5
@@ -8143,6 +8338,7 @@ kicker 288 288
 kickoff 34 34
 kickstart 9 9
 kid 24419 24617
+kida 25 25
 kiddi 269 269
 kiddin 3 3
 kidnap 199 201
@@ -8193,6 +8389,7 @@ kit 9239 9259
 kitch 24 24
 kitchen 6796 6815
 kitimat 5 5
+kitsa 1 1
 kitsap 526 526
 kitten 1683 1684
 kiwani 132 132
@@ -8282,6 +8479,7 @@ l0 8 8
 l5 40 40
 la 42956 43465
 lab 4379 4387
+laba 4 4
 labe 23 23
 label 3227 3231
 labil 8 8
@@ -8316,6 +8514,7 @@ lakei 14 14
 lakeland 1148 1153
 laketh 1 1
 lakewood 1208 1220
+lakewooda 1 1
 lakshmi 20 20
 lamar 473 474
 lamborghini 368 369
@@ -8443,7 +8642,6 @@ leak 1320 1320
 leakag 27 27
 leaki 153 153
 lean 1100 1101
-leaner 8 8
 leap 359 362
 leapfrog 39 39
 leari 108 108
@@ -8500,6 +8698,7 @@ leona 58 58
 leonard 769 775
 leong 11 11
 leopard 558 558
+leopold 70 70
 lepag 70 70
 lepard 49 49
 leper 12 12
@@ -8517,6 +8716,7 @@ lesser 45 45
 lesson 7001 7012
 lest 26 26
 let 2297 2330
+leta 17 17
 lethal 136 136
 letter 11700 11745
 leukemia 468 468
@@ -8682,6 +8882,7 @@ login 2861 2879
 logist 908 908
 logo.jpg 1 1
 logout 27 27
+lok 118 118
 loko 4 4
 lol 114 117
 lola 253 254
@@ -8699,6 +8900,7 @@ longview 703 708
 lonsdal 28 28
 loo 68 68
 look 7374 7422
+looka 2 2
 lookalik 17 17
 loom 213 213
 looni 102 102
@@ -8832,6 +9034,7 @@ madagascar 525 525
 madam 293 293
 maddog 31 31
 made 4615 4624
+madecin 1 1
 mader 24 24
 madhav 2 2
 madina 22 22
@@ -8899,6 +9102,7 @@ malic 43 43
 malici 73 73
 malik 49 49
 malin 44 44
+malina 8 8
 mall 11742 11755
 malloi 67 67
 malnourish 10 10
@@ -8950,6 +9154,7 @@ manual 7547 7552
 manuel 935 936
 manufac 3 3
 manufactur 7546 7572
+manufacturera 1 1
 manur 122 122
 manuscript 145 145
 mao 271 273
@@ -8957,6 +9162,7 @@ map 70787 70924
 mapl 2352 2358
 mapp 57 57
 mapper 26 26
+mapsa 1 1
 mar 3502 3506
 mara 160 160
 marah 10 10
@@ -9015,6 +9221,7 @@ martha 2698 2699
 marti 560 560
 martial 968 969
 martin 5637 5650
+martina 447 447
 martinez 500 500
 martyr 89 89
 martyrdom 6 6
@@ -9077,6 +9284,7 @@ mayb 155 159
 mayhew 37 37
 mayo 6688 6688
 mayor 1036 1037
+mayora 3 3
 mazzanti 1 1
 mb 583 589
 mbl 33 33
@@ -9098,6 +9306,7 @@ mcdaid 1 1
 mcdaniel 170 170
 mcdermott 274 274
 mcdonald 2817 2818
+mcdonalda 4 4
 mcdougal 129 129
 mcdowel 307 308
 mcelfresh 4 4
@@ -9150,6 +9359,7 @@ mediat 316 316
 medic 29574 29654
 medica 139 139
 medicaid 1781 1781
+medical 4 4
 medicin 4836 4841
 medina 724 730
 medit 311 312
@@ -9273,7 +9483,6 @@ microphon 420 422
 microscop 246 248
 microsit 11 11
 microsoft 16429 16527
-microsoftâ 1 1
 microwav 972 974
 mid 2495 2495
 mida 231 231
@@ -9291,6 +9500,7 @@ midwai 794 795
 midwest 2542 2543
 midwif 70 70
 midwiv 41 41
+mieg 9 9
 might 424 431
 migrant 78 78
 migrat 599 599
@@ -9526,6 +9736,7 @@ morbid 91 91
 morden 11 11
 mordor 4 4
 more 3302 3366
+morea 17 17
 morecom 2 2
 morehous 119 119
 moreno 325 325
@@ -9596,6 +9807,7 @@ ms13 50 50
 msa 166 166
 mse 18 18
 msf 44 44
+msfa 2 2
 msg 209 209
 msh 12 12
 msm 166 166
@@ -9659,6 +9871,7 @@ muslium 1 1
 mussel 97 97
 mussolini 88 88
 must 697 705
+musta 6 6
 mustapha 3 3
 mustard 355 359
 muster 40 40
@@ -9682,7 +9895,6 @@ mysteryon 1 1
 mystifi 2 2
 myth 920 920
 mythic 107 107
-mã 1 1
 n 10459 10611
 n.b 2 2
 n.c 1280 1281
@@ -9696,6 +9908,7 @@ n2o 4 4
 n3 15 15
 n95 35 35
 na 1155 1230
+naa 44 44
 nab 74 74
 nabi 11 11
 nacp 3 3
@@ -9710,6 +9923,7 @@ nairobi 48 48
 naiv 9 9
 nake 10543 10563
 name 22211 22369
+nameda 2 2
 namesak 1 1
 namibia 161 161
 nana 155 155
@@ -9744,6 +9958,7 @@ nathali 12 12
 nathan 440 440
 nati 30 30
 nation 34003 34073
+nationa 59 59
 nationwid 978 979
 nativ 2934 2941
 natur 9681 9705
@@ -9758,7 +9973,6 @@ navi 8397 8403
 navig 1116 1117
 nazareth 188 188
 nazi 530 530
-naïv 1 1
 nba 7481 7483
 nbc 5300 5301
 nbcnew 41 41
@@ -9913,6 +10127,7 @@ nightmar 321 321
 nightmarish 3 3
 nighttim 36 36
 nih 225 225
+niha 2 2
 niketalk 74 74
 nikita 70 70
 nikkei 47 47
@@ -9945,8 +10160,6 @@ nittani 59 59
 niv 206 206
 niwot 9 9
 nixon 492 492
-niña 14 14
-niño 27 27
 nj 21564 21592
 njai 4 4
 nm 2754 2766
@@ -9986,7 +10199,6 @@ nongovernment 1 1
 nonhuman 1 1
 noni 259 259
 noninfecti 1 1
-nonmemb 3 3
 nonn 2 2
 nonprofit 397 397
 nonsens 16 16
@@ -10026,6 +10238,7 @@ nosocomi 7 7
 nostalgia 81 81
 nostoc 1 1
 not 75 75
+nota 14 14
 notabl 59 59
 notch 140 140
 note 4245 4256
@@ -10052,6 +10265,7 @@ novelti 622 622
 novemb 418 418
 now 3795 3817
 now.html 7 7
+nowa 3 3
 nowadai 4 4
 nowai 1 1
 nowher 84 84
@@ -10082,9 +10296,11 @@ nuisanc 34 34
 nuke 108 108
 null 124 127
 number 17696 17742
+numberin 1 1
 numer 386 387
 numeraci 3 3
 nurs 12945 13023
+nursea 1 1
 nut 1383 1385
 nutrient 237 237
 nutrionist 13 13
@@ -10131,6 +10347,7 @@ obliter 1 1
 oblivi 2 2
 oblivion 988 988
 obnoxi 10 10
+obrien 212 212
 obscen 32 32
 obscur 48 48
 observ 1853 1853
@@ -10157,6 +10374,7 @@ ocean 7625 7654
 oceania 91 91
 oceanographi 37 37
 ocha 10 10
+oclock 38 38
 ocr 90 90
 oct 68 68
 octob 664 664
@@ -10169,6 +10387,7 @@ odierno 1 1
 odiou 1 1
 odom 71 71
 odor 503 505
+ofa 40 40
 ofcommerci 1 1
 ofcours 1 1
 ofda 3 3
@@ -10187,12 +10406,15 @@ offset 209 209
 offshor 382 390
 offsit 23 23
 offspr 112 112
+oflynn 1 1
 ofm 19 19
+ofma 1 1
 oft 33 33
 often 193 195
 ofth 48 48
 og 303 303
 oh 6149 6198
+ohara 49 49
 ohh 12 14
 ohio 40180 40255
 oil 10157 10211
@@ -10237,13 +10459,13 @@ omnipot 9 9
 omnitur 4 4
 on 22987 23330
 ona 32 32
-onard 1 1
 onb 23 23
 onboard 64 64
 onc 585 585
 oncologist 87 87
 oncom 1 1
 ondo 9 9
+onea 6 6
 oneself 13 13
 ong 130 130
 ongo 15 15
@@ -10285,6 +10507,7 @@ optimis 4 4
 optimist 133 133
 optin 11 11
 option 1941 1948
+opto 35 35
 or 365 365
 ora 132 132
 orac 16 16
@@ -10352,6 +10575,7 @@ oti 479 483
 ottawa 838 842
 otter 403 403
 otto 265 265
+ou 266 268
 oua 2 2
 ouch 19 19
 ought 20 20
@@ -10362,6 +10586,7 @@ ourselv 20 20
 ousid 6 6
 oust 15 15
 out 11674 11762
+outa 2 2
 outbound 58 58
 outbreak 179 179
 outburst 12 12
@@ -10472,6 +10697,7 @@ pablo 604 607
 pace 1352 1357
 pachyderm 1 1
 pacif 5772 5804
+pacifica 255 255
 pack 6155 6180
 pack.html 6 6
 packag 4830 4835
@@ -10603,6 +10829,7 @@ parvo 162 162
 pasadena 1311 1317
 pasco 685 687
 pass 3818 3836
+passa 25 39
 passag 317 317
 passen 5 5
 passeng 638 639
@@ -10684,7 +10911,6 @@ peabodi 445 448
 peac 1933 1938
 peaceabl 7 7
 peacefulli 1 1
-peachtre 577 579
 peak 1418 1433
 pearl 3608 3632
 pearson 633 633
@@ -10857,6 +11083,7 @@ phobia 1531 1531
 phobic 2 2
 phoenix 9632 9660
 phone 29613 29961
+phonea 3 3
 phonebook 449 450
 phoni 22 22
 photo 29178 29222
@@ -11031,6 +11258,7 @@ poetic 124 124
 pogrom 5 5
 poignant 1 1
 point 13354 13411
+pointa 1 1
 pointer 448 448
 pointi 13 13
 pointless 23 23
@@ -11324,6 +11552,7 @@ programmat 29 29
 progress 2801 2804
 prohibit 162 162
 project 8021 8048
+projecta 1 1
 proli 3 3
 prolif 43 43
 prolifer 24 24
@@ -11387,6 +11616,7 @@ proudli 10 10
 prove 165 166
 proven 92 92
 provid 4656 4683
+providea 1 1
 provinc 263 264
 provinci 114 114
 provis 144 144
@@ -11423,6 +11653,7 @@ ptsd 139 139
 pty 38 38
 publ 6 6
 public 20865 20896
+publica 29 29
 publicli 24 24
 publish 3916 3929
 publishing.com 24 24
@@ -11477,6 +11708,7 @@ put 1916 1954
 putin 202 202
 putti 124 124
 puyallup 432 432
+puyallupa 1 1
 puzzl 4595 4603
 puzzles.about.com 3 3
 pva 98 98
@@ -11620,6 +11852,7 @@ raleigh 2903 2908
 ralli 1189 1189
 ralph 1768 1775
 ram 1992 2004
+rami 35 35
 ramif 6 6
 ramo 125 125
 ramp 653 654
@@ -11679,6 +11912,7 @@ rcmp 18 18
 rd 2266 2272
 rdt 6 6
 re 2197 2212
+rea 173 174
 reach 460 460
 react 47 47
 reaction 892 892
@@ -11845,6 +12079,7 @@ regiment 234 234
 regina 339 339
 reginald 41 41
 region 7679 7690
+regiona 6 6
 regist 6098 6103
 registr 2568 2569
 registrar 302 302
@@ -11999,6 +12234,7 @@ resolut 602 602
 resolv 161 161
 resort 19087 19105
 resourc 7984 8010
+resourcea 1 1
 resourcesconnect 2 2
 resours 127 127
 respect 286 286
@@ -12114,7 +12350,6 @@ rider 2194 2197
 ridg 4449 4464
 ridgefield 138 140
 ridicul 21 21
-rieux 2 2
 rife 40 40
 rifl 2662 2667
 rig 649 650
@@ -12238,6 +12473,7 @@ rosenberg 163 163
 rosi 684 684
 roslyn 127 132
 ross 2798 2804
+rosss 2 2
 roster 968 968
 rot 170 171
 rotat 657 658
@@ -12320,7 +12556,6 @@ rut 29 29
 rutger 412 412
 ruth 1895 1899
 rwanda 259 259
-ry 113 113
 ryan 2839 2844
 ryde 13 13
 ryder 536 536
@@ -12352,6 +12587,7 @@ sacrif 7 7
 sacrific 88 88
 sacrifici 6 6
 sad 678 679
+sadar 5 5
 sadc 1 1
 sadist 17 17
 sado 25 25
@@ -12395,6 +12631,7 @@ salmon 1420 1426
 salmonella 71 71
 saloon 434 434
 salt 4924 4940
+salta 16 16
 saltarelli 1 1
 salti 149 149
 saltier 3 3
@@ -12405,10 +12642,12 @@ salvador 770 778
 salvag 1534 1534
 salvat 1177 1179
 sam 8321 8323
+sama 33 33
 samaritan 446 446
 same 938 940
 samoa 196 196
 sampl 9006 9018
+samplesa 1 1
 sampson 227 227
 samson 243 244
 samuel 938 938
@@ -12482,7 +12721,9 @@ savvi 153 153
 saw 2395 2404
 sawyer 330 331
 saya 7 7
+sayen 2 2
 sayin 18 18
+sayn 2 2
 sb 695 699
 sbox 2 2
 sc 12154 12166
@@ -12527,8 +12768,10 @@ schnell 18 19
 scholar 317 317
 scholarship 2518 2520
 school 117403 118254
+schoola 3 3
 schoolchildren 2 2
 schoolgirl 185 185
+schoolsa 2 2
 schoolteach 2 2
 schrader 108 108
 schroeder 110 110
@@ -12611,6 +12854,7 @@ seasid 674 681
 season 6814 6829
 seat 6087 6110
 seattl 12521 12545
+seattlea 1 1
 seattlepi.com 40 40
 seawat 16 16
 sebastian 451 453
@@ -12630,6 +12874,7 @@ sector 230 230
 secular 48 48
 secur 14436 14510
 sed 166 166
+sedar 16 16
 sedat 99 99
 sedg 17 17
 sediment 100 104
@@ -12666,6 +12911,7 @@ selfless 8 8
 selin 18 18
 selinski 4 4
 sell 4897 4925
+sella 15 15
 seller 847 849
 sellout 6 6
 selma 416 422
@@ -12734,6 +12980,7 @@ serv 1191 1194
 servant 122 122
 server 9826 10119
 servic 50734 51058
+servicea 6 6
 servicememb 7 7
 sesai 3 3
 session 672 674
@@ -12839,7 +13086,6 @@ sherriff 401 401
 sherril 50 50
 sheryl 285 285
 shetland 144 144
-she’d 1 1
 shiek 23 23
 shield 3524 3526
 shift 645 645
@@ -12887,6 +13133,7 @@ shotgun 1110 1110
 should 1994 2010
 shoulder 1212 1217
 shouldn't 41 41
+shouldnt 19 19
 shout 172 181
 shove 74 74
 shovel 127 127
@@ -13117,6 +13364,7 @@ smile 982 988
 smili 159 159
 smission 1 1
 smith 9712 9750
+smitha 1 1
 smither 34 34
 smitherman 8 8
 smo 25 25
@@ -13171,7 +13419,6 @@ soap 4500 4504
 soapi 18 18
 soar 347 347
 sob 29 29
-sober 103 103
 sobrieti 36 36
 soccer 11270 11292
 social 10037 10055
@@ -13425,6 +13672,7 @@ sridevi 1 1
 srinivasan 9 9
 ss 1437 1441
 ssa 250 250
+ssaa 4 4
 ssm 63 63
 ssn 104 104
 ssri 45 45
@@ -13468,6 +13716,7 @@ stancato 3 3
 stand 4946 4956
 standalon 57 57
 standard 6470 6476
+standarda 2 2
 standardis 2 2
 standoff 30 30
 standpoint 8 8
@@ -13591,6 +13840,7 @@ stoog 140 140
 stool 1140 1143
 stoop 33 33
 stop 5313 5362
+stopa 3 3
 stopov 1 1
 stopper 251 252
 storag 6012 6027
@@ -13751,6 +14001,7 @@ sugari 1 1
 suggest 1322 1322
 suicid 1410 1410
 suit 12886 12899
+suita 1 1
 suitabl 53 53
 suitcas 141 141
 sulfat 256 256
@@ -13767,6 +14018,7 @@ summit 2937 2946
 summon 117 117
 sumner 289 289
 sun 14754 14787
+suna 4 4
 sundai 2193 2201
 sundog 18 18
 sundri 29 29
@@ -13804,6 +14056,7 @@ supplementari 15 15
 suppli 19545 19558
 supplier 1642 1647
 support 9853 9878
+support.i 1 1
 suppos 78 78
 supposedli 4 4
 suppport 12 12
@@ -13919,6 +14172,7 @@ syrian 88 88
 syring 152 152
 syrup 467 470
 system 25706 25827
+systema 11 11
 systemat 59 60
 systern 1 1
 sz 60 63
@@ -14102,6 +14356,7 @@ terabyt 11 11
 teresa 489 489
 term 3657 3682
 termin 2535 2540
+terminala 1 1
 terminolog 475 475
 termit 650 650
 terorist 2 2
@@ -14146,8 +14401,10 @@ thanato 12 12
 thank 2790 2795
 that 564 564
 that'll 6 6
+thata 1 1
 thaw 33 33
 the.html 5 5
+thea 80 80
 theater 12649 12656
 theatr 7377 7382
 theatric 97 97
@@ -14174,7 +14431,9 @@ ther 105 105
 therapeut 326 326
 therapi 4421 4434
 there 76 77
+therea 1 1
 therefor 31 31
+therel 1 1
 theresa 350 352
 therfor 1 1
 thermal 674 675
@@ -14188,6 +14447,9 @@ they'd 2 2
 they'll 4 4
 they'r 51 52
 they'v 1 1
+theyll 1 1
+theyr 6 6
+theyv 6 7
 thiamin 25 25
 thick 777 779
 thicker 21 21
@@ -14286,7 +14548,10 @@ tilt 438 438
 tim 2533 2536
 timbuktu 29 29
 time 39674 39866
+timea 7 7
+timei 7 7
 timelin 1465 1469
+timesa 7 7
 timescal 3 3
 timet 67 67
 timi 17 17
@@ -14367,6 +14632,7 @@ tool 12727 12758
 toolkit 113 113
 toothpick 65 65
 top 19122 19156
+topa 11 11
 topai 1 1
 topic 1362 1364
 topl 17 17
@@ -14392,6 +14658,7 @@ total 2927 2932
 totalitarian 20 20
 tote 583 586
 touch 2629 2632
+toucha 5 10
 touchdown 29 29
 touchi 4 4
 tough 295 296
@@ -14399,6 +14666,7 @@ toughen 2 2
 tougher 6 6
 toughest 15 15
 tour 11195 11218
+toura 1 1
 tourism 2143 2145
 tourist 1282 1282
 tournament 4657 4660
@@ -14408,6 +14676,7 @@ toward 112 113
 towel 1041 1045
 tower 4262 4267
 town 10231 10279
+towna 1 1
 township 3025 3029
 toxic 529 529
 toxicolog 56 56
@@ -14830,6 +15099,7 @@ union 26476 26526
 uniq 12 12
 uniqu 1552 1554
 unit 26722 26773
+unita 33 33
 uniti 650 650
 univ 644 645
 univers 52632 52704
@@ -14918,6 +15188,7 @@ unwrap 16 16
 unwritten 125 125
 unzip 81 81
 up 29608 29710
+upa 21 21
 upbeat 15 15
 upcom 518 518
 updat 9274 9319
@@ -14954,8 +15225,10 @@ url 1875 1879
 urn 230 230
 ursu 5 5
 us 66177 66435
+us.a 1 1
 us50 2 2
 usa 15194 15196
+usaa 1847 1847
 usabl 50 50
 usaf 290 293
 usag 516 516
@@ -14978,6 +15251,7 @@ usual 107 107
 usurp 3 3
 ut 1484 1489
 utah 10493 10505
+utaha 2 2
 utc 107 107
 utica 476 483
 util 3056 3061
@@ -15150,6 +15424,7 @@ villag 7279 7293
 villain 140 140
 villanova 151 151
 vimeo 5 5
+vina 41 41
 vinc 847 847
 vincent 1506 1509
 vincenza 8 8
@@ -15168,6 +15443,7 @@ viral 418 418
 viremia 1 1
 virgin 2552 2556
 virginia 21740 21867
+virginiaa 3 3
 virginian 268 268
 viri 15 15
 virigina 48 48
@@ -15180,6 +15456,7 @@ virtual 3544 3557
 viru 3991 4007
 virul 6 6
 virus 263 265
+viruss 1 1
 visa 2726 2741
 viscer 30 30
 visibl 170 170
@@ -15298,6 +15575,7 @@ wanna 674 694
 wannab 25 25
 want 6240 6315
 war 18457 18610
+wara 2 2
 ward 1330 1337
 ware 1122 1124
 wareh 71 71
@@ -15317,6 +15595,7 @@ warrior 1513 1513
 wart 966 966
 wartim 12 12
 warwick 569 576
+wasa 36 36
 wash 2483 2494
 washabl 29 29
 washington 30293 30402
@@ -15326,7 +15605,6 @@ washroom 20 20
 wasn 1 1
 wasn't 47 47
 wasnt 14 14
-wasn’t 3 3
 wast 2162 2170
 wastewat 166 166
 watch 8997 9036
@@ -15349,6 +15627,7 @@ wavelength 37 37
 waver 20 20
 wavi 232 232
 wax 1517 1530
+waya 2 2
 wayn 5026 5036
 waypoint 13 13
 waysid 172 172
@@ -15360,11 +15639,13 @@ we'd 3 3
 we'll 71 72
 we'r 259 264
 we'v 41 43
+wead 9 9
 weah 5 5
 weak 380 380
 weaken 18 18
 weaker 1 1
 weakest 19 19
+weall 2 2
 wealth 351 351
 wealthi 64 64
 weapon 1467 1468
@@ -15398,6 +15679,7 @@ weed 2309 2313
 week 6523 6866
 weekend 2219 2223
 weekli 2831 2833
+weeksa 4 4
 weep 361 361
 weigh 309 309
 weight 12178 12287
@@ -15410,6 +15692,7 @@ weld 1989 2003
 welfar 745 746
 well 13782 13816
 well.html 4 4
+wella 50 50
 wellb 24 24
 wellcom 11 11
 welton 28 28
@@ -15435,7 +15718,7 @@ wet 2410 2419
 wetland 385 387
 wetsuit 133 133
 wetter 15 15
-we’r 5 5
+weve 6 6
 wf 194 194
 wfaa 205 205
 wfp 1 1
@@ -15444,6 +15727,7 @@ whale 1572 1577
 whaler 195 195
 whammi 22 22
 what 52198 52416
+whata 7 7
 whatcom 171 171
 whatev 167 167
 whatsoev 2 2
@@ -15480,6 +15764,7 @@ whitman 394 394
 whiz 40 40
 who 16111 16487
 who'v 3 3
+whoa 54 64
 whoever 5 5
 whole 1784 1784
 wholes 12 12
@@ -15490,7 +15775,6 @@ whoop 110 110
 whore 987 987
 whose 157 158
 whosoev 1 1
-who’d 1 1
 why 4732 4764
 wi 9944 9971
 wich 35 36
@@ -15564,6 +15848,7 @@ wisti 2 2
 wit 1172 1316
 witchcraft 122 122
 witchdoctor 11 11
+witha 7 7
 withdraw 406 406
 withdrawn 2 2
 withheld 20 20
@@ -15591,9 +15876,11 @@ wolf 3619 3629
 wolff 116 116
 wolv 401 401
 wolverin 548 548
+woma 13 13
 woman 6047 6084
 wome 24 24
 women 27241 27500
+womena 2 2
 won 2626 2626
 won't 866 877
 wonder 1690 1695
@@ -15622,6 +15909,7 @@ work 17851 17927
 workabl 2 2
 workaround 21 21
 worker 3011 3014
+workersa 1 1
 workflow 84 84
 workforc 1259 1259
 workhors 71 71
@@ -15629,6 +15917,7 @@ workload 9 9
 workman 346 346
 workout 1587 1589
 workplac 829 829
+worksa 2 2
 workshop 1367 1367
 world 36989 37050
 worldli 5 5
@@ -15652,7 +15941,6 @@ would 851 859
 wouldn 2 2
 wouldn't 36 36
 wouldnt 12 12
-wouldn’t 1 1
 wound 605 608
 woven 154 154
 wow 2627 2634
@@ -15749,10 +16037,12 @@ yahya 6 6
 yakima 990 995
 yakub 1 1
 yale 622 622
+yall 19 19
 yandex 16 16
 yank 93 93
 yanke 4238 4243
 yao 60 60
+yaound 6 6
 yard 3659 3668
 yari 565 565
 yawn 39 39
@@ -15763,6 +16053,7 @@ ye 663 684
 yea 42 53
 yeah 191 381
 year 9343 9420
+year1 9 9
 yearli 270 270
 yell 116 116
 yellow 20390 20399
@@ -15771,6 +16062,7 @@ yep 9 9
 yer 16 16
 yesterdai 378 379
 yet 180 180
+yeta 1 1
 yh 37 37
 yi 80 91
 yield 247 247
@@ -15790,6 +16082,8 @@ you'll 154 154
 you'r 756 783
 you'v 259 262
 youcan 3 3
+youd 1 1
+youll 11 11
 young 10347 10365
 youngblood 101 101
 younger 308 308
@@ -15802,9 +16096,7 @@ yourself 1741 1746
 yourselv 4 4
 youth 6540 6545
 youtub 2474 2474
-you’ll 3 3
-you’r 5 5
-you’v 3 3
+youv 30 30
 yoyu 2 2
 ype 11 11
 yr 300 304
@@ -15860,6 +16152,7 @@ zombi 487 488
 zon 63 63
 zone 7673 7690
 zoo 6330 6334
+zooa 3 3
 zookeep 25 25
 zoolog 39 39
 zoom 779 814
@@ -15868,16 +16161,3 @@ zoonosi 2 2
 zoonot 4 4
 zurich 311 311
 zygmunt 2 2
-µm 2 2
-â 5 30
-ã 2 6
-å 2 2
-î 3 4
-ï 3 3
-œâ 1 2
-а 5 6
-多 1 1
-少 2 2
-显 1 1
-更 2 2
-示 5 5

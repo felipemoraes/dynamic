@@ -23,6 +23,8 @@ public class InteractiveRerankerFactory {
 			reranker = new Cube(aspectMiningClassName);
 		} else if (className.equals("RM3")) {
 			reranker = new RM3();
+		}else if (className.equals("QE")) {
+			reranker = new QE();
 		}
 		
 		

@@ -24,31 +24,81 @@ public class FeaturedAspect  {
 		termsFeatures.get(termId).updateTerm(passageId, relevance);
 	}
 
+	public void putTerm(int termId) {
+		if (!termsFeatures.containsKey(termId)){
+			termsFeatures.put(termId, new TermFeatures(termId));
+		}
+		termsFeatures.get(termId).updateTerm();
+	}
 	
 	public static TermFeatures[] findTopKHeap(TermFeatures[] arr, int k) { 
 	    PriorityQueue<TermFeatures> pq = new PriorityQueue<TermFeatures>();
 	    for (TermFeatures x : arr) { 
+	    	if (x.weight <= 0) continue;
 	        if (pq.size() < k) pq.add(x);
 	        else if (pq.peek().compareTo(x) > 0) {
 	            pq.poll();
 	            pq.add(x);
 	        }
 	    }
+	    k = pq.size();
 	    TermFeatures[] res = new TermFeatures[k];
 	    for (int i =0; i < k; i++) {
-	    		res[i] = pq.poll();
+	    	res[i] = pq.poll();
 	    }
-	    
 	    return res;
 
 	}
 	
+
 	
 	public TermFeatures[] getTopTerms(double[] weights) {
+		TIntObjectHashMap<TermFeatures> collector = new TIntObjectHashMap<TermFeatures>();
 		
-		TermFeatures[] candidateTerms = generateCandidateTerms(weights);
+		for (int i = 0; i < weights.length; i++) {
+			TermFeatures[] candidateTerms = generateCandidateTerms(i);
+			
+			for (int j = 0; j < candidateTerms.length; j++) {
+				collector.put(candidateTerms[j].termId, candidateTerms[j]);
+			}
+		}
+		
+		TermFeatures[] candidateTerms = new TermFeatures[collector.size()];
+		collector.values(candidateTerms);
+		
+		//TermFeatures[] candidateTerms = new TermFeatures[termsFeatures.size()];
+		//termsFeatures.values(candidateTerms);
+		double[] maxValues = new double[weights.length];
+		double[] minValues = new double[weights.length];
+		Arrays.fill(minValues,Double.POSITIVE_INFINITY);
+		
+		
+		for (int i = 0; i < candidateTerms.length; i++) {
+			for (int j = 0; j < weights.length; j++) {
+				if (candidateTerms[i].features[j] > maxValues[j]) {
+					maxValues[j] = candidateTerms[i].features[j];
+				}
+				if (candidateTerms[i].features[j] < minValues[j]){
+					minValues[j] = candidateTerms[i].features[j];
+				}
+			}
+		}
+
+		for (int i = 0; i < candidateTerms.length; i++) {
+			candidateTerms[i].weight  = 0;
+			for (int j = 0; j < weights.length; j++) {
+				double scaledFeature = 1;
+				double diff = (maxValues[j] - minValues[j]);
+				if ( diff > 0) {
+					scaledFeature = (candidateTerms[i].features[j] - minValues[j])/diff;
+				}
+				candidateTerms[i].weight += weights[j]*scaledFeature;
+			}
+		}
+		
 		
 		int querySize = Math.min(20, candidateTerms.length);
+		
 		TermFeatures[] topTerms = findTopKHeap(candidateTerms,querySize);
 		double sum = 0;
 		for (int i = 0; i < topTerms.length; i++) {
@@ -59,7 +109,7 @@ public class FeaturedAspect  {
 			if (sum > 0) {
 				topTerms[i].weight /= sum;
 			} else{
-				topTerms[i].weight = 1F/(topTerms.length);
+				topTerms[i].weight = 0;
 			}
 			
 		}
@@ -111,45 +161,18 @@ public class FeaturedAspect  {
 	}
 
 
-	private TermFeatures[] generateCandidateTerms(double[] weights) {
+	private TermFeatures[] generateCandidateTerms(int f) {
 		
 		TermFeatures[] termsCandidates = new TermFeatures[termsFeatures.size()];
 		termsFeatures.values(termsCandidates);
-	
-		double[] maxFeatures = new double[8];
-		double[] minFeatures = new double[8];
-		for (int i = 0; i < minFeatures.length; i++) {
-			double max = Double.MIN_VALUE;
-			double min = Double.MAX_VALUE;
-			for (int j = 0; j < termsCandidates.length; j++) {
-				
-				if (termsCandidates[j].features[i] < min) {
-					min = termsCandidates[j].features[i];
-				}
-				if (termsCandidates[j].features[i] > max) {
-					max = termsCandidates[j].features[i];
-				}			
-			}
-			minFeatures[i] = min;
-			maxFeatures[i] = max;
+		
+		for (int i = 0; i < termsCandidates.length; i++) {
+			
+			termsCandidates[i].weight = termsCandidates[i].features[f];
 		}
 		
-		double[] weightsNorm = softmax(weights);
-		for (int i = 0; i < termsCandidates.length; i++) {
-			double weight = 0;
-			double[] features = termsCandidates[i].features;
-			for (int j = 0; j < minFeatures.length; j++) {
-				if (maxFeatures[j]-minFeatures[j]  > 0) {
-					double scaledFeature = (features[j] -  minFeatures[j])/(maxFeatures[j]-minFeatures[j]);
-					weight += scaledFeature*weightsNorm[j];
-				} else {
-					weight += features[j]*weightsNorm[j];
-				}
-				
-			}
-			
-			termsCandidates[i].weight = weight/features.length;
-		}
+		termsCandidates = findTopKHeap(termsCandidates, 100);
+
 		return termsCandidates;
 	}
 	

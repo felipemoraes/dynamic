@@ -31,20 +31,20 @@ public class Test {
 	}
 	
 	public static void loadModel(String testFilename) throws IOException {
-		bestParam = new double[4];
-		bestWeights = new double[10];
+		bestParam = new double[1];
+		bestWeights = new double[8];
 		
 		BufferedReader br = new BufferedReader(new FileReader(testFilename));
 		String line = br.readLine();
 		
-		String[] splitLine = line.split(" ",4);
+		String[] splitLine = line.split(" ");
 		for (int i = 0; i < splitLine.length; i++) {
 			bestParam[i] = Double.parseDouble(splitLine[i]);
 		}
 		bestWeights[0] = 1000d;
-		bestWeights[1] = bestParam[3];
+		bestWeights[1] = bestParam[0];
 		line = br.readLine();
-		splitLine = line.split(" ",8);
+		splitLine = line.split(" ",6);
 		for (int i = 0; i < splitLine.length; i++) {
 			bestWeights[i+2] = Double.parseDouble(splitLine[i]);
 		}

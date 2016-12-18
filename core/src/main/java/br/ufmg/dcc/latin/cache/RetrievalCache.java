@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.apache.lucene.search.IndexSearcher;
 
+import br.ufmg.dcc.latin.diversity.FeaturedAspect;
 import br.ufmg.dcc.latin.index.DocVec;
 import br.ufmg.dcc.latin.index.InMemoryDirectedIndex;
 import br.ufmg.dcc.latin.querying.ResultSet;
@@ -33,5 +34,7 @@ public class RetrievalCache {
 		scores = resultSet.scores;
 		docnos = resultSet.docnos;
 	}
+	
+	public static Map<String,FeaturedAspect> featuredAspectCache;
 	
 }

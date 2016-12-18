@@ -22,7 +22,7 @@ public abstract class InteractiveReranker implements Reranker {
 	
 	protected BooleanSelectedSet selected;
 	
-	public abstract String debug(String topicid, int iteration);
+	public abstract String debug();
 	
 	protected abstract double score(int docid);
 	
@@ -80,6 +80,7 @@ public abstract class InteractiveReranker implements Reranker {
 		RetrievalController.setFiedlWeights(new double[]{0.15f,0.85f});
 		ResultSet result = RetrievalController.search(RetrievalCache.topicId, query, index);
 		RetrievalController.initRestricted(RetrievalCache.topicId);
+		RetrievalController.initQueryTerms(query);
 		docids = result.docids;
 		relevance = result.scores;
 		docnos = result.docnos;

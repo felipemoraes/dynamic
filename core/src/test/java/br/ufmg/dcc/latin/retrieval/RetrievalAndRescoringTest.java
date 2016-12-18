@@ -32,24 +32,21 @@ public class RetrievalAndRescoringTest {
 
 	@Test
 	public void test() {
-		boolean[] selected = new boolean[10];
-		for (int i = 0; i < selected.length; i++) {
-			System.out.println(selected[i]);
-		}
-		/*
-		ResultSet resultSet = RetrievalController.search("DD16-1", "US Military Crisis Response", "ebola16");
+
+		
+		ResultSet resultSet = RetrievalController.search("DD16-21", "Ebola medical waste", "ebola16");
 		RetrievalCache.indexName = "ebola16";
-		RetrievalController.initRestricted("DD16-1");
+		RetrievalController.initRestricted("DD16-21");
 		
 		for (int i = 0; i < 5; i++) {
 			System.out.println(resultSet.docnos[i] + " " + resultSet.scores[i] );
 		}
 		System.out.println();
-		TIntDoubleHashMap complexQuery = ReScorerController.getComplexQuery("US Military Crisis Response");
+		TIntDoubleHashMap complexQuery = ReScorerController.getComplexQuery("Ebola medical waste");
 		double[] scores = ReScorerController.rescore(complexQuery);
 		for (int i = 0; i < 5; i++) {
 			System.out.println(resultSet.docnos[i] + " " + scores[i] );
-		}*/
+		}
 		
 	}
 

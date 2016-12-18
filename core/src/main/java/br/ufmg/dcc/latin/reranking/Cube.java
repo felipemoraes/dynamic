@@ -22,7 +22,7 @@ public class Cube extends InteractiveReranker {
 	
 	
 	@Override
-	public String debug(String topicid, int iteration) {
+	public String debug() {
 		return null;
 	}
 

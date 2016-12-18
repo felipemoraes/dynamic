@@ -16,7 +16,6 @@ public class EntityLinkingCollection {
 		
 		int n = RetrievalController.vocab[0].size();
 		invertedEntityIndex = new TIntDoubleHashMap[n];
-		
 		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
 			String line = br.readLine();
 		
@@ -33,6 +32,7 @@ public class EntityLinkingCollection {
 					}
 					map.put(Integer.parseInt(splitOccur[0]), Double.parseDouble(splitOccur[1]));
 				}
+				
 		    	if (termId == -1) {
 		    		continue;
 		    	}

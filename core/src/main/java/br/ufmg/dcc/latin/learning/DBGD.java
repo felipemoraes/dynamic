@@ -16,11 +16,12 @@ import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.dynamicsystem.TrecUser;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.metrics.CubeTest;
+import br.ufmg.dcc.latin.metrics.nDCG;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.reranking.InteractiveReranker;
 import br.ufmg.dcc.latin.reranking.InteractiveRerankerFactory;
 
-public class DBGD implements OnlineLearner {
+public class DBGD implements Learner {
 	
 	private int n;
 	private double alpha;
@@ -34,8 +35,12 @@ public class DBGD implements OnlineLearner {
 	private List<String[]> trainingSet;
 	private List<String[]> validationSet;
 	
-	private double metric;
+	double[] w0;
+	double[] bestW0;
+	CubeTest cubeTest;
+	nDCG ndcg;
 	int nextIndex;
+	double currentMetric;
 	
 	InteractiveReranker reranker;
 	
@@ -80,9 +85,7 @@ public class DBGD implements OnlineLearner {
 	
 	public void nextQuery(){
 		
-		if (nextIndex == trainingSet.size()){
-			System.out.println("ACT:" + metric/trainingSet.size());
-			metric = 0;
+		if (nextIndex == trainingSet.size()){			
 			nextIndex = 0;
 			Collections.shuffle(trainingSet);
 		}
@@ -98,68 +101,100 @@ public class DBGD implements OnlineLearner {
 	
 	public double[] train(){
 		
-		double[] w0 = initVector();
+		w0 = initVector();
+		bestW0 = w0;
+		currentMetric = 0;
 		double[] w1 = initVector();
 
-		CubeTest cubeTest = new CubeTest();
+		cubeTest = new CubeTest();
+		ndcg = new nDCG();
 		
 		System.out.println("Starting training ...");
 		
-		for (int i = 0; i < iterations*trainingSet.size(); i++) {
+		for (int i = 0; i < iterations; i++) {
 			
 			if (i % 100 == 0) {
-				System.out.println(i + " of " + iterations*trainingSet.size());
+				System.out.println(i + " of " + iterations);
 			}
 			
-			nextQuery();
-			
-			RetrievalCache.topicId = topic;
-			RetrievalCache.indexName = index;
-			reranker.start(query, index);
-			reranker.start(w0);
-			
-			String[][] resultsSoFar = new String[10][5];
-			for (int j = 0; j < n; j++) {
-				
-				double[] disturb = getDisturb(8);
-				for (int k = 2; k < resultsSoFar.length; k++) {
-					w1[k] = w0[k] + (delta*disturb[k-2]);
-				}
-				
-				reranker.setParams(w0);
-				ResultSet resultSet0 = reranker.get();
-				resultsSoFar[j] = resultSet0.docnos;
-				double metric0 = cubeTest.getAverageCubeTest(j+1, topic, resultsSoFar);
-				reranker.setParams(w1);
-				ResultSet resultSet1 = reranker.get();
+			double metric0 = 0;
+			for (int k = 0; k < trainingSet.size(); k++) {
+				nextQuery();
 
-				resultsSoFar[j] = resultSet1.docnos;
-				for (int k = 0; k < 5; k++) {
-					resultsSoFar[j][k] = resultSet1.docnos[k];
-				}
-				double metric1 = cubeTest.getAverageCubeTest(j+1, topic, resultsSoFar);
-				double d = metric1 - metric0;
-				
-				if (d>0) {
-					for (int k = 2; k < resultsSoFar.length; k++) {
-						w0[k] = w0[k] + (alpha*disturb[k-2]);
-					}
-
-					reranker.setParams(w0);
-					resultSet0 = reranker.get();
-					for (int k = 0; k < 5; k++) {
-						resultsSoFar[j][k] = resultSet0.docnos[k];
-					}
-					Feedback[] feedback = TrecUser.get(resultSet0, topic);
-					reranker.update(feedback);
-				} else {
-					Feedback[] feedback = TrecUser.get(resultSet0, topic);
+				RetrievalCache.topicId = topic;
+				RetrievalCache.indexName = index;
+				reranker.start(query, index);
+				reranker.start(w0);	
+				String[][] resultsSoFar = new String[10][5];
+				for (int j = 0; j < n; j++) {
+					ResultSet resultSet = reranker.get();
+					resultsSoFar[j] = resultSet.docnos;
+					Feedback[] feedback = TrecUser.get(resultSet, topic);
 					reranker.update(feedback);
 				}
-					
+				metric0 += ndcg.getNDCG(n, topic, resultsSoFar);
 			}
-			metric += cubeTest.getAverageCubeTest(10, topic, resultsSoFar);
 			
+			metric0 = metric0/trainingSet.size();
+			
+			
+			double metric1 = 0;
+			
+			double[] disturb = getDisturb(6);
+			for (int k = 0; k < disturb.length; k++) {
+				w1[k+2] = w0[k+2] + (delta*disturb[k]);
+				System.out.print(w1[k+2] + " ");
+			}
+			System.out.println();
+			
+			for (int k = 0; k < trainingSet.size(); k++) {
+				nextQuery();
+				RetrievalCache.topicId = topic;
+				RetrievalCache.indexName = index;
+				reranker.start(query, index);
+				reranker.start(w1);	
+				String[][] resultsSoFar = new String[10][5];
+				for (int j = 0; j < n; j++) {
+					ResultSet resultSet = reranker.get();
+					resultsSoFar[j] = resultSet.docnos;
+					Feedback[] feedback = TrecUser.get(resultSet, topic);
+					reranker.update(feedback);
+				}
+				metric1 += ndcg.getNDCG(n, topic, resultsSoFar);
+			}
+			
+			metric1 = metric1/trainingSet.size();
+			
+
+			double d = metric1 - metric0;
+
+			if (d>0.00) {
+				
+				for (int k = 0; k < disturb.length; k++) {
+					w0[k+2] = w0[k+2] + (alpha*disturb[k]);
+				//	System.out.print(w0[k+2] + " ");
+				}
+				double metric = 0;
+				for (int k = 0; k < trainingSet.size(); k++) {
+					nextQuery();
+					RetrievalCache.topicId = topic;
+					RetrievalCache.indexName = index;
+					reranker.start(query, index);
+					reranker.start(w0);	
+					String[][] resultsSoFar = new String[10][5];
+					for (int j = 0; j < n; j++) {
+						ResultSet resultSet = reranker.get();
+						resultsSoFar[j] = resultSet.docnos;
+						Feedback[] feedback = TrecUser.get(resultSet, topic);
+						reranker.update(feedback);
+					}
+					metric += ndcg.getNDCG(n, topic, resultsSoFar);
+				}
+				
+				System.out.println(metric/trainingSet.size());
+			}  else {
+				System.out.println(metric0);
+			}
 		}
 			
 		return w0;
@@ -184,8 +219,9 @@ public class DBGD implements OnlineLearner {
 				Feedback[] feedback = TrecUser.get(resultSet, topic);
 				reranker.update(feedback);
 			}
-			System.out.println(topic + " " + cubeTest.getAverageCubeTest(n, topic, result));
-			totalMetric += cubeTest.getAverageCubeTest(n, topic, result);
+			// System.out.println(topic + " " + cubeTest.getAverageCubeTest(n, topic, result));
+			//totalMetric += cubeTest.getAverageCubeTest(n, topic, result);
+			totalMetric += ndcg.getNDCG(n, topic, result);
 		}
 		if (totalMetric > 0) {
 			totalMetric /= validationSet.size();
@@ -194,10 +230,10 @@ public class DBGD implements OnlineLearner {
 	}
 	
 	public double[] initVector(){
-		double[] weights = new double[10];
+		double[] weights = new double[8];
 		weights[0] = 1000d;
 		weights[1] = lambda;
-		double[] rand = getDisturb(8);
+		double[] rand = getDisturb(6);
 		for (int i = 2; i < weights.length; i++) {
 			weights[i] = rand[i-2];
 		}
@@ -253,12 +289,13 @@ public class DBGD implements OnlineLearner {
 		//}
 		alphas.add(0.1d);
 		
-		deltas.add(0.2d);
+		deltas.add(0.1d);
 		step = 0.1;
 		for (int i = 0; i < 10	; i++) {
 			lambdas.add(step*(i+1));
 		}
-		iterations.add(100d);
+		
+		iterations.add(1000d);
 
 		List<List<Double>> lists = new ArrayList<List<Double>>();
 		lists.add(alphas);

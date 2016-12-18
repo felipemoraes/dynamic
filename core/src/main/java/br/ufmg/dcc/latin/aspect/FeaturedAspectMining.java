@@ -9,6 +9,7 @@ import br.ufmg.dcc.latin.diversity.FeaturedAspectModel;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
 import br.ufmg.dcc.latin.retrieval.ReScorerController;
+import br.ufmg.dcc.latin.retrieval.RetrievalController;
 import gnu.trove.map.hash.TIntDoubleHashMap;
 
 public class FeaturedAspectMining  extends AspectMining {
@@ -114,6 +115,19 @@ public class FeaturedAspectMining  extends AspectMining {
 		}
 		
 		
+	}
+	
+	public void debug(){
+		List<String> aspectsId = featuredAspectModel.getAspects();
+		for (int i = 0; i < aspectsId.size(); ++i ) {
+			System.out.print(aspectsId.get(i) + ": ");
+			TIntDoubleHashMap getAspectQuery = featuredAspectModel.getAspectQuery(aspectsId.get(i), aspectWeights);
+			int[] terms = getAspectQuery.keys();
+			for (int j = 0; j < terms.length; j++) {
+				System.out.print(RetrievalController.vocab[0].getTerm(terms[j]) + "^" + getAspectQuery.get(terms[j]) + " ");
+			}
+			System.out.println();
+		}
 	}
 
 
