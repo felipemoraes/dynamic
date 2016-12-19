@@ -44,7 +44,7 @@ public class Test {
 		bestWeights[0] = 1000d;
 		bestWeights[1] = bestParam[0];
 		line = br.readLine();
-		splitLine = line.split(" ",6);
+		splitLine = line.split(" ",8);
 		for (int i = 0; i < splitLine.length; i++) {
 			bestWeights[i+2] = Double.parseDouble(splitLine[i]);
 		}

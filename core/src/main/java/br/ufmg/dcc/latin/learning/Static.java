@@ -164,8 +164,8 @@ public class Static implements Learner {
 		for (int i = 0; i < 10	; i++) {
 			lambdas.add(step*(i+1));
 		}
-		lambdas.clear();
-		lambdas.add(0.3);
+		//lambdas.clear();
+		//lambdas.add(0.3);
 		
 		List<List<Double>> lists = new ArrayList<List<Double>>();
 
