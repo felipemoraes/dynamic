@@ -32,7 +32,7 @@ public class Test {
 	
 	public static void loadModel(String testFilename) throws IOException {
 		bestParam = new double[1];
-		bestWeights = new double[8];
+		bestWeights = new double[10];
 		
 		BufferedReader br = new BufferedReader(new FileReader(testFilename));
 		String line = br.readLine();
