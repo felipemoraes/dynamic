@@ -56,8 +56,10 @@ public class FeaturedAspect  {
 		TIntObjectHashMap<TermFeatures> collector = new TIntObjectHashMap<TermFeatures>();
 		
 		for (int i = 0; i < weights.length; i++) {
+			if ( weights[i]  == 0) {
+				continue;
+			}
 			TermFeatures[] candidateTerms = generateCandidateTerms(i);
-			
 			for (int j = 0; j < candidateTerms.length; j++) {
 				collector.put(candidateTerms[j].termId, candidateTerms[j]);
 			}
