@@ -162,7 +162,7 @@ public class Static implements Learner {
 
 		List<Double> lambdas = new ArrayList<Double>();
 		double step = 0.1;
-
+		lambdas.add(0d);
 		for (int i = 0; i < 10	; i++) {
 			lambdas.add(step*(i+1));
 		}
