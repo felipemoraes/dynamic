@@ -14,6 +14,8 @@ import gnu.trove.map.hash.TIntDoubleHashMap;
 public class PassageAspectMining extends AspectMining {
 
 	private FlatAspectModel flatAspectModel;
+	
+	String query;
 
 	public PassageAspectMining(){
 		
@@ -32,76 +34,19 @@ public class PassageAspectMining extends AspectMining {
 	public void sendFeedback(String index, String query, Feedback[] feedbacks) {
 		
 		cacheFeedback(feedbacks);
-		
+		if (flatAspectModel == null) {
+			flatAspectModel = new FlatAspectModel();
+		}
+		this.query = query;
 		for (int i = 0; i < feedbacks.length; i++) {
 			if (!feedbacks[i].onTopic){
 				continue;
 			}
 			Passage[] passages = feedbacks[i].passages;
 			for (int j = 0; j < passages.length; j++) {
-				flatAspectModel.addToAspect(passages[j].aspectId, RetrievalController.getPassage(passages[j].passageId),passages[j].relevance);
+				flatAspectModel.addToAspect(passages[j].aspectId, query + " " + RetrievalController.getPassage(passages[j].passageId), passages[j].relevance);
 			}
 		}
-
-		
-		int aspectSize = flatAspectModel.getAspects().size();
-		if (aspectSize == 0) {
-			return;
-		}
-		importance = new double[aspectSize];
-		novelty = new double[aspectSize];
-		coverage = new double[n][aspectSize];
-		v = new double[aspectSize];
-		s = new double[aspectSize];
-		features = new double[n][aspectSize][];
-
-		
-		float uniformImportance = 1.0f/aspectSize;
-		
-		Arrays.fill(importance, uniformImportance);
-		Arrays.fill(novelty, 1.0f);
-		Arrays.fill(v, 1.0f);
-		Arrays.fill(s, 1.0f);
-		
-		int i = 0;
-		for (String aspectId : flatAspectModel.getAspects()) {
-			int s = flatAspectModel.getAspectComponents(aspectId).size();
-			for(int j = 0;j< n ;++j) {
-				features[j][i] = new double[s];
-			}
-			int k = 0;
-			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
-				aspectComponent = query + " " + aspectComponent;
-				double[] scores = null;
-				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
-					scores = RetrievalCache.passageCache.get(aspectComponent);
-				} else {
-					TIntDoubleHashMap complexQuery = ReScorerController.getComplexQuery(query);
-					scores = ReScorerController.rescore(complexQuery);
-					RetrievalCache.passageCache.put(aspectComponent, scores);
-				}
-				
-			    scores = scaling(scores);
-			    for(int j = 0;j< n ;++j) {
-			    	double score = scores[j];
-			    	features[j][i][k] = score;
-			    	if (coverage[j][i] < score) {
-			    		coverage[j][i] = score;
-			    	}
-			    }
-			    k++;
-			}
-	
-			for(int j = 0;j< n ;++j) {
-				if (this.feedbacks[j] != null) {
-					double score = this.feedbacks[j].getRelevanceAspect(aspectId);
-					coverage[j][i] = score;
-				}
-			}
-			i++;
-		}
-		normalizeCoverage();
-
 	}
 
 	@Override
@@ -187,7 +132,62 @@ public class PassageAspectMining extends AspectMining {
 
 	@Override
 	public void updateAspects(String index) {
-		// TODO Auto-generated method stub
+		
+		int aspectSize = flatAspectModel.getAspects().size();
+		if (aspectSize == 0) {
+			return;
+		}
+		importance = new double[aspectSize];
+		novelty = new double[aspectSize];
+		coverage = new double[n][aspectSize];
+		v = new double[aspectSize];
+		s = new double[aspectSize];
+		features = new double[n][aspectSize][];
+
+		float uniformImportance = 1.0f/aspectSize;
+		
+		Arrays.fill(importance, uniformImportance);
+		Arrays.fill(novelty, 1.0f);
+		Arrays.fill(getV(), 1.0f);
+		Arrays.fill(getS(), 1.0f);
+		
+		int i = 0;
+		for (String aspectId : flatAspectModel.getAspects()) {
+			int s = flatAspectModel.getAspectComponents(aspectId).size();
+			for(int j = 0;j< n ;++j) {
+				features[j][i] = new double[s];
+			}
+			int k = 0;
+			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
+				
+				double[] scores = null;
+				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
+					scores = RetrievalCache.passageCache.get(aspectComponent);
+				} else {
+					TIntDoubleHashMap complexQuery = ReScorerController.getComplexQuery(aspectComponent);
+					scores = ReScorerController.rescore(complexQuery);
+				}
+				
+			    scores = scaling(scores);
+			    for(int j = 0;j< n ;++j) {
+			    	double score = scores[j];
+			    	features[j][i][k] = score;
+			    	if (coverage[j][i] < score) {
+			    		coverage[j][i] = score;
+			    	}
+			    }
+			    k++;
+			}
+	
+			for(int j = 0;j< n ;++j) {
+				if (this.feedbacks[j] != null) {
+					float score = this.feedbacks[j].getRelevanceAspect(aspectId);
+					coverage[j][i] = score;
+				}
+			}
+			i++;
+		}
+		normalizeCoverage();
 		
 	}
 
