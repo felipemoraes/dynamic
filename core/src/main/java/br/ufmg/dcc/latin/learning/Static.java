@@ -37,7 +37,7 @@ public class Static implements Learner {
 	
 	@Override
 	public void setupReranker(String rerankerName) {
-		reranker = InteractiveRerankerFactory.getInstance(rerankerName, "PassageAspectMining");
+		reranker = InteractiveRerankerFactory.getInstance(rerankerName, "FeaturedAspectMining");
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class Static implements Learner {
 		weights[0] = 1000d;
 		weights[1] = lambda;
 		for (int i = 2; i < weights.length; i++) {
-			weights[i] = 1;
+			weights[i] = 0;
 		}
 		weights[4] = 1;
 		// 0.5 0.5 0.5 0.55 0.9 0.5 0.45 0.5
