@@ -37,7 +37,7 @@ public class Static implements Learner {
 	
 	@Override
 	public void setupReranker(String rerankerName) {
-		reranker = InteractiveRerankerFactory.getInstance(rerankerName, "WeightedPassageAspectMining");
+		reranker = InteractiveRerankerFactory.getInstance(rerankerName, "FeaturedAspectMining");
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class Static implements Learner {
 		weights[0] = 1000d;
 		weights[1] = lambda;
 		for (int i = 2; i < weights.length; i++) {
-			weights[i] = 0;
+			weights[i] = 1;
 		}
 		weights[4] = 1;
 		// 0.5 0.5 0.5 0.55 0.9 0.5 0.45 0.5
@@ -132,11 +132,13 @@ public class Static implements Learner {
 			reranker.start(weight);
 			reranker.setParams(weight);
 			for (int i = 0; i < 10; i++) {
+				
 				ResultSet resultSet = reranker.get();
 				result[i] = resultSet.docnos;
 				Feedback[] feedback = TrecUser.get(resultSet, topic);
 				reranker.update(feedback);
 			}
+
 			
 		//	System.out.println(topic + " " + nDCG.getNDCG(n, topic, result));
 		//	totalMetric += nDCG.getNDCG(n, topic, result);
@@ -164,8 +166,6 @@ public class Static implements Learner {
 		for (int i = 0; i < 10	; i++) {
 			lambdas.add(step*(i+1));
 		}
-		//lambdas.clear();
-		//lambdas.add(0.3);
 		
 		List<List<Double>> lists = new ArrayList<List<Double>>();
 

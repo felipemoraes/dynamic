@@ -3,6 +3,7 @@ package br.ufmg.dcc.latin.cache;
 import java.util.Map;
 
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.TopDocs;
 
 import br.ufmg.dcc.latin.diversity.FeaturedAspect;
 import br.ufmg.dcc.latin.index.DocVec;
@@ -36,5 +37,6 @@ public class RetrievalCache {
 	}
 	
 	public static Map<String,FeaturedAspect> featuredAspectCache;
+	public static TopDocs topDocs;
 	
 }

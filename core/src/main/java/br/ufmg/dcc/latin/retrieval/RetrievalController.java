@@ -21,8 +21,10 @@ import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Rescorer;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.similarities.DPH;
@@ -49,7 +51,7 @@ public class RetrievalController {
 	
 	public static QueryParser parser;
 	
-	private static double[] fiedlWeights;
+	public static double[] fiedlWeights;
 	
 	private static Analyzer analyzer;
 	
@@ -236,10 +238,10 @@ public class RetrievalController {
 		}
 		Map<String,Float> boosts = new HashMap<String,Float>();
 		fiedlWeights = new double[2];
-		fiedlWeights[1] =  0.15f;
-		fiedlWeights[0] = 0.85f; 
-		boosts.put("title", (float) fiedlWeights[1]);
-		boosts.put("content", (float) fiedlWeights[0]);
+		fiedlWeights[0] =  0.15f;
+		fiedlWeights[1] = 0.85f; 
+		boosts.put("title", (float) fiedlWeights[0]);
+		boosts.put("content", (float) fiedlWeights[1]);
 		parser = new MultiFieldQueryParser(new String[]{"title", "content"}, analyzer, boosts);
 		return parser;
 	}
@@ -276,6 +278,45 @@ public class RetrievalController {
 				queryTermsSet.add(termId);
 			}
 		}
+	}
+	
+	public static double[] getSimilaritiesRerank(int[] docids, String query){
+		
+		int n = RetrievalCache.docids.length;
+		double[] scores = new double[n];
+		Map<Integer,Integer> mapId = new HashMap<Integer, Integer>();
+		for (int i = 0; i < scores.length; i++) {
+			mapId.put(RetrievalCache.docids[i], i);
+		}
+		IndexSearcher searcher  = RetrievalController.getIndexSearcher(RetrievalCache.indexName);
+		
+		BooleanQuery.setMaxClauseCount(1000000);
+		QueryParser parser = getQueryParser();
+		Query q = null;
+		try {
+			q = parser.parse(QueryParser.escape(query.toLowerCase()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		
+		Rescorer reRankQueryRescorer = new ReRankQueryRescorer(q, 1.0f);
+		
+	    try {
+	    	
+			TopDocs rescoredDocs = reRankQueryRescorer
+			        .rescore(searcher, RetrievalCache.topDocs, 1000);
+			ScoreDoc[] reRankScoreDocs = rescoredDocs.scoreDocs;
+			for (int i = 0; i < reRankScoreDocs.length; i++) {
+				int ix = mapId.get(reRankScoreDocs[i].doc);
+				scores[ix] = reRankScoreDocs[i].score;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	    return scores;
 	}
 	
 	static void initDocsVec(String topicId, int[] docids, String index) {
@@ -372,6 +413,7 @@ public class RetrievalController {
 			RetrievalCache.docids = result.docids;
 			RetrievalCache.scores = result.scores;
 			RetrievalCache.docnos = result.docnos;
+			RetrievalCache.topDocs = result.topDocs;
 			
 			return result;
 		}
@@ -423,10 +465,12 @@ public class RetrievalController {
 		resultSet.docids = docids;
 		resultSet.scores = scores;
 		resultSet.docnos = docnos;
+		resultSet.topDocs = results;
 
 		RetrievalCache.docids = docids;
 		RetrievalCache.scores = scores;
 		RetrievalCache.docnos = docnos;
+		RetrievalCache.topDocs = results;
 		
 		RetrievalCache.resultSetCache.put(topicId, resultSet);
 		
@@ -446,7 +490,11 @@ public class RetrievalController {
 	}
 
 	public static String getPassage(int passageId) {
-		// TODO Auto-generated method stub
+		try {
+			return passageReader.document(passageId).get("passage");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

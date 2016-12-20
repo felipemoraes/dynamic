@@ -45,64 +45,6 @@ public class WeightedPassageAspectMining extends AspectMining {
 				flatAspectModel.addToAspect(passages[j].aspectId, query + " " + RetrievalController.getPassage(passages[j].passageId), passages[j].relevance);
 			}
 		}
-
-		
-		int aspectSize = flatAspectModel.getAspects().size();
-		if (aspectSize == 0) {
-			return;
-		}
-		importance = new double[aspectSize];
-		novelty = new double[aspectSize];
-		coverage = new double[n][aspectSize];
-		v = new double[aspectSize];
-		s = new double[aspectSize];
-		features = new double[n][aspectSize][];
-
-		
-		float uniformImportance = 1.0f/aspectSize;
-		
-		Arrays.fill(importance, uniformImportance);
-		Arrays.fill(novelty, 1.0f);
-		Arrays.fill(getV(), 1.0f);
-		Arrays.fill(getS(), 1.0f);
-		
-		int i = 0;
-		for (String aspectId : flatAspectModel.getAspects()) {
-			int s = flatAspectModel.getAspectComponents(aspectId).size();
-			for(int j = 0;j< n ;++j) {
-				features[j][i] = new double[s];
-			}
-			int k = 0;
-			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
-				
-				double[] scores = null;
-				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
-					scores = RetrievalCache.passageCache.get(aspectComponent);
-				} else {
-					TIntDoubleHashMap complexQuery = ReScorerController.getComplexQuery(aspectComponent);
-					scores = ReScorerController.rescore(complexQuery);
-				}
-				double passageWeight = flatAspectModel.getAspectWeight(aspectId, aspectComponent);
-			    scores = scaling(scores);
-			    for(int j = 0;j< n ;++j) {
-			    	double score = scores[j]*passageWeight;
-			    	features[j][i][k] = score;
-			    	if (coverage[j][i] < score) {
-			    		coverage[j][i] = score;
-			    	}
-			    }
-			    k++;
-			}
-	
-			for(int j = 0;j< n ;++j) {
-				if (this.feedbacks[j] != null) {
-					float score = this.feedbacks[j].getRelevanceAspect(aspectId);
-					coverage[j][i] = score;
-				}
-			}
-			i++;
-		}
-		normalizeCoverage();
 		
 	}
 
@@ -140,6 +82,8 @@ public class WeightedPassageAspectMining extends AspectMining {
 		Arrays.fill(novelty, 0f);
 		Arrays.fill(accumulatedRelevance, 0f);
 		int i = 0;
+		
+		
 
 		for (String aspectId : flatAspectModel.getAspects()) {
 			
@@ -190,7 +134,62 @@ public class WeightedPassageAspectMining extends AspectMining {
 
 	@Override
 	public void updateAspects(String index) {
-		// TODO Auto-generated method stub
+		
+		int aspectSize = flatAspectModel.getAspects().size();
+		if (aspectSize == 0) {
+			return;
+		}
+		importance = new double[aspectSize];
+		novelty = new double[aspectSize];
+		coverage = new double[n][aspectSize];
+		v = new double[aspectSize];
+		s = new double[aspectSize];
+		features = new double[n][aspectSize][];
+
+		float uniformImportance = 1.0f/aspectSize;
+		
+		Arrays.fill(importance, uniformImportance);
+		Arrays.fill(novelty, 1.0f);
+		Arrays.fill(getV(), 1.0f);
+		Arrays.fill(getS(), 1.0f);
+		
+		int i = 0;
+		for (String aspectId : flatAspectModel.getAspects()) {
+			int s = flatAspectModel.getAspectComponents(aspectId).size();
+			for(int j = 0;j< n ;++j) {
+				features[j][i] = new double[s];
+			}
+			int k = 0;
+			for (String aspectComponent: flatAspectModel.getAspectComponents(aspectId)) {
+				
+				double[] scores = null;
+				if (RetrievalCache.passageCache.containsKey(aspectComponent)) {
+					scores = RetrievalCache.passageCache.get(aspectComponent);
+				} else {
+					TIntDoubleHashMap complexQuery = ReScorerController.getComplexQuery(aspectComponent);
+					scores = ReScorerController.rescore(complexQuery);
+				}
+				double passageWeight = flatAspectModel.getAspectWeight(aspectId, aspectComponent);
+			    scores = scaling(scores);
+			    for(int j = 0;j< n ;++j) {
+			    	double score = scores[j]*passageWeight;
+			    	features[j][i][k] = score;
+			    	if (coverage[j][i] < score) {
+			    		coverage[j][i] = score;
+			    	}
+			    }
+			    k++;
+			}
+	
+			for(int j = 0;j< n ;++j) {
+				if (this.feedbacks[j] != null) {
+					float score = this.feedbacks[j].getRelevanceAspect(aspectId);
+					coverage[j][i] = score;
+				}
+			}
+			i++;
+		}
+		normalizeCoverage();
 		
 	}
 

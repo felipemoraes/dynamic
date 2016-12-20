@@ -60,11 +60,13 @@ public class ReScorerController {
 		int n = RetrievalCache.docids.length;
 		
 		double[] scores = new double[n];
+		
 		int[] terms = complexQuery.keys();
+		
 		if (stats == null) {
 			stats = new BoostedBasicStats[2];
-			stats[0] = new BoostedBasicStats("content");
-			stats[1] = new BoostedBasicStats("title");
+			stats[1] = new BoostedBasicStats("content");
+			stats[0] = new BoostedBasicStats("title");
 			
 			float sttf = ((Number) RetrievalController.directedIndex[0].sumTotalTermFreq).floatValue();
 			stats[0].setNumberOfDocuments(RetrievalController.directedIndex[0].docCount);
@@ -78,9 +80,8 @@ public class ReScorerController {
 			stats[1].setNumberOfFieldTokens((long) RetrievalController.directedIndex[1].sumTotalTermFreq);
 			
 		}
-		
 		for (int i = 0; i < terms.length; i++) {
-			stats[0].setBoost((float) (complexQuery.get(terms[i])*RetrievalController.getFiedlWeights()[0]));
+			stats[0].setBoost((float) (complexQuery.get(terms[i])*RetrievalController.fiedlWeights[1]));
 			//stats[0].setBoost((float) (RetrievalController.getFiedlWeights()[0]));
 			stats[0].setDocFreq(RetrievalController.termStats[0].docFreq[terms[i]]);
 			stats[0].setTotalTermFreq(RetrievalController.termStats[0].totalTermFreq[terms[i]]);
@@ -92,6 +93,7 @@ public class ReScorerController {
 			TIntArrayList docs = RetrievalController.directedIndex[0].invertedIndex[terms[i]];
 			for (int j = 0; j < docs.size(); j++) {
 				int doc = docs.get(j);
+				
 				int freq = RetrievalController.directedIndex[0].docVecs[doc].vec.get(terms[i]);
 				int docLen = (int) RetrievalController.directedIndex[0].docVecs[doc].docLen;
 				if (freq > 0) {
@@ -99,7 +101,7 @@ public class ReScorerController {
 				}
 			}
 
-			stats[1].setBoost((float) (complexQuery.get(terms[i])*RetrievalController.getFiedlWeights()[1]));
+			stats[1].setBoost((float) (complexQuery.get(terms[i])*RetrievalController.fiedlWeights[0]));
 			
 			//stats[1].setBoost((float) (RetrievalController.getFiedlWeights()[1]));
 			stats[1].setDocFreq(RetrievalController.termStats[1].docFreq[terms[i]]);

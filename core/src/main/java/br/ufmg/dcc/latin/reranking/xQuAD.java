@@ -36,6 +36,10 @@ public class xQuAD extends InteractiveReranker {
 	@Override
 	public ResultSet get(){
 		aspectMining.updateAspects(indexName);
+		coverage = aspectMining.getCoverage();
+		importance = aspectMining.getImportance();
+		novelty = aspectMining.getNovelty();
+		updateNovelty();
 		return super.get();
 	}
 	
@@ -49,6 +53,7 @@ public class xQuAD extends InteractiveReranker {
 		for (int i = 2; i < params.length; i++) {
 			aspectWeights[i-2] = params[i];
 		}
+		
 		aspectMining.setAspectWeights(aspectWeights);
 		coverage = aspectMining.getCoverage();
 		importance = aspectMining.getImportance();
@@ -81,10 +86,6 @@ public class xQuAD extends InteractiveReranker {
 	public void update(Feedback[] feedback) {
 		super.update(feedback);
 		aspectMining.sendFeedback(indexName, query,feedback);
-		coverage = aspectMining.getCoverage();
-		importance = aspectMining.getImportance();
-		novelty = aspectMining.getNovelty();
-		updateNovelty();
 	}
 	
 	public void updateNovelty(){
