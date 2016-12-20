@@ -16,7 +16,7 @@ public class TermFeatures implements Comparable<TermFeatures>{
 		
 		this.features[0] = collectionIdf(); // 2
 		this.features[1] = 1f;  // 3
-		this.features[2] = collectionIdf();  // 4
+		this.features[2] = collectionIdf()*relevance;  // 4
 		this.features[3] = relevance; // 5
 		this.features[4] = googleNgram(); // 6
 		this.features[5] = wikipediaTitles(); // 7
@@ -39,7 +39,7 @@ public class TermFeatures implements Comparable<TermFeatures>{
 		this.features = new double[8];
 		this.features[0] = collectionIdf(); // 2
 		this.features[1] = 1f;  // 3
-		this.features[2] = collectionIdf(); // 4
+		this.features[2] = collectionIdf()*4; // 4
 		this.features[3] = 4; // 4
 		this.features[4] = googleNgram(); // 5
 		this.features[5] = wikipediaTitles(); // 6
@@ -57,7 +57,7 @@ public class TermFeatures implements Comparable<TermFeatures>{
 	
 	public void updateTerm(int passageId, int relevance){
 		this.features[1] += 1;
-		this.features[2] += collectionIdf();
+		this.features[2] += collectionIdf()*relevance;
 		this.features[3] += relevance;
 	//	this.features[6] += dbPediaEntities(passageId);
 	//	this.features[7] += msEntities(passageId);
@@ -65,7 +65,7 @@ public class TermFeatures implements Comparable<TermFeatures>{
 	
 	public void updateTerm(){
 		this.features[1] += 1;
-		this.features[2] += collectionIdf();
+		this.features[2] += collectionIdf()*4;
 		this.features[3] += 4;
 	//	this.features[6] += dbPediaEntities(passageId);
 	//	this.features[7] += msEntities(passageId);

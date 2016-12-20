@@ -60,7 +60,7 @@ public class FeaturedAspectModel {
 			double weight = topTerms[i].weight;
 
 			//System.out.print(RetrievalController.vocab[0].getTerm(topTerms[i].termId) + " " + weight + " ");
-			complexQuery.put(topTerms[i].termId, weight);
+			complexQuery.put(topTerms[i].termId, 1);
 		}
 		//System.out.println();
 		return complexQuery;
