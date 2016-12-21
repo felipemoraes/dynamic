@@ -52,7 +52,7 @@ public class Test {
 	}
 
 	public static void setupReranker(String rerankerName){
-		reranker = InteractiveRerankerFactory.getInstance(rerankerName, "FeaturedAspectMining");
+		reranker = InteractiveRerankerFactory.getInstance(rerankerName, "PassageAspectMining");
 	}
 	
 	public static void main(String[] args) throws IOException {
