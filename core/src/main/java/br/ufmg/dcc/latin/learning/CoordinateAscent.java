@@ -222,7 +222,7 @@ public class CoordinateAscent implements Learner {
 		List<Double> lambdas = new ArrayList<Double>();
 		double step = 0.1;
 
-		for (int i = 0; i < 10	; i++) {
+		for (int i = 0; i < 9	; i++) {
 			lambdas.add(step*(i+1));
 		}
 		
