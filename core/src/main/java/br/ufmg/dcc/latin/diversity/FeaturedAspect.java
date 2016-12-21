@@ -99,7 +99,7 @@ public class FeaturedAspect  {
 		}
 		
 		
-		int querySize = Math.min(20	, candidateTerms.length);
+		int querySize = Math.min(30	, candidateTerms.length);
 		
 		TermFeatures[] topTerms = findTopKHeap(candidateTerms,querySize);
 		double sum = 0;
