@@ -4,8 +4,8 @@ import java.util.List;
 
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.querying.ResultSet;
-import br.ufmg.dcc.latin.reranking.InteractiveReranker;
-import br.ufmg.dcc.latin.reranking.InteractiveRerankerFactory;
+import br.ufmg.dcc.latin.reranker.InteractiveReranker;
+import br.ufmg.dcc.latin.user.TrecUser;
 
 public class Session {
 	
@@ -55,12 +55,7 @@ public class Session {
 	public void setReranker(String reranker) {
 		rerankerName = reranker;
 		String[] rerankerSplit = reranker.split(" ");
-		if (rerankerSplit.length > 1){ 
-			this.reranker = InteractiveRerankerFactory.getInstance(rerankerSplit[0],rerankerSplit[1]);
-		} else {
-			this.reranker = InteractiveRerankerFactory.getInstance(rerankerName,"");
-		}
-		
+
 	}
 
 	public List<double[]> getParams() {

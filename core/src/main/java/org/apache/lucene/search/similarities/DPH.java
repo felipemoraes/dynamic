@@ -25,10 +25,10 @@ import org.apache.lucene.util.BytesRef;
  * limitations under the License.
  */
 
-public class DPH extends SimilarityBase implements ReScoreSimilarity{
+public class DPH extends SimilarityBase {
   
   @Override
-  public float score(BasicStats stats, float freq, float docLen) {
+  protected float score(BasicStats stats, float freq, float docLen) {
     // document length
     float docLength = docLen;
     // relative term frequency

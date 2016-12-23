@@ -6,7 +6,6 @@ import org.apache.lucene.index.FieldInvertState;
 import org.apache.lucene.index.LeafReaderContext;
 import org.apache.lucene.index.NumericDocValues;
 import org.apache.lucene.search.Explanation;
-import org.apache.lucene.search.similarities.LMSimilarity.LMStats;
 import org.apache.lucene.util.BytesRef;
 
 /*
@@ -38,18 +37,10 @@ import org.apache.lucene.util.BytesRef;
  * 
  * @lucene.experimental
  */
-public class LMDirichlet extends LMDirichletSimilarity implements ReScoreSimilarity {
+public class LMDirichlet extends LMDirichletSimilarity {
 
   public LMDirichlet(float mu) {
 	  super(mu);
-  }
-  
-  @Override
-  public float score(BasicStats stats, float freq, float docLen) {
-    float score = stats.getBoost() * (float)(Math.log(1 + freq /
-        (getMu() * ((LMStats)stats).getCollectionProbability())) +
-        Math.log(getMu()  / (docLen + getMu() )));
-    return score > 0.0f ? score : 0.0f;
   }
   
   @Override

@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.querying.ResultSet;
+import br.ufmg.dcc.latin.user.TrecUser;
 
 public class Evaluator {
 	
