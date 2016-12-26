@@ -45,7 +45,7 @@ public class SimulatedRelevance {
 		
 		CubeTest cubeTest = new CubeTest();
 		
-		String topicsFile = "../share/topics_domain.txt";
+		String topicsFile = "../share/topics_domain_2016.txt";
 	
 		
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
@@ -94,10 +94,11 @@ public class SimulatedRelevance {
     			
    				SimAP.targetAP = targetAP.AP;
 				baselineResultSet = baselineRanker.search();
-				
-				if (SimAP.targetAP > SimAP.currentAP + 0.05){
+				if (targetAP.bin > SimAP.currentAP){
+					System.out.println(targetAP.bin + " " + SimAP.currentAP );
 					break;
 				}
+				
 				
 			    FeedbackModeling feedbackModeling = new FeedbackModeling();
 			    feedbackModeling.trecUser = trecUser;
