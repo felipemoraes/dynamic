@@ -4,8 +4,14 @@ import java.util.Arrays;
 
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.modeling.FeedbackModeling;
+import br.ufmg.dcc.latin.querying.ResultSet;
 
 public class PM2 extends InteractiveReranker {
+
+	public PM2(FeedbackModeling feedbackModeling) {
+		super(feedbackModeling);
+	}
+
 
 	double lambda;
 	int[] highestAspect;
@@ -14,14 +20,6 @@ public class PM2 extends InteractiveReranker {
 	private double[] s;
 	private double[][] coverage;
 
-	private String aspectMiningClassName;
-	
-	FeedbackModeling aspectMining;
-
-	public PM2(String aspectMiningClassName){
-		this.aspectMiningClassName = aspectMiningClassName;
-	}
-	
 	
 	public int highestAspect(){
 		int maxQ =  -1;
@@ -82,13 +80,13 @@ public class PM2 extends InteractiveReranker {
 	}
 	
 	@Override
-	public void start(double[] params){
-		super.start(params);
+	public void start(ResultSet resultSet, double[] params){
+		super.start(resultSet,params);
 		relevance = normalize(relevance);
-		coverage = aspectMining.getCoverage();
-		v = aspectMining.getV();
-		s = aspectMining.getS();
-		lambda = params[1];
+		coverage = feedbackModeling.coverage;
+		v = feedbackModeling.v;
+		s = feedbackModeling.s;
+		lambda = params[0];
 		int n = relevance.length;
 		
 		highestAspect = new int[n];
@@ -99,19 +97,12 @@ public class PM2 extends InteractiveReranker {
 
 	@Override
 	public void update(Feedback[] feedback) {
-		super.update(feedback);
-		aspectMining.sendFeedback(indexName, query,feedback);
-		coverage = aspectMining.getCoverage();
-		v = aspectMining.getV();
-		s = aspectMining.getS();
+		feedbackModeling.update(feedback);
+		coverage = feedbackModeling.coverage;
+		v = feedbackModeling.v;
+		s = feedbackModeling.s;
 		updateNovelty();
 		
-	}
-
-
-	@Override
-	public String debug() {
-		return "";
 	}
 
 }

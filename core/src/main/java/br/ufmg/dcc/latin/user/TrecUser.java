@@ -13,9 +13,25 @@ import br.ufmg.dcc.latin.querying.ResultSet;
 
 public class TrecUser implements User {
 	
-	private static Map<String,RelevanceSet> repository;
+    private Map<String,RelevanceSet> repository;
+    
+	public String topicId;
 	
-	public static void load(String topicFilename){
+	private static TrecUser trecUser;
+	
+	
+	public static TrecUser getInstance(String topicFilename){
+		
+		if (trecUser == null) {
+			trecUser = new TrecUser(topicFilename);
+		}
+		
+		return trecUser;
+		
+		
+	}
+	
+	private TrecUser(String topicFilename){
 		
 		repository = new HashMap<String,RelevanceSet>();
 		try (BufferedReader br = new BufferedReader(new FileReader(topicFilename))) {
@@ -41,10 +57,9 @@ public class TrecUser implements User {
 			
 			e.printStackTrace();
 		}
-		
 	}
 	
-	public static Feedback get(String docId, String topicId){
+	public Feedback get(String docId){
 		Feedback feedback = new Feedback();
 		feedback.topicId = topicId;
 		feedback.docno = docId;
@@ -64,12 +79,65 @@ public class TrecUser implements User {
 		}
 		return feedback;
 	}
+	
+	public double get(String subtopicId, String docId){
 
-	public static Feedback[] get(ResultSet resultSet, String topicId) {
+		if (!repository.containsKey(docId)){
+			return 0;
+		} 
+		Passage[] passages = repository.get(docId).get(topicId);
+		if (passages == null) {
+			return 0;
+		} else {
+			double score = 0;
+			for (int i = 0; i < passages.length; i++) {
+				if (passages[i].subtopicId.equals(subtopicId)){
+					score = Math.max(passages[i].relevance, score);
+				}
+			}
+			return score;
+		}
+	}
+	
+	public double getScore(String docId){
+		if (!repository.containsKey(docId)){
+			return 0;
+		} 
+		Passage[] passages = repository.get(docId).get(topicId);
+		if (passages == null) {
+			return 0;
+		} else {
+			double score = 0;
+			for (int i = 0; i < passages.length; i++) {
+				score = Math.max(passages[i].relevance, score);
+			}
+			return score;
+		}
+	}
+	
+	public double[] get(String subtopicId, String[] docnos){
+		int n = docnos.length;
+		double[] relevances = new double[n];
+		for (int i = 0; i < n; i++) {
+			relevances[i] = get(subtopicId,docnos[i]);
+		}
+		return relevances;
+	}
+	
+	public double[] get(String[] docnos){
+		int n = docnos.length;
+		double[] relevances = new double[n];
+		for (int i = 0; i < n; i++) {
+			relevances[i] = getScore(docnos[i]);
+		}
+		return relevances;
+	}
+
+	public Feedback[] get(ResultSet resultSet) {
 		int n = resultSet.docids.length;
 		Feedback[] feedbacks = new Feedback[n];
 		for (int i = 0; i < resultSet.docids.length; i++) {
-			feedbacks[i] = TrecUser.get(resultSet.docnos[i], topicId);
+			feedbacks[i] = trecUser.get(resultSet.docnos[i]);
 		}
 		return feedbacks;
 	}

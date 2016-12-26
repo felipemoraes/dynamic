@@ -6,19 +6,16 @@ import br.ufmg.dcc.latin.querying.ResultSet;
 
 public class xQuAD extends InteractiveReranker {
 
+	public xQuAD(FeedbackModeling feedbackModeling) {
+		super(feedbackModeling);
+	}
+
 	double lambda;
 	
-	private FeedbackModeling aspectMining;
 	
 	public double[] importance;
 	public double[] novelty;
 	public double[][] coverage;
-	
-	private String aspectMiningClassName;
-	
-	public xQuAD(String aspectMiningClassName){
-		this.aspectMiningClassName = aspectMiningClassName;
-	}
 	
 
 	@Override
@@ -27,6 +24,8 @@ public class xQuAD extends InteractiveReranker {
 		for (int i = 0; i < importance.length; i++) {
 			diversity +=  importance[i]*coverage[docid][i]*novelty[i];
 		}
+
+		
 		double score = (1-lambda)*relevance[docid] + lambda*diversity;
 		
 		return score;
@@ -34,44 +33,28 @@ public class xQuAD extends InteractiveReranker {
 	
 	@Override
 	public ResultSet get(){
-		aspectMining.updateAspects(indexName);
-		coverage = aspectMining.getCoverage();
-		importance = aspectMining.getImportance();
-		novelty = aspectMining.getNovelty();
+		
+		coverage = feedbackModeling.coverage;
+		importance = feedbackModeling.importance;
+		novelty = feedbackModeling.novelty;
 		updateNovelty();
+		
 		return super.get();
 	}
 	
 	@Override
-	public void start(double[] params){
-		super.start(params);
+	public void start(ResultSet resultSet, double[] params){
+		super.start(resultSet, params);
+		
 		relevance = normalize(relevance);
-		lambda = params[1];
-		
-		double[] aspectWeights = new double[8];
-		for (int i = 2; i < params.length; i++) {
-			aspectWeights[i-2] = params[i];
-		}
-		
-		aspectMining.setAspectWeights(aspectWeights);
-		coverage = aspectMining.getCoverage();
-		importance = aspectMining.getImportance();
-		novelty = aspectMining.getNovelty();
+		lambda = params[0];
+		feedbackModeling = feedbackModeling.getInstance(docnos);
+		coverage = feedbackModeling.coverage;
+		importance = feedbackModeling.importance;
+		novelty = feedbackModeling.novelty;
 	}
 	
-	
-	@Override
-	public void setParams(double[] params){
-		super.start(params);
-		lambda = params[1];
-		
-		double[] aspectWeights = new double[8];
-		for (int i = 2; i < params.length; i++) {
-			aspectWeights[i-2] = params[i];
-		}
-		
-		aspectMining.setAspectWeights(aspectWeights);
-	}
+
 	
 	@Override
 	public void update(int docid){
@@ -84,7 +67,7 @@ public class xQuAD extends InteractiveReranker {
 	@Override
 	public void update(Feedback[] feedback) {
 		super.update(feedback);
-		aspectMining.sendFeedback(indexName, query,feedback);
+		feedbackModeling.update(feedback);
 	}
 	
 	public void updateNovelty(){
@@ -96,11 +79,5 @@ public class xQuAD extends InteractiveReranker {
 		}
 	}
 
-
-	@Override
-	public String debug() {
-		aspectMining.debug();
-		return null;
-	}
 
 }

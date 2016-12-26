@@ -2,37 +2,34 @@ package br.ufmg.dcc.latin.reranker;
 
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.modeling.FeedbackModeling;
+import br.ufmg.dcc.latin.querying.ResultSet;
 
 public class Cube extends InteractiveReranker {
+	
+	public Cube(FeedbackModeling feedbackModeling) {
+		super(feedbackModeling);
+	}
+
 	double gamma;
 	private static double MaxHeight = 5.0f;
 	private double[] importance;
 	private double[] novelty;
 	private double[][] coverage;
-	private double[] accumalatedRelevance;
+	private double[] accumulatedGain;
+
 	
-	private String aspectMiningClassName;
-	
-	private FeedbackModeling aspectMining;
-	
-	public Cube(String aspectMiningClassName){
-		this.aspectMiningClassName = aspectMiningClassName;
-	}
+	private FeedbackModeling feedbackModeling;
 	
 	
-	@Override
-	public String debug() {
-		return null;
-	}
 
 	@Override
-	public void start(double[] params){
-		super.start(params);
-		gamma = params[1];
-		coverage = aspectMining.getCoverage();
-		importance = aspectMining.getImportance();
-		novelty = aspectMining.getNovelty();
-		accumalatedRelevance = aspectMining.getAccumulatedRelevance();
+	public void start(ResultSet resultSet, double[] params){
+		super.start(resultSet, params);
+		gamma = params[0];
+		coverage = feedbackModeling.coverage;
+		importance = feedbackModeling.importance;
+		novelty = feedbackModeling.novelty;
+		accumulatedGain = feedbackModeling.accumulatedGain;
 	}
 	
 	private float discountFactor(int subtopic){
@@ -48,8 +45,8 @@ public class Cube extends InteractiveReranker {
 		double score = 0;
 		for (int i = 0; i < importance.length; i++) {
 			
-			if (accumalatedRelevance[i] < MaxHeight) {
-				score += discountFactor(i)*importance[i]*coverage[docid][i]*accumalatedRelevance[i];
+			if (accumulatedGain[i] < MaxHeight) {
+				score += discountFactor(i)*importance[i]*coverage[docid][i]*accumulatedGain[i];
 			}
 		}
 		return score;
@@ -58,7 +55,7 @@ public class Cube extends InteractiveReranker {
 	@Override
 	protected void update(int docid) {
 		for (int i = 0; i < importance.length; i++) {
-			accumalatedRelevance[i] += coverage[docid][i];
+			accumulatedGain[i] += coverage[docid][i];
 		}
 
 	}
@@ -66,11 +63,12 @@ public class Cube extends InteractiveReranker {
 	@Override
 	public void update(Feedback[] feedback) {
 		super.update(feedback);
-		aspectMining.miningFeedbackForCube(query,indexName,feedback);
-		coverage = aspectMining.getCoverage();
-		importance = aspectMining.getImportance();
-		novelty = aspectMining.getNovelty();
-		accumalatedRelevance = aspectMining.getAccumulatedRelevance();
+		
+		feedbackModeling.update(feedback);
+		coverage = feedbackModeling.coverage;
+		importance = feedbackModeling.importance;
+		novelty = feedbackModeling.novelty;
+		accumulatedGain = feedbackModeling.accumulatedGain;
 	}
 
 }

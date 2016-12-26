@@ -2,7 +2,7 @@ package br.ufmg.dcc.latin.feedback;
 
 public class Passage {
 	
-	public String aspectId;
+	public String subtopicId;
 	public int passageId;
 	public int relevance;
 	
@@ -10,8 +10,8 @@ public class Passage {
 		
 	}
 	
-	public Passage(String aspectId, int passageId, int relevance){
-		this.aspectId = aspectId;
+	public Passage(String subtopicId, int passageId, int relevance){
+		this.subtopicId = subtopicId;
 		this.passageId = passageId;
 		this.relevance = relevance;
 	}

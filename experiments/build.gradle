@@ -1,0 +1,18 @@
+apply plugin: 'application'
+
+
+dependencies {
+    compile project(':core')
+	testCompile 'junit:junit:4.11'
+}
+
+
+task SimulatedRelevance(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.experiment.SimulatedRelevance'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
+
+mainClassName = ' '

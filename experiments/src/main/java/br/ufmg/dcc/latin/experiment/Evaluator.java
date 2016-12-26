@@ -1,4 +1,4 @@
-package br.ufmg.dcc.latin.dynamicsystem;
+package br.ufmg.dcc.latin.experiment;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -11,6 +11,8 @@ import br.ufmg.dcc.latin.user.TrecUser;
 
 public class Evaluator {
 	
+	private static TrecUser trecUser;
+	
 	public static void writeToFile(String runName, String topicId, ResultSet resultSet, int iteration){
 		try(FileWriter fw = new FileWriter("data/" + runName + ".txt", true);
 				 BufferedWriter bw = new BufferedWriter(fw);
@@ -19,14 +21,14 @@ public class Evaluator {
 			for (int i = 0; i < docnos.length; i++) {
 				float score = (float) ((1000.0-iteration-i)/1000.0);
 				String wline = topicId + "\t" + iteration +"\t" + docnos[i] + "\t" + String.format("%.12f", score) + "\t";
-				Feedback feedback = TrecUser.get(docnos[i], topicId);
+				Feedback feedback = trecUser.get(docnos[i]);
 				if (!feedback.onTopic){
 					wline += "0\tNULL";
 				} else {
 					wline += "1" +  "\t";
 					for (int j = 0; j < feedback.passages.length; j++) {
 						
-						wline += feedback.passages[j].aspectId + ":" + feedback.passages[j].aspectId + "|";
+						wline += feedback.passages[j].subtopicId + ":" + feedback.passages[j].subtopicId + "|";
 					}
 					wline = wline.substring(0,wline.length()-1);
 				}

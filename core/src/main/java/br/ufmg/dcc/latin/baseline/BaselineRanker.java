@@ -27,6 +27,7 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.BytesRef;
 
 import br.ufmg.dcc.latin.querying.ResultSet;
+import br.ufmg.dcc.latin.simulation.SimAP;
 
 
 public class BaselineRanker {
@@ -41,6 +42,26 @@ public class BaselineRanker {
 	
 	private static BaselineRanker baselineRanker;
 	
+	
+	
+	private ResultSet currentResultSet;
+	
+	private ResultSet resultSet;
+	
+	public ResultSet search(){
+		
+		
+		currentResultSet.scores = SimAP.apply(resultSet.docnos, currentResultSet.scores);
+
+		
+		return currentResultSet;
+	}
+	
+	public double[] getBins(){
+		return SimAP.getBins(resultSet.docnos);
+	}
+	
+
 	
 	public static BaselineRanker getInstance(Similarity similarity, double[] fiedlWeights){
 		if (baselineRanker != null) {
@@ -120,7 +141,7 @@ public class BaselineRanker {
 	
 	
 	
-	public ResultSet search(String topicId, String queryTerms, String index) {
+	public ResultSet search(String queryTerms, String index) {
 		
 		int size = 1000;
 		
@@ -164,11 +185,16 @@ public class BaselineRanker {
        
         
 		ResultSet resultSet = new ResultSet();
-		
+		this.resultSet = new ResultSet();
 		resultSet.docids = docids;
 		resultSet.scores = scores;
 		resultSet.docnos = docnos;
-
+		
+		currentResultSet = resultSet;
+		this.resultSet.docids = docids;
+		this.resultSet.scores = scores;
+		this.resultSet.docnos = docnos;
+		
 		
 		return resultSet;
 	}

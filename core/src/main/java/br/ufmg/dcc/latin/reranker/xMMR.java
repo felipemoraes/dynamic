@@ -4,8 +4,13 @@ import java.util.Arrays;
 
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.modeling.FeedbackModeling;
+import br.ufmg.dcc.latin.querying.ResultSet;
 
 public class xMMR extends InteractiveReranker {
+
+	public xMMR(FeedbackModeling feedbackModeling) {
+		super(feedbackModeling);
+	}
 
 	private double[] cacheSim;
 	
@@ -13,26 +18,19 @@ public class xMMR extends InteractiveReranker {
 
 	private double lambda;
 	
-	private double[] relevance;
-	
 	private double[][] coverage; 
-
-	private FeedbackModeling aspectMining;
-	private String aspectMiningClassName;
-	
-	public xMMR(String aspectMiningClassName){
-		this.aspectMiningClassName = aspectMiningClassName;
-	}
 
 
 
 	@Override
-	public void start(double[] params) {
-		super.start(params);
+	public void start(ResultSet resultSet, double[] params) {
+		super.start(resultSet, params);
+		lambda = params[0];
 		n = relevance.length;
 		cacheSim = new double[n];
-		lambda = params[1];
-		coverage = aspectMining.getCoverage();
+		lambda = params[0];
+		feedbackModeling = feedbackModeling.getInstance(docnos);
+		coverage = feedbackModeling.coverage;
 	}
 
 	@Override
@@ -91,16 +89,9 @@ public class xMMR extends InteractiveReranker {
 	@Override
 	public void update(Feedback[] feedback) {
 		super.update(feedback);
-		aspectMining.sendFeedback(indexName, query, feedback);
-		coverage = aspectMining.getCoverage();
+		feedbackModeling.update(feedback);
+		coverage = feedbackModeling.coverage;
 		
-	}
-
-
-
-	@Override
-	public String debug() {
-		return "";
 	}
 	
 

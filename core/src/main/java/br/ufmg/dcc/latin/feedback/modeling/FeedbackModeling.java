@@ -1,46 +1,80 @@
 package br.ufmg.dcc.latin.feedback.modeling;
 
-import br.ufmg.dcc.latin.feedback.Feedback;
+import java.util.Arrays;
 
-public abstract class FeedbackModeling {
+import br.ufmg.dcc.latin.feedback.Feedback;
+import br.ufmg.dcc.latin.user.TrecUser;
+
+public class FeedbackModeling {
 	
 	protected Feedback[] feedbacks;
 
 	protected int n;
 	
-	protected double[] importance;
-	protected double[] novelty;
-	protected double[][] coverage;
+	public double[] importance;
 	
-	protected double[] accumulatedRelevance;
+	public double[] novelty;
 	
-	protected double[][][] features;
+	public double[][] coverage;
 	
-	protected double[] v;
-	protected double[] s;
+	public double[] accumulatedGain;
 	
-	protected double[] aspectWeights;
+	public double[] v;
+	public double[] s;
 	
+	public String[] docnos;
 	
-	public abstract void sendFeedback(String index, String query, Feedback[] feedbacks);
-	public abstract void updateAspects(String index);
-	public void debug(){
+	private FeedbackModel feedbackModel;
+	
+	public TrecUser trecUser;
+	
+	public FeedbackModeling(){
+	}
+	
+	public FeedbackModeling getInstance(String[] docnos){
 		
-	}
-	public abstract void miningFeedbackForCube(String index,  String query, Feedback[] feedbacks);
-	
-	public double[][] getCoverage(){
-		return coverage;
-	}
-	
-	public double[] getImportance(){
-		return importance;
-	}
-	
-	public double[] getNovelty(){
-		return novelty; 
+		n = docnos.length;
+		this.docnos = docnos;
+		importance = new double[0];
+		novelty = new double[0];
+		accumulatedGain = new double[0];
+		coverage = new double[n][0];
+		v =  new double[0];
+		s =  new double[0];
+		feedbackModel = new FeedbackModel();
+		return this;
 	}
 	
+	
+	public void update(Feedback[] feedbacks){
+		
+		for (int i = 0; i < feedbacks.length; i++) {
+			if (!feedbacks[i].onTopic){
+				continue;
+			}
+			for (int j = 0; j < feedbacks[i].passages.length; j++) {
+				feedbackModel.addSubtopic(feedbacks[i].passages[j].subtopicId);
+			}
+		}
+		
+		int numberOfSubtopics = feedbackModel.size;
+		importance = new double[numberOfSubtopics];
+		novelty = new double[numberOfSubtopics];
+		coverage = new double[n][numberOfSubtopics];
+		
+		Arrays.fill(novelty, 1);
+		Arrays.fill(importance, 1f/numberOfSubtopics);
+		
+		for (int i = 0; i < numberOfSubtopics; i++) {
+			String subtopicId = feedbackModel.getSubtopicId(i);
+			double[] relevances = trecUser.get(subtopicId,docnos);
+			for (int j = 0; j < relevances.length; j++) {
+				coverage[j][i] = relevances[j];
+			}
+		}
+		normalizeCoverage();
+	}
+
 	protected void cacheFeedback(Feedback[] feedbacks){
 		
 		if (this.feedbacks == null) {
@@ -51,15 +85,6 @@ public abstract class FeedbackModeling {
 			int i = feedbacks[j].index;
 			this.feedbacks[i] = feedbacks[j]; 
 		}
-	}
-	
-
-	public double[] getAspectWeights() {
-		return aspectWeights;
-	}
-
-	public void setAspectWeights(double[] aspectWeights) {
-		this.aspectWeights = aspectWeights;
 	}
 
 	
@@ -122,19 +147,4 @@ public abstract class FeedbackModeling {
 		
 	}
 	
-	public double[] getV() {
-		return v;
-	}
-
-	public double[] getS() {
-		return s;
-	}
-	
-	public double[] getAccumulatedRelevance(){
-		return accumulatedRelevance;
-	}
-	
-	public double[][][] getFeatures(){
-		return features;
-	}
 }
