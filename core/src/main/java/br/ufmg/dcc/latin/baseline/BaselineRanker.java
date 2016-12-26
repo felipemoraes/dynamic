@@ -51,7 +51,7 @@ public class BaselineRanker {
 	public ResultSet search(){
 		
 		
-		currentResultSet.scores = SimAP.apply(resultSet.docnos, currentResultSet.scores);
+		currentResultSet.scores = SimAP.apply(resultSet.docnos, resultSet.scores);
 
 		
 		return currentResultSet;

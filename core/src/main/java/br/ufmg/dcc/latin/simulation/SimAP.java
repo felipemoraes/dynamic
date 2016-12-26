@@ -15,8 +15,7 @@ public class SimAP {
 	
 	public static double currentAP;
 	
-	private static List<Pair> iGreaterThanj;
-	private static List<Pair> jGreaterThani;
+	private static List<Integer> zeros;
 	
 	public static double[] getBins(String[] docnos) {
 		double[] relevances = trecUser.get(docnos);
@@ -54,62 +53,104 @@ public class SimAP {
 
 	private static void makeLists(double[] relevances){
 		
-		iGreaterThanj = new ArrayList<Pair>();
-		jGreaterThani = new ArrayList<Pair>();
+		zeros = new ArrayList<Integer>();
 
 		for (int i = 0; i < relevances.length; i++) {
 			if (relevances[i] == 0) {
-				for (int j = 0; j < relevances.length; j++) {
-					if (i == j) {
-						continue;
-					}
-					if (relevances[j] > 0) {
-						Pair pair = new Pair();
-						pair.ri = i;
-						pair.rj = j;
-						if ( i > j) {
-							iGreaterThanj.add(pair);
-						} else {
-							jGreaterThani.add(pair);
-						}
-					}
-				}
+				zeros.add(i);
 			}
 		}
 	}
-	public static double[] apply(String[] docnos,  double[] scores) {
-		double[] relevances = trecUser.get(docnos);
+	
+	private static Pair getPairL(double[] relevances){
 		
 		Random rand = new Random();
+		int listSize = zeros.size();
+		while (true) {
+			if (listSize == 0) {
+				return null;
+			}
+			Pair pair = new Pair();
+			int ix = rand.nextInt(listSize);
+			List<Integer> ones = new ArrayList<Integer>();
+			for (int i = ix+1; i < relevances.length; i++) {
+				if (relevances[i] > 0) {
+					ones.add(i);
+				}
+			}
+			
+			if (ones.size() > 0) {
+				int j = rand.nextInt(ones.size());
+				pair.ri = zeros.get(ix);
+				pair.rj = ones.get(j);
+				pair.i = ix;
+				pair.j = j;
+				
+				return pair;
+			}
+		}
+	}
+	
+	private static Pair getPairG(double[] relevances){
+		
+		Random rand = new Random();
+		int listSize = zeros.size();
+		while (true) {
+			if (listSize == 0) {
+				return null;
+			}
+			Pair pair = new Pair();
+			int ix = rand.nextInt(listSize);
+			List<Integer> ones = new ArrayList<Integer>();
+			for (int i = 0; i < ix; i++) {
+				if (relevances[i] > 0) {
+					ones.add(i);
+				}
+			}
+			
+			if (ones.size() > 0) {
+				int j = rand.nextInt(ones.size());
+				pair.ri = zeros.get(ix);
+				pair.rj = ones.get(j);
+				pair.i = ix;
+				pair.j = j;
+				return pair;
+			}
+		}
+		
+	}
+	
+	public static double[] apply(String[] docnos,  double[] scores) {
+		
+		double[] relevances = trecUser.get(docnos);
+		
+		double[] localScore = new double[scores.length];
+		
+		for (int i = 0; i < scores.length; i++) {
+			localScore[i] = scores[i];
+		}
+		
 		makeLists(relevances);
 		
 		currentAP = computeAP(relevances);
 		double smallestDiff = Math.abs(targetAP-currentAP);
 		int i = 0;
-		while (Math.abs(targetAP-currentAP) > 0.0005 && i < 10000) {
+		while (Math.abs(targetAP-currentAP) > 0.005 && i < 1000) {
 		
 			Pair pair = null ;
-			int listSizei = iGreaterThanj.size();
-			int listSizej = jGreaterThani.size();
+			
+			
 			if (currentAP > targetAP) {
-				if (listSizei == 0) {
-					break;
-				}
-				int choose = rand.nextInt(listSizei);
-				pair = iGreaterThanj.get(choose);
-
-						
+				pair = getPairG(relevances);
 			} else {
-				if (listSizej == 0) {
-					break;
-				}
-				int choose = rand.nextInt(listSizej);
-				pair = jGreaterThani.get(choose);
+				pair = getPairL(relevances);
+				
 			}
 			
-			double aux = scores[pair.ri];
-			scores[pair.ri] = scores[pair.rj];
-			scores[pair.rj] = aux;
+			
+			double aux = localScore[pair.ri];
+			localScore[pair.ri] = localScore[pair.rj];
+			localScore[pair.rj] = aux;
 			
 			aux = relevances[pair.ri];
 			relevances[pair.ri] = relevances[pair.rj];
@@ -121,69 +162,63 @@ public class SimAP {
 			if (Math.abs(targetAP-candidateAP) < smallestDiff) {
 				smallestDiff = Math.abs(targetAP-candidateAP);
 				currentAP = candidateAP;
-				makeLists(relevances);
+				zeros.remove(pair.i);
+				zeros.add(pair.j);
 			} else {
-				aux = scores[pair.ri];
-				scores[pair.ri] = scores[pair.rj];
-				scores[pair.rj] = aux;
+				aux = localScore[pair.ri];
+				localScore[pair.ri] = localScore[pair.rj];
+				localScore[pair.rj] = aux;
 				aux = relevances[pair.ri];
 				relevances[pair.ri] = relevances[pair.rj];
 				relevances[pair.rj] = aux;	
 			}
 			i++;
 		}
-		return scores;
+		return localScore;
 	}
 	
 	public static double[] apply(double[] scores) {
 		
-		Random rand = new Random();
-		makeLists(scores);
+		double[] localScores = new double[scores.length];
+		for (int i = 0; i < localScores.length; i++) {
+			localScores[i] = scores[i];
+		}
 		
-		currentAP = computeAP(scores);
+		makeLists(localScores);
+		
+		currentAP = computeAP(localScores);
 		double smallestDiff = Math.abs(targetAP-currentAP);
 		int i = 0;
-		while (Math.abs(targetAP-currentAP) > 0.0005 && i < 10000) {
+		while (Math.abs(targetAP-currentAP) > 0.005 && i < 1000) {
 		
 			Pair pair = null ;
-			int listSizei = iGreaterThanj.size();
-			int listSizej = jGreaterThani.size();
+			
 			if (currentAP > targetAP) {
-				if (listSizei == 0) {
-					break;
-				}
-				int choose = rand.nextInt(listSizei);
-				pair = iGreaterThanj.get(choose);
-
-						
+				pair = getPairG(localScores);
 			} else {
-				if (listSizej == 0) {
-					break;
-				}
-				int choose = rand.nextInt(listSizej);
-				pair = jGreaterThani.get(choose);
+				pair = getPairL(localScores);
+				
 			}
+			double aux = localScores[pair.ri];
+			localScores[pair.ri] = localScores[pair.rj];
+			localScores[pair.rj] = aux;
 			
-			double aux = scores[pair.ri];
-			scores[pair.ri] = scores[pair.rj];
-			scores[pair.rj] = aux;
-			
-			
-			double candidateAP = computeAP(scores);
-			
+
+			double candidateAP = computeAP(localScores);
 			
 			if (Math.abs(targetAP-candidateAP) < smallestDiff) {
 				smallestDiff = Math.abs(targetAP-candidateAP);
 				currentAP = candidateAP;
-				makeLists(scores);
+				zeros.remove(pair.i);
+				zeros.add(pair.j);
 			} else {
-				aux = scores[pair.ri];
-				scores[pair.ri] = scores[pair.rj];
-				scores[pair.rj] = aux;
+				aux = localScores[pair.ri];
+				localScores[pair.ri] = localScores[pair.rj];
+				localScores[pair.rj] = aux;
 			}
 			i++;
 		}
-		return scores;
+		return localScores;
 	}
 	
 	public static double computeAP(double[] relevances){
@@ -204,6 +239,8 @@ public class SimAP {
 	public static class Pair {
 		public int ri;
 		public int rj;
+		public int i;
+		public int j;
 	}
 
 }

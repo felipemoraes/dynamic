@@ -61,9 +61,13 @@ public class FeedbackModeling {
 		importance = new double[numberOfSubtopics];
 		novelty = new double[numberOfSubtopics];
 		coverage = new double[n][numberOfSubtopics];
+		v = new double[numberOfSubtopics];
+		s = new double[numberOfSubtopics];
 		
 		Arrays.fill(novelty, 1);
 		Arrays.fill(importance, 1f/numberOfSubtopics);
+		Arrays.fill(v, 1.0f);
+		Arrays.fill(s, 1.0f);
 		
 		for (int i = 0; i < numberOfSubtopics; i++) {
 			String subtopicId = feedbackModel.getSubtopicId(i);

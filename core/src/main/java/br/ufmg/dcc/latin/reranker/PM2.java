@@ -31,21 +31,25 @@ public class PM2 extends InteractiveReranker {
 				maxQuotient = quotient;
 			}
 		}
+		
 		return maxQ;
 	}
 	
 	public double score(int docid){
 		
 		int q = highestAspect();
+		
 		if (q == -1){
 			return relevance[docid];
 		}
+	
+		highestAspect[docid] = q;
+		
 		double quotientAspectq = v[q]/(2*s[q]+1);
 		quotientAspectq *= coverage[docid][q];
 		double quotientotherAspect  = 0;
 		for (int i = 0; i < s.length; i++) {
 			if (i != q) {
-				
 				quotientotherAspect += (v[i]/(2*s[i]+1))*coverage[docid][i];
 			}
 		}
@@ -59,6 +63,9 @@ public class PM2 extends InteractiveReranker {
 		if (q == -1) {
 			q = highestAspect();
 		} 
+		if (q == -1) {
+			return;
+		}
 		double allCoverage = 0;
 		for (int i = 0; i < coverage[docid].length; ++i) {
 			allCoverage += coverage[docid][i];
@@ -83,13 +90,14 @@ public class PM2 extends InteractiveReranker {
 	public void start(ResultSet resultSet, double[] params){
 		super.start(resultSet,params);
 		relevance = normalize(relevance);
+		feedbackModeling = feedbackModeling.getInstance(docnos);
 		coverage = feedbackModeling.coverage;
 		v = feedbackModeling.v;
 		s = feedbackModeling.s;
 		lambda = params[0];
 		int n = relevance.length;
-		
 		highestAspect = new int[n];
+		
 		Arrays.fill(highestAspect, -1);
 		
 	}

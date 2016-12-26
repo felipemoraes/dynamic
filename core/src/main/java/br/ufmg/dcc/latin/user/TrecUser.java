@@ -34,6 +34,8 @@ public class TrecUser implements User {
 	}
 	
 	public static Map<String,double[]> subtopicsCoverage;
+	public static Map<String,double[]> subtopicsCoverageSorted;
+	public static Map<String,int[]> subtopicsCoverageIndices;
 	
 	private TrecUser(String topicFilename){
 		
@@ -85,6 +87,78 @@ public class TrecUser implements User {
 	}
 	
 	public void generateSubtopics(double targetAP, String[] docnos){
+		
+		if (subtopicsCoverageSorted == null) {
+			
+			subtopicsCoverage = new HashMap<String, double[]>();
+			subtopicsCoverageSorted  = new HashMap<String, double[]>();
+			subtopicsCoverageIndices = new HashMap<String, int[]>();
+			int n = docnos.length;
+			for (int i = 0; i < docnos.length; i++) {
+				if (!repository.containsKey(docnos[i])){
+					continue;
+				} 
+				
+				Passage[] passages = repository.get(docnos[i]).get(topicId);
+				if (passages == null) {
+					continue;
+				}
+				for (int j = 0; j < passages.length; j++) {
+					if (!subtopicsCoverage.containsKey(passages[j].subtopicId)){
+						subtopicsCoverage.put(passages[j].subtopicId, new double[n]);
+					}
+				}
+			}
+			SimAP.targetAP = targetAP;
+			
+			for (String subtopicId : subtopicsCoverage.keySet()) {
+				double[] relevances = getRelevances(subtopicId, docnos);
+				int[] sortedIndices = IntStream.range(0, relevances.length)
+		                .boxed().sorted((i, j) -> ((new Double(relevances[i])).compareTo(new Double(relevances[j])) ) )
+		                .mapToInt(ele -> ele).toArray();
+				
+				for(int i = 0; i < sortedIndices.length / 2; i++){
+				    int temp = sortedIndices[i];
+				    sortedIndices[i] = sortedIndices[sortedIndices.length - i - 1];
+				    sortedIndices[sortedIndices.length - i - 1] = temp;
+				}
+				subtopicsCoverageIndices.put(subtopicId, sortedIndices);
+				
+				for (int i = 0; i < sortedIndices.length; i++) {
+					relevances[i] = relevances[sortedIndices[i]];
+				}
+				
+				subtopicsCoverageSorted.put(subtopicId, relevances);
+			}
+		}
+		
+		double allAPs = 0;
+		SimAP.targetAP = targetAP;
+		for (String subtopicId : subtopicsCoverage.keySet()) {
+			
+			double[] relevances = subtopicsCoverageSorted.get(subtopicId);
+			
+			int[] sortedIndices = subtopicsCoverageIndices.get(subtopicId);
+			
+			double[] scores =  SimAP.apply(relevances);
+
+			
+			
+			for (int i = 0; i < scores.length; i++) {
+				scores[sortedIndices[i]] = scores[i];
+			}
+			allAPs += SimAP.currentAP;
+			subtopicsCoverage.put(subtopicId, scores);
+		}
+		
+		SimAP.currentAP = allAPs/subtopicsCoverage.size();
+	}
+	
+	public void destroySubtopics(){
+		subtopicsCoverageSorted = null;
+	}
+	
+	public void generateSubtopics(String[] docnos){
 		subtopicsCoverage = new HashMap<String, double[]>();
 		int n = docnos.length;
 		for (int i = 0; i < docnos.length; i++) {
@@ -102,35 +176,15 @@ public class TrecUser implements User {
 				}
 			}
 		}
-		SimAP.targetAP = targetAP;
-		double allAPs = 0;
+		
 		for (String subtopicId : subtopicsCoverage.keySet()) {
 			double[] relevances = getRelevances(subtopicId, docnos);
-			int[] sortedIndices = IntStream.range(0, relevances.length)
-	                .boxed().sorted((i, j) -> ((new Double(relevances[i])).compareTo(new Double(relevances[j])) ) )
-	                .mapToInt(ele -> ele).toArray();
-			for(int i = 0; i < sortedIndices.length / 2; i++)
-			{
-			    int temp = sortedIndices[i];
-			    sortedIndices[i] = sortedIndices[sortedIndices.length - i - 1];
-			    sortedIndices[sortedIndices.length - i - 1] = temp;
-			}
-			for (int i = 0; i < sortedIndices.length; i++) {
-				relevances[i] = relevances[sortedIndices[i]];
-			}
-			double[] scores =  SimAP.apply(relevances);
-			
-			for (int i = 0; i < scores.length; i++) {
-				scores[sortedIndices[i]] = scores[i];
-			}
-			allAPs = Math.max(allAPs,SimAP.currentAP);
-			subtopicsCoverage.put(subtopicId, scores);
+			subtopicsCoverage.put(subtopicId, relevances);
 		}
-		SimAP.currentAP = allAPs;
 	}
 	
 	public double get(String subtopicId, String docId){
-
+		
 		if (!repository.containsKey(docId)){
 			return 0;
 		} 
@@ -175,7 +229,6 @@ public class TrecUser implements User {
 	}
 	
 	public double[] get(String subtopicId, String[] docnos){
-		
 		return subtopicsCoverage.get(subtopicId);
 	}
 	

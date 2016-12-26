@@ -34,7 +34,7 @@ public class SimulatedRelevance {
 			return BaselineRanker.getInstance(new DPH(), new double[]{0.15,0.85});
 		} else if (ranker.equals("LM")) {
 			return BaselineRanker.getInstance(new LMDirichlet(2500f), new double[]{0.25,0.75});
-		} else if (ranker.equals("BM215")) {
+		} else if (ranker.equals("BM25")) {
 			return BaselineRanker.getInstance(new BM25(), new double[]{0,1});
 		}
 		return null;
@@ -45,7 +45,7 @@ public class SimulatedRelevance {
 		
 		CubeTest cubeTest = new CubeTest();
 		
-		String topicsFile = "../share/topics_domain_2016.txt";
+		String topicsFile = "../share/topics_domain.txt";
 	
 		
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
@@ -53,6 +53,7 @@ public class SimulatedRelevance {
 	    
 	    BaselineRanker baselineRanker = getBaselineRanker(args[0]);
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
+	   
 	    SimAP.trecUser = trecUser;
 	    
 	    List<TargetAP> targetAPs = new ArrayList<TargetAP>();
@@ -73,7 +74,7 @@ public class SimulatedRelevance {
 		}
 	    
 	    
-	    FileWriter fw = new FileWriter( args[0] + ".txt");
+	    FileWriter fw = new FileWriter( "SimulatedRelevance_" + args[0] + ".txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    		
@@ -90,15 +91,12 @@ public class SimulatedRelevance {
     		String query = splitLine[2].replaceAll("/", " ");
     		String index = splitLine[0];
     		ResultSet baselineResultSet = baselineRanker.search(query, index);
+    		trecUser.generateSubtopics(baselineResultSet.docnos);
+    		int count = 0;
     		for (TargetAP targetAP : targetAPs) {
     			
    				SimAP.targetAP = targetAP.AP;
 				baselineResultSet = baselineRanker.search();
-				if (targetAP.bin > SimAP.currentAP){
-					System.out.println(targetAP.bin + " " + SimAP.currentAP );
-					break;
-				}
-				
 				
 			    FeedbackModeling feedbackModeling = new FeedbackModeling();
 			    feedbackModeling.trecUser = trecUser;
@@ -142,6 +140,11 @@ public class SimulatedRelevance {
         		double actbaseline = cubeTest.getAverageCubeTest(10, topicId, accResult);
         		
         		out.println(topicId + " " + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " +actxMMR +" " +actbaseline  );
+        		count++;
+        		System.out.println(count);
+        		if (count % 100 == 0) {
+        			System.out.println(count);
+        		}
     		}	
 	    }
 		br.close();

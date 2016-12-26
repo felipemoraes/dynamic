@@ -22,6 +22,7 @@ import br.ufmg.dcc.latin.metrics.CubeTest;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.reranker.Baseline;
 import br.ufmg.dcc.latin.reranker.InteractiveReranker;
+import br.ufmg.dcc.latin.reranker.PM2;
 import br.ufmg.dcc.latin.reranker.xMMR;
 import br.ufmg.dcc.latin.reranker.xQuAD;
 import br.ufmg.dcc.latin.simulation.SimAP;
@@ -72,7 +73,7 @@ public class SimulatedDiversity {
 			targetAPs.add(tAP);
 		}
 	    
-	    FileWriter fw = new FileWriter( args[0] + ".txt");
+	    FileWriter fw = new FileWriter( "SimulatedDiversity_" + args[0] + ".txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    
@@ -89,15 +90,12 @@ public class SimulatedDiversity {
     		String query = splitLine[2].replaceAll("/", " ");
     		String index = splitLine[0];
     		ResultSet baselineResultSet = baselineRanker.search(query, index);
+    		int count = 0;
+    		trecUser.generateSubtopics(0.01, baselineResultSet.docnos);
     		for (TargetAP targetAP : targetAPs) {
 				
-    			
     			trecUser.generateSubtopics(targetAP.AP, baselineResultSet.docnos);
     			
-    			if (targetAP.bin > SimAP.currentAP){
-					System.out.println(targetAP.bin + " " + SimAP.currentAP );
-					break;
-				}
     			
 			    FeedbackModeling feedbackModeling = new FeedbackModeling();
 			    feedbackModeling.trecUser = trecUser;
@@ -111,6 +109,21 @@ public class SimulatedDiversity {
         			reranker.update(feedbacks);
     			}
         		double actxQuAD = cubeTest.getAverageCubeTest(10, topicId, accResult);
+        		
+			    feedbackModeling = new FeedbackModeling();
+			    feedbackModeling.trecUser = trecUser;
+			    reranker = new PM2(feedbackModeling);
+				reranker.start(baselineResultSet, new double[]{0.5});
+    			accResult = new String[10][];
+        		for (int i = 0; i < 10; i++) {
+        			ResultSet resultSet = reranker.get();
+        			accResult[i] = resultSet.docnos;
+        			Feedback[] feedbacks = trecUser.get(resultSet);
+        			reranker.update(feedbacks);
+    			}
+        		
+        		double actxPM2 = cubeTest.getAverageCubeTest(10, topicId, accResult);
+        		
         		
 			    feedbackModeling = new FeedbackModeling();
 			    feedbackModeling.trecUser = trecUser;
@@ -140,9 +153,14 @@ public class SimulatedDiversity {
         		
         		double actbaseline = cubeTest.getAverageCubeTest(10, topicId, accResult);
         		
-        		out.println(topicId + " " + " " + targetAP.bin + " " + targetAP.AP + " " + SimAP.currentAP +  " " + actxQuAD + " " +actxMMR +" " +actbaseline  );
+        		out.println(topicId + " " + " " + targetAP.bin + " " + targetAP.AP + " " + SimAP.currentAP +  " " + actxQuAD + " " +actxPM2 + " "  +actxMMR +" " +actbaseline  );
+        		count++;
+        		if (count % 100 == 0) {
+        			System.out.println(count);
+        		}
         		
     		}	
+    		trecUser.destroySubtopics();
 	    }
 		br.close();
 		out.close();
