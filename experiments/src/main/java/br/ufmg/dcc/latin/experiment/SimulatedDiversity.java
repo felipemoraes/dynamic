@@ -35,7 +35,7 @@ public class SimulatedDiversity {
 			return BaselineRanker.getInstance(new DPH(), new double[]{0.15,0.85});
 		} else if (ranker.equals("LM")) {
 			return BaselineRanker.getInstance(new LMDirichlet(2500f), new double[]{0.25,0.75});
-		} else if (ranker.equals("BM215")) {
+		} else if (ranker.equals("BM25")) {
 			return BaselineRanker.getInstance(new BM25(), new double[]{0,1});
 		}
 		return null;
@@ -45,7 +45,7 @@ public class SimulatedDiversity {
 	public static void main(String[] args) throws IOException {
 		CubeTest cubeTest = new CubeTest();
 		
-		String topicsFile = "../share/topics_domain_2016.txt";
+		String topicsFile = "../share/topics_domain.txt";
 	
 		
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
