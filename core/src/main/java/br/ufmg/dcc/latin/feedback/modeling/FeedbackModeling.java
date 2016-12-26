@@ -85,6 +85,7 @@ public class FeedbackModeling {
 			int i = feedbacks[j].index;
 			this.feedbacks[i] = feedbacks[j]; 
 		}
+		
 	}
 
 	
@@ -107,8 +108,11 @@ public class FeedbackModeling {
 
 	protected void printCoverage() {
 		for (int i = 0; i < coverage.length; i++) {
+			if ( i < 10) {
 			for (int j = 0; j < coverage[i].length; j++) {
 				System.out.print(coverage[i][j] + " ");
+			}
+			System.out.println();
 			}
 		}
 		

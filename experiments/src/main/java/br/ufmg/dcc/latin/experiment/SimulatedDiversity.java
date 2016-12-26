@@ -15,6 +15,7 @@ import org.apache.lucene.search.similarities.DPH;
 import org.apache.lucene.search.similarities.LMDirichlet;
 
 import br.ufmg.dcc.latin.baseline.BaselineRanker;
+import br.ufmg.dcc.latin.experiment.SimulatedRelevance.TargetAP;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.modeling.FeedbackModeling;
 import br.ufmg.dcc.latin.metrics.CubeTest;
@@ -26,7 +27,7 @@ import br.ufmg.dcc.latin.reranker.xQuAD;
 import br.ufmg.dcc.latin.simulation.SimAP;
 import br.ufmg.dcc.latin.user.TrecUser;
 
-public class SimulatedRelevance {
+public class SimulatedDiversity {
 	
 	private static BaselineRanker getBaselineRanker(String ranker) {
 		
@@ -40,9 +41,8 @@ public class SimulatedRelevance {
 		return null;
 		
 	}
-	
+
 	public static void main(String[] args) throws IOException {
-		
 		CubeTest cubeTest = new CubeTest();
 		
 		String topicsFile = "../share/topics_domain_2016.txt";
@@ -72,11 +72,10 @@ public class SimulatedRelevance {
 			targetAPs.add(tAP);
 		}
 	    
-	    
 	    FileWriter fw = new FileWriter( args[0] + ".txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
-	    		
+	    
 	    while ((line = br.readLine()) != null) {
 	    	String[] splitLine = line.split(" ",3);
 	    	
@@ -91,15 +90,15 @@ public class SimulatedRelevance {
     		String index = splitLine[0];
     		ResultSet baselineResultSet = baselineRanker.search(query, index);
     		for (TargetAP targetAP : targetAPs) {
+				
     			
-   				SimAP.targetAP = targetAP.AP;
-				baselineResultSet = baselineRanker.search();
-				if (targetAP.bin > SimAP.currentAP){
+    			trecUser.generateSubtopics(targetAP.AP, baselineResultSet.docnos);
+    			
+    			if (targetAP.bin > SimAP.currentAP){
 					System.out.println(targetAP.bin + " " + SimAP.currentAP );
 					break;
 				}
-				
-				
+    			
 			    FeedbackModeling feedbackModeling = new FeedbackModeling();
 			    feedbackModeling.trecUser = trecUser;
 			    InteractiveReranker reranker = new xQuAD(feedbackModeling);
@@ -141,16 +140,12 @@ public class SimulatedRelevance {
         		
         		double actbaseline = cubeTest.getAverageCubeTest(10, topicId, accResult);
         		
-        		out.println(topicId + " " + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " +actxMMR +" " +actbaseline  );
+        		out.println(topicId + " " + " " + targetAP.bin + " " + targetAP.AP + " " + SimAP.currentAP +  " " + actxQuAD + " " +actxMMR +" " +actbaseline  );
+        		
     		}	
 	    }
 		br.close();
 		out.close();
-	}
-	
-	static class TargetAP {
-		double bin;
-		double AP;
 	}
 
 }

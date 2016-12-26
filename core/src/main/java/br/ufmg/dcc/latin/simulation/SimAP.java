@@ -135,6 +135,57 @@ public class SimAP {
 		return scores;
 	}
 	
+	public static double[] apply(double[] scores) {
+		
+		Random rand = new Random();
+		makeLists(scores);
+		
+		currentAP = computeAP(scores);
+		double smallestDiff = Math.abs(targetAP-currentAP);
+		int i = 0;
+		while (Math.abs(targetAP-currentAP) > 0.0005 && i < 10000) {
+		
+			Pair pair = null ;
+			int listSizei = iGreaterThanj.size();
+			int listSizej = jGreaterThani.size();
+			if (currentAP > targetAP) {
+				if (listSizei == 0) {
+					break;
+				}
+				int choose = rand.nextInt(listSizei);
+				pair = iGreaterThanj.get(choose);
+
+						
+			} else {
+				if (listSizej == 0) {
+					break;
+				}
+				int choose = rand.nextInt(listSizej);
+				pair = jGreaterThani.get(choose);
+			}
+			
+			double aux = scores[pair.ri];
+			scores[pair.ri] = scores[pair.rj];
+			scores[pair.rj] = aux;
+			
+			
+			double candidateAP = computeAP(scores);
+			
+			
+			if (Math.abs(targetAP-candidateAP) < smallestDiff) {
+				smallestDiff = Math.abs(targetAP-candidateAP);
+				currentAP = candidateAP;
+				makeLists(scores);
+			} else {
+				aux = scores[pair.ri];
+				scores[pair.ri] = scores[pair.rj];
+				scores[pair.rj] = aux;
+			}
+			i++;
+		}
+		return scores;
+	}
+	
 	public static double computeAP(double[] relevances){
 		double averagePrecision = 0;
 		for (int i = 0; i < relevances.length; i++) {

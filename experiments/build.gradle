@@ -15,4 +15,12 @@ task SimulatedRelevance(type: JavaExec, dependsOn: classes) {
     }
 }
 
+task SimulatedDiversity(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.experiment.SimulatedDiversity'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
+
 mainClassName = ' '
