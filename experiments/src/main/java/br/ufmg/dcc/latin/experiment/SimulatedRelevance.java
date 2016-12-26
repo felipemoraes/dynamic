@@ -141,7 +141,6 @@ public class SimulatedRelevance {
         		
         		out.println(topicId + " " + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " +actxMMR +" " +actbaseline  );
         		count++;
-        		System.out.println(count);
         		if (count % 100 == 0) {
         			System.out.println(count);
         		}
