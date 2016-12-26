@@ -94,6 +94,11 @@ public class SimulatedRelevance {
     			
    				SimAP.targetAP = targetAP.AP;
 				baselineResultSet = baselineRanker.search();
+				
+				if (SimAP.targetAP > SimAP.currentAP + 0.05){
+					break;
+				}
+				
 			    FeedbackModeling feedbackModeling = new FeedbackModeling();
 			    feedbackModeling.trecUser = trecUser;
 			    InteractiveReranker reranker = new xQuAD(feedbackModeling);
