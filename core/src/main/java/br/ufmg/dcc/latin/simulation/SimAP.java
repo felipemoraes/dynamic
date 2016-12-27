@@ -287,8 +287,6 @@ public class SimAP {
 			localScores[i] = scores[i];
 		}
 		
-		makeLists(localScores);
-		
 		currentAP = computeAP(localScores);
 		double bestAP = computeBestAP(localScores);
 		double smallestDiff = Math.abs(targetAP-currentAP);
