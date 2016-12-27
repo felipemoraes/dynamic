@@ -17,6 +17,8 @@ public class SimAP {
 	
 	private static List<Integer> zeros;
 	
+	private static Random rand = new Random();
+	
 	public static double[] getBins(String[] docnos) {
 		double[] relevances = trecUser.get(docnos);
 		int countRels = 0;
@@ -62,64 +64,151 @@ public class SimAP {
 		}
 	}
 	
-	private static Pair getPairL(double[] relevances){
-		
-		Random rand = new Random();
-		int listSize = zeros.size();
-		while (true) {
-			if (listSize == 0) {
-				return null;
-			}
-			Pair pair = new Pair();
-			int ix = rand.nextInt(listSize);
-			List<Integer> ones = new ArrayList<Integer>();
-			for (int i = ix+1; i < relevances.length; i++) {
-				if (relevances[i] > 0) {
-					ones.add(i);
-				}
-			}
-			
-			if (ones.size() > 0) {
-				int j = rand.nextInt(ones.size());
-				pair.ri = zeros.get(ix);
-				pair.rj = ones.get(j);
-				pair.i = ix;
-				pair.j = j;
-				
-				return pair;
+	private static double computeBestAP(double[] relevances){
+		int countRels = 0;
+		for (int i = 0; i < relevances.length; i++) {
+			if (relevances[i]>0) {
+				countRels++;
 			}
 		}
-	}
-	
-	private static Pair getPairG(double[] relevances){
-		
-		Random rand = new Random();
-		int listSize = zeros.size();
-		while (true) {
-			if (listSize == 0) {
-				return null;
-			}
-			Pair pair = new Pair();
-			int ix = rand.nextInt(listSize);
-			List<Integer> ones = new ArrayList<Integer>();
-			for (int i = 0; i < ix; i++) {
-				if (relevances[i] > 0) {
-					ones.add(i);
-				}
-			}
-			
-			if (ones.size() > 0) {
-				int j = rand.nextInt(ones.size());
-				pair.ri = zeros.get(ix);
-				pair.rj = ones.get(j);
-				pair.i = ix;
-				pair.j = j;
-				return pair;
-			}
+		double[] bestRels = new double[relevances.length];
+		for (int i = 0; i < countRels; i++) {
+			bestRels[i] = 1;
 		}
 		
+		double bestAP = computeAP(bestRels);
+		return bestAP;
 	}
 	
+	private static Pair chooseSwap(double[] relevances, boolean improve){
+		Random rand = new Random();
+		int i = -1;
+		int j = -1;
+		boolean OK = false;
+		int attempt = 0;
+		while (!OK) {
+			if (improve) {
+				j = rand.nextInt(relevances.length);
+				if ( j == 0) {
+					continue;
+				}
+				i = rand.nextInt(j);
+			} else {
+				i = rand.nextInt(relevances.length);
+				if ( i == 0) {
+					continue;
+				}
+				j = rand.nextInt(i);
+			}
+			attempt++;
+			if (attempt % 100 == 0) {
+				//System.out.println("randLoop, attempt " + attempt);
+			}
+			OK = (relevances[i] == 0 ) && (relevances[j] > 0);
+		}
+		
+		Pair pair = new Pair();
+		pair.ri = i;
+		pair.rj = j;
+		return pair;
+	}
+	
+	private static Pair chooseSwap2(double[] relevances, boolean improve){
+		
+		int highestRel = -1;
+		int highestIrrel = -1;
+		int lowestRel = -1;
+		int lowestIrrel = -1;
+		int index =0;
+		
+		int i = -1;
+		int j = -1;
+
+		//find starting indices
+		while(highestRel == -1 || highestIrrel == -1) {
+			highestIrrel = (relevances[index]== 0 && highestIrrel == -1) ? index : highestIrrel;
+			highestRel =  (relevances[index] != 0 && highestRel == -1) ? index : highestRel ;
+			index++;
+		}
+		index = -1 + relevances.length;
+		while(lowestRel == -1 || lowestIrrel == -1) {
+			lowestIrrel =  (relevances[index]== 0 && lowestIrrel == -1) ? index : lowestIrrel;
+			lowestRel =  (relevances[index] != 0 && lowestRel == -1) ? index : lowestRel;
+			index--;
+		}
+		
+		if (improve) {
+			// no more improving moves that we can make
+			if (highestIrrel > lowestRel) {
+				Pair pair = new Pair();
+				pair.ri = i;
+				pair.rj = j;
+				return pair;
+			}
+			//improve
+		    // find j where r_j >0
+			int tryA = 0;
+			do {
+				// select a document before the lowestRelevant one, but after the highest irrelevant one, so
+				// that we have room to find an i value which might lead to a irrelevant document
+				j = highestIrrel+ rand.nextInt(lowestRel-highestIrrel) +1;
+				tryA++;
+				if (tryA % 100 == 0) {
+				//	System.out.println("Looking for relevant document after rank of highest irrelevant"
+				//+ " document at rank " + highestIrrel + ". lowestRel=" + lowestRel+". checking j=" + j +  ", try=" + tryA);
+					
+				}
+			} while ( relevances[j] == 0);
+			
+			// find i where r_i == 0 and i<j
+			int tryB = 0;
+			do {
+				i = rand.nextInt(j);
+				tryB++;
+				if (tryB % 100 == 0) {
+				//	System.out.println("Looking for irrelevant document above rank j="+ j 
+				//			+", highestIrrel is "+highestIrrel+", checking " + i + ", try=" + tryB);
+				}
+			} while ( relevances[i] > 0);
+		} else {
+			// disimprove
+			
+			int tryA = 0;
+			
+			do{
+				// select an irrelevant document before the lowestIrrelevant one, but after the highest relevant one, so
+				// that we have room to find a j value which might lead to a relevant document
+				if (highestRel > lowestIrrel) {
+					Pair pair = new Pair();
+					pair.ri = i;
+					pair.rj = j;
+					return pair;
+				}
+				i =  highestRel+  rand.nextInt(lowestIrrel-highestRel)+1;
+				tryA++;
+			//	System.out.println("Looking for irrelevant document after rank j="+ j 
+			//			+", highestIrrel is "+highestIrrel+", checking " + i + ", try=" + tryA);
+	        } while (relevances[i] != 0 );
+			
+			// find j where r_j >0  and j < i
+			int tryB = 0;
+			do{
+	            j = rand.nextInt(i);
+				tryB++;
+			//	System.out.println("Looking for relevant document above rank i=$i, highestRel is $highestRel, checking $j, try="  + tryB);
+				 
+	        }while(relevances[j]  == 0);
+			
+			
+		}
+		
+		Pair pair = new Pair();
+		pair.ri = i;
+		pair.rj = j;
+		return pair;
+	}
+	
+
 	public static double[] apply(String[] docnos,  double[] scores) {
 		
 		double[] relevances = trecUser.get(docnos);
@@ -130,23 +219,39 @@ public class SimAP {
 			localScore[i] = scores[i];
 		}
 		
-		makeLists(relevances);
 		
+	    //  fisher_yates_shuffle( \@array ) : generate a random permutation
+		// of @array in place
+		for (int i = localScore.length-1; i <= 1; i--) {
+			int j = rand.nextInt(i+1);
+			
+			double aux = localScore[i];
+			
+			localScore[i] = localScore[j];
+			localScore[j] = aux;
+			
+			aux = relevances[i];
+			relevances[i] = relevances[j];
+			relevances[j] = aux;
+		}
+
 		currentAP = computeAP(relevances);
+		
+		double bestAP = computeBestAP(relevances);
+		
 		double smallestDiff = Math.abs(targetAP-currentAP);
 		int i = 0;
 		while (Math.abs(targetAP-currentAP) > 0.005 && i < 1000) {
 		
-			Pair pair = null ;
-			
-			
-			if (currentAP > targetAP) {
-				pair = getPairG(relevances);
-			} else {
-				pair = getPairL(relevances);
-				
+			if (bestAP == currentAP){
+				break;
 			}
 			
+			Pair pair = chooseSwap2(relevances, currentAP < targetAP) ;
+			 
+			if (pair.rj == -1) {
+				break;
+			}
 			
 			double aux = localScore[pair.ri];
 			localScore[pair.ri] = localScore[pair.rj];
@@ -162,8 +267,6 @@ public class SimAP {
 			if (Math.abs(targetAP-candidateAP) < smallestDiff) {
 				smallestDiff = Math.abs(targetAP-candidateAP);
 				currentAP = candidateAP;
-				zeros.remove(pair.i);
-				zeros.add(pair.j);
 			} else {
 				aux = localScore[pair.ri];
 				localScore[pair.ri] = localScore[pair.rj];
@@ -187,18 +290,21 @@ public class SimAP {
 		makeLists(localScores);
 		
 		currentAP = computeAP(localScores);
+		double bestAP = computeBestAP(localScores);
 		double smallestDiff = Math.abs(targetAP-currentAP);
 		int i = 0;
 		while (Math.abs(targetAP-currentAP) > 0.005 && i < 1000) {
 		
-			Pair pair = null ;
-			
-			if (currentAP > targetAP) {
-				pair = getPairG(localScores);
-			} else {
-				pair = getPairL(localScores);
-				
+			if (bestAP == currentAP){
+				break;
 			}
+			
+			Pair pair = chooseSwap2(localScores, currentAP < targetAP) ;
+			 
+			if (pair.rj == -1) {
+				break;
+			}
+			
 			double aux = localScores[pair.ri];
 			localScores[pair.ri] = localScores[pair.rj];
 			localScores[pair.rj] = aux;
@@ -209,8 +315,6 @@ public class SimAP {
 			if (Math.abs(targetAP-candidateAP) < smallestDiff) {
 				smallestDiff = Math.abs(targetAP-candidateAP);
 				currentAP = candidateAP;
-				zeros.remove(pair.i);
-				zeros.add(pair.j);
 			} else {
 				aux = localScores[pair.ri];
 				localScores[pair.ri] = localScores[pair.rj];
@@ -239,8 +343,6 @@ public class SimAP {
 	public static class Pair {
 		public int ri;
 		public int rj;
-		public int i;
-		public int j;
 	}
 
 }

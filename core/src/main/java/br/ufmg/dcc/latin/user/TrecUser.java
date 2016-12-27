@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.IntStream;
 
 import br.ufmg.dcc.latin.feedback.Feedback;
@@ -248,6 +249,44 @@ public class TrecUser implements User {
 			feedbacks[i] = trecUser.get(resultSet.docnos[i]);
 		}
 		return feedbacks;
+	}
+
+	public void generateSubtopicsWithNoise(double noise, String[] docnos) {
+		Random r = new Random();
+		subtopicsCoverage = new HashMap<String, double[]>();
+		int n = docnos.length;
+		for (int i = 0; i < docnos.length; i++) {
+			if (!repository.containsKey(docnos[i])){
+				continue;
+			} 
+			
+			Passage[] passages = repository.get(docnos[i]).get(topicId);
+			if (passages == null) {
+				continue;
+			}
+			for (int j = 0; j < passages.length; j++) {
+				if (!subtopicsCoverage.containsKey(passages[j].subtopicId)){
+					subtopicsCoverage.put(passages[j].subtopicId, new double[n]);
+				}
+			}
+		}
+		
+		for (String subtopicId : subtopicsCoverage.keySet()) {
+			
+			double[] relevances = getRelevances(subtopicId, docnos);
+			for (int i = 0; i < relevances.length; i++) {
+				double noises = r.nextGaussian()* Math.sqrt(noise*4);
+				relevances[i] *= noises;
+				if (relevances[i] < 0) {
+					relevances[i] = 0;
+				} 
+				if (relevances[i] > 4) {
+					relevances[i] = 4;
+				}
+			}
+			subtopicsCoverage.put(subtopicId, relevances);
+		}
+		
 	}
 
 	
