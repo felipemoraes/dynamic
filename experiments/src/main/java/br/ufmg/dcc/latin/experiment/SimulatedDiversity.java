@@ -46,7 +46,7 @@ public class SimulatedDiversity {
 	public static void main(String[] args) throws IOException {
 		CubeTest cubeTest = new CubeTest();
 		
-		String topicsFile = "../share/topics_domain_2016.txt";
+		String topicsFile = "../share/topics_domain.txt";
 	
 		
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
