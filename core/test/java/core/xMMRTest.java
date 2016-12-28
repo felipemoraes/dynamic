@@ -51,25 +51,27 @@ public class xMMRTest {
 		xmmr.relevance[4] = 0.1;
 		
 		for (int i = 0; i < 5; i++) {
-			xmmr.docids[i] = i+1;
-			xmmr.docnos[i] = Integer.toString(i+1);
+			xmmr.docids[i] = i;
+			xmmr.docnos[i] = Integer.toString(i);
 		}
 		
-		xmmr.coverage[0][0] = 0.5;
-		xmmr.coverage[0][1] = 0.5;
+		xmmr.coverage[0][0] = 0;
+		xmmr.coverage[0][1] = 0;
 		
-		xmmr.coverage[1][0] = 0.5;
-		xmmr.coverage[1][1] = 0.5;
+		xmmr.coverage[1][0] = 3;
+		xmmr.coverage[1][1] = 3;
 		
-		xmmr.coverage[2][0] = 0.3;
-		xmmr.coverage[2][1] = 0.1;
+		xmmr.coverage[2][0] = 0;
+		xmmr.coverage[2][1] = 0;
 		
-		xmmr.coverage[3][0] = 0.2;
-		xmmr.coverage[3][1] = 0.8;
+		xmmr.coverage[3][0] = 3;
+		xmmr.coverage[3][1] = 2;
 		
-		xmmr.coverage[4][0] = 0.4;
-		xmmr.coverage[4][1] = 0.2;
+		xmmr.coverage[4][0] = 5;
+		xmmr.coverage[4][1] = 4;
 		xmmr.selected = new BooleanSelectedSet(5);
+		
+		feedbackModeling.normalizeCoverage(xmmr.coverage);
 		
 		xmmr.relevance = xmmr.normalize(xmmr.relevance);
 		

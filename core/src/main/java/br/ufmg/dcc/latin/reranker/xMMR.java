@@ -2,6 +2,8 @@ package br.ufmg.dcc.latin.reranker;
 
 import java.util.Arrays;
 
+import org.apache.commons.math3.stat.StatUtils;
+
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.modeling.FeedbackModeling;
 import br.ufmg.dcc.latin.querying.ResultSet;
@@ -37,21 +39,31 @@ public class xMMR extends InteractiveReranker {
 	public double score(int docid) {
 		
 		double score = lambda*(relevance[docid]) - (1-lambda)*cacheSim[docid];
+		
 		return score;
 	}
 
 
 	@Override
 	public void update(int docid) {
-		
 		double[] newCache = new double[n];
 	    Arrays.fill(newCache, 0);
 	    
+	    
+	    if ( StatUtils.sum(coverage[docid]) == 0) {
+	    	return;
+	    }
+	   
 	    for(int i = 0;i<newCache.length;++i) {
 	    	
-	    	newCache[i] = cosine(coverage[i],coverage[docid]);
+	    	if ( StatUtils.sum(coverage[i]) == 0) {
+	    		newCache[i] = 1;
+		    } else {
+		    	newCache[i] = cosine(coverage[i],coverage[docid]);
+		    }
+
 	    }
-	    
+	  
 	    
 	    newCache = normalize(newCache);
 	    
@@ -60,8 +72,8 @@ public class xMMR extends InteractiveReranker {
 			if (cacheSim[i] < newCache[i]) {
 				cacheSim[i] = newCache[i];
 			}
+			
 		}
-	  
 		
 	}
 	
@@ -94,9 +106,19 @@ public class xMMR extends InteractiveReranker {
 		super.update(feedback);
 		feedbackModeling.update(feedback);
 		coverage = feedbackModeling.coverage;
-		
+		updateNovelty();
 	}
 	
+	public void updateNovelty(){
+		cacheSim = new double[n];
+		for (int j = 0; j < docids.length; ++j) {
+			if (! selected.has(j)) {
+				continue;
+			}
+			update(j);
+		}
+	}
+
 
 	
 }

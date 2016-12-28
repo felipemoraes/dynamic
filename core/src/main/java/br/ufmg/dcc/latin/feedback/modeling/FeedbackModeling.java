@@ -95,8 +95,9 @@ public class FeedbackModeling {
 				}
 			}
 		}
-		//printCoverage();
+		
 		normalizeCoverage();
+		//printCoverage();
 	}
 
 	protected void cacheFeedback(Feedback[] feedbacks){
@@ -107,6 +108,7 @@ public class FeedbackModeling {
 		
 		for (int j = 0; j < feedbacks.length; j++) {
 			int i = feedbacks[j].index;
+		
 			this.feedbacks[i] = feedbacks[j]; 
 		}
 		

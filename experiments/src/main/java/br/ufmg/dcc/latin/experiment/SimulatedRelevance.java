@@ -96,6 +96,7 @@ public class SimulatedRelevance {
     		for (TargetAP targetAP : targetAPs) {
     			
    				SimAP.targetAP = targetAP.AP;
+   				
 				baselineResultSet = baselineRanker.search();
 				
 			    FeedbackModeling feedbackModeling = new FeedbackModeling();
@@ -116,6 +117,7 @@ public class SimulatedRelevance {
 			    reranker = new xMMR(feedbackModeling);
 				reranker.start(baselineResultSet, new double[]{0.5});
     			accResult = new String[10][];
+    			
         		for (int i = 0; i < 10; i++) {
         			ResultSet resultSet = reranker.get();
         			accResult[i] = resultSet.docnos;
@@ -137,6 +139,7 @@ public class SimulatedRelevance {
         			reranker.update(feedbacks);
     			}
         		
+        		
         		double actbaseline = cubeTest.getAverageCubeTest(10, topicId, accResult);
         		
         		out.println(topicId + " " + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " +actxMMR +" " +actbaseline  );
@@ -144,6 +147,7 @@ public class SimulatedRelevance {
         		if (count % 100 == 0) {
         			System.out.println(count);
         		}
+        		break;
     		}	
 	    }
 		br.close();
