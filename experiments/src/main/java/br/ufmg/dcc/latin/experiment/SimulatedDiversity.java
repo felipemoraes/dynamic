@@ -91,9 +91,8 @@ public class SimulatedDiversity {
     		String index = splitLine[0];
     		ResultSet baselineResultSet = baselineRanker.search(query, index);
     		int count = 0;
-    		trecUser.generateSubtopics(0.01, baselineResultSet.docnos);
+    		trecUser.generateSubtopics(0.2, baselineResultSet.docnos);
     		for (TargetAP targetAP : targetAPs) {
-				
     			trecUser.generateSubtopics(targetAP.AP, baselineResultSet.docnos);
     			
     			
@@ -158,7 +157,6 @@ public class SimulatedDiversity {
         		if (count % 100 == 0) {
         			System.out.println(count);
         		}
-        		
     		}	
     		trecUser.destroySubtopics();
 	    }

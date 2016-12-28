@@ -7,14 +7,14 @@ import br.ufmg.dcc.latin.querying.ResultSet;
 
 public abstract class InteractiveReranker implements Reranker {
 	
-	protected double[] relevance;
-	protected int[] docids;
-	protected String[] docnos;
+	public double[] relevance;
+	public int[] docids;
+	public String[] docnos;
 	
 	protected String query;
 	protected String indexName;
 	
-	protected BooleanSelectedSet selected;
+	public BooleanSelectedSet selected;
 	
 	protected FeedbackModeling feedbackModeling;
 
@@ -22,7 +22,7 @@ public abstract class InteractiveReranker implements Reranker {
 	
 	protected abstract void update(int docid);
 	
-	private int depth;
+	public int depth;
 	
 	
 	public void update(Feedback[] feedback){
@@ -62,6 +62,7 @@ public abstract class InteractiveReranker implements Reranker {
 			result.scores[k] = maxScore;
 			result.docids[k] = docids[maxRank];
 			result.docnos[k] = docnos[maxRank];
+			result.index[k] = maxRank;
 			// mark as selected
 			selected.put(maxRank);
 			update(maxRank);

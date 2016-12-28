@@ -29,6 +29,8 @@ public class FeedbackModel {
 		return subtopicsIndices.get(subtopicId);
 	}
 	
-	
+	public int getSubtopicId(String subtopicId){
+		return subtopicsId.get(subtopicId);
+	}
 	
 }

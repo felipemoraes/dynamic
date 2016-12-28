@@ -12,13 +12,13 @@ public class xMMR extends InteractiveReranker {
 		super(feedbackModeling);
 	}
 
-	private double[] cacheSim;
+	public double[] cacheSim;
 	
-	private int n;
+	public int n;
 
-	private double lambda;
+	public double lambda;
 	
-	private double[][] coverage; 
+	public double[][] coverage; 
 
 
 
@@ -28,7 +28,7 @@ public class xMMR extends InteractiveReranker {
 		lambda = params[0];
 		n = relevance.length;
 		cacheSim = new double[n];
-		lambda = params[0];
+		relevance = normalize(relevance);
 		feedbackModeling = feedbackModeling.getInstance(docnos);
 		coverage = feedbackModeling.coverage;
 	}
@@ -46,10 +46,12 @@ public class xMMR extends InteractiveReranker {
 		
 		double[] newCache = new double[n];
 	    Arrays.fill(newCache, 0);
-
+	    
 	    for(int i = 0;i<newCache.length;++i) {
+	    	
 	    	newCache[i] = cosine(coverage[i],coverage[docid]);
 	    }
+	    
 	    
 	    newCache = normalize(newCache);
 	    
@@ -59,6 +61,7 @@ public class xMMR extends InteractiveReranker {
 				cacheSim[i] = newCache[i];
 			}
 		}
+	  
 		
 	}
 	

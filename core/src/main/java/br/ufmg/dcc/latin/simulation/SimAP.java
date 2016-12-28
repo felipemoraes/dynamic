@@ -68,9 +68,13 @@ public class SimAP {
 		int countRels = 0;
 		for (int i = 0; i < relevances.length; i++) {
 			if (relevances[i]>0) {
+				
 				countRels++;
 			}
+
 		}
+		
+		
 		double[] bestRels = new double[relevances.length];
 		for (int i = 0; i < countRels; i++) {
 			bestRels[i] = 1;
@@ -126,7 +130,7 @@ public class SimAP {
 
 		//find starting indices
 		while(highestRel == -1 || highestIrrel == -1) {
-			highestIrrel = (relevances[index]== 0 && highestIrrel == -1) ? index : highestIrrel;
+			highestIrrel = (relevances[index] == 0 && highestIrrel == -1) ? index : highestIrrel;
 			highestRel =  (relevances[index] != 0 && highestRel == -1) ? index : highestRel ;
 			index++;
 		}
@@ -222,7 +226,7 @@ public class SimAP {
 		
 	    //  fisher_yates_shuffle( \@array ) : generate a random permutation
 		// of @array in place
-		for (int i = localScore.length-1; i <= 1; i--) {
+		for (int i = localScore.length-1; i >= 1; i--) {
 			int j = rand.nextInt(i+1);
 			
 			double aux = localScore[i];
@@ -243,9 +247,6 @@ public class SimAP {
 		int i = 0;
 		while (Math.abs(targetAP-currentAP) > 0.005 && i < 1000) {
 		
-			if (bestAP == currentAP){
-				break;
-			}
 			
 			Pair pair = chooseSwap2(relevances, currentAP < targetAP) ;
 			 
@@ -276,26 +277,43 @@ public class SimAP {
 				relevances[pair.rj] = aux;	
 			}
 			i++;
+			
+			if (bestAP == currentAP){
+				break;
+			}
 		}
 		return localScore;
 	}
 	
-	public static double[] apply(double[] scores) {
+	public static double[] apply(int[] ids, double[] scores) {
 		
 		double[] localScores = new double[scores.length];
+		int[] localIds = new int[ids.length];
 		for (int i = 0; i < localScores.length; i++) {
 			localScores[i] = scores[i];
+			localIds[i] = ids[i];
 		}
 		
+	    //  fisher_yates_shuffle( \@array ) : generate a random permutation
+		// of @array in place
+		
+		for (int i = localScores.length-1; i >= 1; i--) {
+			int j = rand.nextInt(i+1);
+			double aux = localScores[i];
+			localScores[i] = localScores[j];
+			localScores[j] = aux;
+			int auxid = localIds[i];
+			localIds[i] =  localIds[j];
+			localIds[j] = auxid;
+ 		}
+		
 		currentAP = computeAP(localScores);
+		
 		double bestAP = computeBestAP(localScores);
+		
 		double smallestDiff = Math.abs(targetAP-currentAP);
 		int i = 0;
 		while (Math.abs(targetAP-currentAP) > 0.005 && i < 1000) {
-		
-			if (bestAP == currentAP){
-				break;
-			}
 			
 			Pair pair = chooseSwap2(localScores, currentAP < targetAP) ;
 			 
@@ -307,6 +325,9 @@ public class SimAP {
 			localScores[pair.ri] = localScores[pair.rj];
 			localScores[pair.rj] = aux;
 			
+			int auxid = localIds[pair.ri];
+			localIds[pair.ri] =  localIds[pair.rj];
+			localIds[pair.rj] = auxid;
 
 			double candidateAP = computeAP(localScores);
 			
@@ -317,8 +338,17 @@ public class SimAP {
 				aux = localScores[pair.ri];
 				localScores[pair.ri] = localScores[pair.rj];
 				localScores[pair.rj] = aux;
+				
+				auxid = localIds[pair.ri];
+				localIds[pair.ri] =  localIds[pair.rj];
+				localIds[pair.rj] = auxid;
 			}
 			i++;
+			
+			if (bestAP == currentAP){
+				break;
+			}
+			
 		}
 		return localScores;
 	}

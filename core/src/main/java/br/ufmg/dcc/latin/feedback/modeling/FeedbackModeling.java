@@ -57,6 +57,8 @@ public class FeedbackModeling {
 			}
 		}
 		
+		cacheFeedback(feedbacks);
+		
 		int numberOfSubtopics = feedbackModel.size;
 		importance = new double[numberOfSubtopics];
 		novelty = new double[numberOfSubtopics];
@@ -67,15 +69,33 @@ public class FeedbackModeling {
 		Arrays.fill(novelty, 1);
 		Arrays.fill(importance, 1f/numberOfSubtopics);
 		Arrays.fill(v, 1.0f);
-		Arrays.fill(s, 1.0f);
+		Arrays.fill(s, 0.0f);
 		
 		for (int i = 0; i < numberOfSubtopics; i++) {
 			String subtopicId = feedbackModel.getSubtopicId(i);
 			double[] relevances = trecUser.get(subtopicId,docnos);
 			for (int j = 0; j < relevances.length; j++) {
-				coverage[j][i] = relevances[j];
+				if (this.feedbacks[j] == null) {
+					coverage[j][i] = relevances[j];
+				} else {
+					coverage[j][i] = 0;
+				}
+				
 			}
 		}
+		
+		for (int i = 0; i < this.feedbacks.length; i++) {
+			if (this.feedbacks[i] != null) {
+				if (!this.feedbacks[i].onTopic) {
+					continue;
+				}
+				for (int j = 0; j < this.feedbacks[i].passages.length; j++) {
+					int k = feedbackModel.getSubtopicId(this.feedbacks[i].passages[j].subtopicId);
+					coverage[i][k] = Math.max(coverage[i][k], this.feedbacks[i].passages[j].relevance);
+				}
+			}
+		}
+		//printCoverage();
 		normalizeCoverage();
 	}
 
@@ -109,9 +129,27 @@ public class FeedbackModeling {
 			}
 		}
 	}
+	
+	public void normalizeCoverage(double[][] coverage){
+		for (int i = 0; i < coverage[0].length; ++i) {
+			float sum = 0;
+			for (int j = 0; j < coverage.length; j++) {
+				sum += coverage[j][i];
+			}
+			
+			for (int j = 0; j < coverage.length; j++) {
+				if (sum > 0) {
+					double normValue = coverage[j][i]/sum;
+					coverage[j][i] = normValue;
+				}
+				
+			}
+		}
+	}
 
 	protected void printCoverage() {
-		for (int i = 0; i < coverage.length; i++) {
+		System.out.println("------------------");
+		for (int i = 0; i < 10; i++) {
 			if ( i < 10) {
 			for (int j = 0; j < coverage[i].length; j++) {
 				System.out.print(coverage[i][j] + " ");
@@ -119,7 +157,7 @@ public class FeedbackModeling {
 			System.out.println();
 			}
 		}
-		
+		System.out.println("------------------");
 	}
 	
 	public void printNovelty() {

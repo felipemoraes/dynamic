@@ -10,7 +10,7 @@ public class xQuAD extends InteractiveReranker {
 		super(feedbackModeling);
 	}
 
-	double lambda;
+	public double lambda;
 	
 	
 	public double[] importance;
@@ -27,17 +27,11 @@ public class xQuAD extends InteractiveReranker {
 
 		
 		double score = (1-lambda)*relevance[docid] + lambda*diversity;
-		
 		return score;
 	}
 	
 	@Override
 	public ResultSet get(){
-		
-		coverage = feedbackModeling.coverage;
-		importance = feedbackModeling.importance;
-		novelty = feedbackModeling.novelty;
-		updateNovelty();
 		
 		return super.get();
 	}
@@ -67,7 +61,12 @@ public class xQuAD extends InteractiveReranker {
 	@Override
 	public void update(Feedback[] feedback) {
 		super.update(feedback);
+		
 		feedbackModeling.update(feedback);
+		coverage = feedbackModeling.coverage;
+		importance = feedbackModeling.importance;
+		novelty = feedbackModeling.novelty;
+		updateNovelty();
 	}
 	
 	public void updateNovelty(){

@@ -13,15 +13,16 @@ public class PM2 extends InteractiveReranker {
 	}
 
 
-	double lambda;
-	int[] highestAspect;
+	public double lambda;
+	public int[] highestAspect;
 	
-	private double[] v;
-	private double[] s;
-	private double[][] coverage;
+	public double[] v;
+	public double[] s;
+	public double[][] coverage;
 
 	
 	public int highestAspect(){
+		
 		int maxQ =  -1;
 		double maxQuotient = -1;
 		for (int i = 0; i < v.length; i++) {
@@ -42,8 +43,6 @@ public class PM2 extends InteractiveReranker {
 		if (q == -1){
 			return relevance[docid];
 		}
-	
-		highestAspect[docid] = q;
 		
 		double quotientAspectq = v[q]/(2*s[q]+1);
 		quotientAspectq *= coverage[docid][q];
@@ -63,18 +62,23 @@ public class PM2 extends InteractiveReranker {
 		if (q == -1) {
 			q = highestAspect();
 		} 
+		
+		highestAspect[docid] = q;
+		
 		if (q == -1) {
 			return;
 		}
+		
 		double allCoverage = 0;
+		
 		for (int i = 0; i < coverage[docid].length; ++i) {
 			allCoverage += coverage[docid][i];
 		}
+		
 		if (allCoverage > 0) {
-			double newS = s[q] + coverage[docid][q]/allCoverage;
-			s[q] = newS;
+			s[q] += coverage[docid][q]/allCoverage;
 		} 
-		highestAspect[docid] = q;
+		
 	}
 	
 	public void updateNovelty(){

@@ -93,7 +93,7 @@ public class SimulatedNoisedDiversity {
 			int count = 0;
 			trecUser.generateSubtopics(0.01, baselineResultSet.docnos);
 			for (TargetAP targetAP : targetAPs) {
-				
+				targetAP.AP = 1;
 				trecUser.generateSubtopicsWithNoise(targetAP.AP, baselineResultSet.docnos);
 				
 				
@@ -158,7 +158,7 @@ public class SimulatedNoisedDiversity {
 	    		if (count % 100 == 0) {
 	    			System.out.println(count);
 	    		}
-	    		
+	    		break;
 			}	
 			trecUser.destroySubtopics();
 	    }

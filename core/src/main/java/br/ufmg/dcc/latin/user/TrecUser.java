@@ -4,10 +4,16 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.stream.IntStream;
+
+import org.apache.commons.math3.distribution.LaplaceDistribution;
+import org.apache.commons.math3.stat.StatUtils;
+
 
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.Passage;
@@ -94,6 +100,7 @@ public class TrecUser implements User {
 			subtopicsCoverage = new HashMap<String, double[]>();
 			subtopicsCoverageSorted  = new HashMap<String, double[]>();
 			subtopicsCoverageIndices = new HashMap<String, int[]>();
+			
 			int n = docnos.length;
 			for (int i = 0; i < docnos.length; i++) {
 				if (!repository.containsKey(docnos[i])){
@@ -110,7 +117,6 @@ public class TrecUser implements User {
 					}
 				}
 			}
-			SimAP.targetAP = targetAP;
 			
 			for (String subtopicId : subtopicsCoverage.keySet()) {
 				double[] relevances = getRelevances(subtopicId, docnos);
@@ -118,18 +124,21 @@ public class TrecUser implements User {
 		                .boxed().sorted((i, j) -> ((new Double(relevances[i])).compareTo(new Double(relevances[j])) ) )
 		                .mapToInt(ele -> ele).toArray();
 				
-				for(int i = 0; i < sortedIndices.length / 2; i++){
-				    int temp = sortedIndices[i];
-				    sortedIndices[i] = sortedIndices[sortedIndices.length - i - 1];
-				    sortedIndices[sortedIndices.length - i - 1] = temp;
-				}
-				subtopicsCoverageIndices.put(subtopicId, sortedIndices);
+				for (int i = 0; i < sortedIndices.length/2; i++) {
+				     int temp = sortedIndices[i];
+				     sortedIndices[i] = sortedIndices[sortedIndices.length-1 - i];
+				     sortedIndices[sortedIndices.length-1 - i] = temp;
+				 }
 				
+			
+				double[] scores = new double[relevances.length];
 				for (int i = 0; i < sortedIndices.length; i++) {
-					relevances[i] = relevances[sortedIndices[i]];
+					scores[i] = relevances[sortedIndices[i]];
+					
 				}
 				
-				subtopicsCoverageSorted.put(subtopicId, relevances);
+				subtopicsCoverageIndices.put(subtopicId, sortedIndices);
+				subtopicsCoverageSorted.put(subtopicId, scores);
 			}
 		}
 		
@@ -137,22 +146,28 @@ public class TrecUser implements User {
 		SimAP.targetAP = targetAP;
 		for (String subtopicId : subtopicsCoverage.keySet()) {
 			
-			double[] relevances = subtopicsCoverageSorted.get(subtopicId);
+			double[] relevances = getRelevances(subtopicId, docnos);
 			
-			int[] sortedIndices = subtopicsCoverageIndices.get(subtopicId);
-			
-			double[] scores =  SimAP.apply(relevances);
 
+			int[] ids = subtopicsCoverageIndices.get(subtopicId);
+			double[] scores = new double[relevances.length];
 			
+			double[] localScores =  SimAP.apply(ids, subtopicsCoverageSorted.get(subtopicId));
 			
+		
 			for (int i = 0; i < scores.length; i++) {
-				scores[sortedIndices[i]] = scores[i];
+				scores[ids[i]] = localScores[i];
 			}
 			allAPs += SimAP.currentAP;
 			subtopicsCoverage.put(subtopicId, scores);
 		}
+		if (subtopicsCoverage.size() == 0 || allAPs == 0 )  {
+			SimAP.currentAP = 0;
+		} else if (subtopicsCoverage.size() != 0 ){
+			SimAP.currentAP = allAPs/subtopicsCoverage.size();
+		}
 		
-		SimAP.currentAP = allAPs/subtopicsCoverage.size();
+	
 	}
 	
 	public void destroySubtopics(){
@@ -247,6 +262,7 @@ public class TrecUser implements User {
 		Feedback[] feedbacks = new Feedback[n];
 		for (int i = 0; i < resultSet.docids.length; i++) {
 			feedbacks[i] = trecUser.get(resultSet.docnos[i]);
+			feedbacks[i].index = resultSet.index[i];
 		}
 		return feedbacks;
 	}
@@ -274,15 +290,24 @@ public class TrecUser implements User {
 		for (String subtopicId : subtopicsCoverage.keySet()) {
 			
 			double[] relevances = getRelevances(subtopicId, docnos);
+			double min = StatUtils.min(relevances);
+			double max = StatUtils.max(relevances);
+			double deltaF = max - min;
+			double epsilon = noise;
+			LaplaceDistribution dist = new LaplaceDistribution(0,deltaF/epsilon);
+			
 			for (int i = 0; i < relevances.length; i++) {
-				double noises = r.nextGaussian()* Math.sqrt(noise*4);
-				relevances[i] *= noises;
+				
+				relevances[i] += dist.sample();
+
+			
 				if (relevances[i] < 0) {
 					relevances[i] = 0;
 				} 
 				if (relevances[i] > 4) {
 					relevances[i] = 4;
 				}
+				//relevances[i] = 1;
 			}
 			subtopicsCoverage.put(subtopicId, relevances);
 		}
