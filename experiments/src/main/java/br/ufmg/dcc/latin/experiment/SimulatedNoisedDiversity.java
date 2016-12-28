@@ -58,9 +58,9 @@ public class SimulatedNoisedDiversity {
 	    	String[] splitLine = line.split(" ",3);
 	    	
 	    	String topicId = splitLine[1];
-	    	if (!topicId.equals("DD16-1")){
-	    		continue;
-	    	}
+	    	//if (!topicId.equals("DD16-1")){
+	    	//	continue;
+	    	//}
 	    	
 	    	System.out.println(topicId);
 	    	trecUser.topicId = topicId;
@@ -133,7 +133,7 @@ public class SimulatedNoisedDiversity {
 	    		
 	    		out.println(topicId + " " + b/10000.0 + " " + klDiv + " " +  actxQuAD + " " +actxPM2 + " "  +actxMMR +" " +actbaseline  );
 	    		count++;
-	    		if (count % 100 == 0) {
+	    		if (count % 1000 == 0) {
 	    			System.out.println(count);
 	    		}
 	    		
