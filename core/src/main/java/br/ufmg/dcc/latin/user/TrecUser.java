@@ -267,8 +267,8 @@ public class TrecUser implements User {
 		return feedbacks;
 	}
 
-	public void generateSubtopicsWithNoise(double noise, String[] docnos) {
-		Random r = new Random();
+	public double generateSubtopicsWithNoise(double noise, String[] docnos) {
+		
 		subtopicsCoverage = new HashMap<String, double[]>();
 		int n = docnos.length;
 		for (int i = 0; i < docnos.length; i++) {
@@ -287,9 +287,18 @@ public class TrecUser implements User {
 			}
 		}
 		
+		
+		double allKlDiv = 0;
 		for (String subtopicId : subtopicsCoverage.keySet()) {
 			
 			double[] relevances = getRelevances(subtopicId, docnos);
+			StatUtils.normalize(relevances);
+			double sum = StatUtils.sum(relevances);
+			double[] probs = new double[relevances.length];
+			for (int i = 0; i < probs.length; i++) {
+				probs[i] = relevances[i]/sum;
+			}
+			
 			double min = StatUtils.min(relevances);
 			double max = StatUtils.max(relevances);
 			double deltaF = max - min;
@@ -297,22 +306,47 @@ public class TrecUser implements User {
 			LaplaceDistribution dist = new LaplaceDistribution(0,deltaF/epsilon);
 			
 			for (int i = 0; i < relevances.length; i++) {
-				
 				relevances[i] += dist.sample();
-
-			
-				if (relevances[i] < 0) {
-					relevances[i] = 0;
-				} 
-				if (relevances[i] > 4) {
-					relevances[i] = 4;
-				}
-				//relevances[i] = 1;
 			}
+			
+			min = StatUtils.min(relevances);
+			max = StatUtils.max(relevances);
+			for (int i = 0; i < probs.length; i++) {
+				relevances[i] = (relevances[i]-min)/(max-min);
+				relevances[i] *= 4;
+			}
+			
+			sum = StatUtils.sum(relevances);
+			double[] probsNoised = new double[relevances.length];
+			for (int i = 0; i < probs.length; i++) {
+				probsNoised[i] = relevances[i]/sum;
+			}
+			allKlDiv += klDivergence(probs,probsNoised);
 			subtopicsCoverage.put(subtopicId, relevances);
 		}
-		
+		if (subtopicsCoverage.size() > 0) {
+			allKlDiv /= subtopicsCoverage.size();
+		} else {
+			allKlDiv = 0;
+		}
+		return allKlDiv;
 	}
+	
+    public static double klDivergence(double[] p1, double[] p2) {
 
+
+        double klDiv = 0.0;
+
+        for (int i = 0; i < p1.length; ++i) {
+          if (p1[i] == 0) { continue; }
+          if (p2[i] == 0.0) { continue; } // Limin
+
+          klDiv += p1[i] * Math.log( p1[i] / p2[i] );
+        }
+
+        return klDiv / log2; // moved this division out of the loop -DM
+      }
+
+    public static final double log2 = Math.log(2);
 	
 }

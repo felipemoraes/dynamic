@@ -6,16 +6,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 import org.apache.lucene.search.similarities.BM25;
 import org.apache.lucene.search.similarities.DPH;
 import org.apache.lucene.search.similarities.LMDirichlet;
 
 import br.ufmg.dcc.latin.baseline.BaselineRanker;
-import br.ufmg.dcc.latin.experiment.SimulatedRelevance.TargetAP;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.modeling.FeedbackModeling;
 import br.ufmg.dcc.latin.metrics.CubeTest;
@@ -25,7 +21,6 @@ import br.ufmg.dcc.latin.reranker.InteractiveReranker;
 import br.ufmg.dcc.latin.reranker.PM2;
 import br.ufmg.dcc.latin.reranker.xMMR;
 import br.ufmg.dcc.latin.reranker.xQuAD;
-import br.ufmg.dcc.latin.simulation.SimAP;
 import br.ufmg.dcc.latin.user.TrecUser;
 
 public class SimulatedNoisedDiversity {
@@ -54,25 +49,7 @@ public class SimulatedNoisedDiversity {
 	    
 	    BaselineRanker baselineRanker = getBaselineRanker(args[0]);
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
-	    SimAP.trecUser = trecUser;
-	    
-	    List<TargetAP> targetAPs = new ArrayList<TargetAP>();
-	    for (int i = 0; i < 19 ; i++) {
-	    	for (int j = 0; j <20; j++) {
-				TargetAP tAP = new TargetAP();
-				tAP.bin = i*(0.05);
-				tAP.AP = ThreadLocalRandom.current().nextDouble(i*(0.05), (i+1)*(0.05));
-				targetAPs.add(tAP);	
-			}
-			
-		}
-	    for (int j = 0; j <20; j++) {
-		    TargetAP tAP = new TargetAP();
-			tAP.bin = 0.95;
-			tAP.AP = ThreadLocalRandom.current().nextDouble(0.95, 1.00000000000000000000000001);
-			targetAPs.add(tAP);
-		}
-	    
+
 	    FileWriter fw = new FileWriter( "SimulatedDiversity_" + args[0] + ".txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
@@ -91,10 +68,11 @@ public class SimulatedNoisedDiversity {
 			String index = splitLine[0];
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			int count = 0;
-			trecUser.generateSubtopics(0.01, baselineResultSet.docnos);
-			for (TargetAP targetAP : targetAPs) {
-				targetAP.AP = 1;
-				trecUser.generateSubtopicsWithNoise(targetAP.AP, baselineResultSet.docnos);
+			
+			
+			for (int b = 1; b <= 5000; b++) {
+				
+				double klDiv = trecUser.generateSubtopicsWithNoise(b/1000.0, baselineResultSet.docnos);
 				
 				
 			    FeedbackModeling feedbackModeling = new FeedbackModeling();
@@ -153,12 +131,12 @@ public class SimulatedNoisedDiversity {
 	    		
 	    		double actbaseline = cubeTest.getAverageCubeTest(10, topicId, accResult);
 	    		
-	    		System.out.println(topicId + " " + " " + targetAP.bin + " " + targetAP.AP + " " + actxQuAD + " " +actxPM2 + " "  +actxMMR +" " +actbaseline  );
+	    		System.out.println(topicId + " " + b + " " + klDiv + " " +  actxQuAD + " " +actxPM2 + " "  +actxMMR +" " +actbaseline  );
 	    		count++;
 	    		if (count % 100 == 0) {
 	    			System.out.println(count);
 	    		}
-	    		break;
+	    		
 			}	
 			trecUser.destroySubtopics();
 	    }
