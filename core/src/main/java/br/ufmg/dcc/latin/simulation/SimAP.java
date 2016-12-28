@@ -130,27 +130,27 @@ public class SimAP {
 
 		//find starting indices
 		while(highestRel == -1 || highestIrrel == -1) {
-			highestIrrel = (relevances[index] == 0 && highestIrrel == -1) ? index : highestIrrel;
-			highestRel =  (relevances[index] != 0 && highestRel == -1) ? index : highestRel ;
-			index++;
 			if (index > relevances.length) {
 				Pair pair = new Pair();
 				pair.ri = i;
 				pair.rj = j;
 				return pair;
 			}
+			highestIrrel = (relevances[index] == 0 && highestIrrel == -1) ? index : highestIrrel;
+			highestRel =  (relevances[index] != 0 && highestRel == -1) ? index : highestRel ;
+			index++;
 		}
 		index = -1 + relevances.length;
 		while(lowestRel == -1 || lowestIrrel == -1) {
-			lowestIrrel =  (relevances[index]== 0 && lowestIrrel == -1) ? index : lowestIrrel;
-			lowestRel =  (relevances[index] != 0 && lowestRel == -1) ? index : lowestRel;
-			index--;
 			if (index < 0) {
 				Pair pair = new Pair();
 				pair.ri = i;
 				pair.rj = j;
 				return pair;
 			}
+			lowestIrrel =  (relevances[index]== 0 && lowestIrrel == -1) ? index : lowestIrrel;
+			lowestRel =  (relevances[index] != 0 && lowestRel == -1) ? index : lowestRel;
+			index--;
 		}
 		
 		if (improve) {
