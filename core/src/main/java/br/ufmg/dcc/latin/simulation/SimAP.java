@@ -130,7 +130,7 @@ public class SimAP {
 
 		//find starting indices
 		while(highestRel == -1 || highestIrrel == -1) {
-			if (index > relevances.length) {
+			if (index >= relevances.length) {
 				Pair pair = new Pair();
 				pair.ri = i;
 				pair.rj = j;
