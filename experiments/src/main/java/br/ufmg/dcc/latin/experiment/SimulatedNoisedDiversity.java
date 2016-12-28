@@ -41,7 +41,7 @@ public class SimulatedNoisedDiversity {
 	public static void main(String[] args) throws IOException {
 		CubeTest cubeTest = new CubeTest();
 		
-		String topicsFile = "../share/topics_domain_2016.txt";
+		String topicsFile = "../share/topics_domain.txt";
 	
 		
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
@@ -50,7 +50,7 @@ public class SimulatedNoisedDiversity {
 	    BaselineRanker baselineRanker = getBaselineRanker(args[0]);
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
 
-	    FileWriter fw = new FileWriter( "SimulatedDiversity_" + args[0] + ".txt");
+	    FileWriter fw = new FileWriter( "SimulatedNoisedDiversity_" + args[0] + ".txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    
@@ -70,9 +70,9 @@ public class SimulatedNoisedDiversity {
 			int count = 0;
 			
 			
-			for (int b = 1; b <= 5000; b++) {
+			for (int b = 1; b <= 1000000; b+=100) {
 				
-				double klDiv = trecUser.generateSubtopicsWithNoise(b/1000.0, baselineResultSet.docnos);
+				double klDiv = trecUser.generateSubtopicsWithNoise(b/10000.0, baselineResultSet.docnos);
 				
 				
 			    FeedbackModeling feedbackModeling = new FeedbackModeling();
@@ -131,7 +131,7 @@ public class SimulatedNoisedDiversity {
 	    		
 	    		double actbaseline = cubeTest.getAverageCubeTest(10, topicId, accResult);
 	    		
-	    		System.out.println(topicId + " " + b + " " + klDiv + " " +  actxQuAD + " " +actxPM2 + " "  +actxMMR +" " +actbaseline  );
+	    		out.println(topicId + " " + b/10000.0 + " " + klDiv + " " +  actxQuAD + " " +actxPM2 + " "  +actxMMR +" " +actbaseline  );
 	    		count++;
 	    		if (count % 100 == 0) {
 	    			System.out.println(count);
