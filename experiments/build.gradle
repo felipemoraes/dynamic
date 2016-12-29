@@ -15,6 +15,15 @@ task SimulatedRelevance(type: JavaExec, dependsOn: classes) {
     }
 }
 
+task SimulatedNonRelevant(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.experiment.SimulatedNonRelevant'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
+
+
 task SimulatedDiversity(type: JavaExec, dependsOn: classes) {
     main = 'br.ufmg.dcc.latin.experiment.SimulatedDiversity'
     classpath = sourceSets.main.runtimeClasspath

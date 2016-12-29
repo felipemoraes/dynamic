@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import org.apache.commons.collections4.list.TreeList;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
@@ -196,6 +199,44 @@ public class BaselineRanker {
 		this.resultSet.docnos = docnos;
 		
 		
+		return resultSet;
+	}
+
+	public ResultSet search(double frac, double[] relevances) {
+		Random random = new Random();
+		int countIrr = 0;
+		boolean[] stays = new boolean[relevances.length];
+		Arrays.fill(stays, false);
+		TreeList<Integer> irrelevants = new TreeList<Integer>();
+		for (int i = 0; i < relevances.length; i++) {
+			if (relevances[i] == 0 ){
+				countIrr++;
+				irrelevants.add(i);
+			} else {
+				stays[i] = true;
+			}
+		}
+		int removeIrr = (int) (countIrr*frac);
+		for (int i = 0; i < removeIrr; i++) {
+			int remove = random.nextInt(irrelevants.size());
+			irrelevants.remove(remove);
+		}
+		
+		for (int i = 0; i < irrelevants.size() ; i++) {
+			stays[i] = true;
+		}
+		
+		ResultSet resultSet = new ResultSet(relevances.length - removeIrr);
+		int j = 0;
+		for (int i = 0; i < stays.length; i++) {
+			if (stays[i]) {
+				resultSet.docids[j] = this.resultSet.docids[i];
+				resultSet.docnos[j] = this.resultSet.docnos[i];
+				resultSet.scores[j] = this.resultSet.scores[i];
+				j++;
+			}
+		}
+		System.out.println(resultSet.docids.length);
 		return resultSet;
 	}
 
