@@ -215,6 +215,9 @@ public class CubeTest {
 			if (i > docnos.length){
 				break;
 			}
+			if (docnos[i] == null) {
+				break;
+			}
 			for (int j = 0; j < docnos[i].length; j++) {
 				double gain = getDocGain(topic,docnos[i][j]);
 				score += gain;
