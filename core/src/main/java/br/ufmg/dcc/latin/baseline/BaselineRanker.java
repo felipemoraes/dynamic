@@ -236,7 +236,7 @@ public class BaselineRanker {
 				j++;
 			}
 		}
-		System.out.println(resultSet.docids.length);
+		
 		return resultSet;
 	}
 
