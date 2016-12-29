@@ -39,7 +39,7 @@ public class SimulatedDynamicNoisedDiversity {
 	}
 	
 	public static void main(String[] args) throws IOException {
-	CubeTest cubeTest = new CubeTest();
+		CubeTest cubeTest = new CubeTest();
 		
 		String topicsFile = "../share/topics_domain.txt";
 	
@@ -68,7 +68,7 @@ public class SimulatedDynamicNoisedDiversity {
 			String index = splitLine[0];
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			int count = 0;
-		   for (int k = 0; k < 100; k++) {
+		    for (int k = 0; k < 100; k++) {
 			   double epsilon = 1.0/1000;
 					
 			   

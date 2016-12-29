@@ -19,6 +19,9 @@ public class Evaluator {
 				 PrintWriter out = new PrintWriter(bw)) {
 			String[] docnos = resultSet.docnos;
 			for (int i = 0; i < docnos.length; i++) {
+				if (docnos[i] == null){
+					continue;
+				}
 				float score = (float) ((1000.0-iteration-i)/1000.0);
 				String wline = topicId + "\t" + iteration +"\t" + docnos[i] + "\t" + String.format("%.12f", score) + "\t";
 				Feedback feedback = trecUser.get(docnos[i]);

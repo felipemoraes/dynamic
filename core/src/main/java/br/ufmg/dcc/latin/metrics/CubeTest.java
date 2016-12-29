@@ -219,6 +219,9 @@ public class CubeTest {
 				break;
 			}
 			for (int j = 0; j < docnos[i].length; j++) {
+				if (docnos[i][j] == null){
+					continue;
+				}
 				double gain = getDocGain(topic,docnos[i][j]);
 				score += gain;
 				double act = score/MAX_HEIGHT;

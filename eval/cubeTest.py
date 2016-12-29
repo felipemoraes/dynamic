@@ -264,7 +264,9 @@ def main():
         time = 0
         score = 0
         ct_accu = 0
+        last_iteration = -1
         for iteration in range(iterations):
+
             if result.has_key(iteration):
                 for docno in result[iteration]:
                     gain =  get_doc_gain(topic,docno)
@@ -279,6 +281,13 @@ def main():
                 all_act[iteration] += ct_accu/time
                 print "ct@%d\t%s\t%.10f" % (iteration+1, topic, ct_speed)
                 print "avg_ct@%d\t%s\t%.10f" % (iteration+1, topic, ct_accu/time)
+                last_iteration = iteration
+            else:
+                all_ct[iteration] = all_ct[last_iteration]
+                all_act[iteration] = all_act[last_iteration]
+                print "ct@%d\t%s\t%.10f" % (iteration+1, topic, ct_speed)
+                print "avg_ct@%d\t%s\t%.10f" % (iteration+1, topic, ct_accu/time)
+
 
         
     for i in range(iterations):
