@@ -260,6 +260,11 @@ public class TrecUser implements User {
 	public Feedback[] get(ResultSet resultSet) {
 		int n = resultSet.docids.length;
 		Feedback[] feedbacks = new Feedback[n];
+		
+		if (resultSet.docnos == null) {
+			return feedbacks;
+		}
+		
 		for (int i = 0; i < resultSet.docids.length; i++) {
 			feedbacks[i] = trecUser.get(resultSet.docnos[i]);
 			feedbacks[i].index = resultSet.index[i];
