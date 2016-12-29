@@ -143,7 +143,7 @@ public class SimulatedNonRelevant {
 	        		
 	        		double actbaseline = cubeTest.getAverageCubeTest(10, topicId, accResult);
 	        		
-	        		out.println(topicId + " " + frac  + " " + actxQuAD + " " + actxPM2 + " " + actxMMR +" " +actbaseline  );
+	        		out.println(topicId + " " + frac  + " " + k + " " +actxQuAD + " " + actxPM2 + " " + actxMMR +" " +actbaseline  );
 	        		count++;
 	        		if (count % 100 == 0) {
 	        			System.out.println(count);
