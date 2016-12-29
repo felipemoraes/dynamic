@@ -11,7 +11,7 @@ import br.ufmg.dcc.latin.user.TrecUser;
 
 public class Evaluator {
 	
-	private static TrecUser trecUser;
+	public static TrecUser trecUser;
 	
 	public static void writeToFile(String runName, String topicId, ResultSet resultSet, int iteration){
 		try(FileWriter fw = new FileWriter("data/" + runName + ".txt", true);
