@@ -49,6 +49,10 @@ public class FeedbackModeling {
 	public void update(Feedback[] feedbacks){
 		
 		for (int i = 0; i < feedbacks.length; i++) {
+			if (feedbacks[i] == null) {
+				continue;
+			}
+			
 			if (!feedbacks[i].onTopic){
 				continue;
 			}
@@ -107,6 +111,9 @@ public class FeedbackModeling {
 		}
 		
 		for (int j = 0; j < feedbacks.length; j++) {
+			if (feedbacks[j] == null) {
+				continue;
+			}
 			int i = feedbacks[j].index;
 		
 			this.feedbacks[i] = feedbacks[j]; 
