@@ -77,7 +77,7 @@ public class SimulatedNonRelevant {
     		double[] relevances = trecUser.get(baselineResultSet.docnos);
     		for (double frac = 0; frac <= 1.01; frac+=0.05 ) {
     			
-   				for (int k = 0; k < 1; k++) {
+   				for (int k = 0; k < 20; k++) {
    					
 					baselineResultSet = baselineRanker.search(frac,relevances);
 					trecUser.generateSubtopics(baselineResultSet.docnos);
