@@ -123,6 +123,9 @@ public class FeedbackModeling {
 
 	
 	protected void normalizeCoverage(){
+		if (coverage.length == 0) {
+			return;
+		}
 		for (int i = 0; i < coverage[0].length; ++i) {
 			float sum = 0;
 			for (int j = 0; j < coverage.length; j++) {
