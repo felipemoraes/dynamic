@@ -73,6 +73,7 @@ public abstract class InteractiveReranker implements Reranker {
 		}
 		if (k == 0) {
 			result.docnos = null;
+			return result;
 		}
 		
 		for (int i = k; i < 5; i++) {
