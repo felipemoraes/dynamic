@@ -126,10 +126,12 @@ public class CubeTest {
 		currentGainHeight = new HashMap<String, Double>();
 		subtopicCover = new HashMap<String, Integer>();
 		double score = 0;
-		for (int i = 0; i < docnos.length; i++) {
-			if ( i < iteration) {
-				continue;
+		int maxIterations = 0;
+		for (int i = 0; i < iteration; i++) {
+			if (docnos[i] == null) {
+				break;
 			}
+			maxIterations++;
 			for (int j = 0; j < docnos[i].length; j++) {
 				if (docnos[i][j] == null) {
 					continue;
@@ -139,9 +141,9 @@ public class CubeTest {
 			}
 			
 		}
-		int time = Math.min(docnos.length, iteration);
+		maxIterations = Math.min(maxIterations, iteration);
 		double ct = score/MAX_HEIGHT;
-		double ctSpeed = ct/(time);
+		double ctSpeed = ct/(maxIterations);
 		return ctSpeed;
 	}
 	

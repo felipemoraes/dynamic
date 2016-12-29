@@ -71,6 +71,9 @@ public abstract class InteractiveReranker implements Reranker {
 			update(maxRank);
 			k++;
 		}
+		if (k == 0) {
+			result.docnos = null;
+		}
 		
 		for (int i = k; i < 5; i++) {
 			result.docnos[k] = null;
