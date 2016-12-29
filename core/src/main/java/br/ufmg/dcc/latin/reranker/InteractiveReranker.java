@@ -58,6 +58,9 @@ public abstract class InteractiveReranker implements Reranker {
 			}
 			
 			// update the score of the selected document
+			if (maxRank < 0) {
+				break;
+			}
 			
 			result.scores[k] = maxScore;
 			result.docids[k] = docids[maxRank];
@@ -67,6 +70,10 @@ public abstract class InteractiveReranker implements Reranker {
 			selected.put(maxRank);
 			update(maxRank);
 			k++;
+		}
+		
+		for (int i = k; i < 5; i++) {
+			result.docnos[k] = null;
 		}
 		
 		return result;
