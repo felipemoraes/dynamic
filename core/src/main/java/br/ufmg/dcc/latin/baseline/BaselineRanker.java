@@ -208,14 +208,21 @@ public class BaselineRanker {
 		boolean[] stays = new boolean[relevances.length];
 		Arrays.fill(stays, false);
 		TreeList<Integer> irrelevants = new TreeList<Integer>();
+		
 		for (int i = 0; i < relevances.length; i++) {
+			if (i >= 50) {
+				stays[i] = true;
+				continue;
+			}
 			if (relevances[i] == 0 ){
 				countIrr++;
 				irrelevants.add(i);
 			} else {
 				stays[i] = true;
 			}
+		
 		}
+		
 		int removeIrr = (int) (countIrr*frac);
 		for (int i = 0; i < removeIrr; i++) {
 			int remove = random.nextInt(irrelevants.size());
@@ -228,14 +235,16 @@ public class BaselineRanker {
 		
 		ResultSet resultSet = new ResultSet(relevances.length - removeIrr);
 		int j = 0;
+		
 		for (int i = 0; i < stays.length; i++) {
 			if (stays[i]) {
 				resultSet.docids[j] = this.resultSet.docids[i];
 				resultSet.docnos[j] = this.resultSet.docnos[i];
 				resultSet.scores[j] = this.resultSet.scores[i];
 				j++;
-			}
+			} 
 		}
+	
 		
 		return resultSet;
 	}

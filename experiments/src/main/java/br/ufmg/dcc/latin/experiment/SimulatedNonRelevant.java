@@ -63,9 +63,9 @@ public class SimulatedNonRelevant {
 	    	String[] splitLine = line.split(" ",3);
 	    	
         	String topicId = splitLine[1];
-        	// if (!topicId.equals("DD16-1")){
+        	 //if (!topicId.equals("DD16-1")){
         	//	continue;
-        	// }
+        	 //}
         	
         	System.out.println(topicId);
         	trecUser.topicId = topicId;
