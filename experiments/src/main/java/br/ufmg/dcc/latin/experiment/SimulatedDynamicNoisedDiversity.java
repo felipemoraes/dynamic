@@ -69,7 +69,7 @@ public class SimulatedDynamicNoisedDiversity {
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			int count = 0;
 		    for (int k = 0; k < 100; k++) {
-			   double epsilon = 1.0;
+			   double epsilon = 10;
 					
 			   
 			   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();
@@ -126,7 +126,7 @@ public class SimulatedDynamicNoisedDiversity {
 	    			baselineAcc[i] = resultSet.docnos;
 	    			feedbacks = trecUser.get(resultSet);
 	    			baselineReranker.update(feedbacks);
-	    			epsilon *= 10;
+	    			epsilon += 10;
 	    			Evaluator.writeToFile(args[0] + "_" + k , topicId, resultSet, i);
 	    			
 	        		double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, xQuADAcc);
