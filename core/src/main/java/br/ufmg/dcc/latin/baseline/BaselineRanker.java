@@ -210,10 +210,10 @@ public class BaselineRanker {
 		TreeList<Integer> irrelevants = new TreeList<Integer>();
 		
 		for (int i = 0; i < relevances.length; i++) {
-			//if (i >= 50) {
-			//	stays[i] = true;
-			//	continue;
-			//}
+			if (i >= 50) {
+				stays[i] = true;
+				continue;
+			}
 			
 			if (relevances[i] == 0 ){
 				countIrr++;
