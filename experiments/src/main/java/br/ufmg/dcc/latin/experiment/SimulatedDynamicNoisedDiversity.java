@@ -69,7 +69,7 @@ public class SimulatedDynamicNoisedDiversity {
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			int count = 0;
 		    for (int k = 0; k < 100; k++) {
-			   double epsilon = 1.0/100;
+			   double epsilon = 1.0/10;
 					
 			   
 			   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();
