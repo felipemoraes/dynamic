@@ -102,6 +102,8 @@ public class SimulatedDynamicNoisedDiversity {
 			   
 			   for (int i = 0; i < 10; i++) {
 				   
+				    epsilon = Math.pow(2, i);
+				   
 	    			double kl = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
 	    			resultSet = xQuADReranker.get();
 	    			xQuADAcc[i] = resultSet.docnos;
@@ -126,7 +128,7 @@ public class SimulatedDynamicNoisedDiversity {
 	    			baselineAcc[i] = resultSet.docnos;
 	    			feedbacks = trecUser.get(resultSet);
 	    			baselineReranker.update(feedbacks);
-	    			epsilon = Math.pow(2, i);
+	    			
 	    			Evaluator.writeToFile(args[0] + "_" + k , topicId, resultSet, i);
 	    			
 	        		double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, xQuADAcc);
