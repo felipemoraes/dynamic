@@ -93,7 +93,7 @@ public class SimulatedNonRelevant {
 	        			Feedback[] feedbacks = trecUser.get(resultSet);
 	        			reranker.update(feedbacks);
 	    			}
-	        		double actxQuAD = cubeTest.getAverageCubeTest(10, topicId, accResult);
+	        		double actxQuAD = cubeTest.getAverageCubeTest(2, topicId, accResult);
 	        		
 				    feedbackModeling = new FeedbackModeling();
 				    feedbackModeling.trecUser = trecUser;
@@ -108,7 +108,7 @@ public class SimulatedNonRelevant {
 	        			reranker.update(feedbacks);
 	    			}
 	        		
-	        		double actxMMR = cubeTest.getAverageCubeTest(10, topicId, accResult);
+	        		double actxMMR = cubeTest.getAverageCubeTest(2, topicId, accResult);
 	        		
 	        		
 				    feedbackModeling = new FeedbackModeling();
@@ -123,7 +123,7 @@ public class SimulatedNonRelevant {
 		    			reranker.update(feedbacks);
 					}
 		    		
-		    		double actxPM2 = cubeTest.getAverageCubeTest(10, topicId, accResult);
+		    		double actxPM2 = cubeTest.getAverageCubeTest(2, topicId, accResult);
 		    		
 	        		
 	        		
@@ -141,7 +141,7 @@ public class SimulatedNonRelevant {
 	    			}
 	        		
 	        		
-	        		double actbaseline = cubeTest.getAverageCubeTest(10, topicId, accResult);
+	        		double actbaseline = cubeTest.getAverageCubeTest(2, topicId, accResult);
 	        		
 	        		out.println(topicId + " " + frac  + " " + k + " " +actxQuAD + " " + actxPM2 + " " + actxMMR +" " +actbaseline  );
 	        		count++;
