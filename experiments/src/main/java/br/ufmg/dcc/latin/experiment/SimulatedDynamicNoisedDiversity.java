@@ -68,7 +68,7 @@ public class SimulatedDynamicNoisedDiversity {
 			String index = splitLine[0];
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			int count = 0;
-		    for (int k = 0; k < 2; k++) {
+		    for (int k = 0; k < 100; k++) {
 			   double epsilon = 1;
 					
 			   
