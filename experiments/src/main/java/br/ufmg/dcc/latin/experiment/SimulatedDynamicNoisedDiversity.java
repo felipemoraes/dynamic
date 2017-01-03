@@ -136,7 +136,7 @@ public class SimulatedDynamicNoisedDiversity {
 	        		double actxMMR = cubeTest.getAverageCubeTest(i+1, topicId, xMMRAcc);
 	        		double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, baselineAcc);
 	        		
-	        		System.out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  + " " + actxQuAD + " " +actxPM2 + " "  +actxMMR +" " +actbaseline  );
+	        		out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  + " " + actxQuAD + " " +actxPM2 + " "  +actxMMR +" " +actbaseline  );
 		    			
 				}
 			   trecUser.destroySubtopics();
