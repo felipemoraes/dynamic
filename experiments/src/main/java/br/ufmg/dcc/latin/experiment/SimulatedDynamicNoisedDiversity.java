@@ -68,7 +68,7 @@ public class SimulatedDynamicNoisedDiversity {
 			String index = splitLine[0];
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			int count = 0;
-		    for (int k = 0; k < 100; k++) {
+		    for (int k = 0; k < 2; k++) {
 			   double epsilon = 1;
 					
 			   
@@ -129,14 +129,14 @@ public class SimulatedDynamicNoisedDiversity {
 	    			feedbacks = trecUser.get(resultSet);
 	    			baselineReranker.update(feedbacks);
 	    			
-	    			Evaluator.writeToFile(args[0] + "_" + k , topicId, resultSet, i);
+	    			Evaluator.writeToFile(args[0] + "_Base_" + k , topicId, resultSet, i);
 	    			
 	        		double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, xQuADAcc);
 	        		double actxPM2 = cubeTest.getAverageCubeTest(i+1, topicId, PM2Acc);
 	        		double actxMMR = cubeTest.getAverageCubeTest(i+1, topicId, xMMRAcc);
 	        		double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, baselineAcc);
 	        		
-	        		out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  + " " + actxQuAD + " " +actxPM2 + " "  +actxMMR +" " +actbaseline  );
+	        		System.out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  + " " + actxQuAD + " " +actxPM2 + " "  +actxMMR +" " +actbaseline  );
 		    			
 				}
 			   trecUser.destroySubtopics();

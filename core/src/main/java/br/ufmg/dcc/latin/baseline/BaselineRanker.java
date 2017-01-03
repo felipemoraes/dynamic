@@ -178,7 +178,7 @@ public class BaselineRanker {
 			try {
 				 Document doc = searcher.doc(hits[i].doc);
 	             docnos[i] = doc.get("docno");
-	             scores[i] = Double.parseDouble(Float.toString(hits[i].score));
+	             scores[i] = hits[i].score;
 	             docids[i] = hits[i].doc;
 	             
 			} catch (IOException e) {
