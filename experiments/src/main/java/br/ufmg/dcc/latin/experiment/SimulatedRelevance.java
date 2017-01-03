@@ -21,6 +21,7 @@ import br.ufmg.dcc.latin.metrics.CubeTest;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.reranker.Baseline;
 import br.ufmg.dcc.latin.reranker.InteractiveReranker;
+import br.ufmg.dcc.latin.reranker.PM2;
 import br.ufmg.dcc.latin.reranker.xMMR;
 import br.ufmg.dcc.latin.reranker.xQuAD;
 import br.ufmg.dcc.latin.simulation.SimAP;
@@ -103,46 +104,64 @@ public class SimulatedRelevance {
 			    feedbackModeling.trecUser = trecUser;
 			    InteractiveReranker reranker = new xQuAD(feedbackModeling);
 				reranker.start(baselineResultSet, new double[]{0.5});
-    			String[][] accResult = new String[10][];
+    			String[][] accResultxQuAD = new String[10][];
         		for (int i = 0; i < 10; i++) {
         			ResultSet resultSet = reranker.get();
-        			accResult[i] = resultSet.docnos;
+        			accResultxQuAD[i] = resultSet.docnos;
         			Feedback[] feedbacks = trecUser.get(resultSet);
         			reranker.update(feedbacks);
     			}
-        		double actxQuAD = cubeTest.getAverageCubeTest(10, topicId, accResult);
+        		
         		
 			    feedbackModeling = new FeedbackModeling();
 			    feedbackModeling.trecUser = trecUser;
 			    reranker = new xMMR(feedbackModeling);
 				reranker.start(baselineResultSet, new double[]{0.5});
-    			accResult = new String[10][];
+    			String[][] accResultxMMR = new String[10][];
     			
         		for (int i = 0; i < 10; i++) {
         			ResultSet resultSet = reranker.get();
-        			accResult[i] = resultSet.docnos;
+        			accResultxMMR[i] = resultSet.docnos;
         			Feedback[] feedbacks = trecUser.get(resultSet);
         			reranker.update(feedbacks);
     			}
         		
-        		double actxMMR = cubeTest.getAverageCubeTest(10, topicId, accResult);
+			    feedbackModeling = new FeedbackModeling();
+			    feedbackModeling.trecUser = trecUser;
+			    reranker = new PM2(feedbackModeling);
+				reranker.start(baselineResultSet, new double[]{0.5});
+    			String[][] accResultPM2 = new String[10][];
+    			
+        		for (int i = 0; i < 10; i++) {
+        			ResultSet resultSet = reranker.get();
+        			accResultPM2[i] = resultSet.docnos;
+        			Feedback[] feedbacks = trecUser.get(resultSet);
+        			reranker.update(feedbacks);
+    			}
+        		
         		
 			    feedbackModeling = new FeedbackModeling();
 			    feedbackModeling.trecUser = trecUser;
 			    reranker = new Baseline(feedbackModeling);
 				reranker.start(baselineResultSet, new double[]{0.5});
-    			accResult = new String[10][];
+    			String[][] accBaseLineResult = new String[10][];
         		for (int i = 0; i < 10; i++) {
         			ResultSet resultSet = reranker.get();
-        			accResult[i] = resultSet.docnos;
+        			accBaseLineResult[i] = resultSet.docnos;
         			Feedback[] feedbacks = trecUser.get(resultSet);
         			reranker.update(feedbacks);
     			}
         		
         		
-        		double actbaseline = cubeTest.getAverageCubeTest(10, topicId, accResult);
         		
-        		out.println(topicId + " " + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " +actxMMR +" " +actbaseline  );
+        		for (int i = 0; i < 10; i++) {
+        			double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, accResultxQuAD);
+        			double actxMMR = cubeTest.getAverageCubeTest(i+1, topicId, accResultxMMR);
+        			double actPM2 = cubeTest.getAverageCubeTest(i+1, topicId, accResultPM2);
+        			double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, accBaseLineResult);
+        			out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " + actxMMR +" " +actbaseline  );
+				}
+        		
         		count++;
         		if (count % 100 == 0) {
         			System.out.println(count);
