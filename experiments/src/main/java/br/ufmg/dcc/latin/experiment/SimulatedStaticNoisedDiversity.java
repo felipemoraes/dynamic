@@ -70,6 +70,7 @@ public class SimulatedStaticNoisedDiversity {
 		    for (int k = 0; k < 100; k++) {
 			   double epsilon = 6;
 					
+			   double kl = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
 			   
 			   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();
 			   xQuADfeedbackModeling.trecUser = trecUser;
@@ -103,7 +104,7 @@ public class SimulatedStaticNoisedDiversity {
 				   
 				   
 				   
-	    			double kl = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
+	    			
 	    			resultSet = xQuADReranker.get();
 	    			xQuADAcc[i] = resultSet.docnos;
 	    			feedbacks = trecUser.get(resultSet);
