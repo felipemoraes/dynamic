@@ -79,6 +79,9 @@ public class FeedbackModeling {
 		for (int i = 0; i < numberOfSubtopics; i++) {
 			String subtopicId = feedbackModel.getSubtopicId(i);
 			double[] relevances = trecUser.get(subtopicId,docnos);
+			if (relevances == null) {
+				continue;
+			}
 			for (int j = 0; j < relevances.length; j++) {
 				if (this.feedbacks[j] == null) {
 					coverage[j][i] = relevances[j];

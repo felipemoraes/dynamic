@@ -19,7 +19,6 @@ import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.reranker.Baseline;
 import br.ufmg.dcc.latin.reranker.InteractiveReranker;
 import br.ufmg.dcc.latin.reranker.PM2;
-import br.ufmg.dcc.latin.reranker.xMMR;
 import br.ufmg.dcc.latin.reranker.xQuAD;
 import br.ufmg.dcc.latin.user.TrecUser;
 
@@ -84,12 +83,6 @@ public class SimulatedDynamicNoisedDiversity {
 			   PM2Reranker.start(baselineResultSet, new double[]{0.5});
 			   String[][] PM2Acc = new String[10][];
 			
-			   FeedbackModeling xMMRfeedbackModeling = new FeedbackModeling();
-			   xMMRfeedbackModeling.trecUser = trecUser;
-			   InteractiveReranker xMMRReranker = new xMMR(xMMRfeedbackModeling);
-			   xMMRReranker.start(baselineResultSet, new double[]{0.5});
-			   String[][] xMMRAcc = new String[10][];
-	
 			   FeedbackModeling baselinefeedbackModeling = new FeedbackModeling();
 			   baselinefeedbackModeling.trecUser = trecUser;
 			   InteractiveReranker baselineReranker = new Baseline(baselinefeedbackModeling);
@@ -118,12 +111,6 @@ public class SimulatedDynamicNoisedDiversity {
 	    			PM2Reranker.update(feedbacks);
 	    			Evaluator.writeToFile(args[0] +"_PM2_" + k , topicId, resultSet, i);
 	    			
-	    			resultSet = xMMRReranker.get();
-	    			xMMRAcc[i] = resultSet.docnos;
-	    			feedbacks = trecUser.get(resultSet);
-	    			xMMRReranker.update(feedbacks);
-	    			Evaluator.writeToFile(args[0] +"_xMMR_" + k , topicId, resultSet, i);
-	    			
 	    			resultSet = baselineReranker.get();
 	    			baselineAcc[i] = resultSet.docnos;
 	    			feedbacks = trecUser.get(resultSet);
@@ -133,10 +120,9 @@ public class SimulatedDynamicNoisedDiversity {
 	    			
 	        		double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, xQuADAcc);
 	        		double actxPM2 = cubeTest.getAverageCubeTest(i+1, topicId, PM2Acc);
-	        		double actxMMR = cubeTest.getAverageCubeTest(i+1, topicId, xMMRAcc);
 	        		double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, baselineAcc);
 	        		
-	        		out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  + " " + actxQuAD + " " +actxPM2 + " "  +actxMMR +" " +actbaseline  );
+	        		out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  + " " + actxQuAD + " " +actxPM2 + " "  +actbaseline  );
 		    			
 				}
 			   trecUser.destroySubtopics();

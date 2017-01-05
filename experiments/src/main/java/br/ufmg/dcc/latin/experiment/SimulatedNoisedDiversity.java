@@ -19,7 +19,6 @@ import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.reranker.Baseline;
 import br.ufmg.dcc.latin.reranker.InteractiveReranker;
 import br.ufmg.dcc.latin.reranker.PM2;
-import br.ufmg.dcc.latin.reranker.xMMR;
 import br.ufmg.dcc.latin.reranker.xQuAD;
 import br.ufmg.dcc.latin.user.TrecUser;
 
@@ -105,7 +104,6 @@ public class SimulatedNoisedDiversity {
 	    		
 			    feedbackModeling = new FeedbackModeling();
 			    feedbackModeling.trecUser = trecUser;
-			    reranker = new xMMR(feedbackModeling);
 				reranker.start(baselineResultSet, new double[]{0.5});
 				accResult = new String[10][];
 	    		for (int i = 0; i < 10; i++) {

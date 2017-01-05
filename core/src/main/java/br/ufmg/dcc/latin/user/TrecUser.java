@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 import org.apache.commons.math3.distribution.LaplaceDistribution;
@@ -36,13 +38,15 @@ public class TrecUser implements User {
 		}
 		
 		return trecUser;
-		
-		
+
 	}
 	
 	public static Map<String,double[]> subtopicsCoverage;
 	public static Map<String,double[]> subtopicsCoverageSorted;
 	public static Map<String,int[]> subtopicsCoverageIndices;
+	
+	public static int originalSize;
+	public static double allKlDiv;
 	
 	private TrecUser(String topicFilename){
 		
@@ -172,6 +176,7 @@ public class TrecUser implements User {
 	
 	public void destroySubtopics(){
 		subtopicsCoverageSorted = null;
+		subtopicsCoverage = null;
 	}
 	
 	public void generateSubtopics(String[] docnos){
@@ -272,8 +277,98 @@ public class TrecUser implements User {
 		return feedbacks;
 	}
 
-	public double generateSubtopicsWithNoise(double noise, String[] docnos) {
+
+	
+	public double generateSubtopicsWithNoiseDroped(double noise, String[] docnos, double frac) {
+		if (subtopicsCoverage == null) {
+			Random rand = new Random();
+			subtopicsCoverage = new HashMap<String, double[]>();
+			int n = docnos.length;
+			for (int i = 0; i < docnos.length; i++) {
+				if (!repository.containsKey(docnos[i])){
+					continue;
+				} 
+				
+				Passage[] passages = repository.get(docnos[i]).get(topicId);
+				if (passages == null) {
+					continue;
+				}
+				for (int j = 0; j < passages.length; j++) {
+					if (!subtopicsCoverage.containsKey(passages[j].subtopicId)){
+						subtopicsCoverage.put(passages[j].subtopicId, new double[n]);
+					}
+				}
+			}
+			int subTopicsSize = subtopicsCoverage.size();
+			originalSize = subTopicsSize;
+			String[] subTopics = new String[subTopicsSize];
+			int k = 0;
+			for (String subtopic : subtopicsCoverage.keySet()) {
+				subTopics[k] = subtopic;
+				k++;
+			}
+			Set<String> dropAspect  = new HashSet<String>();
+			int drops = (int) Math.ceil(((1-frac)*subTopicsSize));
+			
+			while (dropAspect.size() < drops) {
+				int next = rand.nextInt(subTopicsSize);
+				if (!dropAspect.contains(subTopics[next])) {
+					dropAspect.add(subTopics[next]);
+				}
+			}
+			for (String subtopic : dropAspect) {
+				subtopicsCoverage.remove(subtopic);
+			}
+			System.out.println("Removed " +drops + " of " + subTopicsSize);
 		
+		
+			double allKlDiv = 0;
+			for (String subtopicId : subtopicsCoverage.keySet()) {
+				
+				double[] relevances = getRelevances(subtopicId, docnos);
+				StatUtils.normalize(relevances);
+				double sum = StatUtils.sum(relevances);
+				double[] probs = new double[relevances.length];
+				for (int i = 0; i < probs.length; i++) {
+					probs[i] = relevances[i]/sum;
+				}
+				
+				double min = StatUtils.min(relevances);
+				double max = StatUtils.max(relevances);
+				double deltaF = max - min;
+				double epsilon = noise;
+				LaplaceDistribution dist = new LaplaceDistribution(0,deltaF/epsilon);
+				
+				for (int i = 0; i < relevances.length; i++) {
+					relevances[i] += dist.sample();
+				}
+				
+				min = StatUtils.min(relevances);
+				max = StatUtils.max(relevances);
+				for (int i = 0; i < probs.length; i++) {
+					relevances[i] = (relevances[i]-min)/(max-min);
+					relevances[i] *= 4;
+				}
+				
+				sum = StatUtils.sum(relevances);
+				double[] probsNoised = new double[relevances.length];
+				for (int i = 0; i < probs.length; i++) {
+					probsNoised[i] = relevances[i]/sum;
+				}
+				allKlDiv += klDivergence(probs,probsNoised);
+				subtopicsCoverage.put(subtopicId, relevances);
+			}
+			if (subtopicsCoverage.size() > 0) {
+				allKlDiv /= subtopicsCoverage.size();
+			} else {
+				allKlDiv = 0;
+			}
+			TrecUser.allKlDiv = allKlDiv;
+		}
+		return TrecUser.allKlDiv;
+	}
+		
+	public double generateSubtopicsWithNoise(double noise, String[] docnos) {
 		subtopicsCoverage = new HashMap<String, double[]>();
 		int n = docnos.length;
 		for (int i = 0; i < docnos.length; i++) {
@@ -291,8 +386,6 @@ public class TrecUser implements User {
 				}
 			}
 		}
-		
-		
 		double allKlDiv = 0;
 		for (String subtopicId : subtopicsCoverage.keySet()) {
 			
@@ -353,5 +446,15 @@ public class TrecUser implements User {
       }
 
     public static final double log2 = Math.log(2);
+
+
+	public void destroySubtopicsDroped(double drop) {
+		int oldDrop = originalSize - subtopicsCoverage.size();
+		int drops = (int) Math.ceil(((1-drop)*originalSize));
+		System.out.println(oldDrop + " " + drops + " " + drop + " " + originalSize);
+		if (drops != oldDrop) {
+			destroySubtopics();
+		}
+	}
 	
 }

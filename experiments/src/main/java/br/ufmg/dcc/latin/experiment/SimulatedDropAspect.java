@@ -19,7 +19,6 @@ import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.reranker.Baseline;
 import br.ufmg.dcc.latin.reranker.InteractiveReranker;
 import br.ufmg.dcc.latin.reranker.PM2;
-import br.ufmg.dcc.latin.reranker.xMMR;
 import br.ufmg.dcc.latin.reranker.xQuAD;
 import br.ufmg.dcc.latin.user.TrecUser;
 
@@ -42,6 +41,7 @@ public class SimulatedDropAspect {
 		
 		String topicsFile = "../share/topics_domain.txt";
 		
+		
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
 	    String line;
 	    
@@ -56,7 +56,8 @@ public class SimulatedDropAspect {
 	    	String[] splitLine = line.split(" ",3);
 	    	
 	    	String topicId = splitLine[1];
-	    	//if (!topicId.equals("DD16-1")){
+	    	
+	    	// if (!topicId.equals("DD16-1")){
 	    	//	continue;
 	    	//}
 	    	
@@ -68,10 +69,11 @@ public class SimulatedDropAspect {
 			int count = 0;
 			
 			for (int k = 0; k < 100; k++) {
+				
 			    for (int drop = 0; drop <= 10; drop++) {
+			    	
 				   double epsilon = 1;
-						
-				   
+
 				   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();
 				   xQuADfeedbackModeling.trecUser = trecUser;
 				   InteractiveReranker xQuADReranker = new xQuAD(xQuADfeedbackModeling);
@@ -83,13 +85,7 @@ public class SimulatedDropAspect {
 				   InteractiveReranker PM2Reranker = new PM2(PM2feedbackModeling);
 				   PM2Reranker.start(baselineResultSet, new double[]{0.5});
 				   String[][] PM2Acc = new String[10][];
-				
-				   FeedbackModeling xMMRfeedbackModeling = new FeedbackModeling();
-				   xMMRfeedbackModeling.trecUser = trecUser;
-				   InteractiveReranker xMMRReranker = new xMMR(xMMRfeedbackModeling);
-				   xMMRReranker.start(baselineResultSet, new double[]{0.5});
-				   String[][] xMMRAcc = new String[10][];
-		
+			
 				   FeedbackModeling baselinefeedbackModeling = new FeedbackModeling();
 				   baselinefeedbackModeling.trecUser = trecUser;
 				   InteractiveReranker baselineReranker = new Baseline(baselinefeedbackModeling);
@@ -104,25 +100,20 @@ public class SimulatedDropAspect {
 					   
 					    epsilon += 5;
 					   
-		    			double kl = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
+		    			double kl = trecUser.generateSubtopicsWithNoiseDroped(epsilon, baselineResultSet.docnos, drop/10.0);
+		    			
 		    			resultSet = xQuADReranker.get();
 		    			xQuADAcc[i] = resultSet.docnos;
 		    			feedbacks = trecUser.get(resultSet);
-		    			xQuADReranker.updateDropAspect(feedbacks,drop/10.0);
+		    			xQuADReranker.update(feedbacks);
 		    			Evaluator.writeToFile("DropAspect_" + args[0] + "_xQuAD_" + k , topicId, resultSet, i);
 		    			
 		    			
 		    			resultSet = PM2Reranker.get();
 		    			PM2Acc[i] = resultSet.docnos;
 		    			feedbacks = trecUser.get(resultSet);
-		    			PM2Reranker.updateDropAspect(feedbacks,drop/10.0);
+		    			PM2Reranker.update(feedbacks);
 		    			Evaluator.writeToFile("DropAspect_" +args[0] +"_PM2_" + k , topicId, resultSet, i);
-		    			
-		    			resultSet = xMMRReranker.get();
-		    			xMMRAcc[i] = resultSet.docnos;
-		    			feedbacks = trecUser.get(resultSet);
-		    			xMMRReranker.updateDropAspect(feedbacks,drop/10.0);
-		    			Evaluator.writeToFile("DropAspect_" +args[0] +"_xMMR_" + k , topicId, resultSet, i);
 		    			
 		    			resultSet = baselineReranker.get();
 		    			baselineAcc[i] = resultSet.docnos;
@@ -133,15 +124,15 @@ public class SimulatedDropAspect {
 		    			
 		        		double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, xQuADAcc);
 		        		double actxPM2 = cubeTest.getAverageCubeTest(i+1, topicId, PM2Acc);
-		        		double actxMMR = cubeTest.getAverageCubeTest(i+1, topicId, xMMRAcc);
 		        		double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, baselineAcc);
 		        		
-		        		out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  + " " + drop + " " + actxQuAD + " " +actxPM2 + " "  +actxMMR +" " +actbaseline  );
+		        		out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  + " " + drop + " " + actxQuAD + " " +actxPM2 + " " +actbaseline  );
 			    			
 					}
-				   trecUser.destroySubtopics();
+				   
+				    trecUser.destroySubtopicsDroped((drop+1)/10.0);
 			   }
-	
+			   trecUser.destroySubtopics();
 	    		
 	    		
 	    		count++;

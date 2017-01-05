@@ -11,7 +11,6 @@ import org.junit.Test;
 import br.ufmg.dcc.latin.feedback.modeling.FeedbackModeling;
 import br.ufmg.dcc.latin.querying.BooleanSelectedSet;
 import br.ufmg.dcc.latin.querying.ResultSet;
-import br.ufmg.dcc.latin.reranker.xMMR;
 import br.ufmg.dcc.latin.reranker.xQuAD;
 
 public class xQuADTest {

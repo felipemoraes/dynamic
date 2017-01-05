@@ -19,7 +19,6 @@ import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.reranker.Baseline;
 import br.ufmg.dcc.latin.reranker.InteractiveReranker;
 import br.ufmg.dcc.latin.reranker.PM2;
-import br.ufmg.dcc.latin.reranker.xMMR;
 import br.ufmg.dcc.latin.reranker.xQuAD;
 import br.ufmg.dcc.latin.simulation.SimAP;
 import br.ufmg.dcc.latin.user.TrecUser;
@@ -95,21 +94,6 @@ public class SimulatedNonRelevant {
 	    			}
 	        		double actxQuAD = cubeTest.getAverageCubeTest(2, topicId, accResult);
 	        		
-				    feedbackModeling = new FeedbackModeling();
-				    feedbackModeling.trecUser = trecUser;
-				    reranker = new xMMR(feedbackModeling);
-					reranker.start(baselineResultSet, new double[]{0.5});
-	    			accResult = new String[10][];
-	    			
-	        		for (int i = 0; i < 10; i++) {
-	        			ResultSet resultSet = reranker.get();
-	        			accResult[i] = resultSet.docnos;
-	        			Feedback[] feedbacks = trecUser.get(resultSet);
-	        			reranker.update(feedbacks);
-	    			}
-	        		
-	        		double actxMMR = cubeTest.getAverageCubeTest(2, topicId, accResult);
-	        		
 	        		
 				    feedbackModeling = new FeedbackModeling();
 				    feedbackModeling.trecUser = trecUser;
@@ -124,10 +108,7 @@ public class SimulatedNonRelevant {
 					}
 		    		
 		    		double actxPM2 = cubeTest.getAverageCubeTest(2, topicId, accResult);
-		    		
-	        		
-	        		
-	        		
+		    			
 				    feedbackModeling = new FeedbackModeling();
 				    feedbackModeling.trecUser = trecUser;
 				    reranker = new Baseline(feedbackModeling);
@@ -143,7 +124,7 @@ public class SimulatedNonRelevant {
 	        		
 	        		double actbaseline = cubeTest.getAverageCubeTest(2, topicId, accResult);
 	        		
-	        		out.println(topicId + " " + frac  + " " + k + " " +actxQuAD + " " + actxPM2 + " " + actxMMR +" " +actbaseline  );
+	        		out.println(topicId + " " + frac  + " " + k + " " +actxQuAD + " " + actxPM2 + " " +actbaseline  );
 	        		count++;
 	        		if (count % 100 == 0) {
 	        			System.out.println(count);
