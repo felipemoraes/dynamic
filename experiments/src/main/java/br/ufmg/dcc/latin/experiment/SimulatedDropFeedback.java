@@ -137,7 +137,7 @@ public class SimulatedDropFeedback {
 		        		double actxMMR = cubeTest.getAverageCubeTest(i+1, topicId, xMMRAcc);
 		        		double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, baselineAcc);
 		        		
-		        		System.out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  + " " + drop + " " + actxQuAD + " " +actxPM2 + " "  +actxMMR +" " +actbaseline  );
+		        		out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  + " " + drop + " " + actxQuAD + " " +actxPM2 + " "  +actxMMR +" " +actbaseline  );
 			    			
 					}
 				   trecUser.destroySubtopics();
