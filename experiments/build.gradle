@@ -64,4 +64,12 @@ task SimulatedDynamicNoisedDiversity(type: JavaExec, dependsOn: classes) {
     }
 }
 
+task SimulatedStaticNoisedDiversity(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.experiment.SimulatedDynamicNoisedDiversity'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
+
 mainClassName = ' '
