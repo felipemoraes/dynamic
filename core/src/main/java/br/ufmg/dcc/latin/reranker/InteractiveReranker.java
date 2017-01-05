@@ -1,5 +1,10 @@
 package br.ufmg.dcc.latin.reranker;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.math3.distribution.BinomialDistribution;
+
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.modeling.FeedbackModeling;
 import br.ufmg.dcc.latin.querying.BooleanSelectedSet;
@@ -83,6 +88,10 @@ public abstract class InteractiveReranker implements Reranker {
 		return result;
 	}
 
+
+	public void updateDropAspect(Feedback[] feedback, double frac) {
+		
+	}
 	
 	public void start(ResultSet resultSet, double[] params){
 		depth = 1000;
@@ -90,6 +99,27 @@ public abstract class InteractiveReranker implements Reranker {
 		relevance = resultSet.scores;
 		docnos = resultSet.docnos;
 		selected = new BooleanSelectedSet(docnos.length);
+	}
+
+	public void updateDropFeedback(Feedback[] feedbacks, double frac) {
+		
+	}
+	
+	
+	protected Feedback[] removeFeedback(Feedback[] feedback, double frac) {
+		BinomialDistribution binom = new BinomialDistribution(1,frac);
+		List<Feedback> feedbacks = new ArrayList<Feedback>();
+		for (int i = 0; i < feedback.length; i++) {
+			if (binom.sample() == 1) {
+				feedbacks.add(feedback[i]);
+			}
+		}
+		int n = feedbacks.size();
+		Feedback[] feedbacksRemoved = new Feedback[n];
+		for (int i = 0; i < feedbacksRemoved.length; i++) {
+			feedbacksRemoved[i] = feedbacks.get(i);
+		}
+		return feedbacksRemoved;
 	}
 
 }

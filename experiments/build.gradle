@@ -23,6 +23,22 @@ task SimulatedNonRelevant(type: JavaExec, dependsOn: classes) {
     }
 }
 
+task SimulatedDropFeedback(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.experiment.SimulatedDropFeedback'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
+
+task SimulatedDropAspect(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.experiment.SimulatedDropAspect'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
+
 
 task SimulatedDiversity(type: JavaExec, dependsOn: classes) {
     main = 'br.ufmg.dcc.latin.experiment.SimulatedDiversity'

@@ -63,6 +63,7 @@ public class FeedbackModeling {
 		
 		cacheFeedback(feedbacks);
 		
+		
 		int numberOfSubtopics = feedbackModel.size;
 		importance = new double[numberOfSubtopics];
 		novelty = new double[numberOfSubtopics];
@@ -103,6 +104,70 @@ public class FeedbackModeling {
 		normalizeCoverage();
 		//printCoverage();
 	}
+	
+	public void updateDropAspect(Feedback[] feedbacks, double frac){
+		
+		for (int i = 0; i < feedbacks.length; i++) {
+			if (feedbacks[i] == null) {
+				continue;
+			}
+			
+			if (!feedbacks[i].onTopic){
+				continue;
+			}
+			for (int j = 0; j < feedbacks[i].passages.length; j++) {
+				feedbackModel.addSubtopic(feedbacks[i].passages[j].subtopicId);
+			}
+		}
+		
+		cacheFeedback(feedbacks);
+		
+		FeedbackModel dropedModel = feedbackModel.drop(frac);
+		
+		int numberOfSubtopics = dropedModel.size;
+		importance = new double[numberOfSubtopics];
+		novelty = new double[numberOfSubtopics];
+		coverage = new double[n][numberOfSubtopics];
+		v = new double[numberOfSubtopics];
+		s = new double[numberOfSubtopics];
+		
+		Arrays.fill(novelty, 1);
+		Arrays.fill(importance, 1f/numberOfSubtopics);
+		Arrays.fill(v, 1.0f);
+		Arrays.fill(s, 0.0f);
+		
+		for (int i = 0; i < numberOfSubtopics; i++) {
+			String subtopicId = dropedModel.getSubtopicId(i);
+			double[] relevances = trecUser.get(subtopicId,docnos);
+			for (int j = 0; j < relevances.length; j++) {
+				if (this.feedbacks[j] == null) {
+					coverage[j][i] = relevances[j];
+				} else {
+					coverage[j][i] = 0;
+				}
+				
+			}
+		}
+		
+		for (int i = 0; i < this.feedbacks.length; i++) {
+			if (this.feedbacks[i] != null) {
+				if (!this.feedbacks[i].onTopic) {
+					continue;
+				}
+				for (int j = 0; j < this.feedbacks[i].passages.length; j++) {
+					int k = dropedModel.getSubtopicId(this.feedbacks[i].passages[j].subtopicId);
+					if (k == -1){
+						continue;
+					}
+					coverage[i][k] = Math.max(coverage[i][k], this.feedbacks[i].passages[j].relevance);
+				}
+			}
+		}
+		
+		normalizeCoverage();
+		//printCoverage();
+	}
+
 
 	protected void cacheFeedback(Feedback[] feedbacks){
 		

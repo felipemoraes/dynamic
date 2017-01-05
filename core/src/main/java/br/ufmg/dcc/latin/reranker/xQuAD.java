@@ -1,5 +1,10 @@
 package br.ufmg.dcc.latin.reranker;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.math3.distribution.BinomialDistribution;
+
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.modeling.FeedbackModeling;
 import br.ufmg.dcc.latin.querying.ResultSet;
@@ -69,6 +74,30 @@ public class xQuAD extends InteractiveReranker {
 		updateNovelty();
 	}
 	
+	@Override
+	public void updateDropAspect(Feedback[] feedback, double frac) {
+		super.update(feedback);
+		
+		feedbackModeling.updateDropAspect(feedback,frac);
+		coverage = feedbackModeling.coverage;
+		importance = feedbackModeling.importance;
+		novelty = feedbackModeling.novelty;
+		updateNovelty();
+	}
+	
+	@Override
+	public void updateDropFeedback(Feedback[] feedback, double frac) {
+		feedback = removeFeedback(feedback,frac);
+		super.update(feedback);
+		
+		feedbackModeling.update(feedback);
+		coverage = feedbackModeling.coverage;
+		importance = feedbackModeling.importance;
+		novelty = feedbackModeling.novelty;
+		updateNovelty();
+	}
+	
+
 	public void updateNovelty(){
 		for (int j = 0; j < docids.length; ++j) {
 			if (! selected.has(j)) {

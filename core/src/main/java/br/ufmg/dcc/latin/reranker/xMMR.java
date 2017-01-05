@@ -109,6 +109,23 @@ public class xMMR extends InteractiveReranker {
 		updateNovelty();
 	}
 	
+	@Override
+	public void updateDropAspect(Feedback[] feedback, double frac) {
+		super.update(feedback);
+		feedbackModeling.updateDropAspect(feedback,frac);
+		coverage = feedbackModeling.coverage;
+		updateNovelty();
+	}
+	
+	@Override
+	public void updateDropFeedback(Feedback[] feedback, double frac) {
+		feedback = removeFeedback(feedback, frac);
+		super.update(feedback);
+		feedbackModeling.updateDropAspect(feedback,frac);
+		coverage = feedbackModeling.coverage;
+		updateNovelty();
+	}
+	
 	public void updateNovelty(){
 		cacheSim = new double[n];
 		for (int j = 0; j < docids.length; ++j) {
