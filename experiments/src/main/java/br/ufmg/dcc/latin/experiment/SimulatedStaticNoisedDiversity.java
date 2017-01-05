@@ -23,7 +23,7 @@ import br.ufmg.dcc.latin.reranker.xMMR;
 import br.ufmg.dcc.latin.reranker.xQuAD;
 import br.ufmg.dcc.latin.user.TrecUser;
 
-public class SimulatedStaticNoideDiversity {
+public class SimulatedStaticNoisedDiversity {
 	
 	private static BaselineRanker getBaselineRanker(String ranker) {
 		
@@ -49,7 +49,7 @@ public class SimulatedStaticNoideDiversity {
 	    BaselineRanker baselineRanker = getBaselineRanker(args[0]);
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
 	    Evaluator.trecUser = trecUser;
-	    FileWriter fw = new FileWriter( "SimulatedStaticNoisedDiversity_" + args[0] + ".txt");
+	    FileWriter fw = new FileWriter( "SimulatedStaticNoisedDiversity" + args[0] + ".txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    
