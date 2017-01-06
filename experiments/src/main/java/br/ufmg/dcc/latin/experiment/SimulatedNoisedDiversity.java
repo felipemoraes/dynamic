@@ -67,7 +67,7 @@ public class SimulatedNoisedDiversity {
 			String index = splitLine[0];
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			int count = 0;
-			double epsilon = 0.0d;
+			double epsilon = 0.1d;
 			
 			while (epsilon <= 20.0001) {
 
