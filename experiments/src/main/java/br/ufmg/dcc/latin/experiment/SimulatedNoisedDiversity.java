@@ -71,60 +71,62 @@ public class SimulatedNoisedDiversity {
 			
 			while (epsilon <= 20.0001) {
 
-				
-				double klDiv = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
-				
-				
-			    FeedbackModeling feedbackModeling = new FeedbackModeling();
-			    feedbackModeling.trecUser = trecUser;
-			    InteractiveReranker reranker = new xQuAD(feedbackModeling);
-				reranker.start(baselineResultSet, new double[]{0.5});
-				String[][] accResult = new String[10][];
-	    		for (int i = 0; i < 10; i++) {
-	    			ResultSet resultSet = reranker.get();
-	    			accResult[i] = resultSet.docnos;
-	    			Feedback[] feedbacks = trecUser.get(resultSet);
-	    			reranker.update(feedbacks);
-				}
-	    		double actxQuAD = cubeTest.getAverageCubeTest(10, topicId, accResult);
+				for (int k = 0; k < 100 ; k++) {
+					
+					double klDiv = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
+					
+					
+				    FeedbackModeling feedbackModeling = new FeedbackModeling();
+				    feedbackModeling.trecUser = trecUser;
+				    InteractiveReranker reranker = new xQuAD(feedbackModeling);
+					reranker.start(baselineResultSet, new double[]{0.5});
+					String[][] accResult = new String[10][];
+		    		for (int i = 0; i < 10; i++) {
+		    			ResultSet resultSet = reranker.get();
+		    			accResult[i] = resultSet.docnos;
+		    			Feedback[] feedbacks = trecUser.get(resultSet);
+		    			reranker.update(feedbacks);
+					}
+		    		double actxQuAD = cubeTest.getAverageCubeTest(10, topicId, accResult);
+		    		
+				    feedbackModeling = new FeedbackModeling();
+				    feedbackModeling.trecUser = trecUser;
+				    reranker = new PM2(feedbackModeling);
+					reranker.start(baselineResultSet, new double[]{0.5});
+					accResult = new String[10][];
+		    		for (int i = 0; i < 10; i++) {
+		    			ResultSet resultSet = reranker.get();
+		    			accResult[i] = resultSet.docnos;
+		    			Feedback[] feedbacks = trecUser.get(resultSet);
+		    			reranker.update(feedbacks);
+					}
+		    		
+		    		double actxPM2 = cubeTest.getAverageCubeTest(10, topicId, accResult);
+		    		
+				    feedbackModeling = new FeedbackModeling();
+				    feedbackModeling.trecUser = trecUser;
+				    reranker = new Baseline(feedbackModeling);
+					reranker.start(baselineResultSet, new double[]{0.5});
+					accResult = new String[10][];
+		    		for (int i = 0; i < 10; i++) {
+		    			ResultSet resultSet = reranker.get();
+		    			accResult[i] = resultSet.docnos;
+		    			Feedback[] feedbacks = trecUser.get(resultSet);
+		    			reranker.update(feedbacks);
+					}
+		    		
+		    		double actbaseline = cubeTest.getAverageCubeTest(10, topicId, accResult);
+		    		
+		    		out.println(topicId + " " + k + " "  + epsilon + " " + klDiv + " " +  actxQuAD + " " +actxPM2 + " " +actbaseline  );
+		    		count++;
+		    		if (count % 1000 == 0) {
+		    			System.out.println(count);
+		    		}
+		    		epsilon += 0.1;
 	    		
-			    feedbackModeling = new FeedbackModeling();
-			    feedbackModeling.trecUser = trecUser;
-			    reranker = new PM2(feedbackModeling);
-				reranker.start(baselineResultSet, new double[]{0.5});
-				accResult = new String[10][];
-	    		for (int i = 0; i < 10; i++) {
-	    			ResultSet resultSet = reranker.get();
-	    			accResult[i] = resultSet.docnos;
-	    			Feedback[] feedbacks = trecUser.get(resultSet);
-	    			reranker.update(feedbacks);
-				}
-	    		
-	    		double actxPM2 = cubeTest.getAverageCubeTest(10, topicId, accResult);
-	    		
-			    feedbackModeling = new FeedbackModeling();
-			    feedbackModeling.trecUser = trecUser;
-			    reranker = new Baseline(feedbackModeling);
-				reranker.start(baselineResultSet, new double[]{0.5});
-				accResult = new String[10][];
-	    		for (int i = 0; i < 10; i++) {
-	    			ResultSet resultSet = reranker.get();
-	    			accResult[i] = resultSet.docnos;
-	    			Feedback[] feedbacks = trecUser.get(resultSet);
-	    			reranker.update(feedbacks);
-				}
-	    		
-	    		double actbaseline = cubeTest.getAverageCubeTest(10, topicId, accResult);
-	    		
-	    		out.println(topicId + " " + epsilon + " " + klDiv + " " +  actxQuAD + " " +actxPM2 + " " +actbaseline  );
-	    		count++;
-	    		if (count % 1000 == 0) {
-	    			System.out.println(count);
-	    		}
-	    		epsilon += 0.1;
-	    		
-			}	
+				}	
 			trecUser.destroySubtopics();
+			}
 	    }
 		br.close();
 		out.close();
