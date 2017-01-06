@@ -49,7 +49,7 @@ public class SimulatedDynamicNoisedDiversity {
 	    BaselineRanker baselineRanker = getBaselineRanker(args[0]);
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
 	    Evaluator.trecUser = trecUser;
-	    FileWriter fw = new FileWriter( "SimulatedDynamicNoisedDiversity4_" + args[0] + ".txt");
+	    FileWriter fw = new FileWriter( "SimulatedDynamicNoisedDiversity5_" + args[0] + ".txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    
@@ -68,7 +68,7 @@ public class SimulatedDynamicNoisedDiversity {
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			int count = 0;
 		    for (int k = 0; k < 100; k++) {
-			   double epsilon = 4;
+			   double epsilon = 5;
 					 
 			   
 			   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();
