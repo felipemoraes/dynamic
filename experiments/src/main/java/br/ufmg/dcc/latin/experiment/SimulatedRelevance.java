@@ -65,7 +65,6 @@ public class SimulatedRelevance {
 				targetAPs.add(tAP);	
 			}
 		}
-	    
 	    for (int j = 0; j <20; j++) {
 		    TargetAP tAP = new TargetAP();
 			tAP.bin = 0.95;
