@@ -122,10 +122,10 @@ public class SimulatedNoisedDiversity {
 		    		if (count % 1000 == 0) {
 		    			System.out.println(count);
 		    		}
-		    		epsilon += 0.1;
-	    		
+		    		trecUser.destroySubtopics();
 				}	
-			trecUser.destroySubtopics();
+				epsilon += 0.1;
+			
 			}
 	    }
 		br.close();
