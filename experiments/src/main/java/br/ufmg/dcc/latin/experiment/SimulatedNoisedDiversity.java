@@ -67,11 +67,12 @@ public class SimulatedNoisedDiversity {
 			String index = splitLine[0];
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			int count = 0;
+			double epsilon = 0.0d;
 			
-			
-			for (int b = 1; b <= 1000000; b+=100) {
+			while (epsilon <= 20.0001) {
+
 				
-				double klDiv = trecUser.generateSubtopicsWithNoise(b/10000.0, baselineResultSet.docnos);
+				double klDiv = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
 				
 				
 			    FeedbackModeling feedbackModeling = new FeedbackModeling();
@@ -101,20 +102,6 @@ public class SimulatedNoisedDiversity {
 	    		
 	    		double actxPM2 = cubeTest.getAverageCubeTest(10, topicId, accResult);
 	    		
-	    		
-			    feedbackModeling = new FeedbackModeling();
-			    feedbackModeling.trecUser = trecUser;
-				reranker.start(baselineResultSet, new double[]{0.5});
-				accResult = new String[10][];
-	    		for (int i = 0; i < 10; i++) {
-	    			ResultSet resultSet = reranker.get();
-	    			accResult[i] = resultSet.docnos;
-	    			Feedback[] feedbacks = trecUser.get(resultSet);
-	    			reranker.update(feedbacks);
-				}
-	    		
-	    		double actxMMR = cubeTest.getAverageCubeTest(10, topicId, accResult);
-	    		
 			    feedbackModeling = new FeedbackModeling();
 			    feedbackModeling.trecUser = trecUser;
 			    reranker = new Baseline(feedbackModeling);
@@ -129,11 +116,12 @@ public class SimulatedNoisedDiversity {
 	    		
 	    		double actbaseline = cubeTest.getAverageCubeTest(10, topicId, accResult);
 	    		
-	    		out.println(topicId + " " + b/10000.0 + " " + klDiv + " " +  actxQuAD + " " +actxPM2 + " "  +actxMMR +" " +actbaseline  );
+	    		out.println(topicId + " " + epsilon + " " + klDiv + " " +  actxQuAD + " " +actxPM2 + " " +actbaseline  );
 	    		count++;
 	    		if (count % 1000 == 0) {
 	    			System.out.println(count);
 	    		}
+	    		epsilon += 0.1;
 	    		
 			}	
 			trecUser.destroySubtopics();
