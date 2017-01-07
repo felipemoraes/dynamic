@@ -123,7 +123,7 @@ public class SimulatedDynamicNoisedDiversity {
 	        		out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  + " " + actxQuAD + " " +actxPM2 + " "  +actbaseline  );
 		    			
 				}
-			   epsilon += 1;
+			   epsilon += 2;
 			   trecUser.destroySubtopics();
 		   }
 
