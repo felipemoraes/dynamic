@@ -92,11 +92,11 @@ public class SimulatedDynamicNoisedDiversity {
 			   
 			   ResultSet resultSet = null;
 			   Feedback[] feedbacks = null;
-		   
+			   	epsilon = start;
+   				double kl = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
 			   
 			   for (int i = 0; i < 10; i++) {
-				    epsilon = start + Math.log(i+1)/Math.log(2);
-	    			double kl = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
+				    
 	    			resultSet = xQuADReranker.get();
 	    			xQuADAcc[i] = resultSet.docnos;
 	    			feedbacks = trecUser.get(resultSet);
