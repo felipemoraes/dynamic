@@ -98,7 +98,7 @@ public class SimulatedDropAspect {
 				   drop = 10;
 				   for (int i = 0; i < 10; i++) {
 					   
-					    epsilon = start + i;
+					    epsilon = 10;
 					   
 		    			double kl = trecUser.generateSubtopicsWithNoiseDroped(epsilon, baselineResultSet.docnos, drop/10.0);
 		    			
