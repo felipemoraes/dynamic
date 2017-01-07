@@ -48,10 +48,10 @@ public class SimulatedStaticNoisedDiversity {
 	    BaselineRanker baselineRanker = getBaselineRanker(args[0]);
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
 	    Evaluator.trecUser = trecUser;
-	    FileWriter fw = new FileWriter( "SimulatedStaticNoisedDiversity3" + args[0] + ".txt");
+	    FileWriter fw = new FileWriter( "SimulatedStaticNoisedDiversity4" + args[0] + ".txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
-		double epsilon = 3;	
+		double epsilon = 4;	
 	    while ((line = br.readLine()) != null) {
 	    	String[] splitLine = line.split(" ",3);
 	    	
