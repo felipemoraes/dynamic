@@ -88,7 +88,7 @@ public class SimulatedStaticNoisedDiversity {
 			   
 			   ResultSet resultSet = null;
 			   Feedback[] feedbacks = null;		   
-			   double epsilon = 2;			
+			   double epsilon = 3;			
 			   
 			   double kl = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
 			   
