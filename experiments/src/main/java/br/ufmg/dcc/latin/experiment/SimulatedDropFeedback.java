@@ -51,6 +51,8 @@ public class SimulatedDropFeedback {
 	    FileWriter fw = new FileWriter( "SimulatedDropFeedback_" + args[0] + ".txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
+		
+		double start = 2;
 	    
 	    while ((line = br.readLine()) != null) {
 	    	String[] splitLine = line.split(" ",3);
@@ -69,7 +71,7 @@ public class SimulatedDropFeedback {
 			int count = 0;
 			for (int k = 0; k < 100; k++) {
 			    for (int drop = 0; drop <= 10; drop++) {
-				   double epsilon = 1;
+				   double epsilon = start;
 						
 				   
 				   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();
@@ -96,7 +98,7 @@ public class SimulatedDropFeedback {
 				   
 				   for (int i = 0; i < 10; i++) {
 					   
-					    epsilon += 5;
+					   epsilon = start + i;
 					   
 		    			double kl = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
 		    			resultSet = xQuADReranker.get();

@@ -51,7 +51,7 @@ public class SimulatedDropAspect {
 	    FileWriter fw = new FileWriter( "SimulatedDropAspect_" + args[0] + ".txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
-	    
+	    double start = 2;
 	    while ((line = br.readLine()) != null) {
 	    	String[] splitLine = line.split(" ",3);
 	    	
@@ -72,7 +72,7 @@ public class SimulatedDropAspect {
 				
 			    for (int drop = 0; drop <= 10; drop++) {
 			    	
-				   double epsilon = 1;
+				   double epsilon = start;
 
 				   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();
 				   xQuADfeedbackModeling.trecUser = trecUser;
@@ -98,7 +98,7 @@ public class SimulatedDropAspect {
 				   
 				   for (int i = 0; i < 10; i++) {
 					   
-					    epsilon += 5;
+					    epsilon = start + i;
 					   
 		    			double kl = trecUser.generateSubtopicsWithNoiseDroped(epsilon, baselineResultSet.docnos, drop/10.0);
 		    			
