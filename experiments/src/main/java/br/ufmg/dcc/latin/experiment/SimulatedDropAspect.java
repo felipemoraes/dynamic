@@ -41,7 +41,6 @@ public class SimulatedDropAspect {
 		
 		String topicsFile = "../share/topics_domain.txt";
 		
-		
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
 	    String line;
 	    
@@ -52,14 +51,15 @@ public class SimulatedDropAspect {
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    double start = 2;
+	    
 	    while ((line = br.readLine()) != null) {
 	    	String[] splitLine = line.split(" ",3);
 	    	
 	    	String topicId = splitLine[1];
 	    	
-	    	// if (!topicId.equals("DD16-1")){
-	    	//	continue;
-	    	//}
+	    	 if (!topicId.equals("DD16-1")){
+	    		continue;
+	    	}
 	    	
 	    	System.out.println(topicId);
 	    	trecUser.topicId = topicId;
@@ -132,7 +132,8 @@ public class SimulatedDropAspect {
 				   
 				    trecUser.destroySubtopicsDroped((drop+1)/10.0);
 			   }
-			   trecUser.destroySubtopics();
+			   
+			    trecUser.destroySubtopics();
 	    		
 	    		
 	    		count++;

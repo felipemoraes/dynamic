@@ -319,7 +319,7 @@ public class TrecUser implements User {
 			for (String subtopic : dropAspect) {
 				subtopicsCoverage.remove(subtopic);
 			}
-			System.out.println("Removed " +drops + " of " + subTopicsSize);
+			
 		
 		
 			double allKlDiv = 0;
@@ -451,7 +451,6 @@ public class TrecUser implements User {
 	public void destroySubtopicsDroped(double drop) {
 		int oldDrop = originalSize - subtopicsCoverage.size();
 		int drops = (int) Math.ceil(((1-drop)*originalSize));
-		System.out.println(oldDrop + " " + drops + " " + drop + " " + originalSize);
 		if (drops != oldDrop) {
 			destroySubtopics();
 		}
