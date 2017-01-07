@@ -49,7 +49,7 @@ public class SimulatedDynamicNoisedDiversity {
 	    BaselineRanker baselineRanker = getBaselineRanker(args[0]);
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
 	    Evaluator.trecUser = trecUser;
-	    FileWriter fw = new FileWriter( "SimulatedDynamicNoisedDiversity5_" + args[0] + ".txt");
+	    FileWriter fw = new FileWriter( "SimulatedDynamicNoisedDiversity1_" + args[0] + ".txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    
@@ -68,7 +68,7 @@ public class SimulatedDynamicNoisedDiversity {
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			int count = 0;
 		    for (int k = 0; k < 100; k++) {
-			   double epsilon = 5;
+			   double epsilon = 1;
 					 
 			   
 			   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();
@@ -121,7 +121,7 @@ public class SimulatedDynamicNoisedDiversity {
 	        		double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, baselineAcc);
 	        		
 	        		out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  + " " + actxQuAD + " " +actxPM2 + " "  +actbaseline  );
-	        		epsilon += 1;
+	        		epsilon = 1+ Math.log(i+2)/Math.log(2);
 				}
 			   
 			   trecUser.destroySubtopics();
