@@ -57,9 +57,9 @@ public class SimulatedDropAspect {
 	    	
 	    	String topicId = splitLine[1];
 	    	
-	    	 if (!topicId.equals("DD16-1")){
-	    		continue;
-	    	}
+	    	 //if (!topicId.equals("DD16-1")){
+	    	//	continue;
+	    	//}
 	    	
 	    	System.out.println(topicId);
 	    	trecUser.topicId = topicId;
