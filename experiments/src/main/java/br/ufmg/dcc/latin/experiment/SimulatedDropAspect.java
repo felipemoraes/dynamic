@@ -68,7 +68,7 @@ public class SimulatedDropAspect {
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			int count = 0;
 			
-			for (int k = 0; k < 1; k++) {
+			for (int k = 0; k < 100; k++) {
 				
 			    for (int drop = 0; drop <= 10; drop++) {
 			    	
@@ -95,7 +95,7 @@ public class SimulatedDropAspect {
 				   ResultSet resultSet = null;
 				   Feedback[] feedbacks = null;
 			   
-				   
+				   drop = 10;
 				   for (int i = 0; i < 10; i++) {
 					   
 					    epsilon = start + i;
@@ -131,6 +131,7 @@ public class SimulatedDropAspect {
 					}
 				   
 				    trecUser.destroySubtopicsDroped((drop+1)/10.0);
+				    break;
 			   }
 			   
 			    trecUser.destroySubtopics();
