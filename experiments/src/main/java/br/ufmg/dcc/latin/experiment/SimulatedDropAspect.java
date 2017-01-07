@@ -68,7 +68,7 @@ public class SimulatedDropAspect {
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			int count = 0;
 			
-			for (int k = 0; k < 100; k++) {
+			for (int k = 0; k < 1; k++) {
 				
 			    for (int drop = 0; drop <= 10; drop++) {
 			    	
