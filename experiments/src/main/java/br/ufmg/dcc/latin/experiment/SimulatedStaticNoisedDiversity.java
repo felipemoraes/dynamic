@@ -96,8 +96,6 @@ public class SimulatedStaticNoisedDiversity {
 			   
 			   for (int i = 0; i < 10; i++) {
 				   
-				   
-				   
 	    			
 	    			resultSet = xQuADReranker.get();
 	    			xQuADAcc[i] = resultSet.docnos;
