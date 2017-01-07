@@ -92,8 +92,8 @@ public class SimulatedDynamicNoisedDiversity {
 			   
 			   ResultSet resultSet = null;
 			   Feedback[] feedbacks = null;
-			   	epsilon = start;
-   				double kl = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
+			   epsilon = start;
+   			   double kl = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
 			   
 			   for (int i = 0; i < 10; i++) {
 				    
@@ -125,7 +125,7 @@ public class SimulatedDynamicNoisedDiversity {
 	        		
 				}
 			   
-			   trecUser.destroySubtopics();
+			    trecUser.destroySubtopics();
 		   }
 
     		

@@ -67,10 +67,6 @@ public class SimulatedStaticNoisedDiversity {
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			int count = 0;
 		    for (int k = 0; k < 100; k++) {
-		    	
-			   double epsilon = 1;
-					
-			   double kl = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
 			   
 			   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();
 			   xQuADfeedbackModeling.trecUser = trecUser;
@@ -91,8 +87,10 @@ public class SimulatedStaticNoisedDiversity {
 			   String[][] baselineAcc = new String[10][];
 			   
 			   ResultSet resultSet = null;
-			   Feedback[] feedbacks = null;
-		   
+			   Feedback[] feedbacks = null;		   
+			   double epsilon = 1;			
+			   
+			   double kl = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
 			   
 			   for (int i = 0; i < 10; i++) {
 				   
@@ -124,7 +122,7 @@ public class SimulatedStaticNoisedDiversity {
 	        		out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  + " " + actxQuAD + " " +actxPM2 + " " +actbaseline  );
 		    			
 				}
-			   trecUser.destroySubtopics();
+			    trecUser.destroySubtopics();
 		   }
 
     		
