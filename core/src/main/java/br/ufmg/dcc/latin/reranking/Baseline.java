@@ -47,6 +47,7 @@ public class Baseline extends InteractiveReranker {
 	
 	@Override
 	public void start(String query, String index){
+		super.start(query,index);
 		this.query = query;
 		this.index = index;
 	}
