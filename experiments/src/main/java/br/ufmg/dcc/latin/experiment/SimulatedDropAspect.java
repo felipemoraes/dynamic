@@ -95,7 +95,7 @@ public class SimulatedDropAspect {
 				   ResultSet resultSet = null;
 				   Feedback[] feedbacks = null;
 			   
-				   drop = 10;
+				   
 				   for (int i = 0; i < 10; i++) {
 					   
 					    epsilon = start + i;
@@ -131,7 +131,6 @@ public class SimulatedDropAspect {
 					}
 				   
 				    trecUser.destroySubtopicsDroped((drop+1)/10.0);
-				    break;
 			   }
 			   
 			    trecUser.destroySubtopics();
