@@ -29,7 +29,7 @@ public class SimulatedDropAspect {
 		if (ranker.equals("DPH")) {
 			return BaselineRanker.getInstance(new DPH(), new double[]{0.15,0.85});
 		} else if (ranker.equals("LM")) {
-			return BaselineRanker.getInstance(new LMDirichlet(2500f), new double[]{0.25,0.75});
+			return BaselineRanker.getInstance(new LMDirichlet(2000f), new double[]{0.25,0.75});
 		} else if (ranker.equals("BM25")) {
 			return BaselineRanker.getInstance(new BM25(), new double[]{0,1});
 		}
