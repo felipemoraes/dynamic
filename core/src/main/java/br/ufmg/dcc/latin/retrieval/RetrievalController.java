@@ -238,8 +238,8 @@ public class RetrievalController {
 		}
 		Map<String,Float> boosts = new HashMap<String,Float>();
 		fiedlWeights = new double[2];
-		fiedlWeights[0] =  0.15f;
-		fiedlWeights[1] = 0.85f; 
+		fiedlWeights[0] =  0.25f;
+		fiedlWeights[1] = 0.75f; 
 		boosts.put("title", (float) fiedlWeights[0]);
 		boosts.put("content", (float) fiedlWeights[1]);
 		parser = new MultiFieldQueryParser(new String[]{"title", "content"}, analyzer, boosts);
