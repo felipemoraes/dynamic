@@ -124,7 +124,7 @@ public class SimulatedStoppingCondition {
 			   FeedbackModeling PM2feedbackModeling3 = new FeedbackModeling();
 			   PM2feedbackModeling3.trecUser = trecUser;
 			   InteractiveReranker PM2Reranker3 = new PM2(PM2feedbackModeling3);
-			   PM2Reranker3.setStopCondition("S2");
+			   PM2Reranker3.setStopCondition("S3");
 			   PM2Reranker3.start(baselineResultSet, new double[]{0.5});
 			   String[][] PM2Acc3 = new String[50][];
 			
