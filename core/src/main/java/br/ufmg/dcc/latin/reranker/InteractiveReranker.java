@@ -29,18 +29,70 @@ public abstract class InteractiveReranker implements Reranker {
 	
 	public int depth;
 	
+	private boolean stop;
+	
+	private String stopCondition;
+	
+	private int offTopicCount;
+	
+	private List<Integer> windowedOffTopicCount;
+	
 	
 	public void update(Feedback[] feedback){
+		int windowCount = 0;
+		
+		for (int i = 0; i < feedback.length; i++) {
+			if (!feedback[i].onTopic){
+				offTopicCount++;
+				windowCount++;
+			}
+		}
+		windowedOffTopicCount.add(windowCount);
+		if (stopCondition.equals("S2")) {
+			if (offTopicCount>= 10){
+				stop = true;
+			}
+		} else if (stopCondition.equals("S3")){
+			int count = 0;
+			int j = windowedOffTopicCount.size() - 1;
+			for (int i = 0; i < 2; i++) {
+				count += windowedOffTopicCount.get(j);
+				j--;
+				if (j<0) {
+					break;
+				}
+			}
+			if (count >= 10 ){
+				stop = true;
+			}
+		} else if (stopCondition.equals("S1")){
+			if (windowedOffTopicCount.size() <= 10) {
+				stop = true;
+			}
+		}
+
+		
 		
 	}
 	
 	public InteractiveReranker(FeedbackModeling feedbackModeling){
 		this.feedbackModeling = feedbackModeling;
+		stop = false;
+		this.stopCondition = "SS1";
+		offTopicCount = 0;
+		windowedOffTopicCount = new ArrayList<Integer>();
 	}
+	
+	
 	
 	@Override
 	public ResultSet get(){
+		
 		ResultSet result = new ResultSet(5);
+		
+		if (stop) {
+			return result;
+		}
 		
 		int depth = Math.min(relevance.length, this.depth+selected.size());	
 		// greedily diversify the top documents
@@ -120,6 +172,14 @@ public abstract class InteractiveReranker implements Reranker {
 			feedbacksRemoved[i] = feedbacks.get(i);
 		}
 		return feedbacksRemoved;
+	}
+
+	public String getStopCondition() {
+		return stopCondition;
+	}
+
+	public void setStopCondition(String stopCondition) {
+		this.stopCondition = stopCondition;
 	}
 
 }

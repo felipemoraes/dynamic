@@ -39,6 +39,14 @@ task SimulatedDropAspect(type: JavaExec, dependsOn: classes) {
     }
 }
 
+task SimulatedStoppingCondition(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.experiment.SimulatedStoppingCondition'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
+
 
 task SimulatedDiversity(type: JavaExec, dependsOn: classes) {
     main = 'br.ufmg.dcc.latin.experiment.SimulatedDiversity'

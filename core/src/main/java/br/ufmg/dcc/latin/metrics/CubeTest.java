@@ -234,4 +234,35 @@ public class CubeTest {
 		//System.out.println();
 		return ctAccu/time;
 	}
+	
+	public double getGain(int iteration, String topic, String[][] docnos){
+		
+		currentGainHeight = new HashMap<String, Double>();
+		subtopicCover = new HashMap<String, Integer>();
+		double score = 0;
+		double ctAccu = 0;
+		int time = 0;
+		for (int i = 0; i < iteration; i++) {
+			if (i > docnos.length){
+				break;
+			}
+			if (docnos[i] == null) {
+				break;
+			}
+			for (int j = 0; j < docnos[i].length; j++) {
+				if (docnos[i][j] == null){
+					continue;
+				}
+				double gain = getDocGain(topic,docnos[i][j]);
+				score += gain;
+				double act = score/MAX_HEIGHT;
+				//System.out.println(docnos[i][j]);
+				ctAccu += act/(i+1);
+				time++;
+			}
+			
+		}
+		//System.out.println();
+		return score;
+	}
 }
