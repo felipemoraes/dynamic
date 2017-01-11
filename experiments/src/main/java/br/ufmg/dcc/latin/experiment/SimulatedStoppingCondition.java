@@ -49,7 +49,7 @@ public class SimulatedStoppingCondition {
 	    args[0] = "DPH";
 	    args[1] = "S1";
 	    BaselineRanker baselineRanker = getBaselineRanker(args[0]);
-	    String stopCondition = args[1];
+
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
 	    Evaluator.trecUser = trecUser;
 	    FileWriter fw = new FileWriter( "SimulatedStoppingCondition_" + args[0]  + "_" + args[1] + ".txt");
@@ -75,26 +75,89 @@ public class SimulatedStoppingCondition {
 			   double epsilon = start;
 					 
 			   
-			   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();
-			   xQuADfeedbackModeling.trecUser = trecUser;
-			   InteractiveReranker xQuADReranker = new xQuAD(xQuADfeedbackModeling);
-			   xQuADReranker.setStopCondition(stopCondition);
-			   xQuADReranker.start(baselineResultSet, new double[]{0.5});
-			   String[][] xQuADAcc = new String[50][];
+			   FeedbackModeling xQuADfeedbackModeling0 = new FeedbackModeling();
+			   xQuADfeedbackModeling0.trecUser = trecUser;
+			   InteractiveReranker xQuADReranker0 = new xQuAD(xQuADfeedbackModeling0);
+			   xQuADReranker0.setStopCondition("S0");
+			   xQuADReranker0.start(baselineResultSet, new double[]{0.5});
+			   String[][] xQuADAcc0 = new String[50][];
 			   
-			   FeedbackModeling PM2feedbackModeling = new FeedbackModeling();
-			   PM2feedbackModeling.trecUser = trecUser;
-			   InteractiveReranker PM2Reranker = new PM2(PM2feedbackModeling);
-			   PM2Reranker.setStopCondition(stopCondition);
-			   PM2Reranker.start(baselineResultSet, new double[]{0.5});
-			   String[][] PM2Acc = new String[50][];
+			   FeedbackModeling xQuADfeedbackModeling1 = new FeedbackModeling();
+			   xQuADfeedbackModeling1.trecUser = trecUser;
+			   InteractiveReranker xQuADReranker1 = new xQuAD(xQuADfeedbackModeling1);
+			   xQuADReranker1.setStopCondition("S1");
+			   xQuADReranker1.start(baselineResultSet, new double[]{0.5});
+			   String[][] xQuADAcc1 = new String[50][];
+			   
+			   FeedbackModeling xQuADfeedbackModeling2 = new FeedbackModeling();
+			   xQuADfeedbackModeling2.trecUser = trecUser;
+			   InteractiveReranker xQuADReranker2 = new xQuAD(xQuADfeedbackModeling2);
+			   xQuADReranker2.setStopCondition("S2");
+			   xQuADReranker2.start(baselineResultSet, new double[]{0.5});
+			   String[][] xQuADAcc2 = new String[50][];
+			   
+			   FeedbackModeling xQuADfeedbackModeling3 = new FeedbackModeling();
+			   xQuADfeedbackModeling3.trecUser = trecUser;
+			   InteractiveReranker xQuADReranker3 = new xQuAD(xQuADfeedbackModeling3);
+			   xQuADReranker3.setStopCondition("S3");
+			   xQuADReranker3.start(baselineResultSet, new double[]{0.5});
+			   String[][] xQuADAcc3 = new String[50][];
+			   
+			   FeedbackModeling PM2feedbackModeling0 = new FeedbackModeling();
+			   PM2feedbackModeling0.trecUser = trecUser;
+			   InteractiveReranker PM2Reranker0 = new PM2(PM2feedbackModeling0);
+			   PM2Reranker0.setStopCondition("S0");
+			   PM2Reranker0.start(baselineResultSet, new double[]{0.5});
+			   String[][] PM2Acc0 = new String[50][];
+			   
+			   FeedbackModeling PM2feedbackModeling1 = new FeedbackModeling();
+			   PM2feedbackModeling1.trecUser = trecUser;
+			   InteractiveReranker PM2Reranker1 = new PM2(PM2feedbackModeling1);
+			   PM2Reranker1.setStopCondition("S1");
+			   PM2Reranker1.start(baselineResultSet, new double[]{0.5});
+			   String[][] PM2Acc1 = new String[50][];
+			   
+			   FeedbackModeling PM2feedbackModeling2 = new FeedbackModeling();
+			   PM2feedbackModeling2.trecUser = trecUser;
+			   InteractiveReranker PM2Reranker2 = new PM2(PM2feedbackModeling2);
+			   PM2Reranker2.setStopCondition("S2");
+			   PM2Reranker2.start(baselineResultSet, new double[]{0.5});
+			   String[][] PM2Acc2 = new String[50][];
+			   
+			   FeedbackModeling PM2feedbackModeling3 = new FeedbackModeling();
+			   PM2feedbackModeling3.trecUser = trecUser;
+			   InteractiveReranker PM2Reranker3 = new PM2(PM2feedbackModeling3);
+			   PM2Reranker3.setStopCondition("S2");
+			   PM2Reranker3.start(baselineResultSet, new double[]{0.5});
+			   String[][] PM2Acc3 = new String[50][];
 			
-			   FeedbackModeling baselinefeedbackModeling = new FeedbackModeling();
-			   baselinefeedbackModeling.trecUser = trecUser;
-			   InteractiveReranker baselineReranker = new Baseline(baselinefeedbackModeling);
-			   baselineReranker.setStopCondition(stopCondition);
-			   baselineReranker.start(baselineResultSet, new double[]{0.5});
-			   String[][] baselineAcc = new String[50][];
+			   FeedbackModeling baselinefeedbackModeling0 = new FeedbackModeling();
+			   baselinefeedbackModeling0.trecUser = trecUser;
+			   InteractiveReranker baselineReranker0 = new Baseline(baselinefeedbackModeling0);
+			   baselineReranker0.setStopCondition("S0");
+			   baselineReranker0.start(baselineResultSet, new double[]{0.5});
+			   String[][] baselineAcc0 = new String[50][];
+			   
+			   FeedbackModeling baselinefeedbackModeling1 = new FeedbackModeling();
+			   baselinefeedbackModeling1.trecUser = trecUser;
+			   InteractiveReranker baselineReranker1 = new Baseline(baselinefeedbackModeling1);
+			   baselineReranker1.setStopCondition("S1");
+			   baselineReranker1.start(baselineResultSet, new double[]{0.5});
+			   String[][] baselineAcc1 = new String[50][];
+			   
+			   FeedbackModeling baselinefeedbackModeling2 = new FeedbackModeling();
+			   baselinefeedbackModeling2.trecUser = trecUser;
+			   InteractiveReranker baselineReranker2 = new Baseline(baselinefeedbackModeling2);
+			   baselineReranker2.setStopCondition("S2");
+			   baselineReranker2.start(baselineResultSet, new double[]{0.5});
+			   String[][] baselineAcc2 = new String[50][];
+			   
+			   FeedbackModeling baselinefeedbackModeling3 = new FeedbackModeling();
+			   baselinefeedbackModeling3.trecUser = trecUser;
+			   InteractiveReranker baselineReranker3 = new Baseline(baselinefeedbackModeling3);
+			   baselineReranker3.setStopCondition("S3");
+			   baselineReranker3.start(baselineResultSet, new double[]{0.5});
+			   String[][] baselineAcc3 = new String[50][];
 			   
 			   ResultSet resultSet = null;
 			   Feedback[] feedbacks = null;
@@ -102,29 +165,93 @@ public class SimulatedStoppingCondition {
 			   
 			   for (int i = 0; i < 50; i++) {
 				    epsilon = start + i;
+				    
 	   			    double kl = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
-	    			resultSet = xQuADReranker.get();
-	    			xQuADAcc[i] = resultSet.docnos;
+	   			    
+	    			resultSet = xQuADReranker0.get();
+	    			xQuADAcc0[i] = resultSet.docnos;
 	    			feedbacks = trecUser.get(resultSet);
-	    			xQuADReranker.update(feedbacks);
+	    			xQuADReranker0.update(feedbacks);
+	    			
+	    			resultSet = xQuADReranker1.get();
+	    			xQuADAcc1[i] = resultSet.docnos;
+	    			feedbacks = trecUser.get(resultSet);
+	    			xQuADReranker1.update(feedbacks);
+	    			
+	    			resultSet = xQuADReranker2.get();
+	    			xQuADAcc2[i] = resultSet.docnos;
+	    			feedbacks = trecUser.get(resultSet);
+	    			xQuADReranker2.update(feedbacks);
+	    			
+	    			resultSet = xQuADReranker3.get();
+	    			xQuADAcc3[i] = resultSet.docnos;
+	    			feedbacks = trecUser.get(resultSet);
+	    			xQuADReranker3.update(feedbacks);
 	    			
 	    			
-	    			resultSet = PM2Reranker.get();
-	    			PM2Acc[i] = resultSet.docnos;
+	    			resultSet = PM2Reranker0.get();
+	    			PM2Acc0[i] = resultSet.docnos;
 	    			feedbacks = trecUser.get(resultSet);
-	    			PM2Reranker.update(feedbacks);
+	    			PM2Reranker0.update(feedbacks);
 	    			
-	    			resultSet = baselineReranker.get();
-	    			baselineAcc[i] = resultSet.docnos;
+	    			resultSet = PM2Reranker1.get();
+	    			PM2Acc1[i] = resultSet.docnos;
 	    			feedbacks = trecUser.get(resultSet);
-	    			baselineReranker.update(feedbacks);
+	    			PM2Reranker1.update(feedbacks);
+	    			
+	    			resultSet = PM2Reranker2.get();
+	    			PM2Acc2[i] = resultSet.docnos;
+	    			feedbacks = trecUser.get(resultSet);
+	    			PM2Reranker2.update(feedbacks);
+	    			
+	    			resultSet = PM2Reranker3.get();
+	    			PM2Acc3[i] = resultSet.docnos;
+	    			feedbacks = trecUser.get(resultSet);
+	    			PM2Reranker3.update(feedbacks);
+	    			
+	    			resultSet = baselineReranker0.get();
+	    			baselineAcc0[i] = resultSet.docnos;
+	    			feedbacks = trecUser.get(resultSet);
+	    			baselineReranker0.update(feedbacks);
 	    		
+	    			resultSet = baselineReranker1.get();
+	    			baselineAcc1[i] = resultSet.docnos;
+	    			feedbacks = trecUser.get(resultSet);
+	    			baselineReranker1.update(feedbacks);
 	    			
-	        		double gainxQuAD = cubeTest.getGain(i+1, topicId, xQuADAcc);
-	        		double gainxPM2 = cubeTest.getGain(i+1, topicId, PM2Acc);
-	        		double gainbaseline = cubeTest.getGain(i+1, topicId, baselineAcc);
+	    			resultSet = baselineReranker2.get();
+	    			baselineAcc2[i] = resultSet.docnos;
+	    			feedbacks = trecUser.get(resultSet);
+	    			baselineReranker2.update(feedbacks);
+	    			
+	    			resultSet = baselineReranker3.get();
+	    			baselineAcc3[i] = resultSet.docnos;
+	    			feedbacks = trecUser.get(resultSet);
+	    			baselineReranker3.update(feedbacks);
+	    			
+	        		double gainxQuAD0 = cubeTest.getGain(i+1, topicId, xQuADAcc0);
+	        		double gainxPM20 = cubeTest.getGain(i+1, topicId, PM2Acc0);
+	        		double gainbaseline0 = cubeTest.getGain(i+1, topicId, baselineAcc0);
+
+	        		double gainxQuAD1 = cubeTest.getGain(i+1, topicId, xQuADAcc1);
+	        		double gainxPM21 = cubeTest.getGain(i+1, topicId, PM2Acc1);
+	        		double gainbaseline1 = cubeTest.getGain(i+1, topicId, baselineAcc1);
 	        		
-	        		out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  + " " + gainxQuAD + " " +gainxPM2 + " "  + gainbaseline  );
+	        		
+	        		double gainxQuAD2 = cubeTest.getGain(i+1, topicId, xQuADAcc2);
+	        		double gainxPM22 = cubeTest.getGain(i+1, topicId, PM2Acc2);
+	        		double gainbaseline2 = cubeTest.getGain(i+1, topicId, baselineAcc2);
+	        		
+	        		
+	        		double gainxQuAD3 = cubeTest.getGain(i+1, topicId, xQuADAcc3);
+	        		double gainxPM23 = cubeTest.getGain(i+1, topicId, PM2Acc3);
+	        		double gainbaseline3 = cubeTest.getGain(i+1, topicId, baselineAcc3);
+	        		
+	        		out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  
+	        				+ " " + gainxQuAD0 + " " +gainxPM20 + " "  + gainbaseline0 
+	        				+ " " + gainxQuAD1 + " " +gainxPM21 + " "  + gainbaseline1
+	        				+ " " + gainxQuAD2 + " " +gainxPM22 + " "  + gainbaseline2
+	        				+ " " + gainxQuAD3 + " " +gainxPM23 + " "  + gainbaseline3);
 	        		
 				}
 			   

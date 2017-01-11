@@ -69,6 +69,8 @@ public abstract class InteractiveReranker implements Reranker {
 			if (windowedOffTopicCount.size() <= 10) {
 				stop = true;
 			}
+		} else if (stopCondition.equals("S0")){
+			stop = false;
 		}
 
 		
@@ -78,7 +80,7 @@ public abstract class InteractiveReranker implements Reranker {
 	public InteractiveReranker(FeedbackModeling feedbackModeling){
 		this.feedbackModeling = feedbackModeling;
 		stop = false;
-		this.stopCondition = "SS1";
+		this.stopCondition = "S0";
 		offTopicCount = 0;
 		windowedOffTopicCount = new ArrayList<Integer>();
 	}
