@@ -52,7 +52,7 @@ public class SimulatedStoppingCondition {
 
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
 	    Evaluator.trecUser = trecUser;
-	    FileWriter fw = new FileWriter( "SimulatedStoppingCondition_" + args[0]  + "_" + args[1] + ".txt");
+	    FileWriter fw = new FileWriter( "SimulatedStoppingCondition_" + args[0] + ".txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    
