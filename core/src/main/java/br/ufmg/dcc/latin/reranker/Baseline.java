@@ -15,6 +15,7 @@ public class Baseline extends InteractiveReranker {
 
 	@Override
 	protected void update(int docid) {
+		
 	}
 
 }

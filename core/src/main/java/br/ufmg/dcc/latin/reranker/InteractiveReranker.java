@@ -66,7 +66,7 @@ public abstract class InteractiveReranker implements Reranker {
 				stop = true;
 			}
 		} else if (stopCondition.equals("S1")){
-			if (windowedOffTopicCount.size() <= 10) {
+			if (windowedOffTopicCount.size() > 10) {
 				stop = true;
 			}
 		} else if (stopCondition.equals("S0")){

@@ -109,6 +109,7 @@ public class PM2 extends InteractiveReranker {
 
 	@Override
 	public void update(Feedback[] feedback) {
+		super.update(feedback);
 		feedbackModeling.update(feedback);
 		coverage = feedbackModeling.coverage;
 		v = feedbackModeling.v;

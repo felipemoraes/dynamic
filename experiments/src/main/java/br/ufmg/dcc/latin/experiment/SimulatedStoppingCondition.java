@@ -45,9 +45,6 @@ public class SimulatedStoppingCondition {
 		
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
 	    String line;
-	    args = new String[2];
-	    args[0] = "DPH";
-	    args[1] = "S1";
 	    BaselineRanker baselineRanker = getBaselineRanker(args[0]);
 
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
@@ -253,6 +250,7 @@ public class SimulatedStoppingCondition {
 	        				+ " " + gainxQuAD2 + " " +gainxPM22 + " "  + gainbaseline2
 	        				+ " " + gainxQuAD3 + " " +gainxPM23 + " "  + gainbaseline3);
 	        		
+	        	
 				}
 			   
 			    trecUser.destroySubtopics();
