@@ -71,7 +71,7 @@ public class SimulatedDropAspect {
 			
 			for (int k = 0; k < 100; k++) {
 				
-			    for (int drop = 0; drop <= 10; drop++) {
+			    for (int drop = 0; drop <= 20; drop++) {
 
 				   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();
 				   xQuADfeedbackModeling.trecUser = trecUser;
@@ -94,7 +94,7 @@ public class SimulatedDropAspect {
 				   ResultSet resultSet = null;
 				   Feedback[] feedbacks = null;
 				   
-				   trecUser.generateSubtopicsWithNoiseDroped(baselineResultSet.docnos, drop/10.0);
+				   trecUser.generateSubtopicsWithNoiseDroped(baselineResultSet.docnos, drop/20.0);
 			   
 				   
 				   for (int i = 0; i < 10; i++) {
@@ -125,7 +125,7 @@ public class SimulatedDropAspect {
 			    			
 					}
 				   
-				    trecUser.destroySubtopicsDroped((drop+1)/10.0);
+				    trecUser.destroySubtopicsDroped((drop+1)/20.0);
 			   }
 			   
 			    trecUser.destroySubtopics();

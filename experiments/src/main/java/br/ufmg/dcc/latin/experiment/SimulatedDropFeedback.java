@@ -72,8 +72,8 @@ public class SimulatedDropFeedback {
 			
 			trecUser.generateSubtopics(baselineResultSet.docnos);
 			
-			for (int k = 0; k < 1; k++) {
-			    for (int drop = 0; drop <= 10; drop++) {
+			for (int k = 0; k < 100; k++) {
+			    for (int drop = 0; drop <= 20; drop++) {
 				
 						
 				   
@@ -106,14 +106,14 @@ public class SimulatedDropFeedback {
 		    			resultSet = xQuADReranker.get();
 		    			xQuADAcc[i] = resultSet.docnos;
 		    			feedbacks = trecUser.get(resultSet);
-		    			xQuADReranker.updateDropFeedback(feedbacks,drop/10.0);
+		    			xQuADReranker.updateDropFeedback(feedbacks,drop/20.0);
 		    		
 		    			
 		    			
 		    			resultSet = PM2Reranker.get();
 		    			PM2Acc[i] = resultSet.docnos;
 		    			feedbacks = trecUser.get(resultSet);
-		    			PM2Reranker.updateDropFeedback(feedbacks,drop/10.0);
+		    			PM2Reranker.updateDropFeedback(feedbacks,drop/20.0);
 		    			
 		    			
 		    			resultSet = baselineReranker.get();
