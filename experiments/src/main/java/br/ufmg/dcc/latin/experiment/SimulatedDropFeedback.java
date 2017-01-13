@@ -52,7 +52,7 @@ public class SimulatedDropFeedback {
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 		
-		double start = 2;
+		
 	    
 	    while ((line = br.readLine()) != null) {
 	    	String[] splitLine = line.split(" ",3);
@@ -69,9 +69,12 @@ public class SimulatedDropFeedback {
 			String index = splitLine[0];
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			int count = 0;
-			for (int k = 0; k < 100; k++) {
+			
+			trecUser.generateSubtopics(baselineResultSet.docnos);
+			
+			for (int k = 0; k < 1; k++) {
 			    for (int drop = 0; drop <= 10; drop++) {
-				   double epsilon = start;
+				
 						
 				   
 				   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();
@@ -94,25 +97,23 @@ public class SimulatedDropFeedback {
 				   
 				   ResultSet resultSet = null;
 				   Feedback[] feedbacks = null;
-			   
+				   
 				   
 				   for (int i = 0; i < 10; i++) {
 					   
-					   epsilon = start + i;
-					   
-		    			double kl = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
+			
+					  
 		    			resultSet = xQuADReranker.get();
 		    			xQuADAcc[i] = resultSet.docnos;
 		    			feedbacks = trecUser.get(resultSet);
 		    			xQuADReranker.updateDropFeedback(feedbacks,drop/10.0);
-		    			Evaluator.writeToFile("DropFeedback_" + args[0] + "_xQuAD_" + k , topicId, resultSet, i);
+		    		
 		    			
 		    			
 		    			resultSet = PM2Reranker.get();
 		    			PM2Acc[i] = resultSet.docnos;
 		    			feedbacks = trecUser.get(resultSet);
 		    			PM2Reranker.updateDropFeedback(feedbacks,drop/10.0);
-		    			Evaluator.writeToFile("DropFeedback_" +args[0] +"_PM2_" + k , topicId, resultSet, i);
 		    			
 		    			
 		    			resultSet = baselineReranker.get();
@@ -120,16 +121,16 @@ public class SimulatedDropFeedback {
 		    			feedbacks = trecUser.get(resultSet);
 		    			baselineReranker.update(feedbacks);
 		    			
-		    			Evaluator.writeToFile("DropFeedback_" +args[0] + "_Base_" + k , topicId, resultSet, i);
+		    			
 		    			
 		        		double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, xQuADAcc);
 		        		double actxPM2 = cubeTest.getAverageCubeTest(i+1, topicId, PM2Acc);
 		        		double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, baselineAcc);
 		        		
-		        		out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  + " " + drop + " " + actxQuAD + " " +actxPM2 + " " +actbaseline  );
+		        		out.println(topicId + " " + k +  "  " + (i+1) + " " + drop + " " + actxQuAD + " " +actxPM2 + " " +actbaseline  );
 			    			
 					}
-				   trecUser.destroySubtopics();
+				   
 			   }
 	
 	    		

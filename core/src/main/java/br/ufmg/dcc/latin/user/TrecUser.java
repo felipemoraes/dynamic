@@ -279,7 +279,7 @@ public class TrecUser implements User {
 
 
 	
-	public double generateSubtopicsWithNoiseDroped(double noise, String[] docnos, double frac) {
+	public void generateSubtopicsWithNoiseDroped(String[] docnos, double frac) {
 		if (subtopicsCoverage == null) {
 			Random rand = new Random();
 			subtopicsCoverage = new HashMap<String, double[]>();
@@ -299,6 +299,7 @@ public class TrecUser implements User {
 					}
 				}
 			}
+			
 			int subTopicsSize = subtopicsCoverage.size();
 			originalSize = subTopicsSize;
 			String[] subTopics = new String[subTopicsSize];
@@ -319,97 +320,19 @@ public class TrecUser implements User {
 			for (String subtopic : dropAspect) {
 				subtopicsCoverage.remove(subtopic);
 			}
-			
 		
-		
-			double allKlDiv = 0;
 			for (String subtopicId : subtopicsCoverage.keySet()) {
-				
 				double[] relevances = getRelevances(subtopicId, docnos);
-				StatUtils.normalize(relevances);
-				double sum = StatUtils.sum(relevances);
-				double[] probs = new double[relevances.length];
-				for (int i = 0; i < probs.length; i++) {
-					probs[i] = relevances[i]/sum;
-				}
-				
-				double min = StatUtils.min(relevances);
-				double max = StatUtils.max(relevances);
-				double deltaF = max - min;
-				double epsilon = noise;
-				LaplaceDistribution dist = new LaplaceDistribution(0,deltaF/epsilon);
-				
-				for (int i = 0; i < relevances.length; i++) {
-					relevances[i] += dist.sample();
-				}
-				
-				min = StatUtils.min(relevances);
-				max = StatUtils.max(relevances);
-				for (int i = 0; i < probs.length; i++) {
-					relevances[i] = (relevances[i]-min)/(max-min);
-					relevances[i] *= 4;
-				}
-				
-				sum = StatUtils.sum(relevances);
-				double[] probsNoised = new double[relevances.length];
-				for (int i = 0; i < probs.length; i++) {
-					probsNoised[i] = relevances[i]/sum;
-				}
-				allKlDiv += klDivergence(probs,probsNoised);
 				subtopicsCoverage.put(subtopicId, relevances);
 			}
-			if (subtopicsCoverage.size() > 0) {
-				allKlDiv /= subtopicsCoverage.size();
-			} else {
-				allKlDiv = 0;
-			}
-			TrecUser.allKlDiv = allKlDiv;
+			
 		} else {
-			
-			double allKlDiv = 0;
 			for (String subtopicId : subtopicsCoverage.keySet()) {
-				
 				double[] relevances = getRelevances(subtopicId, docnos);
-				StatUtils.normalize(relevances);
-				double sum = StatUtils.sum(relevances);
-				double[] probs = new double[relevances.length];
-				for (int i = 0; i < probs.length; i++) {
-					probs[i] = relevances[i]/sum;
-				}
-				
-				double min = StatUtils.min(relevances);
-				double max = StatUtils.max(relevances);
-				double deltaF = max - min;
-				double epsilon = noise;
-				LaplaceDistribution dist = new LaplaceDistribution(0,deltaF/epsilon);
-				
-				for (int i = 0; i < relevances.length; i++) {
-					relevances[i] += dist.sample();
-				}
-				
-				min = StatUtils.min(relevances);
-				max = StatUtils.max(relevances);
-				for (int i = 0; i < probs.length; i++) {
-					relevances[i] = (relevances[i]-min)/(max-min);
-					relevances[i] *= 4;
-				}
-				
-				sum = StatUtils.sum(relevances);
-				double[] probsNoised = new double[relevances.length];
-				for (int i = 0; i < probs.length; i++) {
-					probsNoised[i] = relevances[i]/sum;
-				}
-				allKlDiv += klDivergence(probs,probsNoised);
 				subtopicsCoverage.put(subtopicId, relevances);
 			}
-			if (subtopicsCoverage.size() > 0) {
-				allKlDiv /= subtopicsCoverage.size();
-			} else {
-				allKlDiv = 0;
-			}
-			TrecUser.allKlDiv = allKlDiv;
 		}
-		return TrecUser.allKlDiv;
+		
 	}
 		
 	public double generateSubtopicsWithNoise(double noise, String[] docnos) {
