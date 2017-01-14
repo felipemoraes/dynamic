@@ -263,8 +263,6 @@ public class SimulatedStoppingCondition {
         		double actxPM23 = cubeTest.getAverageCubeTest(i+1, topicId, PM2Acc3);
         		double actbaseline3 = cubeTest.getAverageCubeTest(i+1, topicId, baselineAcc3);
         		
-        		
-        		
         		out.println(topicId + "  " + (i+1) 
         				+ " " + gainxQuAD0 + " " +gainxPM20 + " "  + gainbaseline0 
         				+ " " + gainxQuAD1 + " " +gainxPM21 + " "  + gainbaseline1
