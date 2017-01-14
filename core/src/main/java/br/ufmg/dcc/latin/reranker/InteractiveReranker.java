@@ -43,6 +43,10 @@ public abstract class InteractiveReranker implements Reranker {
 		int windowCount = 0;
 		
 		for (int i = 0; i < feedback.length; i++) {
+			if (feedback[i] == null){
+				continue;
+			}
+			
 			if (!feedback[i].onTopic){
 				offTopicCount++;
 				windowCount++;
