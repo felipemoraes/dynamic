@@ -222,6 +222,7 @@ public class CubeTest {
 					ctAccu += act/(i+1);
 					time++;
 				}
+				continue;
 			}
 			for (int j = 0; j < docnos[i].length; j++) {
 				if (docnos[i][j] == null){
