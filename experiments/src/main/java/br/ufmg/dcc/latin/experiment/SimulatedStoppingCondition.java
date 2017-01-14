@@ -277,8 +277,6 @@ public class SimulatedStoppingCondition {
         		
         	
 			}
-		   
-		   	
 			   
 			out.println(topicId + " " +xQuADReranker2.stoppedAt + " " + xQuADReranker3.stoppedAt 
 					+ " " + PM2Reranker2.stoppedAt + " " + PM2Reranker3.stoppedAt
