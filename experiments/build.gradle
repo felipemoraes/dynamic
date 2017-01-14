@@ -56,8 +56,8 @@ task SimulatedDiversity(type: JavaExec, dependsOn: classes) {
     }
 }
 
-task SimulatedNoisedDiversity(type: JavaExec, dependsOn: classes) {
-    main = 'br.ufmg.dcc.latin.experiment.SimulatedNoisedDiversity'
+task SimulatedDynamicPerturbation(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.experiment.SimulatedDynamicPerturbation'
     classpath = sourceSets.main.runtimeClasspath
      if(project.hasProperty('Xargs')){
        args (Xargs.split());
