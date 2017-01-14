@@ -272,7 +272,6 @@ public class SimulatedStoppingCondition {
         				+ " " + actxQuAD1 + " " +actxPM21 + " "  + actbaseline1
         				+ " " + actxQuAD2 + " " +actxPM22 + " "  + actbaseline2
         				+ " " + actxQuAD3 + " " +actxPM23 + " "  + actbaseline3);
-        		
         	
 			}
 			   
