@@ -163,7 +163,7 @@ public class SimulatedStoppingCondition {
 
 		   trecUser.generateSubtopics(baselineResultSet.docnos);
 		   
-		   for (int i = 0; i < 20; i++) {
+		   for (int i = 0; i < 100; i++) {
 			  
     			resultSet = xQuADReranker0.get();
     			xQuADAcc0[i] = resultSet.docnos;
