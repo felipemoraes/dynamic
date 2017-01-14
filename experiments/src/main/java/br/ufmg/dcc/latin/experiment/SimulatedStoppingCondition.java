@@ -282,8 +282,6 @@ public class SimulatedStoppingCondition {
 					+ " " + PM2Reranker2.stoppedAt + " " + PM2Reranker3.stoppedAt
 					+ " " + baselineReranker2.stoppedAt + " " + baselineReranker3.stoppedAt);
 		   
-
-    		
     
 			
 	    }
