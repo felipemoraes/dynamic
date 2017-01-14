@@ -42,14 +42,13 @@ public class SimulatedDynamicNoisedDiversity {
 		
 		String topicsFile = "../share/topics_domain.txt";
 	
-		
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
 	    String line;
 	    
 	    BaselineRanker baselineRanker = getBaselineRanker(args[0]);
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
 	    Evaluator.trecUser = trecUser;
-	    FileWriter fw = new FileWriter( "SimulatedDynamicNoisedDiversity5_" + args[0] + ".txt");
+	    FileWriter fw = new FileWriter( "SimulatedDynamicNoisedDiversity_" + args[0] + ".txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    
@@ -67,66 +66,70 @@ public class SimulatedDynamicNoisedDiversity {
 			String index = splitLine[0];
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			int count = 0;
-			double start = 5;
+		
 		    for (int k = 0; k < 100; k++) {
-			   double epsilon = start;
+		       for (int noise = 1; noise <= 200; noise ++) {
+		    	   double start = noise*0.1;
 					 
 			   
-			   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();
-			   xQuADfeedbackModeling.trecUser = trecUser;
-			   InteractiveReranker xQuADReranker = new xQuAD(xQuADfeedbackModeling);
-			   xQuADReranker.start(baselineResultSet, new double[]{0.5});
-			   String[][] xQuADAcc = new String[10][];
-			   
-			   FeedbackModeling PM2feedbackModeling = new FeedbackModeling();
-			   PM2feedbackModeling.trecUser = trecUser;
-			   InteractiveReranker PM2Reranker = new PM2(PM2feedbackModeling);
-			   PM2Reranker.start(baselineResultSet, new double[]{0.5});
-			   String[][] PM2Acc = new String[10][];
-			
-			   FeedbackModeling baselinefeedbackModeling = new FeedbackModeling();
-			   baselinefeedbackModeling.trecUser = trecUser;
-			   InteractiveReranker baselineReranker = new Baseline(baselinefeedbackModeling);
-			   baselineReranker.start(baselineResultSet, new double[]{0.5});
-			   String[][] baselineAcc = new String[10][];
-			   
-			   ResultSet resultSet = null;
-			   Feedback[] feedbacks = null;
+		    	   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();
+				   xQuADfeedbackModeling.trecUser = trecUser;
+				   InteractiveReranker xQuADReranker = new xQuAD(xQuADfeedbackModeling);
+				   xQuADReranker.start(baselineResultSet, new double[]{0.5});
+				   String[][] xQuADAcc = new String[10][];
+				   
+				   FeedbackModeling PM2feedbackModeling = new FeedbackModeling();
+				   PM2feedbackModeling.trecUser = trecUser;
+				   InteractiveReranker PM2Reranker = new PM2(PM2feedbackModeling);
+				   PM2Reranker.start(baselineResultSet, new double[]{0.5});
+				   String[][] PM2Acc = new String[10][];
+				
+				   FeedbackModeling baselinefeedbackModeling = new FeedbackModeling();
+				   baselinefeedbackModeling.trecUser = trecUser;
+				   InteractiveReranker baselineReranker = new Baseline(baselinefeedbackModeling);
+				   baselineReranker.start(baselineResultSet, new double[]{0.5});
+				   String[][] baselineAcc = new String[10][];
+				   
+				   ResultSet resultSet = null;
+				   Feedback[] feedbacks = null;
 
 			   
-			   for (int i = 0; i < 10; i++) {
-				    epsilon = start + i;
-	   			    double kl = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
-	    			resultSet = xQuADReranker.get();
-	    			xQuADAcc[i] = resultSet.docnos;
-	    			feedbacks = trecUser.get(resultSet);
-	    			xQuADReranker.update(feedbacks);
-	    			Evaluator.writeToFile(args[0] + "_xQuAD_" + k , topicId, resultSet, i);
-	    			
-	    			
-	    			resultSet = PM2Reranker.get();
-	    			PM2Acc[i] = resultSet.docnos;
-	    			feedbacks = trecUser.get(resultSet);
-	    			PM2Reranker.update(feedbacks);
-	    			Evaluator.writeToFile(args[0] +"_PM2_" + k , topicId, resultSet, i);
-	    			
-	    			resultSet = baselineReranker.get();
-	    			baselineAcc[i] = resultSet.docnos;
-	    			feedbacks = trecUser.get(resultSet);
-	    			baselineReranker.update(feedbacks);
-	    			
-	    			Evaluator.writeToFile(args[0] + "_Base_" + k , topicId, resultSet, i);
-	    			
-	        		double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, xQuADAcc);
-	        		double actxPM2 = cubeTest.getAverageCubeTest(i+1, topicId, PM2Acc);
-	        		double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, baselineAcc);
-	        		
-	        		out.println(topicId + " " + k +  "  " + (i+1) + " " + kl  + " " + actxQuAD + " " +actxPM2 + " "  +actbaseline  );
-	        		
-				}
-			   
-			    trecUser.destroySubtopics();
-		   }
+				   for (int i = 0; i < 10; i++) {
+					    double epsilon = start + i;
+		   			    trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
+		   			    double kl = TrecUser.allKlDiv;
+		   			    double rmse = TrecUser.rmse;
+		   			    double sensitivity = TrecUser.sensitivity;
+		   			    
+		    			resultSet = xQuADReranker.get();
+		    			xQuADAcc[i] = resultSet.docnos;
+		    			feedbacks = trecUser.get(resultSet);
+		    			xQuADReranker.update(feedbacks);
+		    			
+		    			
+		    			resultSet = PM2Reranker.get();
+		    			PM2Acc[i] = resultSet.docnos;
+		    			feedbacks = trecUser.get(resultSet);
+		    			PM2Reranker.update(feedbacks);
+		    			
+		    			
+		    			resultSet = baselineReranker.get();
+		    			baselineAcc[i] = resultSet.docnos;
+		    			feedbacks = trecUser.get(resultSet);
+		    			baselineReranker.update(feedbacks);
+		    			
+		    			
+		        		double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, xQuADAcc);
+		        		double actxPM2 = cubeTest.getAverageCubeTest(i+1, topicId, PM2Acc);
+		        		double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, baselineAcc);
+		        		
+		        		out.println(topicId + " " + k +  "  " + (i+1)  + " "+ start  + " " + kl  + " " + rmse  + " " + sensitivity + " "  +  actxQuAD + " " +actxPM2 + " "  +actbaseline  );
+		        		
+					}
+				   
+				    trecUser.destroySubtopics();
+		       }
+		    }
 
     		
     		

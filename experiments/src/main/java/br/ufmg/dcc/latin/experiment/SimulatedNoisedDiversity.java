@@ -73,8 +73,8 @@ public class SimulatedNoisedDiversity {
 
 				for (int k = 0; k < 100 ; k++) {
 					
-					double klDiv = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
-					
+					trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
+					 double klDiv = TrecUser.allKlDiv;
 					
 				    FeedbackModeling feedbackModeling = new FeedbackModeling();
 				    feedbackModeling.trecUser = trecUser;

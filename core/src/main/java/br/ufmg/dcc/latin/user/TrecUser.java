@@ -46,7 +46,12 @@ public class TrecUser implements User {
 	public static Map<String,int[]> subtopicsCoverageIndices;
 	
 	public static int originalSize;
+	
 	public static double allKlDiv;
+	
+	public static double rmse;
+	
+	public static double sensitivity;
 	
 	private TrecUser(String topicFilename){
 		
@@ -335,7 +340,7 @@ public class TrecUser implements User {
 		
 	}
 		
-	public double generateSubtopicsWithNoise(double noise, String[] docnos) {
+	public void generateSubtopicsWithNoise(double noise, String[] docnos) {
 		subtopicsCoverage = new HashMap<String, double[]>();
 		int n = docnos.length;
 		for (int i = 0; i < docnos.length; i++) {
@@ -353,11 +358,14 @@ public class TrecUser implements User {
 				}
 			}
 		}
-		double allKlDiv = 0;
+		
+		allKlDiv = 0;
+		rmse = 0;
+		sensitivity = 0;
 		for (String subtopicId : subtopicsCoverage.keySet()) {
 			
 			double[] relevances = getRelevances(subtopicId, docnos);
-			StatUtils.normalize(relevances);
+			
 			double sum = StatUtils.sum(relevances);
 			double[] probs = new double[relevances.length];
 			for (int i = 0; i < probs.length; i++) {
@@ -367,6 +375,7 @@ public class TrecUser implements User {
 			double min = StatUtils.min(relevances);
 			double max = StatUtils.max(relevances);
 			double deltaF = max - min;
+			sensitivity += deltaF;
 			double epsilon = noise;
 			LaplaceDistribution dist = new LaplaceDistribution(0,deltaF/epsilon);
 			
@@ -381,6 +390,9 @@ public class TrecUser implements User {
 				relevances[i] *= 4;
 			}
 			
+			
+			rmse += rmse(getRelevances(subtopicId, docnos), relevances);
+			
 			sum = StatUtils.sum(relevances);
 			double[] probsNoised = new double[relevances.length];
 			for (int i = 0; i < probs.length; i++) {
@@ -391,13 +403,23 @@ public class TrecUser implements User {
 		}
 		if (subtopicsCoverage.size() > 0) {
 			allKlDiv /= subtopicsCoverage.size();
-		} else {
-			allKlDiv = 0;
-		}
-		return allKlDiv;
+			rmse /= subtopicsCoverage.size();
+			sensitivity /= subtopicsCoverage.size();
+		} 
+		
 	}
 	
-    public static double klDivergence(double[] p1, double[] p2) {
+    private double rmse(double[] truth, double[] noised) {
+		double squaredDiff = 0;
+		for (int i = 0; i < noised.length; i++) {
+			squaredDiff += Math.pow((truth[i]-noised[i]),2);
+		}
+		squaredDiff = squaredDiff/truth.length;
+		
+		return Math.sqrt(squaredDiff);
+	}
+
+	public static double klDivergence(double[] p1, double[] p2) {
 
 
         double klDiv = 0.0;

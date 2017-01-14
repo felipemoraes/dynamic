@@ -163,8 +163,8 @@ public class SimulatedStoppingCondition {
 			   for (int i = 0; i < 50; i++) {
 				    epsilon = start + i;
 				    
-	   			    double kl = trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
-	   			    
+	   			    trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
+	   			    double kl = TrecUser.allKlDiv;
 	    			resultSet = xQuADReranker0.get();
 	    			xQuADAcc0[i] = resultSet.docnos;
 	    			feedbacks = trecUser.get(resultSet);
