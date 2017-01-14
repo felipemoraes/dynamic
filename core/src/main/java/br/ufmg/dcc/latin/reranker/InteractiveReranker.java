@@ -71,7 +71,7 @@ public abstract class InteractiveReranker implements Reranker {
 				if (j<0) {
 					break;
 				}
-			}
+			}	
 			if (count >= 10 ){
 				if (stop == false) {
 					stoppedAt++;

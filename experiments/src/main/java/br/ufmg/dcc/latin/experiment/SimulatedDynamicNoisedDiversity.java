@@ -69,8 +69,9 @@ public class SimulatedDynamicNoisedDiversity {
 		
 		    for (int k = 0; k < 20; k++) {
 		       for (int noise = 1; noise <= 200; noise ++) {
-		    	   double start = noise*0.1;
-					 
+		    	   double epsilon = noise*0.1;
+		    	   
+		    	   trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
 			   
 		    	   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();
 				   xQuADfeedbackModeling.trecUser = trecUser;
@@ -92,11 +93,12 @@ public class SimulatedDynamicNoisedDiversity {
 				   
 				   ResultSet resultSet = null;
 				   Feedback[] feedbacks = null;
+				   
+				   
 
 			   
 				   for (int i = 0; i < 10; i++) {
-					    double epsilon = start + i;
-		   			    trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
+					  
 		   			    double kl = TrecUser.allKlDiv;
 		   			    double rmse = TrecUser.rmse;
 		   			    double sensitivity = TrecUser.sensitivity;
@@ -123,7 +125,7 @@ public class SimulatedDynamicNoisedDiversity {
 		        		double actxPM2 = cubeTest.getAverageCubeTest(i+1, topicId, PM2Acc);
 		        		double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, baselineAcc);
 		        		
-		        		out.println(topicId + " " + k +  "  " + (i+1)  + " "+ start  + " " + kl  + " " + rmse  + " " + sensitivity + " "  +  actxQuAD + " " +actxPM2 + " "  +actbaseline  );
+		        		out.println(topicId + " " + k +  "  " + (i+1)  + " "+ epsilon  + " " + kl  + " " + rmse  + " " + sensitivity + " "  +  actxQuAD + " " +actxPM2 + " "  +actbaseline  );
 		        		
 					}
 				   
