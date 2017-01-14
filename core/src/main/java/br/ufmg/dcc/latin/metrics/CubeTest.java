@@ -216,10 +216,19 @@ public class CubeTest {
 				break;
 			}
 			if (docnos[i] == null) {
-				break;
+				for (int j = 0; j < 5; j++) {
+					double act = score/MAX_HEIGHT;
+					//System.out.println(docnos[i][j]);
+					ctAccu += act/(i+1);
+					time++;
+				}
 			}
 			for (int j = 0; j < docnos[i].length; j++) {
 				if (docnos[i][j] == null){
+					double act = score/MAX_HEIGHT;
+					//System.out.println(docnos[i][j]);
+					ctAccu += act/(i+1);
+					time++;
 					continue;
 				}
 				double gain = getDocGain(topic,docnos[i][j]);

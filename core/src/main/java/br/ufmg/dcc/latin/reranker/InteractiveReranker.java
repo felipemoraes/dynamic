@@ -35,6 +35,7 @@ public abstract class InteractiveReranker implements Reranker {
 	
 	private int offTopicCount;
 	
+	public int stoppedAt;
 	private List<Integer> windowedOffTopicCount;
 	
 	
@@ -51,6 +52,8 @@ public abstract class InteractiveReranker implements Reranker {
 		if (stopCondition.equals("S2")) {
 			if (offTopicCount>= 10){
 				stop = true;
+			} else {
+				stoppedAt++;
 			}
 		} else if (stopCondition.equals("S3")){
 			int count = 0;
@@ -64,13 +67,18 @@ public abstract class InteractiveReranker implements Reranker {
 			}
 			if (count >= 10 ){
 				stop = true;
+			} else {
+				stoppedAt++;
 			}
 		} else if (stopCondition.equals("S1")){
 			if (windowedOffTopicCount.size() > 10) {
 				stop = true;
+			} else {
+				stoppedAt++;
 			}
 		} else if (stopCondition.equals("S0")){
 			stop = false;
+			stoppedAt++;
 		}
 
 		
@@ -82,6 +90,7 @@ public abstract class InteractiveReranker implements Reranker {
 		stop = false;
 		this.stopCondition = "S0";
 		offTopicCount = 0;
+		stoppedAt = 0;
 		windowedOffTopicCount = new ArrayList<Integer>();
 	}
 	
