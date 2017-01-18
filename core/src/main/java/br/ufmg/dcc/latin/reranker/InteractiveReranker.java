@@ -60,7 +60,7 @@ public abstract class InteractiveReranker implements Reranker {
 		
 		
 		if (stopCondition.equals("S2")) {
-			if (offTopicCount >= 10){
+			if (offTopicCount >= 20){
 				if (stop ==false) {
 					stoppedAt++;
 				}
@@ -78,7 +78,7 @@ public abstract class InteractiveReranker implements Reranker {
 				}
 			}
 			
-			if (count >= 10 ){
+			if (count >= 20 ){
 				if (stop == false) {
 					stoppedAt++;
 				}
@@ -86,6 +86,7 @@ public abstract class InteractiveReranker implements Reranker {
 			} else {
 				stoppedAt++;
 			}
+			
 		} else if (stopCondition.equals("S1")){
 			if (windowedOffTopicCount.size() > 10) {
 				stop = true;
