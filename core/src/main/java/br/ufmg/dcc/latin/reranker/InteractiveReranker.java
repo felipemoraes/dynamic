@@ -43,16 +43,22 @@ public abstract class InteractiveReranker implements Reranker {
 		int windowCount = 0;
 		
 		for (int i = 0; i < feedback.length; i++) {
+			
 			if (feedback[i] == null){
+				windowedOffTopicCount.add(0);
 				continue;
 			}
 			
 			if (!feedback[i].onTopic){
 				offTopicCount++;
+				windowedOffTopicCount.add(1);
 				windowCount++;
+			} else {
+				windowedOffTopicCount.add(1);
 			}
 		}
-		windowedOffTopicCount.add(windowCount);
+		
+		
 		if (stopCondition.equals("S2")) {
 			if (offTopicCount >= 10){
 				if (stop ==false) {
@@ -63,15 +69,16 @@ public abstract class InteractiveReranker implements Reranker {
 				stoppedAt++;
 			}
 		} else if (stopCondition.equals("S3")){
+			
 			int count = 0;
-			int j = windowedOffTopicCount.size() - 1;
-			for (int i = 0; i < 2; i++) {
-				count += windowedOffTopicCount.get(j);
-				j--;
-				if (j<0) {
-					break;
+			for (int i = 0; i < windowedOffTopicCount.size(); i++) {
+				if (windowedOffTopicCount.get(i) == 1) {
+					count = 0;
+				} else {
+					count++;
 				}
-			}	
+			}
+			
 			if (count >= 10 ){
 				if (stop == false) {
 					stoppedAt++;
