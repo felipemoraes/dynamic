@@ -51,7 +51,7 @@ public abstract class InteractiveReranker implements Reranker {
 			
 			if (!feedback[i].onTopic){
 				offTopicCount++;
-				windowedOffTopicCount.add(1);
+				windowedOffTopicCount.add(0);
 				windowCount++;
 			} else {
 				windowedOffTopicCount.add(1);
@@ -69,7 +69,6 @@ public abstract class InteractiveReranker implements Reranker {
 				stoppedAt++;
 			}
 		} else if (stopCondition.equals("S3")){
-			
 			int count = 0;
 			for (int i = 0; i < windowedOffTopicCount.size(); i++) {
 				if (windowedOffTopicCount.get(i) == 1) {

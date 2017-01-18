@@ -41,7 +41,8 @@ public class SimulatedStoppingCondition {
 		CubeTest cubeTest = new CubeTest();
 		
 		String topicsFile = "../share/topics_domain.txt";
-	
+		args = new String[1];
+		args[0] = "DPH";
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
 	    String line;
 	    BaselineRanker baselineRanker = getBaselineRanker(args[0]);
@@ -61,9 +62,9 @@ public class SimulatedStoppingCondition {
 	    	
 	    	String topicId = splitLine[1];
 	    	
-	    	//if (!topicId.equals("DD16-1")){
-	    	//	continue;
-	    	//}
+	    	if (!topicId.equals("DD16-1")){
+	    		continue;
+	    	}
 	    	
 	    	System.out.println(topicId);
 	    	trecUser.topicId = topicId;
@@ -275,7 +276,7 @@ public class SimulatedStoppingCondition {
         	
 			}
 			   
-			outS.println(topicId + " " +xQuADReranker2.stoppedAt + " " + xQuADReranker3.stoppedAt 
+		   outS.println(topicId + " " +xQuADReranker2.stoppedAt + " " + xQuADReranker3.stoppedAt 
 					+ " " + PM2Reranker2.stoppedAt + " " + PM2Reranker3.stoppedAt
 					+ " " + baselineReranker2.stoppedAt + " " + baselineReranker3.stoppedAt);
 		   
