@@ -24,9 +24,9 @@ import br.ufmg.dcc.latin.simulation.SimAP;
 
 public class TrecUser implements User {
 	
-    private Map<String,RelevanceSet> repository;
+    private static Map<String,RelevanceSet> repository;
     
-	public String topicId;
+	public static String topicId;
 	
 	private static TrecUser trecUser;
 	
@@ -228,7 +228,7 @@ public class TrecUser implements User {
 		}
 	}
 	
-	public double getScore(String docId){
+	public static double getScore(String docId){
 		if (!repository.containsKey(docId)){
 			return 0;
 		} 
@@ -254,11 +254,12 @@ public class TrecUser implements User {
 		return relevances;
 	}
 	
+	
 	public double[] get(String subtopicId, String[] docnos){
 		return subtopicsCoverage.get(subtopicId);
 	}
 	
-	public double[] get(String[] docnos){
+	public static double[] get(String[] docnos){
 		int n = docnos.length;
 		double[] relevances = new double[n];
 		for (int i = 0; i < n; i++) {

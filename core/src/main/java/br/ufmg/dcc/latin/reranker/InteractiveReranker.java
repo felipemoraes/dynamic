@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math3.distribution.BinomialDistribution;
+import org.apache.commons.math3.distribution.NormalDistribution;
 
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.feedback.modeling.FeedbackModeling;
 import br.ufmg.dcc.latin.querying.BooleanSelectedSet;
 import br.ufmg.dcc.latin.querying.ResultSet;
+import br.ufmg.dcc.latin.user.TrecUser;
 
 public abstract class InteractiveReranker implements Reranker {
 	
@@ -37,6 +39,8 @@ public abstract class InteractiveReranker implements Reranker {
 	
 	public int stoppedAt;
 	private List<Integer> windowedOffTopicCount;
+	
+	public double noiseStop;
 	
 	
 	public void update(Feedback[] feedback){
@@ -96,12 +100,44 @@ public abstract class InteractiveReranker implements Reranker {
 		} else if (stopCondition.equals("S0")){
 			stop = false;
 			stoppedAt++;
+		} else if (stopCondition.equals("S4")){
+			
+			if (oracleSop()) {
+				if (stop = false) {
+					stop = true;
+					stoppedAt++;
+				}
+
+			} else {
+				stoppedAt++;
+			};
+
 		}
 
-		
-		
 	}
 	
+	
+	
+	private boolean oracleSop() {
+		double[] relevances = TrecUser.get(docnos);
+		int n = 0;
+		for (int i = 0; i < relevances.length; i++) {
+			if (selected.has(i)){
+				continue;
+			}
+			if (relevances[i] > 0) {
+				n++;
+			}
+		}
+		NormalDistribution normalDistribution = new NormalDistribution(n, noiseStop*n);
+		double sample = normalDistribution.sample();
+		
+		if (sample > 0) {
+			return false;
+		}
+		return true;
+	}
+
 	public InteractiveReranker(FeedbackModeling feedbackModeling){
 		this.feedbackModeling = feedbackModeling;
 		stop = false;

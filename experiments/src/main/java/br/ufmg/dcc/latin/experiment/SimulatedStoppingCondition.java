@@ -66,7 +66,7 @@ public class SimulatedStoppingCondition {
 	    	//}
 	    	
 	    	System.out.println(topicId);
-	    	trecUser.topicId = topicId;
+	    	TrecUser.topicId = topicId;
 			String query = splitLine[2].replaceAll("/", " ");
 			String index = splitLine[0];
 			ResultSet baselineResultSet = baselineRanker.search(query, index);

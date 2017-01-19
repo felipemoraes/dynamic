@@ -23,6 +23,14 @@ task SimulatedNonRelevant(type: JavaExec, dependsOn: classes) {
     }
 }
 
+task StoppingConditionOracle(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.experiment.StoppingConditionOracle'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
+
 task SimulatedDropFeedback(type: JavaExec, dependsOn: classes) {
     main = 'br.ufmg.dcc.latin.experiment.SimulatedDropFeedback'
     classpath = sourceSets.main.runtimeClasspath
