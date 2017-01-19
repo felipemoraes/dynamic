@@ -134,7 +134,7 @@ public abstract class InteractiveReranker implements Reranker {
 			std = noiseStop;
 		}
 		
-		NormalDistribution normalDistribution = new NormalDistribution(n, std);
+		NormalDistribution normalDistribution = new NormalDistribution(n, std );
 		
 		double sample = normalDistribution.sample();
 		
