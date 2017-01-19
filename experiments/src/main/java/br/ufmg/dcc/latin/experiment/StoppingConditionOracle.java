@@ -47,11 +47,11 @@ public class StoppingConditionOracle {
 
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
 	    Evaluator.trecUser = trecUser;
-	    FileWriter fw = new FileWriter( "StoppingConditionOracle.txt");
+	    FileWriter fw = new FileWriter( "SimulatedStoppedAt.txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 		
-		FileWriter fwS = new FileWriter( "StoppingConditionOracle.txt");
+		FileWriter fwS = new FileWriter( "St.txt");
 	    BufferedWriter bwS = new BufferedWriter(fwS);
 		PrintWriter outS = new PrintWriter(bwS);
 	    
