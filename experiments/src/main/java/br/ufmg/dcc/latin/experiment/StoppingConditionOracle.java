@@ -60,9 +60,9 @@ public class StoppingConditionOracle {
 	    	
 	    	String topicId = splitLine[1];
 	    	
-	    	if (!topicId.equals("DD16-1")){
-	    		continue;
-	    	}
+	    	//if (!topicId.equals("DD16-1")){
+	    	//	continue;
+	    	//}
 	    	System.out.println(topicId);
 	    	trecUser.topicId = topicId;
 			String query = splitLine[2].replaceAll("/", " ");
@@ -147,7 +147,7 @@ public class StoppingConditionOracle {
 		        	
 					}
 					   
-				   System.out.println(topicId + " " +noise  + " "  +xQuADReranker0.stoppedAt 
+				   outS.println(topicId + " "  + noise + " " + " " + k + " "+xQuADReranker0.stoppedAt 
 							+ " " + PM2Reranker0.stoppedAt + " "
 							+ " " + baselineReranker0.stoppedAt);
 				   
