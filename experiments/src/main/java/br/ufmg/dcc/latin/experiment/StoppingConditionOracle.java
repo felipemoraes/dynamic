@@ -72,7 +72,7 @@ public class StoppingConditionOracle {
 	    	for (int noise = 0; noise <= 20; noise++ ) {
 	    		
 	    	
-		    	for (int k = 0; k < 1; k++ ) {
+		    	for (int k = 0; k < 100; k++ ) {
 				 
 					   
 				   FeedbackModeling xQuADfeedbackModeling0 = new FeedbackModeling();
