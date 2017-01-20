@@ -133,7 +133,7 @@ public class PM2 extends InteractiveReranker {
 	@Override
 	public void updateDropFeedback(Feedback[] feedback, double frac) {
 		feedback = removeFeedback(feedback,frac);
-		feedbackModeling.update(feedback);
+		feedbackModeling.updateDropedAspect(feedback);
 		coverage = feedbackModeling.coverage;
 		v = feedbackModeling.v;
 		s = feedbackModeling.s;

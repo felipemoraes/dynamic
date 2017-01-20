@@ -45,10 +45,10 @@ public class SimulatedDropFeedback {
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
 	    String line;
 	    
-	    BaselineRanker baselineRanker = getBaselineRanker(args[0]);
+	    BaselineRanker baselineRanker = getBaselineRanker("DPH");
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
 	    Evaluator.trecUser = trecUser;
-	    FileWriter fw = new FileWriter( "SimulatedDropFeedback_" + args[0] + ".txt");
+	    FileWriter fw = new FileWriter( "SimulatedDropFeedback.txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 		
@@ -74,7 +74,8 @@ public class SimulatedDropFeedback {
 			
 			for (int k = 0; k < 100; k++) {
 			    for (int drop = 0; drop <= 20; drop++) {
-				
+			    	
+			    
 						
 				   
 				   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();

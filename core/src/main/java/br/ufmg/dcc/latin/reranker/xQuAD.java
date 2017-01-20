@@ -90,7 +90,7 @@ public class xQuAD extends InteractiveReranker {
 		feedback = removeFeedback(feedback,frac);
 		super.update(feedback);
 		
-		feedbackModeling.update(feedback);
+		feedbackModeling.updateDropedAspect(feedback);
 		coverage = feedbackModeling.coverage;
 		importance = feedbackModeling.importance;
 		novelty = feedbackModeling.novelty;

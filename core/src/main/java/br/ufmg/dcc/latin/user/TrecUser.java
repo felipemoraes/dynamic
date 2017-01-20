@@ -4,13 +4,16 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
 import org.apache.commons.math3.distribution.LaplaceDistribution;
@@ -444,6 +447,61 @@ public class TrecUser implements User {
 		if (drops != oldDrop) {
 			destroySubtopics();
 		}
+	}
+
+	public double[] get(String subtopicId, String[] docnos, Feedback[] feedbacks) {
+		double sumMass = 0;
+		for (int i = 0; i < docnos.length; i++) {
+			if (!repository.containsKey(docnos[i])){
+				continue;
+			} 
+			Passage[] passages = repository.get(docnos[i]).get(topicId);
+			if (passages == null) {
+				continue;
+			} else {
+				
+				for (int j = 0; j < passages.length; j++) {
+					if (passages[j].subtopicId.equals(subtopicId)) {
+						sumMass+= passages[j].relevance;
+					}
+				}
+			}
+		}
+		
+		double massAspect = 0;
+		for (int i = 0; i < feedbacks.length; i++) {
+			if (feedbacks[i]==null){
+				continue;
+			}
+			if (!feedbacks[i].onTopic){
+				continue;
+			}
+			
+			for (int j = 0; j < feedbacks[i].passages.length; j++) {
+				if (feedbacks[i].passages[j].subtopicId.equals(subtopicId)){
+					massAspect += feedbacks[i].passages[j].relevance;
+				}
+			}
+		}
+		double relevativeMass = 0;
+		if (sumMass > 0){
+			relevativeMass = massAspect/sumMass;
+		}
+		
+		double[] relevances = trecUser.get(subtopicId,docnos);
+
+		double[] scores = new double[relevances.length];
+		for (int i = 0; i < relevances.length; i++) {
+			double rand = ThreadLocalRandom.current().nextDouble(0.0, 1.00000000000000000000000001);
+			if (rand < relevativeMass) {
+				
+				scores[i] = relevances[i];
+			} else {
+				scores[i] = 0;
+			}
+		}
+
+		return scores;
 	}
 	
 }

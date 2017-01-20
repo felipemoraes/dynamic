@@ -88,7 +88,6 @@ public class FeedbackModeling {
 				} else {
 					coverage[j][i] = 0;
 				}
-				
 			}
 		}
 		
@@ -270,6 +269,68 @@ public class FeedbackModeling {
 			
 		}
 		return scores;
+		
+	}
+
+	public void updateDropedAspect(Feedback[] feedbacks) {
+		
+		for (int i = 0; i < feedbacks.length; i++) {
+			if (feedbacks[i] == null) {
+				continue;
+			}
+			
+			if (!feedbacks[i].onTopic){
+				continue;
+			}
+			for (int j = 0; j < feedbacks[i].passages.length; j++) {
+				feedbackModel.addSubtopic(feedbacks[i].passages[j].subtopicId);
+			}
+		}
+		
+		cacheFeedback(feedbacks);
+		
+		
+		int numberOfSubtopics = feedbackModel.size;
+		importance = new double[numberOfSubtopics];
+		novelty = new double[numberOfSubtopics];
+		coverage = new double[n][numberOfSubtopics];
+		v = new double[numberOfSubtopics];
+		s = new double[numberOfSubtopics];
+		
+		Arrays.fill(novelty, 1);
+		Arrays.fill(importance, 1f/numberOfSubtopics);
+		Arrays.fill(v, 1.0f);
+		Arrays.fill(s, 0.0f);
+		
+		for (int i = 0; i < numberOfSubtopics; i++) {
+			String subtopicId = feedbackModel.getSubtopicId(i);
+			double[] relevances = trecUser.get(subtopicId,docnos, this.feedbacks);
+			if (relevances == null) {
+				continue;
+			}
+			for (int j = 0; j < relevances.length; j++) {
+				if (this.feedbacks[j] == null) {
+					coverage[j][i] = relevances[j];
+				} else {
+					coverage[j][i] = 0;
+				}
+			}
+		}
+		
+		for (int i = 0; i < this.feedbacks.length; i++) {
+			if (this.feedbacks[i] != null) {
+				if (!this.feedbacks[i].onTopic) {
+					continue;
+				}
+				for (int j = 0; j < this.feedbacks[i].passages.length; j++) {
+					int k = feedbackModel.getSubtopicId(this.feedbacks[i].passages[j].subtopicId);
+					coverage[i][k] = Math.max(coverage[i][k], this.feedbacks[i].passages[j].relevance);
+				}
+			}
+		}
+		
+		normalizeCoverage();
+		//printCoverage();
 		
 	}
 	
