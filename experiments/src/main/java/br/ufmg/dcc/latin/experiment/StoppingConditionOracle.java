@@ -60,19 +60,19 @@ public class StoppingConditionOracle {
 	    	
 	    	String topicId = splitLine[1];
 	    	
-	    	//if (!topicId.equals("DD16-1")){
-	    	//	continue;
-	    	//}
+	    	if (!topicId.equals("DD16-1")){
+	    		continue;
+	    	}
 	    	System.out.println(topicId);
 	    	trecUser.topicId = topicId;
 			String query = splitLine[2].replaceAll("/", " ");
 			String index = splitLine[0];
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			
-	    	for (int noise = 1; noise < 20; noise++ ) {
+	    	for (int noise = 0; noise <= 20; noise++ ) {
 	    		
 	    	
-		    	for (int k = 0; k < 100; k++ ) {
+		    	for (int k = 0; k < 1; k++ ) {
 				 
 					   
 				   FeedbackModeling xQuADfeedbackModeling0 = new FeedbackModeling();
@@ -147,14 +147,16 @@ public class StoppingConditionOracle {
 		        	
 					}
 					   
-				   outS.println(topicId + " " +xQuADReranker0.stoppedAt 
+				   System.out.println(topicId + " " +noise  + " "  +xQuADReranker0.stoppedAt 
 							+ " " + PM2Reranker0.stoppedAt + " "
 							+ " " + baselineReranker0.stoppedAt);
 				   
 		    
 					
 			    }
+		    	
 	    	}
+	    	
 	    }
 	    
 		br.close();

@@ -2,6 +2,7 @@ package br.ufmg.dcc.latin.reranker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.apache.commons.math3.distribution.BinomialDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
@@ -44,7 +45,7 @@ public abstract class InteractiveReranker implements Reranker {
 	
 	
 	public void update(Feedback[] feedback){
-		int windowCount = 0;
+
 		
 		for (int i = 0; i < feedback.length; i++) {
 			
@@ -56,16 +57,16 @@ public abstract class InteractiveReranker implements Reranker {
 			if (!feedback[i].onTopic){
 				offTopicCount++;
 				windowedOffTopicCount.add(0);
-				windowCount++;
 			} else {
 				windowedOffTopicCount.add(1);
 			}
 		}
 		
 		
+		
 		if (stopCondition.equals("S2")) {
 			if (offTopicCount >= 20){
-				if (stop ==false) {
+				if (stop == false) {
 					stoppedAt++;
 				}
 				stop = true;
@@ -100,14 +101,16 @@ public abstract class InteractiveReranker implements Reranker {
 		} else if (stopCondition.equals("S0")){
 			stop = false;
 			stoppedAt++;
-		} else if (stopCondition.equals("S4")){
 			
-			if (oracleSop()) {
-				if (stop = false) {
+		} else if (stopCondition.equals("S4")){
+			boolean answer = oracleSop();
+			if (answer) {
+				
+				if (stop == false) {
 					stop = true;
 					stoppedAt++;
-				}
-
+				} 
+				
 			} else {
 				stoppedAt++;
 			};
@@ -119,6 +122,7 @@ public abstract class InteractiveReranker implements Reranker {
 	
 	
 	private boolean oracleSop() {
+		
 		double[] relevances = TrecUser.get(docnos);
 		int n = 0;
 		for (int i = 0; i < relevances.length; i++) {
@@ -129,7 +133,21 @@ public abstract class InteractiveReranker implements Reranker {
 				n++;
 			}
 		}
-		double std = noiseStop*n;
+		double rand = ThreadLocalRandom.current().nextDouble(0.0, 1.00000000000000000000000001);
+		boolean tellTruth = true;
+		if (rand < 1-noiseStop ){
+			tellTruth = true; 
+		} else {
+			tellTruth = false;
+		}
+		
+		if (n > 0) {
+			return tellTruth? true : false;
+		} else {
+			return tellTruth? false : true;
+		}
+		
+		/*double std = noiseStop*n;
 		if ( std == 0) {
 			std = noiseStop;
 		}
@@ -141,7 +159,7 @@ public abstract class InteractiveReranker implements Reranker {
 		if (sample > 0) {
 			return false;
 		}
-		return true;
+		return true;*/
 	}
 
 	public InteractiveReranker(FeedbackModeling feedbackModeling){
