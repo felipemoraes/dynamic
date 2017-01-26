@@ -1,5 +1,0 @@
-gradle ModelSelection -PXargs="../share/test_folds/$1_train_0.txt ../share/test_folds/$1_validation_0.txt $1_model_0.txt Static xQuAD"
-gradle ModelSelection -PXargs="../share/test_folds/$1_train_1.txt ../share/test_folds/$1_validation_1.txt $1_model_1.txt Static xQuAD"
-gradle ModelSelection -PXargs="../share/test_folds/$1_train_2.txt ../share/test_folds/$1_validation_2.txt $1_model_2.txt Static xQuAD"
-gradle ModelSelection -PXargs="../share/test_folds/$1_train_3.txt ../share/test_folds/$1_validation_3.txt $1_model_3.txt Static xQuAD"
-gradle ModelSelection -PXargs="../share/test_folds/$1_train_4.txt ../share/test_folds/$1_validation_4.txt $1_model_4.txt Static xQuAD"
