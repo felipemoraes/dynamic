@@ -32,20 +32,20 @@ public class CoverageAnalysis {
 		PrintWriter out = new PrintWriter(bw);
 		
 		for (UserQuery userQuery : TopicsFile.getTrecDD()) {
-			//if (!userQuery.tid.equals("DD16-1")){
-		    //		continue;
-		    //}
+			if (!userQuery.tid.equals("DD16-3")){
+		    	continue;
+		    }
 			System.out.println(userQuery.tid);
 			int iteration = 1;
 			ResultList resultList = baselineRanker.getResultList(userQuery);
 			FeedbackList feedbackList = user.getFeedbackSet(userQuery.tid, resultList);
 			PassageAspectModeling aspectModeling = new PassageAspectModeling();
-			xQuAD dynamicReranker = new xQuAD(0.5, 1000);
+			xQuAD dynamicReranker = new xQuAD(0.9, 1000);
 			Stopping stopping = new FixedDepth();
 			while (!stopping.stop(feedbackList)) {
 				iteration++;
 				PassageAspectModel passageAspectModel = aspectModeling.getAspectModel(feedbackList);
-				out.println(userQuery.tid + " " + iteration   + " " + coverageError.getError(userQuery.tid, passageAspectModel));
+				System.out.println(userQuery.tid + " " + iteration   + " " + coverageError.getError(userQuery.tid, passageAspectModel));
 				resultList = dynamicReranker.getResultList(aspectModeling.getAspectModel(feedbackList));
 				feedbackList = user.getFeedbackSet(userQuery.tid, resultList);
 				

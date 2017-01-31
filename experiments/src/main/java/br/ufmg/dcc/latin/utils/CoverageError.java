@@ -103,11 +103,14 @@ public class CoverageError {
     		for (int i = 0; i < estimated.length; i++) {
     			squaredDiff += Math.pow((truth[i][j]-estimated[i][j]),2);
     		}
+    		
     		squaredDiff = squaredDiff/truth.length;
     		error += squaredDiff;
 		}
-    	
-		
+    
+		if (estimated[0].length == 0) {
+			return 0;
+		}
 		return error/estimated[0].length;
 	}
 	
