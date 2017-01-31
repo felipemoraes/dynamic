@@ -35,6 +35,7 @@ public class CoverageAnalysis {
 			//if (!userQuery.tid.equals("DD16-1")){
 		    //		continue;
 		    //}
+			System.out.println(userQuery.tid);
 			int iteration = 1;
 			ResultList resultList = baselineRanker.getResultList(userQuery);
 			FeedbackList feedbackList = user.getFeedbackSet(userQuery.tid, resultList);

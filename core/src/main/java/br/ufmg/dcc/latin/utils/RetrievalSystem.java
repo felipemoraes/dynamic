@@ -225,6 +225,7 @@ public class RetrievalSystem {
 			}
 		}
 		
+		currentIndex = index;
 		try {
 			reader = DirectoryReader.open(FSDirectory.open( new File("../etc/indices/" + index).toPath()) );
 			searcher = new IndexSearcher(reader);
