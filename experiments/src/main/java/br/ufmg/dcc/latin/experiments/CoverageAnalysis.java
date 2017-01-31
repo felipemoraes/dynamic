@@ -45,7 +45,7 @@ public class CoverageAnalysis {
 			while (!stopping.stop(feedbackList)) {
 				iteration++;
 				PassageAspectModel passageAspectModel = aspectModeling.getAspectModel(feedbackList);
-				System.out.println(userQuery.tid + " " + iteration   + " " + coverageError.getError(userQuery.tid, passageAspectModel));
+				out.println(userQuery.tid + " " + iteration   + " " + coverageError.getError(userQuery.tid, passageAspectModel));
 				resultList = dynamicReranker.getResultList(aspectModeling.getAspectModel(feedbackList));
 				feedbackList = user.getFeedbackSet(userQuery.tid, resultList);
 				
