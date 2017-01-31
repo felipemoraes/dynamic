@@ -32,9 +32,9 @@ public class CoverageAnalysis {
 		PrintWriter out = new PrintWriter(bw);
 		
 		for (UserQuery userQuery : TopicsFile.getTrecDD()) {
-			//if (!userQuery.tid.equals("DD16-1")){
-		    //		continue;
-		    //}
+			if (!userQuery.tid.equals("DD16-1")){
+		    		continue;
+		    }
 			System.out.println(userQuery.tid);
 			int iteration = 1;
 			ResultList resultList = baselineRanker.getResultList(userQuery);

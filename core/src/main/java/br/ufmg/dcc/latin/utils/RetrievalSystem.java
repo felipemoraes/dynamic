@@ -118,37 +118,56 @@ public class RetrievalSystem {
 		SharedCache.docnos = docnos;
 		
 		initInMemoryIndex(index);
-		
+		currentIndex = index;
 		return resultList;
 	}
 
 	
-	private static void initInMemoryIndex(String index) {
+	public static void initVocab(){
+		initPassageIndex();
+		if (SharedCache.vocab != null) {
+			return;
+		}
+		try {
+			Terms termsPassage = MultiFields.getTerms(passageReader, "passage");
+			SharedCache.vocab = new InMemoryVocabulary[2];
+			SharedCache.vocab[0] = new InMemoryVocabulary(termsPassage);
+			SharedCache.vocab[1] = new InMemoryVocabulary(termsPassage);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void initTermStats(String index){
+		
 		if (currentIndex != null) {
 			if (currentIndex.equals(index)){
 				return;
 			}
-		} else {
-			initPassageIndex();
+		} 
+		
+		try {
+			SharedCache.termStats = new InMemoryTermStats[2];
+			Terms termsContent = MultiFields.getTerms(searcher.getIndexReader(), "content");
+			SharedCache.termStats[0] = new InMemoryTermStats(termsContent, SharedCache.vocab[0]);
+			Terms termsTitle = MultiFields.getTerms(searcher.getIndexReader(), "title");
+			SharedCache.termStats[1] = new InMemoryTermStats(termsTitle, SharedCache.vocab[1]);
+		} catch (IOException e) {
+			
+			e.printStackTrace();
 		}
+	}
+	
+	
+	private static void initInMemoryIndex(String index) {
+		initVocab();
+		initTermStats(index);
 		
 		try {
 			
-			Terms termsPassage = MultiFields.getTerms(passageReader, "passage");
-			
-			Terms termsContent = MultiFields.getTerms(searcher.getIndexReader(), "content");
-			SharedCache.vocab = new InMemoryVocabulary[2];
-			SharedCache.termStats = new InMemoryTermStats[2];
+		
 			SharedCache.directedIndex = new InMemoryDirectedIndex[2];
-			
-			SharedCache.vocab[0] = new InMemoryVocabulary(termsPassage);
-			SharedCache.termStats[0] = new InMemoryTermStats(termsContent, SharedCache.vocab[0]);
-			
-			
-			Terms termsTitle = MultiFields.getTerms(searcher.getIndexReader(), "title");
-			SharedCache.vocab[1] = new InMemoryVocabulary(termsPassage);
-			SharedCache.termStats[1] = new InMemoryTermStats(termsTitle, SharedCache.vocab[1]);
-
+		
 			IndexReader indexReader = searcher.getIndexReader();
 			SharedCache.directedIndex[0] = new InMemoryDirectedIndex(SharedCache.vocab[0].size(), indexReader.getDocCount("content")
 					, indexReader.getSumTotalTermFreq("content"), indexReader.getSumDocFreq("content"));
@@ -225,7 +244,7 @@ public class RetrievalSystem {
 			}
 		}
 		
-		currentIndex = index;
+		
 		try {
 			reader = DirectoryReader.open(FSDirectory.open( new File("../etc/indices/" + index).toPath()) );
 			searcher = new IndexSearcher(reader);
