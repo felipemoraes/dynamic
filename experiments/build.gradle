@@ -1,0 +1,20 @@
+apply plugin: 'application'
+
+
+dependencies {
+    compile project(':core')
+	testCompile 'junit:junit:4.11'
+}
+
+
+task CoverageAnalysis(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.experiments.CoverageAnalysis'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
+
+
+
+mainClassName = ' '

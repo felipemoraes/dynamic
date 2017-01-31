@@ -1,4 +1,4 @@
-package br.ufmg.dcc.latin.index;
+package br.ufmg.dcc.latin.utils;
 
 import gnu.trove.list.array.TIntArrayList;
 

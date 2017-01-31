@@ -38,7 +38,7 @@ import org.apache.lucene.util.BytesRef;
  * 
  * @lucene.experimental
  */
-public class LMDirichlet extends LMDirichletSimilarity implements ReScoreSimilarity {
+public class LMDirichlet extends LMDirichletSimilarity implements DynamicSimilarity {
 
   public LMDirichlet(float mu) {
 	  super(mu);

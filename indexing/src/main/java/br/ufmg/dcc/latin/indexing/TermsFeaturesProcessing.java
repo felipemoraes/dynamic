@@ -17,7 +17,7 @@ import org.apache.lucene.store.IOContext;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.BytesRef;
 
-import br.ufmg.dcc.latin.index.InMemoryVocabulary;
+import br.ufmg.dcc.latin.utils.InMemoryVocabulary;
 
 
 

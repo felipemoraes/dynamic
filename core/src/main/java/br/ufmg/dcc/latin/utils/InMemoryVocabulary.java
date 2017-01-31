@@ -1,4 +1,4 @@
-package br.ufmg.dcc.latin.index;
+package br.ufmg.dcc.latin.utils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,13 +7,14 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.index.Terms;
 import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.util.BytesRef;
 
-import br.ufmg.dcc.latin.retrieval.RetrievalController;
 import gnu.trove.map.hash.TObjectIntHashMap;
 
 public class InMemoryVocabulary {
@@ -53,7 +54,8 @@ public class InMemoryVocabulary {
 	private List<String> tokenizeText(String text){
 		List<String> result = new ArrayList<String>();
 		try {
-		      TokenStream stream  = RetrievalController.getAnalyzer().tokenStream(null, new StringReader(text));
+			  Analyzer analyzer = new EnglishAnalyzer();
+		      TokenStream stream  = analyzer.tokenStream(null, new StringReader(text));
 		      stream.reset();
 	
 		      while (stream.incrementToken()) {
@@ -62,7 +64,7 @@ public class InMemoryVocabulary {
 		      } 
 		      
 		      stream.close();
-		
+		      analyzer.close();
 		} catch (IOException e) {
 			      throw new RuntimeException(e);
 		}

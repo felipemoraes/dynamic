@@ -1,4 +1,4 @@
-package br.ufmg.dcc.latin.index;
+package br.ufmg.dcc.latin.utils;
 
 import java.io.IOException;
 
