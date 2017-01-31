@@ -236,7 +236,6 @@ public class RetrievalSystem {
 	private static void setIndexSearcher(String index) {
 		
 		IndexReader reader;
-		searcher = null;
 		
 		if (currentIndex!= null) {
 			if (currentIndex.equals(index)) {
