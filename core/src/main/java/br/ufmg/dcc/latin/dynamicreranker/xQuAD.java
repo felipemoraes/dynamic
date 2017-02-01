@@ -52,6 +52,10 @@ public class xQuAD extends DynamicReranker {
 
 	@Override
 	public double score(int docid){
+		if (importance.length == 0) {
+			return relevance[docid];
+		}
+		
 		float diversity = 0;
 		for (int i = 0; i < importance.length; i++) {
 			diversity +=  importance[i]*coverage[docid][i]*novelty[i];
