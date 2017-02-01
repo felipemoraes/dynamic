@@ -18,7 +18,6 @@ import br.ufmg.dcc.latin.user.FeedbackList;
 import br.ufmg.dcc.latin.user.TrecDDUser;
 import br.ufmg.dcc.latin.user.User;
 import br.ufmg.dcc.latin.user.UserQuery;
-import br.ufmg.dcc.latin.utils.CoverageError;
 import br.ufmg.dcc.latin.utils.TopicsFile;
 
 public class EffectivenessAnalysis {
@@ -27,7 +26,6 @@ public class EffectivenessAnalysis {
 		User user = new TrecDDUser();
 		CubeTest cubeTest = new CubeTest();
 		BaselineRanker baselineRanker = new AdHocBaselineRanker("DPH", new double[]{0.15,0.85});
-		CoverageError coverageError = new CoverageError();
 		
 	    FileWriter fw = new FileWriter( "EffectivenessAnalysis.txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
@@ -51,7 +49,6 @@ public class EffectivenessAnalysis {
 			while (!stopping.stop(feedbackList)) {
 				iteration++;
 				PassageAspectModel passageAspectModel = aspectModeling.getAspectModel(feedbackList);
-				out.println(userQuery.tid + " " + iteration   + " " + coverageError.getError(userQuery.tid, passageAspectModel));
 				ResultList resultListN = dynamicReranker.getResultList(passageAspectModel);
 				xQuADDocs[iteration-1] = resultListN.docnos;
 				feedbackList = user.getFeedbackSet(userQuery.tid, resultListN);
