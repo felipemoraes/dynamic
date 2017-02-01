@@ -45,7 +45,7 @@ public class PassageAspectModel extends AspectModel implements DiversityAspectMo
 			String passage = RetrievalSystem.getPassage(passageId);
 			double[] scores = RescorerSystem.rescore(passage);
 			scores = scale(scores);
-			scores = scalarMultiply(scores, 4);
+			scores = scalarMultiply(scores, passageAspect.getPassageRelevance(passageId));
 			for (int i = 0; i < scores.length; i++) {
 				if (relevance[i] < scores[i]){
 					relevance[i] = scores[i];
