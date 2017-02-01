@@ -16,7 +16,7 @@ task CoverageAnalysis(type: JavaExec, dependsOn: classes) {
 }
 
 task EffectivenessAnalysis(type: JavaExec, dependsOn: classes) {
-    main = 'br.ufmg.dcc.latin.experiments.CoverageAnalysis'
+    main = 'br.ufmg.dcc.latin.experiments.EffectivenessAnalysis'
     classpath = sourceSets.main.runtimeClasspath
      if(project.hasProperty('Xargs')){
        args (Xargs.split());
