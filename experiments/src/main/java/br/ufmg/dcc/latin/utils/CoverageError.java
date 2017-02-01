@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.math3.stat.correlation.KendallsCorrelation;
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 
 import br.ufmg.dcc.latin.aspectmodeling.PassageAspectModel;
@@ -84,7 +85,25 @@ public class CoverageError {
 		return spearman(realCoverage, coverage);
 	}
 
+	public double getKendall(String topicId, PassageAspectModel aspectModel){
+		String[] aspects = aspectModel.getAspects();
+		
+		int aSize = aspects.length;
+		int n = SharedCache.docnos.length;
 
+		double[][] coverage = new double[n][aSize];
+		
+		for (int i = 0; i < aspects.length; i++) {
+			double[] aspectCoverage = aspectModel.getAspectFlatCoverage(aspects[i]);
+			for (int j = 0; j < aspectCoverage.length; j++) {
+				coverage[j][i] = aspectCoverage[j];
+			}
+		}
+		
+		double[][] realCoverage = getRealCoverage(topicId,aspects);
+		
+		return kendall(realCoverage, coverage);
+	}
 
 	private double[][] getRealCoverage(String topicId, String[] aspects) {
 		
@@ -114,6 +133,8 @@ public class CoverageError {
 		return coverage;
 
 	}
+	
+	
 	
     private double rmse(double[][] truth, double[][] estimated) {
     	if (estimated.length == 0) {
@@ -150,6 +171,28 @@ public class CoverageError {
     			v2[i] = estimated[i][j];
     		}
     		error += sp.correlation(v1, v2);
+		}
+    
+		if (estimated[0].length == 0) {
+			return 0;
+		}
+		return error/estimated[0].length;
+	}
+    
+    private double kendall(double[][] truth, double[][] estimated) {
+    	if (estimated.length == 0) {
+    		return 0;
+    	}
+    	KendallsCorrelation kc = new KendallsCorrelation();
+    	double error = 0;
+    	for (int j = 0; j < estimated[0].length; j++) {
+    		double[] v1 = new double[estimated.length];
+    		double[] v2 = new double[estimated.length];
+    		for (int i = 0; i < estimated.length; i++) {
+    			v1[i] = truth[i][j];
+    			v2[i] = estimated[i][j];
+    		}
+    		error += kc.correlation(v1, v2);
 		}
     
 		if (estimated[0].length == 0) {

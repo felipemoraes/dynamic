@@ -47,6 +47,7 @@ public class CoverageAnalysis {
 				PassageAspectModel passageAspectModel = aspectModeling.getAspectModel(feedbackList);
 				out.println(userQuery.tid + " " + iteration   + " " + coverageError.getRmse(userQuery.tid, passageAspectModel)
 						+ " " + coverageError.getSpearman(userQuery.tid, passageAspectModel)
+						+ " " + coverageError.getKendall(userQuery.tid, passageAspectModel)
 						);
 				resultList = dynamicReranker.getResultList(passageAspectModel);
 				feedbackList = user.getFeedbackSet(userQuery.tid, resultList);
