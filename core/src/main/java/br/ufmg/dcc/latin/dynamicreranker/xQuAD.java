@@ -3,6 +3,8 @@ package br.ufmg.dcc.latin.dynamicreranker;
 
 import java.util.Arrays;
 
+import org.apache.commons.math3.stat.StatUtils;
+
 import br.ufmg.dcc.latin.aspectmodeling.PassageAspectModel;
 import br.ufmg.dcc.latin.baselineranker.ResultList;
 import br.ufmg.dcc.latin.utils.SharedCache;
@@ -20,7 +22,7 @@ public class xQuAD extends DynamicReranker {
 		this.depth = depth;
 		this.docids = SharedCache.docids;
 		this.docnos = SharedCache.docnos;
-		this.relevance = SharedCache.scores;
+		this.relevance = normalize(SharedCache.scores);
 		selected = new BooleanSelectedSet(this.docnos.length);
 	}
 
@@ -28,6 +30,15 @@ public class xQuAD extends DynamicReranker {
 		updateCoverage(aspectModel);
 		updateNovelty();
 		return super.getResultList(aspectModel);
+	}
+	
+	public double[] normalize(double[] values) {
+		double[] newValues = new double[values.length];
+		double sum = StatUtils.sum(values);
+		for (int i = 0; i < newValues.length; i++) {
+			newValues[i] = values[i]/sum;
+		}
+		return newValues;
 	}
 	
 	private void updateCoverage(PassageAspectModel aspectModel) {
