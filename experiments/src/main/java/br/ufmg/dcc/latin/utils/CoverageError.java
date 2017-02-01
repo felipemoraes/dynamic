@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.stat.correlation.KendallsCorrelation;
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 
@@ -143,8 +144,22 @@ public class CoverageError {
     	double error = 0;
     	for (int j = 0; j < estimated[0].length; j++) {
     		double squaredDiff = 0;
+    		double[] v1 = new double[estimated.length];
+    		double[] v2 = new double[estimated.length];
     		for (int i = 0; i < estimated.length; i++) {
-    			squaredDiff += Math.pow((truth[i][j]-estimated[i][j]),2);
+    			v1[i] = truth[i][j];
+    			v2[i] = estimated[i][j];
+    		}
+    		double max1 = StatUtils.max(v1);
+    		double max2 = StatUtils.max(v2);
+    		
+    		double min1 = StatUtils.min(v1);
+    		double min2 = StatUtils.min(v2);
+    		
+    		for (int i = 0; i < estimated.length; i++) {
+    			double value1 = (truth[i][j]-min1)/(max1-min1);
+    			double value2 = (estimated[i][j]-min2)/(max2-min2);
+    			squaredDiff += Math.pow((value1-value2),2);
     		}
     		
     		squaredDiff = squaredDiff/truth.length;
