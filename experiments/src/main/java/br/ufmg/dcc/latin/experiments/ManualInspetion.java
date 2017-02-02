@@ -40,7 +40,7 @@ public class ManualInspetion {
 		    //}
 			String[][] xQuADDocs = new String[10][5];
 			String[][] baseDocs = new String[10][5];
-			//System.out.println(userQuery.tid);
+			System.out.println(userQuery.tid);
 			int iteration = 1;
 			
 			ResultList resultListTime1 = baselineRanker.getResultList(userQuery);
@@ -78,7 +78,7 @@ public class ManualInspetion {
 				feedbackList = user.getFeedbackSet(userQuery.tid, resultListN);
 				
 			}
-			out.println(userQuery.tid  
+			out.println(userQuery.index + " " + userQuery.tid  
 					+	" "	+ cubeTest.getAverageCubeTest(10, userQuery.tid , xQuADDocs) + " " + cubeTest.getAverageCubeTest(10, userQuery.tid , baseDocs)
 					+	" "	+ cubeTest.getSRecall(10, userQuery.tid , xQuADDocs) + " " + cubeTest.getSRecall(10, userQuery.tid , baseDocs)
 					+	" "	+ cubeTest.getRecall(userQuery.tid , SharedCache.docnos) 
