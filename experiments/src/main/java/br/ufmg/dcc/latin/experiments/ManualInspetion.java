@@ -30,14 +30,14 @@ public class ManualInspetion {
 		BaselineRanker baselineRanker = new AdHocBaselineRanker("DPH", new double[]{0.15,0.85});
 		CoverageError coverageError = new CoverageError();
 		
-	    FileWriter fw = new FileWriter( "ebola16_stats.txt");
+	    FileWriter fw = new FileWriter( "search_process_stats.txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 		
 		for (UserQuery userQuery : TopicsFile.getTrecDD()) {
-			if (!userQuery.index.equals("ebola16")){
-		    	continue;
-		    }
+			//if (!userQuery.index.equals("ebola16")){
+		    //	continue;
+		    //}
 			String[][] xQuADDocs = new String[10][5];
 			String[][] baseDocs = new String[10][5];
 			//System.out.println(userQuery.tid);
