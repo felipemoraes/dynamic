@@ -245,6 +245,79 @@ public class CubeTest {
 		return ctAccu/time;
 	}
 	
+	public double getSRecall(int iteration, String topic, String[][] docnos){
+		
+		currentGainHeight = new HashMap<String, Double>();
+		subtopicCover = new HashMap<String, Integer>();
+
+
+		for (int i = 0; i < iteration; i++) {
+			if (i > docnos.length){
+				break;
+			}
+			if (docnos[i] == null) {
+				for (int j = 0; j < 5; j++) {
+					//double act = score/MAX_HEIGHT;
+					//System.out.println(docnos[i][j]);
+					//ctAccu += act/(i+1);
+					//time++;
+				}
+				continue;
+			}
+			for (int j = 0; j < docnos[i].length; j++) {
+				if (docnos[i][j] == null){
+					//double act = score/MAX_HEIGHT;
+					//System.out.println(docnos[i][j]);
+					//ctAccu += act/(i+1);
+					//time++;
+					continue;
+				}
+				getDocGain(topic,docnos[i][j]);
+
+			}
+			
+		}
+		double covered = 0;
+		for (Entry<String, Integer> entry : subtopicCover.entrySet()) {
+			if (entry.getValue() > 0) {
+				covered++;
+			}
+		}
+
+		return ((double) covered)/subtopicWeight.get(topic).size();
+	}
+	
+	public double getRelevants(String topic){
+		double relevants = qrels.get(topic).size();
+		return relevants;
+	}
+	
+	
+	public double getRecall(String topic, String[] docnos){
+		double relevants = qrels.get(topic).size();
+		double relevantsRetrieved = 0;
+		
+		for (int i = 0; i < docnos.length; i++) {
+			if (qrels.get(topic).containsKey(docnos[i])){
+				relevantsRetrieved++;
+			}
+		}
+		//System.out.println();
+		return relevantsRetrieved/relevants;
+	}
+	
+	public double getPrecision(String topic, String[] docnos){
+		double relevantsRetrieved = 0;
+		
+		for (int i = 0; i < docnos.length; i++) {
+			if (qrels.get(topic).containsKey(docnos[i])){
+				relevantsRetrieved++;
+			}
+		}
+		//System.out.println();
+		return relevantsRetrieved/docnos.length;
+	}
+	
 	public double getGain(int iteration, String topic, String[][] docnos){
 		
 		currentGainHeight = new HashMap<String, Double>();

@@ -85,6 +85,72 @@ public class CoverageError {
 		
 		return spearman(realCoverage, coverage);
 	}
+	
+	public double getDivergence(String topicId, PassageAspectModel aspectModel){
+		String[] aspects = aspectModel.getAspects();
+		
+		int aSize = aspects.length;
+		int n = SharedCache.docnos.length;
+
+		double[][] coverage = new double[n][aSize];
+		
+		for (int i = 0; i < aspects.length; i++) {
+			double[] aspectCoverage = aspectModel.getAspectFlatCoverage(aspects[i]);
+			for (int j = 0; j < aspectCoverage.length; j++) {
+				coverage[j][i] = aspectCoverage[j];
+			}
+		}
+		
+		double[][] realCoverage = getRealCoverage(topicId,aspects);
+		
+		return divergence(realCoverage, coverage);
+	}
+	
+
+    private double klDivergence(double[] p1, double[] p2) {
+    double log2 = Math.log(2);
+
+      double klDiv = 0.0;
+
+      for (int i = 0; i < p1.length; ++i) {
+        if (p1[i] == 0) { continue; }
+        if (p2[i] == 0.0) { continue; } // Limin
+
+      klDiv += p1[i] * Math.log( p1[i] / p2[i] );
+      }
+
+      return klDiv / log2; // moved this division out of the loop -DM
+    }
+
+	private double divergence(double[][] truth, double[][] estimated) {
+    	if (estimated.length == 0) {
+    		return 0;
+    	}
+    	double error = 0;
+    	for (int j = 0; j < estimated[0].length; j++) {
+    		double[] v1 = new double[estimated.length];
+    		double[] v2 = new double[estimated.length];
+    		for (int i = 0; i < estimated.length; i++) {
+    			v1[i] = truth[i][j];
+    			v2[i] = estimated[i][j];
+    		}
+    		double sum1 = StatUtils.sum(v1);
+    		double sum2 = StatUtils.sum(v2);
+    		for (int i = 0; i < estimated.length; i++) {
+    			v1[i] = v1[i]/sum1;
+    			v2[i] = v2[i]/sum2;
+    		}
+    		error += klDivergence(v1, v2);
+		}
+    
+		if (estimated[0].length == 0) {
+			return 0;
+		}
+		return error/estimated[0].length;
+		
+	}
+
+
 
 	public double getKendall(String topicId, PassageAspectModel aspectModel){
 		String[] aspects = aspectModel.getAspects();

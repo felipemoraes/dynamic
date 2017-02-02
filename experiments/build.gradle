@@ -23,5 +23,14 @@ task EffectivenessAnalysis(type: JavaExec, dependsOn: classes) {
     }
 }
 
+task ManualInspetion(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.experiments.ManualInspetion'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
+
+
 
 mainClassName = ' '
