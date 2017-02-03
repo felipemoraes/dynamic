@@ -258,6 +258,8 @@ def main():
     print "run_id,topic,ct@10,avg_ct@10"
     ntopics = 0
     for topic, result in results.iteritems():
+        if topic != "DD16-7":
+            continue
         if not qrels.has_key(topic):
             continue
         ntopics += 1
@@ -272,6 +274,8 @@ def main():
                     act = score/MAX_HEIGHT
                     ct_accu += act/(iteration+1)
                     time += 1
+                    print score, docno
+                    print ct_accu
                     
                 ct = score/MAX_HEIGHT
                 ct_speed = ct/(iteration+1)
