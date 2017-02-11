@@ -142,7 +142,15 @@ public class SimulatedRelevance {
         			double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, accResultxQuAD);
         			double actPM2 = cubeTest.getAverageCubeTest(i+1, topicId, accResultPM2);
         			double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, accBaseLineResult);
-        			out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " +actbaseline  );
+        			double recallxQuAD = cubeTest.getRecall(i+1, topicId, accResultxQuAD);
+        			double recallPM2 = cubeTest.getRecall(i+1, topicId, accResultPM2);
+        			double recallbaseline = cubeTest.getRecall(i+1, topicId, accBaseLineResult);
+        			double precisionxQuAD = cubeTest.getPrecision(i+1, topicId, accResultxQuAD);
+        			double precisionPM2 = cubeTest.getPrecision(i+1, topicId, accResultPM2);
+        			double precisionbaseline = cubeTest.getPrecision(i+1, topicId, accBaseLineResult);
+        			out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " +actbaseline 
+        					+ " " + precisionxQuAD + " " + precisionPM2 + " " +precisionbaseline
+        					+ " " + recallxQuAD + " " + recallPM2 + " " +recallbaseline);
 				}
         		
         		count++;
