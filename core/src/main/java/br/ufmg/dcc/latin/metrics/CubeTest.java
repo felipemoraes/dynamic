@@ -13,7 +13,7 @@ import java.util.Map.Entry;
 
 public class CubeTest {
 	
-	private int MAX_HEIGHT = 1;
+	private int MAX_HEIGHT = 5;
 	private double gamma = 0.5f;
 	
 	// $topic $docno $subtopic $judgement
