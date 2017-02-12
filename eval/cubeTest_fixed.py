@@ -4,7 +4,7 @@ import sys
 import math
 
 MAX_JUDGMENT = 4
-MAX_HEIGHT = 5
+MAX_HEIGHT = 1
 beta = 1
 gamma = 0.5
 
@@ -52,11 +52,13 @@ def prepare_qrels(qrelsfile):
 
     for topic, docs in tmp_qrels.iteritems():
         for docno, subtopics in docs.iteritems():
+            max_rel = 0
             for subtopic, rels in subtopics.iteritems():
                 rels = sorted(rels.values(),reverse=True)  
                 log2 = math.log(2)
                 rel = sum([ rel/(math.log(rank+2)/log2)  for rank, rel in enumerate(rels)])
-                
+                if rel > max_rel:
+                    max_rel = rel
                 if not qrels.has_key(topic):
                     qrels[topic] = {}
                     subtopic_weight[topic] = {}
@@ -74,7 +76,8 @@ def prepare_qrels(qrelsfile):
                 subtopic_weight[topic][subtopic] = 1
                 current_gain_height[topic][subtopic] = 0
                 subtopic_cover[topic][subtopic] = 0
-
+            for subtopic, rels in subtopics.iteritems():
+                qrels[topic][docno][subtopic] = qrels[topic][docno][subtopic]/max_rel
     #### Normalize subtopic weight
 
     for topic, subtopics in subtopic_weight.iteritems():
