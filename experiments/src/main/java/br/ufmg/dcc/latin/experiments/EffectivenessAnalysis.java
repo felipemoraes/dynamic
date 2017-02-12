@@ -70,6 +70,7 @@ public class EffectivenessAnalysis {
 				
 			}
 			
+			
 			for (int i = 0; i < iteration; i++) {
 				out.println(userQuery.tid + " " + (i+1)   + " " + cubeTest.getAverageCubeTest(i+1, userQuery.tid , baseDocs)  
 						+ " " + cubeTest.getAverageCubeTest(i+1, userQuery.tid , xQuADDocs)  

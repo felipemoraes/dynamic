@@ -13,7 +13,7 @@ import java.util.Map.Entry;
 
 public class CubeTest {
 	
-	private int MAX_HEIGHT = 5;
+	private int MAX_HEIGHT = 1;
 	private double gamma = 0.5f;
 	
 	// $topic $docno $subtopic $judgement
@@ -93,11 +93,11 @@ public class CubeTest {
 					List<Integer> rels = entrySubtopic.getValue();
 					double rel = 0;
 					double log2 = Math.log(2);
-					if (rel > maxRel) {
-						maxRel = rel;
-					}
 					for (int i = 0; i < rels.size(); i++) {
 						rel += rels.get(i)/(Math.log(i+2)/log2);;
+					}
+					if (rel > maxRel) {
+						maxRel = rel;
 					}
 					
 					qrels.get(topic).get(docno).put(subtopic, rel);
@@ -179,7 +179,6 @@ public class CubeTest {
 			int nrel = subtopicCover.get(subtopic);
 			double hightKeepfilling = getHightKeepFilling(topic,docno,subtopic,nrel+1);
 			docGain += area*hightKeepfilling;
-			
 			subtopicCover.put(subtopic, nrel+1);
 		}
 		return docGain;
@@ -198,7 +197,6 @@ public class CubeTest {
 		double currentGain = currentGainHeight.get(subtopic);
 		
 		double gain = getHightDiscount(nrel)*rel;
-		
 		if (currentGain + gain > MAX_HEIGHT){
 			gain = MAX_HEIGHT - currentGain;
 		}
@@ -247,6 +245,7 @@ public class CubeTest {
 				ctAccu += act/(i+1);
 				time++;
 			}
+			
 			
 		}
 		//System.out.println();
@@ -346,6 +345,7 @@ public class CubeTest {
 				}
 				double gain = getDocGain(topic,docnos[i][j]);
 				score += gain;
+				
 				double act = score/MAX_HEIGHT;
 				//System.out.println(docnos[i][j]);
 				ctAccu += act/(i+1);
