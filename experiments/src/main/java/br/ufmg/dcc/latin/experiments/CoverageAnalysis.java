@@ -49,6 +49,7 @@ public class CoverageAnalysis {
 						+ " " + coverageError.getSpearman(userQuery.tid, passageAspectModel)
 						+ " " + coverageError.getKendall(userQuery.tid, passageAspectModel)
 						+ " " + coverageError.getTauAP(userQuery.tid, passageAspectModel)
+						+ " " + coverageError.getNdcg(userQuery.tid, passageAspectModel)
  						);
 				resultList = dynamicReranker.getResultList(passageAspectModel);
 				feedbackList = user.getFeedbackSet(userQuery.tid, resultList);

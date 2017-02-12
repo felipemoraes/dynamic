@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.stat.correlation.KendallsCorrelation;
@@ -304,6 +305,26 @@ public class CoverageError {
 		return tauAPIA(realCoverage, coverage);
 	}
 	
+	public double getNdcg(String tid, PassageAspectModel aspectModel) {
+		String[] aspects = aspectModel.getAspects();
+		
+		int aSize = aspects.length;
+		int n = SharedCache.docnos.length;
+
+		double[][] coverage = new double[n][aSize];
+		
+		for (int i = 0; i < aspects.length; i++) {
+			double[] aspectCoverage = aspectModel.getAspectFlatCoverage(aspects[i]);
+			for (int j = 0; j < aspectCoverage.length; j++) {
+				coverage[j][i] = aspectCoverage[j];
+			}
+		}
+		
+		double[][] realCoverage = getRealCoverage(tid,aspects);
+		
+		return ndcgIA(realCoverage, coverage);
+	}
+	
     private double tauAPIA(double[][] truth, double[][] estimated) {
     	
     	if (estimated.length == 0) {
@@ -325,6 +346,59 @@ public class CoverageError {
 			return 0;
 		}
 		return error/estimated[0].length;
+	}
+    
+    private double ndcgIA(double[][] truth, double[][] estimated) {
+    	
+    	if (estimated.length == 0) {
+    		return 0;
+    	}
+    	
+    	
+    	double error = 0;
+    	for (int j = 0; j < estimated[0].length; j++) {
+    		double[] v1 = new double[estimated.length];
+    		double[] v2 = new double[estimated.length];
+    		for (int i = 0; i < estimated.length; i++) {
+    			v1[i] = truth[i][j];
+    			v2[i] = estimated[i][j];
+    		}
+    		error += ndcg(v1, v2);
+		}
+    
+		if (estimated[0].length == 0) {
+			return 0;
+		}
+		return error/estimated[0].length;
+	}
+
+
+
+	private double ndcg(double[] v1, double[] v2) {
+		
+		int[] indices = IntStream.range(0, v2.length)
+                .boxed().sorted((i, j) -> (new Double(v2[i])).compareTo(v2[j])*-1 )
+                .mapToInt(ele -> ele).toArray();
+		double dcg = 0;
+		for (int k = 1; k <= indices.length; k++) {
+			dcg += (Math.pow(2, v1[indices[k-1]])-1)/Math.log(k+1);
+		}
+		indices = IntStream.range(0, v1.length)
+                .boxed().sorted((i, j) -> (new Double(v1[i])).compareTo(v1[j])*-1 )
+                .mapToInt(ele -> ele).toArray();
+		double idcg = 0;
+		for (int k = 1; k <= indices.length; k++) {
+			idcg += (Math.pow(2, v1[k-1])-1)/Math.log(k+1);
+		}
+		// TODO Auto-generated method stub
+		if (dcg == 0) {
+			return 0;
+		}
+		
+		if (idcg == 0){
+			return 0;
+		}
+		return dcg/idcg;
 	}
 	
 }
