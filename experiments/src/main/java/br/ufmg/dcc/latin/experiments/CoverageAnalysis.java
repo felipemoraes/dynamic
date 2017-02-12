@@ -40,7 +40,7 @@ public class CoverageAnalysis {
 			ResultList resultList = baselineRanker.getResultList(userQuery);
 			FeedbackList feedbackList = user.getFeedbackSet(userQuery.tid, resultList);
 			PassageAspectModeling aspectModeling = new PassageAspectModeling();
-			xQuAD dynamicReranker = new xQuAD(0.5, 1000);
+			xQuAD dynamicReranker = new xQuAD(1.0, 1000);
 			Stopping stopping = new FixedDepth();
 			while (!stopping.stop(feedbackList)) {
 				iteration++;
@@ -48,7 +48,8 @@ public class CoverageAnalysis {
 				out.println(userQuery.tid + " " + iteration   + " " + coverageError.getRmse(userQuery.tid, passageAspectModel)
 						+ " " + coverageError.getSpearman(userQuery.tid, passageAspectModel)
 						+ " " + coverageError.getKendall(userQuery.tid, passageAspectModel)
-						);
+						+ " " + coverageError.getTauAP(userQuery.tid, passageAspectModel)
+ 						);
 				resultList = dynamicReranker.getResultList(passageAspectModel);
 				feedbackList = user.getFeedbackSet(userQuery.tid, resultList);
 				

@@ -281,6 +281,50 @@ public class CoverageError {
 		}
 		return error/estimated[0].length;
 	}
+
+
+
+	public double getTauAP(String tid, PassageAspectModel aspectModel) {
+		String[] aspects = aspectModel.getAspects();
+		
+		int aSize = aspects.length;
+		int n = SharedCache.docnos.length;
+
+		double[][] coverage = new double[n][aSize];
+		
+		for (int i = 0; i < aspects.length; i++) {
+			double[] aspectCoverage = aspectModel.getAspectFlatCoverage(aspects[i]);
+			for (int j = 0; j < aspectCoverage.length; j++) {
+				coverage[j][i] = aspectCoverage[j];
+			}
+		}
+		
+		double[][] realCoverage = getRealCoverage(tid,aspects);
+		
+		return tauAPIA(realCoverage, coverage);
+	}
 	
+    private double tauAPIA(double[][] truth, double[][] estimated) {
+    	
+    	if (estimated.length == 0) {
+    		return 0;
+    	}
+    	TauApCorrelation tauAP = new TauApCorrelation();
+    	double error = 0;
+    	for (int j = 0; j < estimated[0].length; j++) {
+    		double[] v1 = new double[estimated.length];
+    		double[] v2 = new double[estimated.length];
+    		for (int i = 0; i < estimated.length; i++) {
+    			v1[i] = truth[i][j];
+    			v2[i] = estimated[i][j];
+    		}
+    		error += tauAP.correlation(v1, v2);
+		}
+    
+		if (estimated[0].length == 0) {
+			return 0;
+		}
+		return error/estimated[0].length;
+	}
 	
 }
