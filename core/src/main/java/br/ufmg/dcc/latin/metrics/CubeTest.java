@@ -13,7 +13,7 @@ import java.util.Map.Entry;
 
 public class CubeTest {
 	
-	private int MAX_HEIGHT = 5;
+	private int MAX_HEIGHT = 1;
 	private double gamma = 0.5f;
 	
 	// $topic $docno $subtopic $judgement
@@ -79,12 +79,14 @@ public class CubeTest {
 				qrels.put(entryTopic.getKey(), new HashMap<String, Map<String, Double > >());
 			} 
 			
+			
 			for (Entry<String, Map<String, List<Integer>>> entryDocno: entryTopic.getValue().entrySet()){
 				String docno = entryDocno.getKey();
 				if (!qrels.get(topic).containsKey(docno)){
 					qrels.get(topic).put(docno, new HashMap<String, Double >());
 				}
 				
+				double maxRel = 0;
 				for(Entry<String, List<Integer>> entrySubtopic: entryDocno.getValue().entrySet()){
 					
 					String subtopic = entrySubtopic.getKey();	
@@ -97,8 +99,16 @@ public class CubeTest {
 					for (int i = 0; i < rels.size(); i++) {
 						rel += rels.get(i)/(Math.log(i+2)/log2);;
 					}
-					
+					if (rel > maxRel) {
+						maxRel = rel;
+					}
 					qrels.get(topic).get(docno).put(subtopic, rel);
+				}
+				
+				for(Entry<String, List<Integer>> entrySubtopic: entryDocno.getValue().entrySet()){
+					String subtopic = entrySubtopic.getKey();	
+					double rel = qrels.get(topic).get(docno).get(subtopic);
+					qrels.get(topic).get(docno).put(subtopic, rel/maxRel);
 				}
 				
 			}
