@@ -146,14 +146,15 @@ public class TauApCorrelation {
       
         
         double sum = 0;
-        for (int i = 1; i < n; i++) {
+        for (int i = 2; i <= n; i++) {
         	long pairAbovei = 0;
-        	for (int j = i-1; j >= 0; j--) {
+        	int index = i - 1;
+        	for (int j = index - 1; j >= 0; j--) {
         		if (pairs[j].getFirst().equals(pairs[j].getSecond())) {
         			pairAbovei++;
         		}
         	}
-        	sum += (double)(pairAbovei)/(i);
+        	sum += (double)(pairAbovei)/(i-1);
         }
         return (2d/(n-1)) * sum-1;
     }
