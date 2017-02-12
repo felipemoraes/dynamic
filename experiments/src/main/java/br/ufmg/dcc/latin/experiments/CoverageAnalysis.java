@@ -32,7 +32,7 @@ public class CoverageAnalysis {
 		PrintWriter out = new PrintWriter(bw);
 		
 		for (UserQuery userQuery : TopicsFile.getTrecDD()) {
-			//if (!userQuery.tid.equals("DD16-3")){
+			//if (!userQuery.tid.equals("DD16-1")){
 		    //	continue;
 		    //}
 			System.out.println(userQuery.tid);

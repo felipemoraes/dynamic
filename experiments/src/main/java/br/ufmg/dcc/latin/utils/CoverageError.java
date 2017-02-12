@@ -388,7 +388,7 @@ public class CoverageError {
                 .mapToInt(ele -> ele).toArray();
 		double idcg = 0;
 		for (int k = 1; k <= indices.length; k++) {
-			idcg += (Math.pow(2, v1[k-1])-1)/Math.log(k+1);
+			idcg += (Math.pow(2, v1[indices[k-1]])-1)/Math.log(k+1);
 		}
 		// TODO Auto-generated method stub
 		if (dcg == 0) {
@@ -398,7 +398,10 @@ public class CoverageError {
 		if (idcg == 0){
 			return 0;
 		}
-		return dcg/idcg;
+		dcg /= Math.log(2);
+		idcg /= Math.log(2);
+		
+		return (dcg/idcg);
 	}
 	
 }
