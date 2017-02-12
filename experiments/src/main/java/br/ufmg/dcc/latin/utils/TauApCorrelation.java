@@ -7,8 +7,7 @@
 
 package br.ufmg.dcc.latin.utils;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.stream.IntStream;
 
 import org.apache.commons.math3.exception.DimensionMismatchException;
 import org.apache.commons.math3.linear.BlockRealMatrix;
@@ -132,20 +131,18 @@ public class TauApCorrelation {
         final int n = xArray.length;
 
 
-        @SuppressWarnings("unchecked")
-        Pair<Double, Double>[] pairs = new Pair[n];
-        for (int i = 0; i < n; i++) {
-            pairs[i] = new Pair<Double, Double>(xArray[i], yArray[i]);
-        }
-
-        Arrays.sort(pairs, new Comparator<Pair<Double, Double>>() {
-            /** {@inheritDoc} */
-            public int compare(Pair<Double, Double> pair1, Pair<Double, Double> pair2) {
-                int compareFirst = pair1.getFirst().compareTo(pair2.getFirst());
-                return compareFirst != 0 ? compareFirst*-1 : pair1.getSecond().compareTo(pair2.getSecond())*-1;
-            }
-        });
+        int[] xArrayIndices = IntStream.range(0, xArray.length)
+                .boxed().sorted((i, j) -> (new Double(xArray[i])).compareTo(xArray[j])*-1 )
+                .mapToInt(ele -> ele).toArray();
+        int[] yArrayIndices = IntStream.range(0, yArray.length)
+                .boxed().sorted((i, j) -> (new Double(yArray[i])).compareTo(yArray[j])*-1 )
+                .mapToInt(ele -> ele).toArray();
         
+        @SuppressWarnings("unchecked")
+        Pair<Integer, Integer>[] pairs = new Pair[n];
+        for (int i = 0; i < n; i++) {
+            pairs[i] = new Pair<Integer, Integer>(xArrayIndices[i], yArrayIndices[i]);
+        }
       
         
         double sum = 0;
@@ -166,16 +163,16 @@ public class TauApCorrelation {
     public static void main(String[] args){
     	TauApCorrelation tauApCorrelation = new TauApCorrelation();
     	double[] list1 = {5,4,3,2,1};
-    	double[] list2 = {5,4,3,1,2};
+    	double[] list2 = {6,5,4,2,3};
     	System.out.println(tauApCorrelation.correlation(list1,list2));
     	double[] list3 = {5,4,3,2,1};
-    	double[] list4 = {5,4,2,3,1};
+    	double[] list4 = {5,4,2,3,0};
     	System.out.println(tauApCorrelation.correlation(list3,list4));
     	double[] list5 = {5,4,3,2,1};
     	double[] list6 = {5,3,4,2,1};
     	System.out.println(tauApCorrelation.correlation(list5,list6));
     	double[] list7 = {5,4,3,2,1};
-    	double[] list8 = {4,5,3,2,1};
+    	double[] list8 = {4,10,3,2,1};
     	System.out.println(tauApCorrelation.correlation(list7,list8));
     }
 }
