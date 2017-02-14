@@ -48,6 +48,7 @@ public class RetrievalSystem {
 	private static IndexReader passageReader;
 	
 	
+	
 	public static QueryParser buildQueryParser(){
 		if (parser != null) {
 			return parser;
@@ -62,7 +63,9 @@ public class RetrievalSystem {
 		
 	}
 	
-	
+	public static int getIndexSize(){
+		return searcher.getIndexReader().numDocs();
+	}
 	
 	public static ResultList search(String query, String index) {
 		

@@ -18,6 +18,9 @@ import br.ufmg.dcc.latin.user.TrecDDUser;
 import br.ufmg.dcc.latin.user.User;
 import br.ufmg.dcc.latin.user.UserQuery;
 import br.ufmg.dcc.latin.utils.CoverageError;
+import br.ufmg.dcc.latin.utils.QueryIndependentFeatures;
+import br.ufmg.dcc.latin.utils.RetrievalSystem;
+import br.ufmg.dcc.latin.utils.SharedCache;
 import br.ufmg.dcc.latin.utils.TopicsFile;
 
 public class CoverageAnalysis {
@@ -31,13 +34,40 @@ public class CoverageAnalysis {
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 		
+		FileWriter fwf = new FileWriter( "QueryIndependentFeaturesStats.txt");
+	    BufferedWriter bwf = new BufferedWriter(fwf);
+		PrintWriter outf = new PrintWriter(bwf);
+		
+		
+		String currentIndex = "-1";
+		QueryIndependentFeatures qif = null;
 		for (UserQuery userQuery : TopicsFile.getTrecDD()) {
 			//if (!userQuery.tid.equals("DD16-1")){
 		    //	continue;
 		    //}
+			
+			//if (!userQuery.index.equals("ebola16")){
+		    //	continue;
+		    //}
+			
 			System.out.println(userQuery.tid);
 			int iteration = 1;
+
 			ResultList resultList = baselineRanker.getResultList(userQuery);
+			
+			if (!userQuery.index.equals(currentIndex)){
+				currentIndex = userQuery.index;
+				qif = new QueryIndependentFeatures(userQuery.index, RetrievalSystem.getIndexSize());
+			}
+
+			double[][] independentFeaturesStats = qif.getStatistics(SharedCache.docids);
+			for (int i = 0; i < independentFeaturesStats.length; i++) {
+				for (int j = 0; j < independentFeaturesStats[i].length; j++) {
+					outf.print(independentFeaturesStats[i][j] + " ");
+				}
+			}
+			outf.print("\n");
+			
 			FeedbackList feedbackList = user.getFeedbackSet(userQuery.tid, resultList);
 			PassageAspectModeling aspectModeling = new PassageAspectModeling();
 			xQuAD dynamicReranker = new xQuAD(1.0, 1000);
@@ -57,6 +87,7 @@ public class CoverageAnalysis {
 			}
 		}
 		out.close();
+		outf.close();
 	}
 
 }
