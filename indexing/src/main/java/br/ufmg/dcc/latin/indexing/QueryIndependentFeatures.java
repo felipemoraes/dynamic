@@ -201,31 +201,34 @@ public class QueryIndependentFeatures {
 			features[11] = compress(title);
 			features[12] = fleshKincaid.calculate(content);
 			try {
-				TermsEnum iterator = termContent.iterator();
-				BytesRef term =  iterator.next();
-				while (term != null) {
-					String t = term.utf8ToString();
-					features[2] += iterator.totalTermFreq();
-					features[0] +=  iterator.totalTermFreq()*t.length();
-					term = iterator.next();
-				}
-				
-				if (features[2] == 0) {
-					features[0] = 0; 
-				} else {
-					features[0] /= features[2];
-				}
-				
-				iterator = termContent.iterator();
-				term =  iterator.next();
-				if (features[2] > 0) {
+				TermsEnum iterator;
+				BytesRef term;
+				if (termContent!=null) {
+					iterator = termContent.iterator();
+					term =  iterator.next();
 					while (term != null) {
-						double prob = iterator.totalTermFreq()/features[2];
-						features[4] +=  prob*log2(prob);
+						String t = term.utf8ToString();
+						features[2] += iterator.totalTermFreq();
+						features[0] +=  iterator.totalTermFreq()*t.length();
 						term = iterator.next();
 					}
+					
+					if (features[2] == 0) {
+						features[0] = 0; 
+					} else {
+						features[0] /= features[2];
+					}
+					
+					iterator = termContent.iterator();
+					term =  iterator.next();
+					if (features[2] > 0) {
+						while (term != null) {
+							double prob = iterator.totalTermFreq()/features[2];
+							features[4] +=  prob*log2(prob);
+							term = iterator.next();
+						}
+					}
 				}
-				
 				
 				if (termTitle!=null) {
 
@@ -256,7 +259,9 @@ public class QueryIndependentFeatures {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			features[6] = features[2]/numOfContentTokens;
+			if (numOfContentTokens > 0) {
+				features[6] = features[2]/numOfContentTokens;
+			}
 			if (numOfTitleTokens > 0) {
 				features[7] = features[3]/numOfTitleTokens;
 			}
