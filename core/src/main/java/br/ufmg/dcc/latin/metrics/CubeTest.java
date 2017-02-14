@@ -84,7 +84,7 @@ public class CubeTest {
 				if (!qrels.get(topic).containsKey(docno)){
 					qrels.get(topic).put(docno, new HashMap<String, Double >());
 				}
-				double maxRel = 0;
+				
 				for(Entry<String, List<Integer>> entrySubtopic: entryDocno.getValue().entrySet()){
 					
 					String subtopic = entrySubtopic.getKey();	
@@ -96,18 +96,10 @@ public class CubeTest {
 					for (int i = 0; i < rels.size(); i++) {
 						rel += rels.get(i)/(Math.log(i+2)/log2);;
 					}
-					if (rel > maxRel) {
-						maxRel = rel;
-					}
 					
 					qrels.get(topic).get(docno).put(subtopic, rel);
 				}
-				
-				for(Entry<String, List<Integer>> entrySubtopic: entryDocno.getValue().entrySet()){
-					String subtopic = entrySubtopic.getKey();	
-					double rel = qrels.get(topic).get(docno).get(subtopic);
-					qrels.get(topic).get(docno).put(subtopic, rel/maxRel);
-				}
+			
 				
 			}
 			
