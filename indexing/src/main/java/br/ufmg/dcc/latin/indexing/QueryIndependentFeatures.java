@@ -79,11 +79,12 @@ public class QueryIndependentFeatures {
 		String collectionPath = "/Users/felipemoraes/ebola16/";
         String indexPath = "/Users/felipemoraes/Developer/dynamic/etc/indices/ebola16/";
         String outPath = "/Users/felipemoraes/ebolaOut2016";
-      
+        int untilFile = 0;
         try {
         	collectionPath = args[0];
         	indexPath = args[1];
         	outPath = args[2];
+        	untilFile = Integer.parseInt(args[3]);
         } catch(Exception e){
             System.out.println(" caught a " + e.getClass() +
                     "\n with message: " + e.getMessage());
@@ -101,6 +102,10 @@ public class QueryIndependentFeatures {
         	List<String> files = readFileListFromDirectory(collectionPath);
         	int i = 0;
             for (String filename : files) {
+            	if (i < untilFile) {
+            		i++;
+            		continue;
+            	}
                 System.out.println("About to Index Files in: " +  filename);
                 computeFeaturesFromFile(filename);
                 if (counter % 10000 == 0) {
