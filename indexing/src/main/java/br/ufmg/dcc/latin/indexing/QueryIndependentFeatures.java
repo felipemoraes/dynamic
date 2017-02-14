@@ -73,12 +73,10 @@ public class QueryIndependentFeatures {
 	public static int counter;
 	
 	public static void main(String[] args) throws IOException {
+		
 		String collectionPath = "/Users/felipemoraes/ebola16/";
         String indexPath = "/Users/felipemoraes/Developer/dynamic/etc/indices/ebola16/";
         String outPath = "/Users/felipemoraes/ebolaOut2016";
-        
-
-        loadIndexInfo(indexPath);
       
         try {
         	collectionPath = args[0];
@@ -89,6 +87,8 @@ public class QueryIndependentFeatures {
                     "\n with message: " + e.getMessage());
        //     System.exit(1);
         }
+        
+        loadIndexInfo(indexPath);
         
 	    FileWriter fw = new FileWriter( outPath);
 	    BufferedWriter bw = new BufferedWriter(fw);
