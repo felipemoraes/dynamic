@@ -104,8 +104,8 @@ public class QueryIndependentFeatures {
                 if (counter % 10000 == 0) {
                 	System.out.println("Processed " + counter + " documents." );
                 }
+                i++;
                 System.out.println("Processed " + i + " of " +  files.size() + " files.");
-                break;
             }
 
         	
