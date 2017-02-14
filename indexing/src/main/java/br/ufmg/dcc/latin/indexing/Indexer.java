@@ -280,9 +280,6 @@ public class Indexer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-		
-		
 		
 	}
 	

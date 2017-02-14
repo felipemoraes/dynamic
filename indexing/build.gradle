@@ -8,12 +8,21 @@ dependencies {
 	compile group: 'org.jwat', name: 'jwat-warc', version: '1.0.4'
 	compile group: 'org.apache.solr', name: 'solr-core', version: '6.3.0'
 	compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
-	
+	compile group: 'commons-validator', name: 'commons-validator', version: '1.4.0'
+	compile group: 'com.kennycason', name: 'fleschkincaid', version: '1.0'
 	compile project(':core')
 }
 
 task indexing(type: JavaExec, dependsOn: classes) {
     main = 'br.ufmg.dcc.latin.indexing.Indexer'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
+
+task QueryIndependentFeatures(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.indexing.QueryIndependentFeatures'
     classpath = sourceSets.main.runtimeClasspath
      if(project.hasProperty('Xargs')){
        args (Xargs.split());
