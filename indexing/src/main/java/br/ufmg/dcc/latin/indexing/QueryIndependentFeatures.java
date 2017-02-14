@@ -70,6 +70,8 @@ public class QueryIndependentFeatures {
 	private static EnglishAnalyzer analyzer = new EnglishAnalyzer();
 	private static EnglishAnalyzer analyzerWithoutStop = new EnglishAnalyzer(CharArraySet.EMPTY_SET);
 	
+	private static FleschKincaid fleshKincaid = new FleschKincaid();
+	
 	public static int counter;
 	
 	public static void main(String[] args) throws IOException {
@@ -197,7 +199,6 @@ public class QueryIndependentFeatures {
 			double numOfTitleTokens  = tokenCount(title,analyzerWithoutStop);
 			features[10] = compress(content);
 			features[11] = compress(title);
-			FleschKincaid fleshKincaid = new FleschKincaid();
 			features[12] = fleshKincaid.calculate(content);
 			try {
 				TermsEnum iterator = termContent.iterator();
@@ -226,35 +227,39 @@ public class QueryIndependentFeatures {
 				}
 				
 				
-				
-				iterator = termTitle.iterator();
-				term =  iterator.next();
-				while (term != null) {
-					String t = term.utf8ToString();
-					features[3] += iterator.totalTermFreq();
-					features[1] +=  iterator.totalTermFreq()*t.length();
-					
-					term = iterator.next();
-				}
-				if (features[3] == 0) {
-					features[1] = 0; 
-				} else {
-					features[1] /= features[3];
-				}
-				iterator = termTitle.iterator();
-				term =  iterator.next();
-				if (features[3] > 0) {
+				if (termTitle!=null) {
+
+					iterator = termTitle.iterator();
+					term =  iterator.next();
 					while (term != null) {
-						double prob = iterator.totalTermFreq()/features[3];
-						features[5] +=  prob*log2(prob);
+						String t = term.utf8ToString();
+						features[3] += iterator.totalTermFreq();
+						features[1] +=  iterator.totalTermFreq()*t.length();
+						
 						term = iterator.next();
+					}
+					if (features[3] == 0) {
+						features[1] = 0; 
+					} else {
+						features[1] /= features[3];
+					}
+					iterator = termTitle.iterator();
+					term =  iterator.next();
+					if (features[3] > 0) {
+						while (term != null) {
+							double prob = iterator.totalTermFreq()/features[3];
+							features[5] +=  prob*log2(prob);
+							term = iterator.next();
+						}
 					}
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			features[6] = features[2]/numOfContentTokens;
-			features[7] = features[3]/numOfTitleTokens;
+			if (numOfTitleTokens > 0) {
+				features[7] = features[3]/numOfTitleTokens;
+			}
 			features[8] = features[2]/stopWordSetSize;
 			features[9] = features[3]/stopWordSetSize;
 		} catch (IOException e) {
