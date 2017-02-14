@@ -59,7 +59,7 @@ public class CoverageAnalysis {
 				currentIndex = userQuery.index;
 				qif = new QueryIndependentFeatures(userQuery.index, RetrievalSystem.getIndexSize());
 			}
-
+			outf.print(userQuery.tid + " ");
 			double[][] independentFeaturesStats = qif.getStatistics(SharedCache.docids);
 			for (int i = 0; i < independentFeaturesStats.length; i++) {
 				for (int j = 0; j < independentFeaturesStats[i].length; j++) {
