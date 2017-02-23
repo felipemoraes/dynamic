@@ -53,8 +53,8 @@ public class ComputeLengths {
 			String line;
 			while ((line = br.readLine()) != null) {
 		    	String[] splitLine = line.split(",",5);
-		    	String tid = splitLine[0];
-		    	String docno = splitLine[1];
+		    	String docno = splitLine[0];
+		    	String tid = splitLine[1];
 		    	String index = topicDomains.get(tid);
 		    	if (!docIndex.containsKey(index)){
 		    		docIndex.put(index, new HashSet<String>());
@@ -70,6 +70,8 @@ public class ComputeLengths {
 			
 			e.printStackTrace();
 		}
+		
+		
 		
 		FileWriter fw = new FileWriter("docnos_lengths.txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
