@@ -84,6 +84,7 @@ public class ComputeLengths {
 				IndexSearcher searcher = new IndexSearcher(reader);
 				int n = reader.numDocs();
 				Set<String> docnos = docIndex.get(index);
+				System.out.println(index);
 				for (int i = 0; i < n; i++) {
 					Document doc = searcher.doc(i);
 					String docno = doc.get("docno");
