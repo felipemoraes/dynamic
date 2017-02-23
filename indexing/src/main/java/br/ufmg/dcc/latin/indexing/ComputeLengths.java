@@ -110,6 +110,7 @@ public class ComputeLengths {
 				e.printStackTrace();
 			}
 		}
+		out.close();
 
 	}
 
