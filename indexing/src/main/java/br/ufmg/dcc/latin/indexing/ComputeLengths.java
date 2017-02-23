@@ -49,12 +49,12 @@ public class ComputeLengths {
 			e.printStackTrace();
 		}
 		Map<String,Set<String>> docIndex = new HashMap<String,Set<String>>();
-		try (BufferedReader br = new BufferedReader(new FileReader("../share/truth_data.txt"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("../share/dd_qrels.txt"))) {
 			String line;
 			while ((line = br.readLine()) != null) {
-		    	String[] splitLine = line.split(",",5);
-		    	String docno = splitLine[0];
-		    	String tid = splitLine[1];
+		    	String[] splitLine = line.split("\t",5);
+		    	String docno = splitLine[2];
+		    	String tid = splitLine[0];
 		    	String index = topicDomains.get(tid);
 		    	if (!docIndex.containsKey(index)){
 		    		docIndex.put(index, new HashSet<String>());
