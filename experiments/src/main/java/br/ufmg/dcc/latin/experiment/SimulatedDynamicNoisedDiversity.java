@@ -61,7 +61,7 @@ public class SimulatedDynamicNoisedDiversity {
 	    	//}
 	    	
 	    	System.out.println(topicId);
-	    	trecUser.topicId = topicId;
+	    	TrecUser.topicId = topicId;
 			String query = splitLine[2].replaceAll("/", " ");
 			String index = splitLine[0];
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
@@ -101,6 +101,7 @@ public class SimulatedDynamicNoisedDiversity {
 					  
 		   			    double kl = TrecUser.allKlDiv;
 		   			    double rmse = TrecUser.rmse;
+		   			    double ndcg = TrecUser.ndcg;
 		   			    double sensitivity = TrecUser.sensitivity;
 		   			    
 		    			resultSet = xQuADReranker.get();
@@ -125,7 +126,7 @@ public class SimulatedDynamicNoisedDiversity {
 		        		double actxPM2 = cubeTest.getAverageCubeTest(i+1, topicId, PM2Acc);
 		        		double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, baselineAcc);
 		        		
-		        		out.println(topicId + " " + k +  "  " + (i+1)  + " "+ epsilon  + " " + kl  + " " + rmse  + " " + sensitivity + " "  +  actxQuAD + " " +actxPM2 + " "  +actbaseline  );
+		        		out.println(topicId + " " + k +  "  " + (i+1)  + " "+ epsilon  + " " + kl  + " " + rmse  + " " + ndcg + " " + sensitivity + " "  +  actxQuAD + " " +actxPM2 + " "  +actbaseline  );
 		        		
 					}
 				   

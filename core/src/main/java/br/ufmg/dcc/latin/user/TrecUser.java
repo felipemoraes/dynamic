@@ -54,6 +54,8 @@ public class TrecUser implements User {
 	
 	public static double rmse;
 	
+	public static double ndcg;
+	
 	public static double sensitivity;
 	
 	private TrecUser(String topicFilename){
@@ -365,6 +367,7 @@ public class TrecUser implements User {
 		
 		allKlDiv = 0;
 		rmse = 0;
+		ndcg = 0;
 		sensitivity = 0;
 		for (String subtopicId : subtopicsCoverage.keySet()) {
 			
@@ -396,7 +399,7 @@ public class TrecUser implements User {
 			
 			
 			rmse += rmse(getRelevances(subtopicId, docnos), relevances);
-			
+			ndcg += ndcg(getRelevances(subtopicId, docnos), relevances);
 			sum = StatUtils.sum(relevances);
 			double[] probsNoised = new double[relevances.length];
 			for (int i = 0; i < probs.length; i++) {
@@ -409,8 +412,38 @@ public class TrecUser implements User {
 			allKlDiv /= subtopicsCoverage.size();
 			rmse /= subtopicsCoverage.size();
 			sensitivity /= subtopicsCoverage.size();
+			ndcg /= subtopicsCoverage.size();
 		} 
 		
+	}
+	
+	private double ndcg(double[] v1, double[] v2) {
+		
+		int[] indices = IntStream.range(0, v2.length)
+                .boxed().sorted((i, j) -> (new Double(v2[i])).compareTo(v2[j])*-1 )
+                .mapToInt(ele -> ele).toArray();
+		double dcg = 0;
+		for (int k = 1; k <= indices.length; k++) {
+			dcg += (Math.pow(2, v1[indices[k-1]])-1)/Math.log(k+1);
+		}
+		indices = IntStream.range(0, v1.length)
+                .boxed().sorted((i, j) -> (new Double(v1[i])).compareTo(v1[j])*-1 )
+                .mapToInt(ele -> ele).toArray();
+		double idcg = 0;
+		for (int k = 1; k <= indices.length; k++) {
+			idcg += (Math.pow(2, v1[indices[k-1]])-1)/Math.log(k+1);
+		}
+		if (dcg == 0) {
+			return 0;
+		}
+		
+		if (idcg == 0){
+			return 0;
+		}
+		dcg /= Math.log(2);
+		idcg /= Math.log(2);
+		
+		return (dcg/idcg);
 	}
 	
     private double rmse(double[] truth, double[] noised) {
