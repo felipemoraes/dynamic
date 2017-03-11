@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public class CubeTest {
 	
@@ -340,5 +342,46 @@ public class CubeTest {
 		}
 		//System.out.println();
 		return score;
+	}
+
+	public double getRecallRemain(int iteration, String topic, String[][] result, String[] docnos) {
+		double relevantsRetrieved = 0;
+		double relevants = qrels.get(topic).size();
+		Set<String> docs = new HashSet<String>();
+		for (int i = 0; i < iteration; i++) {
+			if (i > result.length){
+				break;
+			}
+			if (result[i] == null) {
+				continue;
+			}
+			for (int j = 0; j < result[i].length; j++) {
+				if (result[i][j] == null){
+					continue;
+				}
+				docs.add(result[i][j]);
+				if (qrels.get(topic).containsKey(result[i][j])){
+					
+					relevantsRetrieved++;
+				}
+			}
+			
+		}
+		for (int i = 0; i < docnos.length; i++) {
+
+			if (qrels.get(topic).containsKey(docnos[i])&& !docs.contains(docnos[i])){
+				
+				relevantsRetrieved++;
+			}
+			
+		}
+		if (relevantsRetrieved == 0) {
+			return 0;
+		}
+		if (relevants == 0) {
+			return 0;
+		}
+		//System.out.println();
+		return relevantsRetrieved/relevants;
 	}
 }
