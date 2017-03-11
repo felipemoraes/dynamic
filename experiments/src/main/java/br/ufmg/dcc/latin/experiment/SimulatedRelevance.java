@@ -50,8 +50,8 @@ public class SimulatedRelevance {
 		
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
 	    String line;
-	    
-	    BaselineRanker baselineRanker = getBaselineRanker(args[0]);
+
+	    BaselineRanker baselineRanker = getBaselineRanker("DPH");
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
 	   
 	    SimAP.trecUser = trecUser;
@@ -86,7 +86,7 @@ public class SimulatedRelevance {
         	//}
         	
         	System.out.println(topicId);
-        	trecUser.topicId = topicId;
+        	TrecUser.topicId = topicId;
     		String query = splitLine[2].replaceAll("/", " ");
     		String index = splitLine[0];
     		ResultSet baselineResultSet = baselineRanker.search(query, index);
@@ -95,7 +95,7 @@ public class SimulatedRelevance {
     		for (TargetAP targetAP : targetAPs) {
     			
    				SimAP.targetAP = targetAP.AP;
-   				
+   	
 				baselineResultSet = baselineRanker.search();
 				
 			    FeedbackModeling feedbackModeling = new FeedbackModeling();
@@ -141,9 +141,9 @@ public class SimulatedRelevance {
         		for (int i = 0; i < 10; i++) {
         			double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, accResultxQuAD);
         			double actPM2 = cubeTest.getAverageCubeTest(i+1, topicId, accResultPM2);
-        			double actbaseline = cubeTest.getAverageCubeTest(i, topicId, accBaseLineResult);
+        			double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, accBaseLineResult);
         			double recallxQuAD = cubeTest.getRecallRemain(i, topicId, accResultxQuAD, baselineResultSet.docnos);
-        			double recallPM2 = cubeTest.getRecallRemain(1, topicId, accResultPM2,baselineResultSet.docnos);
+        			double recallPM2 = cubeTest.getRecallRemain(i, topicId, accResultPM2,baselineResultSet.docnos);
         			double recallbaseline = cubeTest.getRecallRemain(i, topicId, accBaseLineResult,baselineResultSet.docnos);
         			double precisionxQuAD = cubeTest.getPrecision(i, topicId, accResultxQuAD);
         			double precisionPM2 = cubeTest.getPrecision(i, topicId, accResultPM2);
@@ -157,6 +157,7 @@ public class SimulatedRelevance {
         		if (count % 100 == 0) {
         			System.out.println(count);
         		}
+        		
     		}	
 	    }
 		br.close();
