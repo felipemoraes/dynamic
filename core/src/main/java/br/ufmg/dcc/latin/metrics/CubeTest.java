@@ -360,10 +360,6 @@ public class CubeTest {
 					continue;
 				}
 				docs.add(result[i][j]);
-				if (qrels.get(topic).containsKey(result[i][j])){
-					
-					relevantsRetrieved++;
-				}
 			}
 			
 		}

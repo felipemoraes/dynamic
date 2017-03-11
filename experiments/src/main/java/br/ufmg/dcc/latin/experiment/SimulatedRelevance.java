@@ -141,10 +141,10 @@ public class SimulatedRelevance {
         		for (int i = 0; i < 10; i++) {
         			double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, accResultxQuAD);
         			double actPM2 = cubeTest.getAverageCubeTest(i+1, topicId, accResultPM2);
-        			double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, accBaseLineResult);
-        			double recallxQuAD = cubeTest.getRecallRemain(i+1, topicId, accResultxQuAD, baselineResultSet.docnos);
-        			double recallPM2 = cubeTest.getRecallRemain(i+1, topicId, accResultPM2,baselineResultSet.docnos);
-        			double recallbaseline = cubeTest.getRecallRemain(i+1, topicId, accBaseLineResult,baselineResultSet.docnos);
+        			double actbaseline = cubeTest.getAverageCubeTest(i, topicId, accBaseLineResult);
+        			double recallxQuAD = cubeTest.getRecallRemain(i, topicId, accResultxQuAD, baselineResultSet.docnos);
+        			double recallPM2 = cubeTest.getRecallRemain(1, topicId, accResultPM2,baselineResultSet.docnos);
+        			double recallbaseline = cubeTest.getRecallRemain(i, topicId, accBaseLineResult,baselineResultSet.docnos);
         			double precisionxQuAD = cubeTest.getPrecision(i, topicId, accResultxQuAD);
         			double precisionPM2 = cubeTest.getPrecision(i, topicId, accResultPM2);
         			double precisionbaseline = cubeTest.getPrecision(i, topicId, accBaseLineResult);
