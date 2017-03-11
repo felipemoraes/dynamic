@@ -136,18 +136,19 @@ public class SimulatedRelevance {
         			reranker.update(feedbacks);
     			}
         		
-        		
-        		
+    			double precisionxQuAD = cubeTest.getPrecision(1, topicId, accResultxQuAD);
+    			double precisionPM2 = cubeTest.getPrecision(1, topicId, accResultPM2);
+    			double precisionbaseline = cubeTest.getPrecision(1, topicId, accBaseLineResult);
+    			
+    			double recallxQuAD = cubeTest.getRecall(10, topicId, accResultxQuAD);
+    			double recallPM2 = cubeTest.getRecall(10, topicId, accResultPM2);
+    			double recallbaseline = cubeTest.getRecall(10, topicId, accBaseLineResult);
         		for (int i = 0; i < 10; i++) {
         			double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, accResultxQuAD);
         			double actPM2 = cubeTest.getAverageCubeTest(i+1, topicId, accResultPM2);
         			double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, accBaseLineResult);
-        			double recallxQuAD = cubeTest.getRecallRemain(i, topicId, accResultxQuAD, baselineResultSet.docnos);
-        			double recallPM2 = cubeTest.getRecallRemain(i, topicId, accResultPM2,baselineResultSet.docnos);
-        			double recallbaseline = cubeTest.getRecallRemain(i, topicId, accBaseLineResult,baselineResultSet.docnos);
-        			double precisionxQuAD = cubeTest.getPrecision(i, topicId, accResultxQuAD);
-        			double precisionPM2 = cubeTest.getPrecision(i, topicId, accResultPM2);
-        			double precisionbaseline = cubeTest.getPrecision(i, topicId, accBaseLineResult);
+
+
         			out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " +actbaseline 
         					+ " " + precisionxQuAD + " " + precisionPM2 + " " +precisionbaseline
         					+ " " + recallxQuAD + " " + recallPM2 + " " +recallbaseline);
