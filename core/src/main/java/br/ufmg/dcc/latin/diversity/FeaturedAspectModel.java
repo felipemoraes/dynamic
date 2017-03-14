@@ -12,30 +12,34 @@ import gnu.trove.map.hash.TIntDoubleHashMap;
 public class FeaturedAspectModel {
 	
 	private Map<String, FeaturedAspect> featuredAspectes;
-	private Map<String, List<Integer>> aspectPassages;
+	private Map<String, Map<Integer,FeaturedAspect>> aspectPassages;
 	
 	public FeaturedAspectModel(){
 		featuredAspectes = new HashMap<String, FeaturedAspect>();
-		aspectPassages = new HashMap<String, List<Integer>>();
+		aspectPassages = new HashMap<String, Map<Integer,FeaturedAspect>>();
 	}
 
 	public void addToAspect(String aspectId, int passageId, int relevance) {
 		if (!featuredAspectes.containsKey(aspectId)){
 			featuredAspectes.put(aspectId, new FeaturedAspect());
-			aspectPassages.put(aspectId, new ArrayList<Integer>());
+			aspectPassages.put(aspectId, new HashMap<Integer,FeaturedAspect>());
 		}
 
+		if (!aspectPassages.get(aspectId).containsKey(passageId)){
+			aspectPassages.get(aspectId).put(passageId, new FeaturedAspect());
+		}
 		
 		DocVec passageDocVec = RetrievalController.getPassageTerms(passageId);
 		int[] terms = passageDocVec.vec.keys();
 		for (int i = 0; i < terms.length; i++) {
 			
 			featuredAspectes.get(aspectId).putTerm(terms[i],passageId,relevance);
+			aspectPassages.get(aspectId).get(passageId).putTerm(terms[i],passageId,relevance);
 			//if (aspectId.equals("DD16-1.3")) {
 			//	System.out.print(RetrievalController.vocab[0].getTerm(terms[i]) + " ");
 			//}
 		}
-		aspectPassages.get(aspectId).add(passageId);
+		
 		//if (aspectId.equals("DD16-1.3")) {
 		//	System.out.println(terms.length);
 		//}
@@ -59,7 +63,11 @@ public class FeaturedAspectModel {
 	}
 	
 	public List<Integer> getAspectsPassages(String aspectId) {
-		return aspectPassages.get(aspectId);
+		List<Integer> passages = new ArrayList<Integer>();
+		for (Integer aspect : aspectPassages.get(aspectId).keySet()) {
+			passages.add(aspect);
+		}
+		return passages;
 		
 	}
 
@@ -81,8 +89,8 @@ public class FeaturedAspectModel {
 	
 	public TIntDoubleHashMap getSubAspectQuery(String aspectId, int passageId, double[] weights) {
 		
-		FeaturedAspect termsFeatures = featuredAspectes.get(aspectId);
-		TermFeatures[] topTerms = termsFeatures.getTopTerms(weights,passageId);
+		FeaturedAspect termsFeatures = aspectPassages.get(aspectId).get(passageId);
+		TermFeatures[] topTerms = termsFeatures.getTopTerms(weights);
 		TIntDoubleHashMap complexQuery = new TIntDoubleHashMap();
 		
 		for (int i = 0; i < topTerms.length; i++) {
