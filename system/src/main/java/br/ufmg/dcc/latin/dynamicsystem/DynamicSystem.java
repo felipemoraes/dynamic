@@ -14,18 +14,18 @@ public class DynamicSystem {
 	
 	public static void main(String[] args) throws IOException {
 		String topicsFile = "../share/topics_domain.txt";
-		parameters = ParametersController.getParameters(args[0]);
+		//parameters = ParametersController.getParameters(args[0]);
 		
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
 	    String line;
 	   
 	    Session session = new Session();
-	    /*parameters = new DynamicSystemParameters();
-	    parameters.reranker = "RM3";
-	    float[] param = {100f, 10f, 0.5f};
-	    List<float[]> listParams = new ArrayList<float[]>();
+	    parameters = new DynamicSystemParameters();
+	    parameters.reranker = "HxQuAD";
+	    double[] param = {100f, 10f, 0.5f};
+	    List<double[]> listParams = new ArrayList<double[]>();
 	    listParams.add(param);
-	    parameters.experimentalParameters = listParams;*/
+	    parameters.experimentalParameters = listParams;
 	    session.setReranker(parameters.reranker);
 	    session.setParams(parameters.experimentalParameters);
 	    
@@ -36,9 +36,9 @@ public class DynamicSystem {
 	    	
         	String topicId = splitLine[1];
         	RetrievalCache.topicId = topicId;
-        	//if (!topicId.equals("DD16-1")){
-        	//	continue;
-        	//}
+        	if (!topicId.equals("DD16-1")){
+        		continue;
+        	}
         	System.out.println(topicId);
     		
     		String query = splitLine[2].replaceAll("/", " ");
