@@ -43,7 +43,7 @@ public class PM2 extends InteractiveReranker {
 		int n = relevance.length;
 		
 		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName);
-		double[] aspectWeights = new double[10];
+		double[] aspectWeights = new double[9];
 		for (int i = 2; i < params.length; i++) {
 			aspectWeights[i-2] = params[i];
 		}
@@ -63,7 +63,7 @@ public class PM2 extends InteractiveReranker {
 		super.start(params);
 		lambda = params[1];
 		
-		double[] aspectWeights = new double[10];
+		double[] aspectWeights = new double[9];
 		for (int i = 2; i < params.length; i++) {
 			aspectWeights[i-2] = params[i];
 		}
