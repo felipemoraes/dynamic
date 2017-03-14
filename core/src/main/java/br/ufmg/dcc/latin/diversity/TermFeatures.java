@@ -12,7 +12,7 @@ public class TermFeatures implements Comparable<TermFeatures>{
 	
 	public TermFeatures(int termId, int passageId, int relevance){
 		this.termId = termId;
-		this.features = new double[8];
+		this.features = new double[10];
 		
 		this.features[0] = collectionIdf(); // 2
 		this.features[1] = 1f;  // 3
