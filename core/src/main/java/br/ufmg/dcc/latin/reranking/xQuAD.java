@@ -49,7 +49,7 @@ public class xQuAD extends InteractiveReranker {
 		relevance = normalize(relevance);
 		lambda = params[1];
 		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName);
-		double[] aspectWeights = new double[8];
+		double[] aspectWeights = new double[10];
 		for (int i = 2; i < params.length; i++) {
 			aspectWeights[i-2] = params[i];
 		}
@@ -66,7 +66,7 @@ public class xQuAD extends InteractiveReranker {
 		super.start(params);
 		lambda = params[1];
 		
-		double[] aspectWeights = new double[8];
+		double[] aspectWeights = new double[10];
 		for (int i = 2; i < params.length; i++) {
 			aspectWeights[i-2] = params[i];
 		}

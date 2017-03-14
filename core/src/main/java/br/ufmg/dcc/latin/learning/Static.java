@@ -13,7 +13,6 @@ import br.ufmg.dcc.latin.cache.RetrievalCache;
 import br.ufmg.dcc.latin.dynamicsystem.TrecUser;
 import br.ufmg.dcc.latin.feedback.Feedback;
 import br.ufmg.dcc.latin.metrics.CubeTest;
-import br.ufmg.dcc.latin.metrics.nDCG;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.reranking.InteractiveReranker;
 import br.ufmg.dcc.latin.reranking.InteractiveRerankerFactory;
@@ -115,7 +114,6 @@ public class Static implements Learner {
 	@Override
 	public double validate(double[] weight) {
 		double totalMetric = 0;
-		nDCG nDCG = new nDCG();
 		CubeTest cubeTest = new CubeTest();
 		for (String[] queryInfo: validationSet) {
 			this.index = queryInfo[0];

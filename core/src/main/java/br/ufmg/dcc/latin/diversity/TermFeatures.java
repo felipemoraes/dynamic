@@ -22,14 +22,15 @@ public class TermFeatures implements Comparable<TermFeatures>{
 		this.features[5] = wikipediaTitles(); // 7
 		this.features[6] = queryLog(); // 8
 		this.features[7] = 0; // 9 // this term is in query
+		this.features[8] = dbPediaEntities(passageId); // 8
+		this.features[9] = msEntities(passageId); // 9
 		if (RetrievalController.queryTermsSet.contains(termId)){
 			this.features[7] = 1; 
 		}
 		
 		
 		
-		//this.features[6] = dbPediaEntities(passageId); // 8
-		//this.features[7] = msEntities(passageId); // 9
+
 	//	this.features[6] = 0; // 8
 	//	this.features[7] = 0; // 9
 	}
@@ -49,8 +50,8 @@ public class TermFeatures implements Comparable<TermFeatures>{
 			this.features[7] = 1; 
 		}
 		
-		//this.features[6] = dbPediaEntities(passageId); // 8
-		//this.features[7] = msEntities(passageId); // 9
+		//this.features[8] = dbPediaEntities(passageId); // 8
+		//this.features[9] = msEntities(passageId); // 9
 	//	this.features[6] = 0; // 8
 	//	this.features[7] = 0; // 9
 	}
@@ -59,8 +60,8 @@ public class TermFeatures implements Comparable<TermFeatures>{
 		this.features[1] += 1;
 		this.features[2] += collectionIdf()*relevance;
 		this.features[3] += relevance;
-	//	this.features[6] += dbPediaEntities(passageId);
-	//	this.features[7] += msEntities(passageId);
+		this.features[8] += dbPediaEntities(passageId);
+		this.features[9] += msEntities(passageId);
 	}
 	
 	public void updateTerm(){
