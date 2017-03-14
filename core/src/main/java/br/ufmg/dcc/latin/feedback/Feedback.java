@@ -21,4 +21,17 @@ public class Feedback {
 		return (float) score/4.0f;
 	}
 	
+	public float getRelevanceAspect(String aspectId, int passageId){
+		int score = 0;
+		if (!onTopic) {
+			return 0;
+		}
+		for (int i = 0; i < passages.length; i++) {
+			if (aspectId.equals(passages[i].aspectId) && passages[i].passageId == passageId) {
+				score = Math.max( passages[i].relevance, score);
+			}
+		}
+		return (float) score/4.0f;
+	}
+	
  }

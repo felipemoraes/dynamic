@@ -5,6 +5,7 @@ import java.util.Arrays;
 import br.ufmg.dcc.latin.aspect.AspectMining;
 import br.ufmg.dcc.latin.aspect.AspectMiningFactory;
 import br.ufmg.dcc.latin.feedback.Feedback;
+import br.ufmg.dcc.latin.querying.ResultSet;
 
 public class PM2 extends InteractiveReranker {
 
@@ -23,6 +24,53 @@ public class PM2 extends InteractiveReranker {
 		this.aspectMiningClassName = aspectMiningClassName;
 	}
 	
+	@Override
+	public ResultSet get(){
+		aspectMining.updateAspects(indexName);
+		coverage = aspectMining.getCoverage();
+		v = aspectMining.getV();
+		s = aspectMining.getS();
+		updateNovelty();
+		return super.get();
+	}
+	
+	
+	@Override
+	public void start(double[] params){
+		super.start(params);
+		relevance = normalize(relevance);
+		lambda = params[1];
+		int n = relevance.length;
+		
+		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName);
+		double[] aspectWeights = new double[10];
+		for (int i = 2; i < params.length; i++) {
+			aspectWeights[i-2] = params[i];
+		}
+		
+		aspectMining.setAspectWeights(aspectWeights);
+		coverage = aspectMining.getCoverage();
+		v = aspectMining.getV();
+		s = aspectMining.getS();
+		
+		highestAspect = new int[n];
+		Arrays.fill(highestAspect, -1);
+		
+	}
+	
+	@Override
+	public void setParams(double[] params){
+		super.start(params);
+		lambda = params[1];
+		
+		double[] aspectWeights = new double[10];
+		for (int i = 2; i < params.length; i++) {
+			aspectWeights[i-2] = params[i];
+		}
+		
+		aspectMining.setAspectWeights(aspectWeights);
+	}
+	
 	
 	public int highestAspect(){
 		int maxQ =  -1;
@@ -34,6 +82,7 @@ public class PM2 extends InteractiveReranker {
 				maxQuotient = quotient;
 			}
 		}
+		
 		return maxQ;
 	}
 	
@@ -82,32 +131,12 @@ public class PM2 extends InteractiveReranker {
 		}
 	}
 	
-	@Override
-	public void start(double[] params){
-		super.start(params);
-		relevance = normalize(relevance);
-		aspectMining = AspectMiningFactory.getInstance(aspectMiningClassName, indexName);
-		coverage = aspectMining.getCoverage();
-		v = aspectMining.getV();
-		s = aspectMining.getS();
-		lambda = params[1];
-		int n = relevance.length;
-		
-		highestAspect = new int[n];
-		Arrays.fill(highestAspect, -1);
-		
-	}
 
 
 	@Override
 	public void update(Feedback[] feedback) {
 		super.update(feedback);
 		aspectMining.sendFeedback(indexName, query,feedback);
-		coverage = aspectMining.getCoverage();
-		v = aspectMining.getV();
-		s = aspectMining.getS();
-		updateNovelty();
-		
 	}
 
 

@@ -3,6 +3,7 @@ package br.ufmg.dcc.latin.diversity;
 import br.ufmg.dcc.latin.cache.ExternalKnowledgeCache;
 import br.ufmg.dcc.latin.retrieval.ReScorerController;
 import br.ufmg.dcc.latin.retrieval.RetrievalController;
+import gnu.trove.set.hash.TIntHashSet;
 
 public class TermFeatures implements Comparable<TermFeatures>{
 	
@@ -10,10 +11,12 @@ public class TermFeatures implements Comparable<TermFeatures>{
 	public double[] features;
 	public double weight;
 	
+	public TIntHashSet passageIds;
+	
 	public TermFeatures(int termId, int passageId, int relevance){
 		this.termId = termId;
-		this.features = new double[10];
-		
+		this.features = new double[9];
+		passageIds = new TIntHashSet();
 		this.features[0] = collectionIdf(); // 2
 		this.features[1] = 1f;  // 3
 		this.features[2] = collectionIdf()*relevance;  // 4
@@ -23,11 +26,11 @@ public class TermFeatures implements Comparable<TermFeatures>{
 		this.features[6] = queryLog(); // 8
 		this.features[7] = 0; // 9 // this term is in query
 		this.features[8] = dbPediaEntities(passageId); // 8
-		this.features[9] = msEntities(passageId); // 9
+		//this.features[9] = msEntities(passageId); // 9
 		if (RetrievalController.queryTermsSet.contains(termId)){
 			this.features[7] = 1; 
 		}
-		
+		passageIds.add(passageId);
 		
 		
 
@@ -37,7 +40,7 @@ public class TermFeatures implements Comparable<TermFeatures>{
 	
 	public TermFeatures(int termId){
 		this.termId = termId;
-		this.features = new double[8];
+		this.features = new double[9];
 		this.features[0] = collectionIdf(); // 2
 		this.features[1] = 1f;  // 3
 		this.features[2] = collectionIdf()*4; // 4
@@ -61,14 +64,15 @@ public class TermFeatures implements Comparable<TermFeatures>{
 		this.features[2] += collectionIdf()*relevance;
 		this.features[3] += relevance;
 		this.features[8] += dbPediaEntities(passageId);
-		this.features[9] += msEntities(passageId);
+		//this.features[9] += msEntities(passageId);
+		passageIds.add(passageId);
 	}
 	
 	public void updateTerm(){
 		this.features[1] += 1;
 		this.features[2] += collectionIdf()*4;
 		this.features[3] += 4;
-	//	this.features[6] += dbPediaEntities(passageId);
+	//	this.features[7] += dbPediaEntities(passageId);
 	//	this.features[7] += msEntities(passageId);
 	}
 	

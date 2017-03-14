@@ -14,6 +14,7 @@ public class xQuAD extends InteractiveReranker {
 	public double[] importance;
 	public double[] novelty;
 	public double[][] coverage;
+
 	
 	private String aspectMiningClassName;
 	

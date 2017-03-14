@@ -197,7 +197,7 @@ public class RetrievalController {
 	public static IndexSearcher getIndexSearcher(String indexName){
 		
 		if (similarity == null) {
-			similarity = new LMDirichlet(2000);
+			similarity = new DPH();
 		}
 		
 		IndexReader reader;

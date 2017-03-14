@@ -91,7 +91,7 @@ public class CoordinateAscent implements Learner {
 	}
 	
 	public double[] initVector(){
-		double[] weights = new double[12];
+		double[] weights = new double[11];
 		weights[0] = 1000d;
 		weights[1] = lambda;
 		for (int i = 2; i < weights.length; i++) {
@@ -102,11 +102,11 @@ public class CoordinateAscent implements Learner {
 
 	@Override
 	public double[] train() {
-		ndcg = new nDCG();
+		
 		cubeTest = new CubeTest();
 		double[] currentW = initVector();
 		List<Integer> indices = new ArrayList<Integer>();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 9; i++) {
 			indices.add(i);
 		}
 		Collections.shuffle(indices);

@@ -77,7 +77,7 @@ public abstract class InteractiveReranker implements Reranker {
 	public void start(String query, String index){
 		this.query = query;
 		this.indexName = index;
-		RetrievalController.setFiedlWeights(new double[]{0.25f,0.75f});
+		RetrievalController.setFiedlWeights(new double[]{0.15f,0.85f});
 		ResultSet result = RetrievalController.search(RetrievalCache.topicId, query, index);
 		RetrievalController.initRestricted(RetrievalCache.topicId);
 		RetrievalController.initQueryTerms(query);

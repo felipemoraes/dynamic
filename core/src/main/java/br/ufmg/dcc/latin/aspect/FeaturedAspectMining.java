@@ -22,7 +22,13 @@ public class FeaturedAspectMining  extends AspectMining {
 		coverage = new double[n][20];
 		s = new double[20];
 		v = new double[20];
+		
+		hierarchicalImportance = new double[20][0];
+		hierarchicalNovelty =  new double[20][0];
+		hierarchicalCoverage = new double[n][20][0];
+		
 		accumulatedRelevance = new double[20];
+		
 		featuredAspectModel = new FeaturedAspectModel();
 		ExternalKnowledgeCache.init();
 	}
@@ -173,5 +179,68 @@ public class FeaturedAspectMining  extends AspectMining {
 		normalizeCoverage();
 		
 	}
+
+	@Override
+	public void updateHierarchicalAspects(String index) {
+		int aspectSize = featuredAspectModel.numAspects();
+		if (aspectSize == 0) {
+			return;
+		}
+		
+		
+		
+		//Arrays.fill(importance, uniformImportance);
+		//Arrays.fill(novelty, 1.0f);
+		//Arrays.fill(v, 1.0f);
+		//Arrays.fill(s, 1.0f);
+
+		List<String> aspectsId = featuredAspectModel.getAspects();
+		for (int i = 0; i < aspectsId.size(); ++i ) {
+			
+			List<Integer> passagesAspect = featuredAspectModel.getAspectsPassages(aspectsId.get(i));
+			int sSize = passagesAspect.size();
+			
+			float uniformImportance = 1.0f/sSize;
+			hierarchicalNovelty[i] = new double[sSize];
+			hierarchicalImportance[i] = new double[sSize];
+			
+			Arrays.fill(hierarchicalNovelty[i], 1.0f);
+			Arrays.fill(hierarchicalImportance[i], uniformImportance);
+			
+			for (int j = 0; j < hierarchicalCoverage.length; j++) {
+				hierarchicalCoverage[j][i] = new double[sSize];
+			}
+			
+			for (int j = 0; j < sSize; j++) {
+				TIntDoubleHashMap getAspectQuery = featuredAspectModel.getSubAspectQuery(aspectsId.get(i), passagesAspect.get(j), aspectWeights);
+				double[] scores = null;
+				
+				if (getAspectQuery.size() == 0) {
+					scores = new double[n];
+					Arrays.fill(scores, 1);
+				} else {
+					scores =  ReScorerController.rescore(getAspectQuery);
+				}
+			
+				scores = scaling(scores);
+			    for(int k = 0;k< n ;++k) {
+			    	hierarchicalCoverage[k][i][j] = scores[k];
+			    }
+			    
+				for(int k = 0;k< n ;++k) {
+					if (this.feedbacks[k] != null) {
+						float score = this.feedbacks[k].getRelevanceAspect(aspectsId.get(i),passagesAspect.get(j));
+						hierarchicalCoverage[k][i][j] = score;
+					}
+				}
+			}
+
+		}
+		
+		normalizeHierarchicalCoverage();
+		
+	}
+
+
 
 }

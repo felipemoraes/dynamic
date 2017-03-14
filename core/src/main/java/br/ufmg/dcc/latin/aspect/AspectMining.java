@@ -13,6 +13,10 @@ public abstract class AspectMining {
 	protected double[] novelty;
 	protected double[][] coverage;
 	
+	protected double[][] hierarchicalImportance;
+	protected double[][] hierarchicalNovelty;
+	protected double[][][] hierarchicalCoverage;
+	
 	protected double[] accumulatedRelevance;
 	
 	protected double[][][] features;
@@ -80,6 +84,28 @@ public abstract class AspectMining {
 			}
 		}
 	}
+	
+	protected void normalizeHierarchicalCoverage(){
+		
+		for (int i = 0; i < hierarchicalCoverage[0].length; ++i) {
+			
+			for (int j = 0; j < hierarchicalCoverage[0][i].length; j++ ){
+				float sum = 0;
+				for (int k = 0; k < hierarchicalCoverage.length; k++) {
+					sum += hierarchicalCoverage[k][i][j];
+				}
+				
+				for (int k = 0; k < hierarchicalCoverage.length; k++) {
+					if (sum > 0) {
+						double normValue = hierarchicalCoverage[k][i][j]/sum;
+						hierarchicalCoverage[k][i][j] = normValue;
+					}
+					
+				}				
+			}
+
+		}
+	}
 
 	protected void printCoverage() {
 		for (int i = 0; i < coverage.length; i++) {
@@ -137,5 +163,18 @@ public abstract class AspectMining {
 	
 	public double[][][] getFeatures(){
 		return features;
+	}
+	public double[][][] getHierarchicalCoverage() {
+		return hierarchicalCoverage;
+	}
+	public double[][] getHierarchicalImportance() {
+		return hierarchicalImportance;
+	}
+	public double[][] getHierarchicalNovelty() {
+		return hierarchicalNovelty;
+	}
+	public void updateHierarchicalAspects(String index) {
+		// TODO Auto-generated method stub
+		
 	}
 }

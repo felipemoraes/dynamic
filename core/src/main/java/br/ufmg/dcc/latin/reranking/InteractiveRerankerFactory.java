@@ -7,6 +7,8 @@ public class InteractiveRerankerFactory {
 
 		if (className.equals("xQuAD")){
 			reranker = new xQuAD(aspectMiningClassName);
+		}if (className.equals("HxQuAD")){
+			reranker = new HxQuAD(aspectMiningClassName);
 		} else if (className.equals("MMR")){
 			reranker = new MMR();
 		} else if (className.equals("PM2")){
