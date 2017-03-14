@@ -27,6 +27,9 @@ public class FeaturedAspectMining  extends AspectMining {
 		hierarchicalNovelty =  new double[20][0];
 		hierarchicalCoverage = new double[n][20][0];
 		
+		hierarchicalS = new double[20][0];
+		hierarchicalV = new double[20][0];
+		
 		accumulatedRelevance = new double[20];
 		
 		featuredAspectModel = new FeaturedAspectModel();
@@ -204,8 +207,14 @@ public class FeaturedAspectMining  extends AspectMining {
 			hierarchicalNovelty[i] = new double[sSize];
 			hierarchicalImportance[i] = new double[sSize];
 			
+			hierarchicalS[i] = new double[sSize];
+			hierarchicalV[i] = new double[sSize];
+			
 			Arrays.fill(hierarchicalNovelty[i], 1.0f);
 			Arrays.fill(hierarchicalImportance[i], uniformImportance);
+			
+			Arrays.fill(hierarchicalS[i], 1.0f);
+			Arrays.fill(hierarchicalV[i], 1.0f);
 			
 			for (int j = 0; j < hierarchicalCoverage.length; j++) {
 				hierarchicalCoverage[j][i] = new double[sSize];

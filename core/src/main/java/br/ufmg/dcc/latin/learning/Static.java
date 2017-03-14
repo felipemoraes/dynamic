@@ -92,22 +92,9 @@ public class Static implements Learner {
 
 	@Override
 	public double[] train() {
-		double[] weights = new double[10];
+		double[] weights = new double[2];
 		weights[0] = 1000d;
 		weights[1] = lambda;
-		for (int i = 2; i < weights.length; i++) {
-			weights[i] = 0;
-		}
-		weights[4] = 1;
-		// 0.5 0.5 0.5 0.55 0.9 0.5 0.45 0.5
-		/*weights[2] = 0.5; // 1
-		weights[3] = 0.5;
-		weights[4] = 0.5;
-		weights[5] = 0.55;
-		weights[6] = 0.9;
-		weights[7] = 0.5;
-		weights[8] = 0.45;
-		weights[9] = 0.5;*/
 		return weights;
 	}
 

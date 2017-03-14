@@ -54,7 +54,7 @@ public abstract class InteractiveReranker implements Reranker {
 			}
 			
 			// update the score of the selected document
-			
+
 			result.scores[k] = maxScore;
 			result.docids[k] = docids[maxRank];
 			result.docnos[k] = docnos[maxRank];

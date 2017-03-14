@@ -12,8 +12,11 @@ public class FlatAspectModel {
 	// must be instantiated with LinkedHashMap to preserve order
 	private Map<String,HashMap<String,List<Integer>>> modelContainer;
 	
+	private Map<String,HashMap<Integer,String>> modelContainerPassage;
+	
 	public FlatAspectModel(){
 		modelContainer = new LinkedHashMap<String,HashMap<String,List<Integer>>>();
+		modelContainerPassage = new LinkedHashMap<String,HashMap<Integer,String>>();
 	}
 	
 	public void addToAspect(String aspectId, String aspectComponent, Integer rel){
@@ -26,9 +29,27 @@ public class FlatAspectModel {
 		modelContainer.get(aspectId).get(aspectComponent).add(rel);
 	}
 	
+	public void addToAspect(String aspectId, int passageId, String aspectComponent, Integer rel){
+		if (! modelContainer.containsKey(aspectId)) {
+			modelContainer.put(aspectId, new HashMap<String,List<Integer>>());
+			modelContainerPassage.put(aspectId, new HashMap<Integer,String>());
+		}
+		if (!modelContainer.get(aspectId).containsKey(aspectComponent)){
+			modelContainer.get(aspectId).put(aspectComponent, new ArrayList<Integer>());
+		}
+		modelContainerPassage.get(aspectId).put(passageId, aspectComponent);
+		
+		modelContainer.get(aspectId).get(aspectComponent).add(rel);
+	}
+	
+	
 	
 	public Set<String> getAspectComponents(String aspectId){
 		return modelContainer.get(aspectId).keySet();
+	}
+	
+	public Set<Integer> getAspectComponentsIds(String aspectId){
+		return modelContainerPassage.get(aspectId).keySet();
 	}
 	
 	public Map<String,List<Integer>> getAspectComponentsAndWeights(String aspectId){

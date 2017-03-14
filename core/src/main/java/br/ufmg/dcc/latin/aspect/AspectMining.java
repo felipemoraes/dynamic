@@ -23,6 +23,8 @@ public abstract class AspectMining {
 	
 	protected double[] v;
 	protected double[] s;
+	protected double[][] hierarchicalV;
+	protected double[][] hierarchicalS;
 	
 	protected double[] aspectWeights;
 	
@@ -176,5 +178,11 @@ public abstract class AspectMining {
 	public void updateHierarchicalAspects(String index) {
 		// TODO Auto-generated method stub
 		
+	}
+	public double[][] getHierarchicalS() {
+		return hierarchicalS;
+	}
+	public double[][] getHierarchicalV() {
+		return hierarchicalV;
 	}
 }

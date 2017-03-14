@@ -13,6 +13,8 @@ public class InteractiveRerankerFactory {
 			reranker = new MMR();
 		} else if (className.equals("PM2")){
 			reranker = new PM2(aspectMiningClassName);
+		}else if (className.equals("HPM2")){
+			reranker = new HPM2(aspectMiningClassName);
 		} else if (className.equals("xMMR")){
 			reranker = new xMMR(aspectMiningClassName);
 		} else if (className.equals("LM")) {
