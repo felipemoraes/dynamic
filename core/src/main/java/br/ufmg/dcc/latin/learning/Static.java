@@ -36,7 +36,7 @@ public class Static implements Learner {
 	
 	@Override
 	public void setupReranker(String rerankerName) {
-		reranker = InteractiveRerankerFactory.getInstance(rerankerName, "FeaturedAspectMining");
+		reranker = InteractiveRerankerFactory.getInstance(rerankerName, "PassageAspectMining");
 	}
 
 	@Override
