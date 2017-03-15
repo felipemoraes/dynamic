@@ -41,7 +41,6 @@ public class TestStatic {
 			bestParam[i+1] = Double.parseDouble(splitLine[i]);
 		}
 		bestParam[0] = 1000d;
-		bestParam[1] = 0.5;
 		bestWeights = new double[bestParam.length+1];
 		
 	
@@ -77,7 +76,6 @@ public class TestStatic {
 			
 			reranker.start(query, index);
 			reranker.start(bestWeights);
-			System.out.println(bestWeights[0] + " " + bestWeights[1]);
 			RetrievalCache.topicId = topic;
 			RetrievalCache.indexName = index;
 			System.out.println(topic);

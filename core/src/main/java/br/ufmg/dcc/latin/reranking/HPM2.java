@@ -241,10 +241,7 @@ public class HPM2 extends InteractiveReranker {
 	
 
 	private void updateNovelty() {
-		int n = relevance.length;
-		highestAspectFirst = new int[n];
-		Arrays.fill(highestAspectFirst, -1);
-		highestAspectSecond = new int[n][2];
+
 		for (int j = 0; j < docids.length; ++j) {
 			if (! selected.has(j)) {
 				continue;
