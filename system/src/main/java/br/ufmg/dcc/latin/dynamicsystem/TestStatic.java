@@ -77,6 +77,7 @@ public class TestStatic {
 			
 			reranker.start(query, index);
 			reranker.start(bestWeights);
+			System.out.println(bestWeights[0] + " " + bestWeights[1]);
 			RetrievalCache.topicId = topic;
 			RetrievalCache.indexName = index;
 			System.out.println(topic);
