@@ -14,20 +14,20 @@ public class DynamicSystem {
 	
 	public static void main(String[] args) throws IOException {
 		String topicsFile = "../share/topics_domain.txt";
-		//parameters = ParametersController.getParameters(args[0]);
+		parameters = ParametersController.getParameters(args[0]);
 		
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
 	    String line;
 	   
 	    Session session = new Session();
-	    parameters = new DynamicSystemParameters();
-	    parameters.reranker = "HxQuAD";
-	    double[] param = {100f, 10f, 0.5f};
-	    List<double[]> listParams = new ArrayList<double[]>();
-	    listParams.add(param);
-	    parameters.experimentalParameters = listParams;
-	    session.setReranker(parameters.reranker);
-	    session.setParams(parameters.experimentalParameters);
+	    //parameters = new DynamicSystemParameters();
+	    //parameters.reranker = "HxQuAD";
+	    //double[] param = {100f, 10f, 0.5f};
+	    //List<double[]> listParams = new ArrayList<double[]>();
+	    //listParams.add(param);
+	    //parameters.experimentalParameters = listParams;
+	    //session.setReranker(parameters.reranker);
+	    //session.setParams(parameters.experimentalParameters);
 	    
 	    TrecUser.load("../share/truth_data.txt");
 	    

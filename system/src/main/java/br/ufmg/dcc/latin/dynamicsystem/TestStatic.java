@@ -12,8 +12,7 @@ import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.reranking.InteractiveReranker;
 import br.ufmg.dcc.latin.reranking.InteractiveRerankerFactory;
 
-public class Test {
-
+public class TestStatic {
 	private static List<String[]> testSet;
 	private static double[] bestParam = null;
 	private static double[] bestWeights = null;
@@ -31,28 +30,31 @@ public class Test {
 	}
 	
 	public static void loadModel(String testFilename) throws IOException {
-		bestParam = new double[1];
-		bestWeights = new double[11];
+
 		
 		BufferedReader br = new BufferedReader(new FileReader(testFilename));
 		String line = br.readLine();
 		
 		String[] splitLine = line.split(" ");
+		bestParam = new double[splitLine.length+1];
 		for (int i = 0; i < splitLine.length; i++) {
-			bestParam[i] = Double.parseDouble(splitLine[i]);
+			bestParam[i+1] = Double.parseDouble(splitLine[i]);
 		}
-		bestWeights[0] = 1000d;
-		bestWeights[1] = bestParam[0];
-		line = br.readLine();
-		splitLine = line.split(" ",9);
-		for (int i = 0; i < splitLine.length; i++) {
-			bestWeights[i+2] = Double.parseDouble(splitLine[i]);
+		bestParam[0] = 1000d;
+
+		bestWeights = new double[bestParam.length+1];
+		
+	
+		for (int i = 0; i < bestParam.length; i++) {
+			bestWeights[i] = bestParam[i];
 		}
+		
+		
 		br.close();
 	}
 
 	public static void setupReranker(String rerankerName){
-		reranker = InteractiveRerankerFactory.getInstance(rerankerName, "FeaturedAspectMining");
+		reranker = InteractiveRerankerFactory.getInstance(rerankerName, "PassageAspectMining");
 	}
 	
 	public static void main(String[] args) throws IOException {
@@ -89,7 +91,4 @@ public class Test {
 
 
 	}
-	
-	
-
 }

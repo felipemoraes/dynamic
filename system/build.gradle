@@ -32,4 +32,12 @@ task modelTest(type: JavaExec, dependsOn: classes) {
     }
 }
 
+task modelTestStatic(type: JavaExec, dependsOn: classes) {
+    main = 'br.ufmg.dcc.latin.dynamicsystem.TestStatic'
+    classpath = sourceSets.main.runtimeClasspath
+     if(project.hasProperty('Xargs')){
+       args (Xargs.split());
+    }
+}
+
 mainClassName = ' '
