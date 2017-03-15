@@ -92,12 +92,12 @@ public class PM2 extends InteractiveReranker {
 		if (q == -1){
 			return relevance[docid];
 		}
+		
 		double quotientAspectq = v[q]/(2*s[q]+1);
 		quotientAspectq *= coverage[docid][q];
 		double quotientotherAspect  = 0;
 		for (int i = 0; i < s.length; i++) {
 			if (i != q) {
-				
 				quotientotherAspect += (v[i]/(2*s[i]+1))*coverage[docid][i];
 			}
 		}
@@ -126,6 +126,7 @@ public class PM2 extends InteractiveReranker {
 		int n = relevance.length;
 		highestAspect = new int[n];
 		Arrays.fill(highestAspect, -1);
+
 		for (int j = 0; j < docids.length; ++j) {
 			if (! selected.has(j)) {
 				continue;
