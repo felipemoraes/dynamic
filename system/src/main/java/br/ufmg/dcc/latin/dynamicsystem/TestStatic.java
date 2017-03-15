@@ -41,7 +41,7 @@ public class TestStatic {
 			bestParam[i+1] = Double.parseDouble(splitLine[i]);
 		}
 		bestParam[0] = 1000d;
-
+		bestParam[1] = 0.5;
 		bestWeights = new double[bestParam.length+1];
 		
 	
