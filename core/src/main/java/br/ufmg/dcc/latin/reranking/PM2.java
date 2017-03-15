@@ -123,10 +123,6 @@ public class PM2 extends InteractiveReranker {
 	}
 	
 	public void updateNovelty(){
-		int n = relevance.length;
-		highestAspect = new int[n];
-		Arrays.fill(highestAspect, -1);
-
 		for (int j = 0; j < docids.length; ++j) {
 			if (! selected.has(j)) {
 				continue;
