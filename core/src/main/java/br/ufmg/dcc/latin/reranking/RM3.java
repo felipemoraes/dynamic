@@ -36,7 +36,6 @@ public class RM3 extends InteractiveReranker {
 	double[] originalRelevance;
 	
 	
-	
 	float mu;
 	float muFB;
 	double lambda;
@@ -56,8 +55,8 @@ public class RM3 extends InteractiveReranker {
 		super.start(params);
 		mu = 2000f;
 		muFB = 2000f;
-		numberOfTerms = (int) params[1];
-		lambda = params[2];
+		numberOfTerms = (int) params[2];
+		lambda = params[1];
 		termCounts = new ArrayList<DocVec>();
 		relevances = new TIntArrayList();
 		docLens = new TIntArrayList();

@@ -54,8 +54,7 @@ public class MMR extends InteractiveReranker {
 	public void start(double[] params) {
 		super.start(params);
 		relevance = normalize(relevance);
-		
-		
+
 		lambda = params[1];
 		cacheSim = new double[relevance.length];
 	}

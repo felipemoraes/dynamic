@@ -7,7 +7,9 @@ public class LearnerFactory {
 			return new DBGD();
 		} else if (onlineLearner.equals("Static")) {
 			return new Static();
-		} else if (onlineLearner.equals("CA")) {
+		}  else if (onlineLearner.equals("RM3Static")) {
+			return new RM3Static();
+		}else if (onlineLearner.equals("CA")) {
 			return new CoordinateAscent();
 		}
 		return null;
