@@ -69,10 +69,10 @@ public class SimulatedDynamicNoisedDiversity {
 			ResultSet baselineResultSet = baselineRanker.search(query, index);
 			int count = 0;
 		
-		    for (int k = 0; k < 20; k++) {
+		    for (int k = 0; k < 1; k++) {
 		       for (int noise = 1; noise <= 200; noise++) {
 		    	   double epsilon = noise*0.1;
-		    	   epsilon = 0.1;
+		    	   
 		    	   trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
 			   
 		    	   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();

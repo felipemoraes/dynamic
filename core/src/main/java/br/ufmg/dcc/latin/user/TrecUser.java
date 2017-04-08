@@ -400,7 +400,8 @@ public class TrecUser implements User {
 			
 			
 			rmse += rmse(getRelevances(subtopicId, docnos), relevances);
-			ndcg += ndcg(getRelevances(subtopicId, docnos), relevances);
+			//ndcg += ndcg(getRelevances(subtopicId, docnos), relevances);
+			ndcg += 1;
 			sum = StatUtils.sum(relevances);
 			double[] probsNoised = new double[relevances.length];
 			for (int i = 0; i < probs.length; i++) {
