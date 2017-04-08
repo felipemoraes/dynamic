@@ -44,6 +44,8 @@ public class SimulatedDynamicNoisedDiversity {
 	
 		BufferedReader br = new BufferedReader(new FileReader(topicsFile));
 	    String line;
+	    //args = new String[1];
+	    //args[0] = "DPH";
 	    
 	    BaselineRanker baselineRanker = getBaselineRanker(args[0]);
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
@@ -56,7 +58,7 @@ public class SimulatedDynamicNoisedDiversity {
 	    	String[] splitLine = line.split(" ",3);
 	    	
 	    	String topicId = splitLine[1];
-	    	//if (!topicId.equals("DD16-1")){
+	    	//if (!topicId.equals("DD16-2")){
 	    	//	continue;
 	    	//}
 	    	
@@ -68,9 +70,9 @@ public class SimulatedDynamicNoisedDiversity {
 			int count = 0;
 		
 		    for (int k = 0; k < 20; k++) {
-		       for (int noise = 1; noise <= 200; noise ++) {
+		       for (int noise = 1; noise <= 200; noise++) {
 		    	   double epsilon = noise*0.1;
-		    	   
+		    	   epsilon = 0.1;
 		    	   trecUser.generateSubtopicsWithNoise(epsilon, baselineResultSet.docnos);
 			   
 		    	   FeedbackModeling xQuADfeedbackModeling = new FeedbackModeling();
@@ -131,6 +133,7 @@ public class SimulatedDynamicNoisedDiversity {
 					}
 				   
 				    trecUser.destroySubtopics();
+				  
 		       }
 		    }
 

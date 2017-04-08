@@ -384,6 +384,7 @@ public class TrecUser implements User {
 			double deltaF = max - min;
 			sensitivity += deltaF;
 			double epsilon = noise;
+			
 			LaplaceDistribution dist = new LaplaceDistribution(0,deltaF/epsilon);
 			
 			for (int i = 0; i < relevances.length; i++) {
@@ -417,8 +418,15 @@ public class TrecUser implements User {
 		
 	}
 	
-	private double ndcg(double[] v1, double[] v2) {
-		
+	private double ndcg(double[] v1Copy, double[] v2Copy) {
+		double[] v1 = new double[v1Copy.length];
+		double[] v2 = new double[v1Copy.length];
+		for (int k = 0; k < v1.length; k++) {
+			v1[k] = v1Copy[k];
+		}
+		for (int k = 0; k < v1.length; k++) {
+			v2[k] = v2Copy[k];
+		}
 		int[] indices = IntStream.range(0, v2.length)
                 .boxed().sorted((i, j) -> (new Double(v2[i])).compareTo(v2[j])*-1 )
                 .mapToInt(ele -> ele).toArray();
