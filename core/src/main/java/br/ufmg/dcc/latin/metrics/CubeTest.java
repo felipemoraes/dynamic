@@ -285,7 +285,7 @@ public class CubeTest {
 		
 		double relevantsRetrieved = 0;
 		double relevants = qrels.get(topic).size();
-		
+		iteration = Math.min(iteration, docnos.length);
 		for (int i = 0; i < iteration; i++) {
 			
 			if (docnos[i] == null){
