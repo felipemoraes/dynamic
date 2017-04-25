@@ -41,6 +41,21 @@ public class SimulatedRelevance {
 		
 	}
 	
+	public static List<TargetAP> loadTargetAPs() throws IOException{
+		List<TargetAP> targetAPs = new ArrayList<TargetAP>();
+		BufferedReader br = new BufferedReader(new FileReader("../share/TargetAps.txt"));
+	    String line;
+	    while ((line = br.readLine()) != null) {
+	    	String[] splitLine = line.split(" ",2);
+	    	TargetAP tAP = new TargetAP();
+			tAP.bin = Double.parseDouble(splitLine[0]);
+			tAP.AP = Double.parseDouble(splitLine[1]);
+			targetAPs.add(tAP);	
+	    }
+	    br.close();
+		return targetAPs;
+	}
+	
 	public static void main(String[] args) throws IOException {
 		
 		CubeTest cubeTest = new CubeTest();
@@ -55,8 +70,8 @@ public class SimulatedRelevance {
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
 	   
 	    SimAP.trecUser = trecUser;
-	    
-	    List<TargetAP> targetAPs = new ArrayList<TargetAP>();
+	    List<TargetAP> targetAPs = loadTargetAPs();
+	    /*List<TargetAP> targetAPs = new ArrayList<TargetAP>();
 	    for (int i = 0; i < 19 ; i++) {
 	    	for (int j = 0; j <20; j++) {
 				TargetAP tAP = new TargetAP();
@@ -70,10 +85,10 @@ public class SimulatedRelevance {
 			tAP.bin = 0.95;
 			tAP.AP = ThreadLocalRandom.current().nextDouble(0.95, 1.00000000000000000000000001);
 			targetAPs.add(tAP);
-		}
+		}*/
 	    
 	    
-	    FileWriter fw = new FileWriter( "SimulatedRelevance_DPH_500.txt");
+	    FileWriter fw = new FileWriter("SimulatedRelevance_DPH_500.txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    		
