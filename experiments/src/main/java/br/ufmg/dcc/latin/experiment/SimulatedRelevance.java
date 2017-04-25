@@ -73,7 +73,7 @@ public class SimulatedRelevance {
 		}
 	    
 	    
-	    FileWriter fw = new FileWriter( "SimulatedRelevance_DPH.txt");
+	    FileWriter fw = new FileWriter( "SimulatedRelevance_DPH_500.txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    		
@@ -136,13 +136,11 @@ public class SimulatedRelevance {
         			reranker.update(feedbacks);
     			}
         		
-    			double precisionxQuAD = cubeTest.getPrecision(1, topicId, accResultxQuAD);
-    			double precisionPM2 = cubeTest.getPrecision(1, topicId, accResultPM2);
+ 
     			double precisionbaseline = cubeTest.getPrecision(1, topicId, accBaseLineResult);
     			
-    			double recallxQuAD = cubeTest.getRecall(10, topicId, accResultxQuAD);
-    			double recallPM2 = cubeTest.getRecall(10, topicId, accResultPM2);
-    			double recallbaseline = cubeTest.getRecall(10, topicId, accBaseLineResult);
+
+    			double recallbaseline = cubeTest.getRecall(500, topicId, baselineResultSet.docnos);
         		for (int i = 0; i < 10; i++) {
         			double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, accResultxQuAD);
         			double actPM2 = cubeTest.getAverageCubeTest(i+1, topicId, accResultPM2);
@@ -150,8 +148,8 @@ public class SimulatedRelevance {
 
 
         			out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " +actbaseline 
-        					+ " " + precisionxQuAD + " " + precisionPM2 + " " +precisionbaseline
-        					+ " " + recallxQuAD + " " + recallPM2 + " " +recallbaseline);
+        					+ " " +precisionbaseline
+        					+ " " +recallbaseline);
 				}
         		
         		count++;

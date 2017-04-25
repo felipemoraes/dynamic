@@ -281,26 +281,20 @@ public class CubeTest {
 		return relevantsRetrieved/retrieved;
 	}
 	
-	public double getRecall(int iteration, String topic, String[][] docnos){
+	public double getRecall(int iteration, String topic, String[] docnos){
 		
 		double relevantsRetrieved = 0;
 		double relevants = qrels.get(topic).size();
 		
 		for (int i = 0; i < iteration; i++) {
-			if (i > docnos.length){
-				break;
-			}
-			if (docnos[i] == null) {
+			
+			if (docnos[i] == null){
 				continue;
 			}
-			for (int j = 0; j < docnos[i].length; j++) {
-				if (docnos[i][j] == null){
-					continue;
-				}
-				if (qrels.get(topic).containsKey(docnos[i][j])){
-					relevantsRetrieved++;
-				}
+			if (qrels.get(topic).containsKey(docnos[i])){
+				relevantsRetrieved++;
 			}
+		
 			
 		}
 		if (relevantsRetrieved == 0) {
