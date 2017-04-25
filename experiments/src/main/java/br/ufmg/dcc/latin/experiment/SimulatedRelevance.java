@@ -73,7 +73,7 @@ public class SimulatedRelevance {
 		}
 	    
 	    
-	    FileWriter fw = new FileWriter( "SimulatedRelevance_DPH_100.txt");
+	    FileWriter fw = new FileWriter( "SimulatedRelevance_DPH_500.txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    		
@@ -140,7 +140,7 @@ public class SimulatedRelevance {
     			double precisionbaseline = cubeTest.getPrecision(1, topicId, accBaseLineResult);
     			
 
-    			double recallbaseline = cubeTest.getRecall(100, topicId, baselineResultSet.scores, baselineResultSet.docnos);
+    			double recallbaseline = cubeTest.getRecall(500, topicId, baselineResultSet.scores, baselineResultSet.docnos);
         		for (int i = 0; i < 10; i++) {
         			double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, accResultxQuAD);
         			double actPM2 = cubeTest.getAverageCubeTest(i+1, topicId, accResultPM2);
