@@ -81,7 +81,7 @@ public class SimulatedRelevance {
 	    	String[] splitLine = line.split(" ",3);
 	    	
         	String topicId = splitLine[1];
-        	//if (!topicId.equals("DD16-15")){
+        	//if (!topicId.equals("DD16-1")){
         	//	continue;
         	//}
         	
@@ -140,7 +140,7 @@ public class SimulatedRelevance {
     			double precisionbaseline = cubeTest.getPrecision(1, topicId, accBaseLineResult);
     			
 
-    			double recallbaseline = cubeTest.getRecall(100, topicId, baselineResultSet.docnos);
+    			double recallbaseline = cubeTest.getRecall(100, topicId, baselineResultSet.scores, baselineResultSet.docnos);
         		for (int i = 0; i < 10; i++) {
         			double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, accResultxQuAD);
         			double actPM2 = cubeTest.getAverageCubeTest(i+1, topicId, accResultPM2);

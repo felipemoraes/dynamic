@@ -11,6 +11,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import br.ufmg.dcc.latin.querying.BooleanSelectedSet;
+
 import java.util.Set;
 
 public class CubeTest {
@@ -281,22 +284,32 @@ public class CubeTest {
 		return relevantsRetrieved/retrieved;
 	}
 	
-	public double getRecall(int iteration, String topic, String[] docnos){
+	public double getRecall(int iteration, String topic, double[] scores, String[] docnos){
 		
 		double relevantsRetrieved = 0;
 		double relevants = qrels.get(topic).size();
 		iteration = Math.min(iteration, docnos.length);
+	
+		BooleanSelectedSet selected = new BooleanSelectedSet(docnos.length);
 		for (int i = 0; i < iteration; i++) {
-			
-			if (docnos[i] == null){
-				continue;
+			double bestScore = Double.NEGATIVE_INFINITY;
+			int best = -1;
+			for (int j = 0; j < docnos.length; j++) {
+				if (selected.has(j)) {
+					continue;
+				}
+				if (scores[j] > bestScore) {
+					best = j;
+					bestScore = scores[j];
+				}
 			}
-			if (qrels.get(topic).containsKey(docnos[i])){
+			if (qrels.get(topic).containsKey(docnos[best])){
 				relevantsRetrieved++;
 			}
-		
-			
+			selected.put(best);
 		}
+		
+
 		if (relevantsRetrieved == 0) {
 			return 0;
 		}
