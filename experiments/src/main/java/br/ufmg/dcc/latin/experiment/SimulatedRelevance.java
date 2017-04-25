@@ -43,7 +43,7 @@ public class SimulatedRelevance {
 	
 	public static List<TargetAP> loadTargetAPs() throws IOException{
 		List<TargetAP> targetAPs = new ArrayList<TargetAP>();
-		BufferedReader br = new BufferedReader(new FileReader("TargetAPs.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("../share/TargetAPs.txt"));
 	    String line;
 	    while ((line = br.readLine()) != null) {
 	    	String[] splitLine = line.split(" ",2);
