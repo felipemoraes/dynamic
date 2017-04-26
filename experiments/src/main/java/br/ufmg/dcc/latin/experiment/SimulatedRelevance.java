@@ -96,7 +96,7 @@ public class SimulatedRelevance {
 	    	String[] splitLine = line.split(" ",3);
 	    	
         	String topicId = splitLine[1];
-        	//if (!topicId.equals("DD16-1")){
+        	//if (!topicId.equals("DD16-2")){
         	//	continue;
         	//}
         	
@@ -111,10 +111,12 @@ public class SimulatedRelevance {
     		for (TargetAP targetAP : targetAPs) {
     			
    				SimAP.targetAP = targetAP.AP;
-   				//SimAP.targetAP = 0.6;
+   				//SimAP.targetAP = 0.02;
    				
 				baselineResultSet = baselineRanker.search();
     			double precisionbaseline = cubeTest.getPrecision(5, topicId, baselineResultSet.docnos,baselineResultSet.scores);
+    			double precisionbaseline10 = cubeTest.getPrecision(10, topicId, baselineResultSet.docnos,baselineResultSet.scores);
+    			double precisionbaseline15 = cubeTest.getPrecision(15, topicId, baselineResultSet.docnos,baselineResultSet.scores);
 				trecUser.generateSubtopics(baselineResultSet.docnos);
 				
 				
@@ -160,7 +162,7 @@ public class SimulatedRelevance {
 
     			
 
-    			double recallbaseline = cubeTest.getRecall(500, topicId, baselineResultSet.scores, baselineResultSet.docnos);
+    			double recallbaseline = cubeTest.getRecall(100, topicId, baselineResultSet.scores, baselineResultSet.docnos);
         		for (int i = 0; i < 10; i++) {
         			double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, accResultxQuAD);
         			double actPM2 = cubeTest.getAverageCubeTest(i+1, topicId, accResultPM2);
@@ -169,14 +171,14 @@ public class SimulatedRelevance {
 
         			out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " +actbaseline 
         					+ " " +precisionbaseline
-        					+ " " +recallbaseline);
+        					+ " " +recallbaseline + " " + precisionbaseline10 + " " + precisionbaseline15);
 				}
         		
         		count++;
         		if (count % 100 == 0) {
         			System.out.println(count);
         		}
-        		
+        		//break;
     		}	
 	    }
 		br.close();

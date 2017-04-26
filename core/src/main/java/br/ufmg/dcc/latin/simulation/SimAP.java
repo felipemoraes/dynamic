@@ -35,12 +35,12 @@ public class SimAP {
 			bestRels[i] = 1;
 		}
 		
-		double bestAP = computeAP(bestRels);
+		double bestAP = computeAP(bestRels, bestRels);
 		Arrays.fill(bestRels, 1);
 		for (int i = 0; i < bestRels.length-countRels; i++) {
 			bestRels[i] = 0;
 		}
-		double worstAP = computeAP(bestRels);
+		double worstAP = computeAP(bestRels,bestRels);
 		int i = 0;
 		double firstBin = worstAP - (worstAP%0.05);
 		double lastBin = bestAP - (bestAP % 0.05) + 0.05;
@@ -82,7 +82,7 @@ public class SimAP {
 			bestRels[i] = 1;
 		}
 		
-		double bestAP = computeAP(bestRels);
+		double bestAP = computeAP(bestRels,bestRels);
 		return bestAP;
 	}
 	
@@ -245,17 +245,16 @@ public class SimAP {
 	}
 	
 
-	public static ResultSet apply(String[] docnos,  double[] scores) {
+	public static double[] apply(String[] docnos,  double[] scores) {
 		
 		double[] relevances = TrecUser.get(docnos);
 		
 		double[] localScore = new double[scores.length];
 		
-		String[] localDocnos = new String[scores.length];
-		ResultSet resultSet = new ResultSet();
+
 		for (int i = 0; i < scores.length; i++) {
 			localScore[i] = scores[i];
-			localDocnos[i] = docnos[i];
+			
 		}
 		
 		
@@ -272,15 +271,12 @@ public class SimAP {
 			aux = relevances[i];
 			relevances[i] = relevances[j];
 			relevances[j] = aux;
-			
-			String auxDocno = localDocnos[i];
-			localDocnos[i] = localDocnos[j];
-			localDocnos[j] = auxDocno;
+
 		}
 
-		currentAP = computeAP(relevances);
+		currentAP = computeAP(relevances,localScore);
 		
-		double bestAP = computeBestPrecision(relevances);
+		double bestAP = computeBestAP(relevances);
 		
 		double smallestDiff = Math.abs(targetAP-currentAP);
 		int i = 0;
@@ -301,12 +297,9 @@ public class SimAP {
 			relevances[pair.ri] = relevances[pair.rj];
 			relevances[pair.rj] = aux;
 			
-			String auxDocno = localDocnos[pair.ri];
-			localDocnos[pair.ri] = localDocnos[pair.rj];
-			localDocnos[pair.rj] = auxDocno;
 			
 			
-			double candidateAP = computeAP(relevances);
+			double candidateAP = computeAP(relevances,localScore);
 			
 			
 			if (Math.abs(targetAP-candidateAP) < smallestDiff) {
@@ -316,98 +309,30 @@ public class SimAP {
 				aux = localScore[pair.ri];
 				localScore[pair.ri] = localScore[pair.rj];
 				localScore[pair.rj] = aux;
+				
 				aux = relevances[pair.ri];
 				relevances[pair.ri] = relevances[pair.rj];
 				relevances[pair.rj] = aux;	
 				
-				auxDocno = localDocnos[pair.ri];
-				localDocnos[pair.ri] = localDocnos[pair.rj];
-				localDocnos[pair.rj] = auxDocno;
 			}
 			i++;
-			
+
 			if (bestAP == currentAP){
 				break;
 			}
 			
 		}
-		resultSet.docnos = localDocnos;
-		resultSet.scores = localScore;
 
-		return resultSet;
+
+
+		return localScore;
 	}
 	
-	public static double[] apply(int[] ids, double[] scores) {
-		
-		double[] localScores = new double[scores.length];
-		int[] localIds = new int[ids.length];
-		for (int i = 0; i < localScores.length; i++) {
-			localScores[i] = scores[i];
-			localIds[i] = ids[i];
-		}
-		
-	    //  fisher_yates_shuffle( \@array ) : generate a random permutation
-		// of @array in place
-		
-		for (int i = localScores.length-1; i >= 1; i--) {
-			int j = rand.nextInt(i+1);
-			double aux = localScores[i];
-			localScores[i] = localScores[j];
-			localScores[j] = aux;
-			int auxid = localIds[i];
-			localIds[i] =  localIds[j];
-			localIds[j] = auxid;
- 		}
-		
-		currentAP = computeAP(localScores);
-		
-		double bestAP = computeBestAP(localScores);
-		
-		double smallestDiff = Math.abs(targetAP-currentAP);
-		int i = 0;
-		while (Math.abs(targetAP-currentAP) > 0.005 && i < 1000) {
-			
-			Pair pair = chooseSwap2(localScores, currentAP < targetAP) ;
-			 
-			if (pair.rj == -1) {
-				break;
-			}
-			
-			double aux = localScores[pair.ri];
-			localScores[pair.ri] = localScores[pair.rj];
-			localScores[pair.rj] = aux;
-			
-			int auxid = localIds[pair.ri];
-			localIds[pair.ri] =  localIds[pair.rj];
-			localIds[pair.rj] = auxid;
 
-			double candidateAP = computeAP(localScores);
-			
-			if (Math.abs(targetAP-candidateAP) < smallestDiff) {
-				smallestDiff = Math.abs(targetAP-candidateAP);
-				currentAP = candidateAP;
-			} else {
-				aux = localScores[pair.ri];
-				localScores[pair.ri] = localScores[pair.rj];
-				localScores[pair.rj] = aux;
-				
-				auxid = localIds[pair.ri];
-				localIds[pair.ri] =  localIds[pair.rj];
-				localIds[pair.rj] = auxid;
-			}
-			i++;
-			
-			if (bestAP == currentAP){
-				break;
-			}
-		}
-	
-		
-		return localScores;
-	}
-	
-	public static double computeAP(double[] relevances){
+	public static double computeAP(double[] relevances, double[] scores){
 		double averagePrecision = 0;
+		
+
 		for (int i = 0; i < relevances.length; i++) {
 			double precision = 0;
 			for (int j = 0; j <= i; j++) {
@@ -496,6 +421,7 @@ public class SimAP {
 		currentAP = computePrecision(topic,docnos,localScore, relevances);
 		
 		double bestAP = computeBestPrecision(relevances);
+		System.out.println(bestAP);
 		
 		double smallestDiff = Math.abs(targetAP-currentAP);
 		int i = 0;
@@ -523,7 +449,7 @@ public class SimAP {
 			
 			double candidateAP = computePrecision(topic, localDocnos, localScore,relevances);
 			
-			System.out.println(bestAP);
+			
 			if (Math.abs(targetAP-candidateAP) < smallestDiff) {
 				smallestDiff = Math.abs(targetAP-candidateAP);
 				currentAP = candidateAP;

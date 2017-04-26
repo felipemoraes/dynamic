@@ -166,9 +166,9 @@ public class TrecUser implements User {
 			int[] ids = subtopicsCoverageIndices.get(subtopicId);
 			double[] scores = new double[relevances.length];
 			
-			double[] localScores =  SimAP.apply(ids, subtopicsCoverageSorted.get(subtopicId));
+			//double[] localScores =  SimAP.apply(ids, subtopicsCoverageSorted.get(subtopicId));
 			
-		
+			double[] localScores = new double[0];
 			for (int i = 0; i < scores.length; i++) {
 				scores[ids[i]] = localScores[i];
 			}

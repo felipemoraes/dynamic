@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import br.ufmg.dcc.latin.querying.BooleanSelectedSet;
+import br.ufmg.dcc.latin.user.TrecUser;
 
 import java.util.Set;
 
@@ -263,8 +264,7 @@ public class CubeTest {
 			if (docnos[i] == null) {
 				continue;
 			}
-			
-			
+
 			if (qrels.get(topic).containsKey(docnos[i])){
 				
 				relevantsRetrieved++;
@@ -274,6 +274,7 @@ public class CubeTest {
 			
 			
 		}
+
 		
 		if (relevantsRetrieved == 0) {
 			return 0;

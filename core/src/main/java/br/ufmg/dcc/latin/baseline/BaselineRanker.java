@@ -34,6 +34,7 @@ import org.apache.lucene.util.BytesRef;
 import br.ufmg.dcc.latin.querying.BooleanSelectedSet;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.simulation.SimAP;
+import br.ufmg.dcc.latin.user.TrecUser;
 
 
 public class BaselineRanker {
@@ -59,7 +60,7 @@ public class BaselineRanker {
 	public ResultSet search(){
 		
 		
-		ResultSet permutated = SimAP.apply(resultSet.docnos, resultSet.scores);
+		double[] permutated = SimAP.apply(resultSet.docnos, resultSet.scores);
 		//currentResultSet.scores = resultSet.scores;
 
 		BooleanSelectedSet selected = new BooleanSelectedSet(resultSet.docnos.length);
@@ -70,14 +71,14 @@ public class BaselineRanker {
 				if (selected.has(j)) {
 					continue;
 				}
-				if (permutated.scores[j] > bestScore) {
+				if (permutated[j] > bestScore) {
 					best = j;
-					bestScore = permutated.scores[j];
+					bestScore = permutated[j];
 				}
 			}
 
-			currentResultSet.docnos[i] = permutated.docnos[best];
-			currentResultSet.scores[i] = permutated.scores[best];
+			currentResultSet.docnos[i] = resultSet.docnos[best];
+			currentResultSet.scores[i] = permutated[best];
 			selected.put(best);
 			
 		}
