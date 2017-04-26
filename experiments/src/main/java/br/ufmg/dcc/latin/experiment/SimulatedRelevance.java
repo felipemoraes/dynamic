@@ -96,9 +96,9 @@ public class SimulatedRelevance {
 	    	String[] splitLine = line.split(" ",3);
 	    	
         	String topicId = splitLine[1];
-        	if (!topicId.equals("DD16-1")){
-        		continue;
-        	}
+        	//if (!topicId.equals("DD16-1")){
+        	//	continue;
+        	//}
         	
         	System.out.println(topicId);
         	TrecUser.topicId = topicId;
@@ -164,7 +164,7 @@ public class SimulatedRelevance {
         			double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, accBaseLineResult);
 
 
-        			System.out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " +actbaseline 
+        			out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " +actbaseline 
         					+ " " +precisionbaseline
         					+ " " +recallbaseline);
 				}
