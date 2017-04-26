@@ -60,14 +60,9 @@ public class BaselineRanker {
 	public ResultSet search(){
 		
 		
-		double[] permutated = SimAP.apply(resultSet.docnos, resultSet.scores);
-
-		for (int i = 0; i < resultSet.docnos.length; i++) {
-			
-			currentResultSet.scores[i] = permutated[i];
-			
-		}
-		return currentResultSet;
+		ResultSet permutated = SimAP.apply(resultSet.docnos, resultSet.scores);
+		permutated.docids = new int[resultSet.docnos.length];
+		return permutated;
 	}
 	
 	public ResultSet searchPrecision(String topic){

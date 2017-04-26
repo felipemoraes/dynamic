@@ -257,27 +257,21 @@ public class CubeTest {
 		double relevantsRetrieved = 0;
 		double retrieved = 0;
 		
-		BooleanSelectedSet selected = new BooleanSelectedSet(docnos.length);
 		for (int i = 0; i < Math.min(docnos.length,iteration); i++) {
-			double bestScore = Double.NEGATIVE_INFINITY;
-			int best = -1;
-			for (int j = 0; j < docnos.length; j++) {
-				if (selected.has(j)) {
-					continue;
-				}
-				if (scores[j] > bestScore) {
-					best = j;
-					bestScore = scores[j];
-				}
-			}
-			if (qrels.get(topic).containsKey(docnos[best])){
+
+			
+			
+				
+				
+			
+			
+			if (qrels.get(topic).containsKey(docnos[i])){
 				relevantsRetrieved++;
 			}
 			retrieved++;
-			selected.put(best);
+
 			
 		}
-
 		
 		
 		if (relevantsRetrieved == 0) {
@@ -294,25 +288,14 @@ public class CubeTest {
 		
 		double relevantsRetrieved = 0;
 		double relevants = qrels.get(topic).size();
-		
-		BooleanSelectedSet selected = new BooleanSelectedSet(docnos.length);
+
 		for (int i = 0; i < Math.min(docnos.length,iteration); i++) {
-			double bestScore = Double.NEGATIVE_INFINITY;
-			int best = -1;
-			for (int j = 0; j < docnos.length; j++) {
-				if (selected.has(j)) {
-					continue;
-				}
-				if (scores[j] > bestScore) {
-					best = j;
-					bestScore = scores[j];
-				}
-			}
-			if (qrels.get(topic).containsKey(docnos[best])){
+
+			if (qrels.get(topic).containsKey(docnos[i])){
 				relevantsRetrieved++;
 			}
 
-			selected.put(best);
+		
 			
 		}
 
