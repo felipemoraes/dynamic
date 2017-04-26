@@ -107,17 +107,18 @@ public class SimulatedRelevance {
     		ResultSet baselineResultSet = baselineRanker.search(query, index);
     		
     		int count = 0;
-    		//trecUser.generateSubtopics(baselineResultSet.docnos);
+    		trecUser.generateSubtopics(baselineResultSet.docnos);
     		for (TargetAP targetAP : targetAPs) {
     			
    				SimAP.targetAP = targetAP.AP;
-   				//SimAP.targetAP = 0.02;
+   				//SimAP.targetAP = 0.2;
    				
 				baselineResultSet = baselineRanker.search();
     			double precisionbaseline = cubeTest.getPrecision(5, topicId, baselineResultSet.docnos,baselineResultSet.scores);
     			double precisionbaseline10 = cubeTest.getPrecision(10, topicId, baselineResultSet.docnos,baselineResultSet.scores);
     			double precisionbaseline15 = cubeTest.getPrecision(15, topicId, baselineResultSet.docnos,baselineResultSet.scores);
-				trecUser.generateSubtopics(baselineResultSet.docnos);
+				
+    			
 				
 				
 			    FeedbackModeling feedbackModeling = new FeedbackModeling();
@@ -178,7 +179,6 @@ public class SimulatedRelevance {
         		if (count % 100 == 0) {
         			System.out.println(count);
         		}
-        		//break;
     		}	
 	    }
 		br.close();

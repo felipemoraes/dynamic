@@ -61,6 +61,19 @@ public class BaselineRanker {
 		
 		
 		double[] permutated = SimAP.apply(resultSet.docnos, resultSet.scores);
+
+		for (int i = 0; i < resultSet.docnos.length; i++) {
+			
+			currentResultSet.scores[i] = permutated[i];
+			
+		}
+		return currentResultSet;
+	}
+	
+	public ResultSet searchPrecision(String topic){
+		
+		
+		double[] permutated = SimAP.applyPrecision(topic, resultSet.docnos, resultSet.scores);
 		//currentResultSet.scores = resultSet.scores;
 
 		BooleanSelectedSet selected = new BooleanSelectedSet(resultSet.docnos.length);
@@ -83,35 +96,7 @@ public class BaselineRanker {
 			
 		}
 		return currentResultSet;
-	}
-	
-	public ResultSet searchPrecision(String topic){
-		
-		
-		ResultSet permutated = SimAP.applyPrecision(topic, resultSet.docnos, resultSet.scores);
-		//currentResultSet.scores = resultSet.scores;
 
-		BooleanSelectedSet selected = new BooleanSelectedSet(resultSet.docnos.length);
-		for (int i = 0; i < resultSet.docnos.length; i++) {
-			double bestScore = Double.NEGATIVE_INFINITY;
-			int best = -1;
-			for (int j = 0; j < resultSet.docnos.length; j++) {
-				if (selected.has(j)) {
-					continue;
-				}
-				if (permutated.scores[j] > bestScore) {
-					best = j;
-					bestScore = permutated.scores[j];
-				}
-			}
-
-			currentResultSet.docnos[i] = permutated.docnos[best];
-			currentResultSet.scores[i] = permutated.scores[best];
-			selected.put(best);
-			
-		}
-
-		return currentResultSet;
 	}
 	
 	

@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import br.ufmg.dcc.latin.querying.BooleanSelectedSet;
-import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.user.TrecUser;
 
 public class SimAP {
@@ -35,12 +33,12 @@ public class SimAP {
 			bestRels[i] = 1;
 		}
 		
-		double bestAP = computeAP(bestRels, bestRels);
+		double bestAP = computeAP(bestRels);
 		Arrays.fill(bestRels, 1);
 		for (int i = 0; i < bestRels.length-countRels; i++) {
 			bestRels[i] = 0;
 		}
-		double worstAP = computeAP(bestRels,bestRels);
+		double worstAP = computeAP(bestRels);
 		int i = 0;
 		double firstBin = worstAP - (worstAP%0.05);
 		double lastBin = bestAP - (bestAP % 0.05) + 0.05;
@@ -82,7 +80,7 @@ public class SimAP {
 			bestRels[i] = 1;
 		}
 		
-		double bestAP = computeAP(bestRels,bestRels);
+		double bestAP = computeAP(bestRels);
 		return bestAP;
 	}
 	
@@ -274,9 +272,9 @@ public class SimAP {
 
 		}
 
-		currentAP = computeAP(relevances,localScore);
+		currentAP = computeAP(relevances);
 		
-		double bestAP = computeBestAP(relevances);
+		double bestAP = computeAP(relevances);
 		
 		double smallestDiff = Math.abs(targetAP-currentAP);
 		int i = 0;
@@ -299,7 +297,7 @@ public class SimAP {
 			
 			
 			
-			double candidateAP = computeAP(relevances,localScore);
+			double candidateAP = computeAP(relevances);
 			
 			
 			if (Math.abs(targetAP-candidateAP) < smallestDiff) {
@@ -329,7 +327,7 @@ public class SimAP {
 	}
 	
 
-	public static double computeAP(double[] relevances, double[] scores){
+	public static double computeAP(double[] relevances){
 		double averagePrecision = 0;
 		
 
@@ -348,23 +346,11 @@ public class SimAP {
 	
 	public static double computePrecision(String topic, String[] docnos, double[] scores,  double[] relevances){
 		double precision = 0;
-		BooleanSelectedSet selected = new BooleanSelectedSet(scores.length);
-		while (selected.size() < 5) {
-			int id = -1;
-			double maxScore = Double.NEGATIVE_INFINITY;
+		
 			
-			for (int i = 0; i < relevances.length; i++) {
-				if (selected.has(i)){
-					continue;
-				}
-				if (scores[i] > maxScore){
-					id = i;
-					maxScore = scores[i];
-				}
-			}
-
-			selected.put(id);
-			if (relevances[id] > 0) {
+		for (int i = 0; i < 5; i++) {
+				
+			if (relevances[i] > 0) {
 
 				precision+=1;
 			}		
@@ -385,17 +371,17 @@ public class SimAP {
 
 
 
-	public static ResultSet applyPrecision(String topic, String[] docnos, double[] scores) {
+	public static double[] applyPrecision(String topic, String[] docnos, double[] scores) {
 		
 		double[] relevances = TrecUser.get(docnos);
 		
 		double[] localScore = new double[scores.length];
 		
-		String[] localDocnos = new String[scores.length];
-		ResultSet resultSet = new ResultSet();
+	
+		
 		for (int i = 0; i < scores.length; i++) {
 			localScore[i] = scores[i];
-			localDocnos[i] = docnos[i];
+			
 		}
 		
 		
@@ -413,15 +399,13 @@ public class SimAP {
 			relevances[i] = relevances[j];
 			relevances[j] = aux;
 			
-			String auxDocno = localDocnos[i];
-			localDocnos[i] = localDocnos[j];
-			localDocnos[j] = auxDocno;
+
 		}
 
 		currentAP = computePrecision(topic,docnos,localScore, relevances);
 		
 		double bestAP = computeBestPrecision(relevances);
-		System.out.println(bestAP);
+
 		
 		double smallestDiff = Math.abs(targetAP-currentAP);
 		int i = 0;
@@ -441,13 +425,9 @@ public class SimAP {
 			aux = relevances[pair.ri];
 			relevances[pair.ri] = relevances[pair.rj];
 			relevances[pair.rj] = aux;
+
 			
-			String auxDocno = localDocnos[pair.ri];
-			localDocnos[pair.ri] = localDocnos[pair.rj];
-			localDocnos[pair.rj] = auxDocno;
-			
-			
-			double candidateAP = computePrecision(topic, localDocnos, localScore,relevances);
+			double candidateAP = computePrecision(topic,docnos, localScore,relevances);
 			
 			
 			if (Math.abs(targetAP-candidateAP) < smallestDiff) {
@@ -457,13 +437,11 @@ public class SimAP {
 				aux = localScore[pair.ri];
 				localScore[pair.ri] = localScore[pair.rj];
 				localScore[pair.rj] = aux;
+				
 				aux = relevances[pair.ri];
 				relevances[pair.ri] = relevances[pair.rj];
 				relevances[pair.rj] = aux;	
-				
-				auxDocno = localDocnos[pair.ri];
-				localDocnos[pair.ri] = localDocnos[pair.rj];
-				localDocnos[pair.rj] = auxDocno;
+
 			}
 			i++;
 			
@@ -472,10 +450,9 @@ public class SimAP {
 			}
 			
 		}
-		resultSet.docnos = localDocnos;
-		resultSet.scores = localScore;
 
-		return resultSet;
+
+		return localScore;
 	}
 
 }
