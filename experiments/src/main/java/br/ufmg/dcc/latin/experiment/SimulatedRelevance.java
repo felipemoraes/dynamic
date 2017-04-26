@@ -109,8 +109,8 @@ public class SimulatedRelevance {
     		int count = 0;
     		for (TargetAP targetAP : targetAPs) {
     			
-
-   	
+   				SimAP.targetAP = targetAP.AP;
+   				
 				baselineResultSet = baselineRanker.search();
 				trecUser.generateSubtopics(baselineResultSet.docnos);
 				
