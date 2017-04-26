@@ -70,22 +70,22 @@ public class SimulatedRelevance {
 	    TrecUser trecUser = TrecUser.getInstance("../share/truth_data.txt");
 	   
 	    SimAP.trecUser = trecUser;
-	    List<TargetAP> targetAPs = loadTargetAPs();
-	    /*List<TargetAP> targetAPs = new ArrayList<TargetAP>();
+	    //List<TargetAP> targetAPs = loadTargetAPs();
+	    List<TargetAP> targetAPs = new ArrayList<TargetAP>();
 	    for (int i = 0; i < 19 ; i++) {
-	    	for (int j = 0; j <20; j++) {
+	    	for (int j = 0; j <1; j++) {
 				TargetAP tAP = new TargetAP();
 				tAP.bin = i*(0.05);
 				tAP.AP = ThreadLocalRandom.current().nextDouble(i*(0.05), (i+1)*(0.05));
 				targetAPs.add(tAP);	
 			}
 		}
-	    for (int j = 0; j <20; j++) {
+	    for (int j = 0; j <1; j++) {
 		    TargetAP tAP = new TargetAP();
 			tAP.bin = 0.95;
 			tAP.AP = ThreadLocalRandom.current().nextDouble(0.95, 1.00000000000000000000000001);
 			targetAPs.add(tAP);
-		}*/
+		}
 	    
 	    
 	    FileWriter fw = new FileWriter("SimulatedRelevance_DPH_500_test.txt");
@@ -109,8 +109,7 @@ public class SimulatedRelevance {
     		int count = 0;
     		for (TargetAP targetAP : targetAPs) {
     			
-   				SimAP.targetAP = targetAP.AP;
-   				targetAP.AP = 0.1;
+
    	
 				baselineResultSet = baselineRanker.search();
 				trecUser.generateSubtopics(baselineResultSet.docnos);
@@ -174,7 +173,7 @@ public class SimulatedRelevance {
         		if (count % 100 == 0) {
         			System.out.println(count);
         		}
-        		break;
+        		
     		}	
 	    }
 		br.close();
