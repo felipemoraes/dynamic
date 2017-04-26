@@ -251,7 +251,7 @@ public class CubeTest {
 		return ctAccu/time;
 	}
 	
-	public double getPrecision(int iteration, String topic, String[][] docnos){
+	public double getPrecision(int iteration, String topic, String[] docnos, double[] scores){
 		
 		double relevantsRetrieved = 0;
 		double retrieved = 0;
@@ -263,17 +263,18 @@ public class CubeTest {
 			if (docnos[i] == null) {
 				continue;
 			}
-			for (int j = 0; j < docnos[i].length; j++) {
-				if (docnos[i][j] == null){
-					continue;
-				}
-				if (qrels.get(topic).containsKey(docnos[i][j])){
-					relevantsRetrieved++;
-				}
-				retrieved++;
+			
+			
+			if (qrels.get(topic).containsKey(docnos[i])){
+				
+				relevantsRetrieved++;
 			}
 			
+			retrieved++;
+			
+			
 		}
+		
 		if (relevantsRetrieved == 0) {
 			return 0;
 		}

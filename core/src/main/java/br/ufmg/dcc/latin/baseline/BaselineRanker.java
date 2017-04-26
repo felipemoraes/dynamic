@@ -59,10 +59,9 @@ public class BaselineRanker {
 	public ResultSet search(){
 		
 		
-		currentResultSet.scores = SimAP.apply(resultSet.docnos, resultSet.scores);
+		ResultSet permutated = SimAP.apply(resultSet.docnos, resultSet.scores);
 		//currentResultSet.scores = resultSet.scores;
-		double[] sortedScores = new double[resultSet.docnos.length];
-		String[] sortedDocNos = new String[resultSet.docnos.length];
+
 		BooleanSelectedSet selected = new BooleanSelectedSet(resultSet.docnos.length);
 		for (int i = 0; i < resultSet.docnos.length; i++) {
 			double bestScore = Double.NEGATIVE_INFINITY;
@@ -71,20 +70,49 @@ public class BaselineRanker {
 				if (selected.has(j)) {
 					continue;
 				}
-				if (currentResultSet.scores[j] > bestScore) {
+				if (permutated.scores[j] > bestScore) {
 					best = j;
-					bestScore = currentResultSet.scores[j];
+					bestScore = permutated.scores[j];
 				}
 			}
-			sortedDocNos[i] = resultSet.docnos[best];
-			sortedScores[i] = currentResultSet.scores[best];
+
+			currentResultSet.docnos[i] = permutated.docnos[best];
+			currentResultSet.scores[i] = permutated.scores[best];
 			selected.put(best);
 			
 		}
-		currentResultSet.scores = sortedScores;
-		currentResultSet.docnos = sortedDocNos;
 		return currentResultSet;
 	}
+	
+	public ResultSet searchPrecision(String topic){
+		
+		
+		ResultSet permutated = SimAP.applyPrecision(topic, resultSet.docnos, resultSet.scores);
+		//currentResultSet.scores = resultSet.scores;
+
+		BooleanSelectedSet selected = new BooleanSelectedSet(resultSet.docnos.length);
+		for (int i = 0; i < resultSet.docnos.length; i++) {
+			double bestScore = Double.NEGATIVE_INFINITY;
+			int best = -1;
+			for (int j = 0; j < resultSet.docnos.length; j++) {
+				if (selected.has(j)) {
+					continue;
+				}
+				if (permutated.scores[j] > bestScore) {
+					best = j;
+					bestScore = permutated.scores[j];
+				}
+			}
+
+			currentResultSet.docnos[i] = permutated.docnos[best];
+			currentResultSet.scores[i] = permutated.scores[best];
+			selected.put(best);
+			
+		}
+
+		return currentResultSet;
+	}
+	
 	
 	
 	public ResultSet search(double epsilon){

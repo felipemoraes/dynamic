@@ -88,7 +88,7 @@ public class SimulatedRelevance {
 		}
 	    
 	    
-	    FileWriter fw = new FileWriter("SimulatedRelevance_DPH_100.txt");
+	    FileWriter fw = new FileWriter("SimulatedRelevance_DPH_500.txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    		
@@ -111,9 +111,10 @@ public class SimulatedRelevance {
     		for (TargetAP targetAP : targetAPs) {
     			
    				SimAP.targetAP = targetAP.AP;
+   				//SimAP.targetAP = 0.6;
    				
 				baselineResultSet = baselineRanker.search();
-				
+    			double precisionbaseline = cubeTest.getPrecision(5, topicId, baselineResultSet.docnos,baselineResultSet.scores);
 				trecUser.generateSubtopics(baselineResultSet.docnos);
 				
 				
@@ -156,10 +157,10 @@ public class SimulatedRelevance {
     			}
         		
  
-    			double precisionbaseline = cubeTest.getPrecision(1, topicId, accBaseLineResult);
+
     			
 
-    			double recallbaseline = cubeTest.getRecall(100, topicId, baselineResultSet.scores, baselineResultSet.docnos);
+    			double recallbaseline = cubeTest.getRecall(500, topicId, baselineResultSet.scores, baselineResultSet.docnos);
         		for (int i = 0; i < 10; i++) {
         			double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, accResultxQuAD);
         			double actPM2 = cubeTest.getAverageCubeTest(i+1, topicId, accResultPM2);

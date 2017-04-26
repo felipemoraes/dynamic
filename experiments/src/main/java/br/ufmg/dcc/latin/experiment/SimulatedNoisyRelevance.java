@@ -74,6 +74,8 @@ public class SimulatedNoisyRelevance {
   		    	   
   					baselineResultSet = baselineRanker.search(epsilon);
   					
+  					double precisionbaseline = cubeTest.getPrecision(5, topicId, baselineResultSet.docnos,baselineResultSet.scores);
+  					
   					trecUser.generateSubtopics(baselineResultSet.docnos);
   					
   					
@@ -115,8 +117,6 @@ public class SimulatedNoisyRelevance {
   	        			reranker.update(feedbacks);
   	    			}
   	        		
-  	 
-  	    			double precisionbaseline = cubeTest.getPrecision(1, topicId, accBaseLineResult);
   	    			
 
   	    			double recallbaseline = cubeTest.getRecall(100, topicId, baselineResultSet.scores, baselineResultSet.docnos);
