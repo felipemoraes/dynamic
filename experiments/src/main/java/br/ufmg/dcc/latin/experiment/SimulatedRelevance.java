@@ -90,7 +90,7 @@ public class SimulatedRelevance {
 		}
 	    
 	    
-	    FileWriter fw = new FileWriter("SimulatedRelevance_DPH_500_test.txt");
+	    FileWriter fw = new FileWriter("SimulatedRelevance_DPH_500.txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    		
