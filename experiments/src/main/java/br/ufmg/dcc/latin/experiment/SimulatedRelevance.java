@@ -88,7 +88,7 @@ public class SimulatedRelevance {
 		}*/
 	    
 	    
-	    FileWriter fw = new FileWriter("SimulatedRelevance_DPH_500.txt");
+	    FileWriter fw = new FileWriter("SimulatedRelevance_DPH_500_test.txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    		
@@ -96,23 +96,24 @@ public class SimulatedRelevance {
 	    	String[] splitLine = line.split(" ",3);
 	    	
         	String topicId = splitLine[1];
-        	//if (!topicId.equals("DD16-1")){
-        	//	continue;
-        	//}
+        	if (!topicId.equals("DD16-1")){
+        		continue;
+        	}
         	
         	System.out.println(topicId);
         	TrecUser.topicId = topicId;
     		String query = splitLine[2].replaceAll("/", " ");
     		String index = splitLine[0];
     		ResultSet baselineResultSet = baselineRanker.search(query, index);
-    		
+    		trecUser.generateSubtopics(baselineResultSet.docnos);
     		int count = 0;
     		for (TargetAP targetAP : targetAPs) {
     			
    				SimAP.targetAP = targetAP.AP;
+   				targetAP.AP = 0.1;
    	
-				baselineResultSet = baselineRanker.search();
-				trecUser.generateSubtopics(baselineResultSet.docnos);
+				//baselineResultSet = baselineRanker.search();
+				
 				
 			    FeedbackModeling feedbackModeling = new FeedbackModeling();
 			    feedbackModeling.trecUser = trecUser;
@@ -163,7 +164,7 @@ public class SimulatedRelevance {
         			double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, accBaseLineResult);
 
 
-        			out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " +actbaseline 
+        			System.out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " +actbaseline 
         					+ " " +precisionbaseline
         					+ " " +recallbaseline);
 				}
