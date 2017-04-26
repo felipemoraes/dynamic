@@ -138,7 +138,8 @@ public class SimulatedNoisyRelevance {
   		       }
   		    }
 		}
-	    
+		br.close();
+		out.close();
 
 	}
 
