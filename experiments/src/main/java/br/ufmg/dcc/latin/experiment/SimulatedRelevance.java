@@ -105,7 +105,7 @@ public class SimulatedRelevance {
     		String query = splitLine[2].replaceAll("/", " ");
     		String index = splitLine[0];
     		ResultSet baselineResultSet = baselineRanker.search(query, index);
-    		trecUser.generateSubtopics(baselineResultSet.docnos);
+    		
     		int count = 0;
     		for (TargetAP targetAP : targetAPs) {
     			
@@ -113,6 +113,7 @@ public class SimulatedRelevance {
    				targetAP.AP = 0.1;
    	
 				baselineResultSet = baselineRanker.search();
+				trecUser.generateSubtopics(baselineResultSet.docnos);
 				
 				
 			    FeedbackModeling feedbackModeling = new FeedbackModeling();
