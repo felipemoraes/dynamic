@@ -235,7 +235,7 @@ public abstract class InteractiveReranker implements Reranker {
 	}
 	
 	public void start(ResultSet resultSet, double[] params){
-		depth = 500;
+		depth = 1000;
 		docids = resultSet.docids;
 		relevance = resultSet.scores;
 		docnos = resultSet.docnos;
