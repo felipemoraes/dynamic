@@ -112,7 +112,7 @@ public class SimulatedRelevance {
    				SimAP.targetAP = targetAP.AP;
    				targetAP.AP = 0.1;
    	
-				//baselineResultSet = baselineRanker.search();
+				baselineResultSet = baselineRanker.search();
 				
 				
 			    FeedbackModeling feedbackModeling = new FeedbackModeling();

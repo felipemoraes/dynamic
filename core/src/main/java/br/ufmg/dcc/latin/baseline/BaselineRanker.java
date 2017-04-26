@@ -55,7 +55,8 @@ public class BaselineRanker {
 	public ResultSet search(){
 		
 		
-		currentResultSet.scores = SimAP.apply(resultSet.docnos, resultSet.scores);
+		//currentResultSet.scores = SimAP.apply(resultSet.docnos, resultSet.scores);
+		currentResultSet.scores = resultSet.scores;
 		double[] sortedScores = new double[resultSet.docnos.length];
 		BooleanSelectedSet selected = new BooleanSelectedSet(resultSet.docnos.length);
 		for (int i = 0; i < resultSet.docnos.length; i++) {
