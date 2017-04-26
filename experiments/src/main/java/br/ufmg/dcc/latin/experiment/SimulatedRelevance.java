@@ -111,7 +111,7 @@ public class SimulatedRelevance {
     		for (TargetAP targetAP : targetAPs) {
     			
    				SimAP.targetAP = targetAP.AP;
-   				//SimAP.targetAP = 0.2;
+   				SimAP.targetAP = 1.0;
    				
 				//baselineResultSet = baselineRanker.search();
     			double precisionbaseline = cubeTest.getPrecision(5, topicId, baselineResultSet.docnos,baselineResultSet.scores);
