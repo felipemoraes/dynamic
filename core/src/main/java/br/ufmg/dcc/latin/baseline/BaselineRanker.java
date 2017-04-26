@@ -29,6 +29,7 @@ import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.BytesRef;
 
+import br.ufmg.dcc.latin.querying.BooleanSelectedSet;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.simulation.SimAP;
 
@@ -55,8 +56,26 @@ public class BaselineRanker {
 		
 		
 		currentResultSet.scores = SimAP.apply(resultSet.docnos, resultSet.scores);
-
-		
+		double[] sortedScores = new double[resultSet.docnos.length];
+		BooleanSelectedSet selected = new BooleanSelectedSet(resultSet.docnos.length);
+		for (int i = 0; i < resultSet.docnos.length; i++) {
+			double bestScore = Double.NEGATIVE_INFINITY;
+			int best = -1;
+			for (int j = 0; j < resultSet.docnos.length; j++) {
+				if (selected.has(j)) {
+					continue;
+				}
+				if (currentResultSet.scores[j] > bestScore) {
+					best = j;
+					bestScore = currentResultSet.scores[j];
+				}
+			}
+			currentResultSet.docnos[i] = resultSet.docnos[best];
+			sortedScores[i] = currentResultSet.scores[best];
+			selected.put(best);
+			
+		}
+		currentResultSet.scores = sortedScores;
 		return currentResultSet;
 	}
 	
