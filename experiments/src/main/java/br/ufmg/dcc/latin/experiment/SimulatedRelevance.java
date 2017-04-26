@@ -72,20 +72,23 @@ public class SimulatedRelevance {
 	    SimAP.trecUser = trecUser;
 	    //List<TargetAP> targetAPs = loadTargetAPs();
 	    List<TargetAP> targetAPs = new ArrayList<TargetAP>();
-	    for (int i = 0; i < 19 ; i++) {
+	    for (int i = 0; i < 39 ; i++) {
 	    	for (int j = 0; j <20; j++) {
 				TargetAP tAP = new TargetAP();
 				tAP.bin = i*(0.05);
-				tAP.AP = ThreadLocalRandom.current().nextDouble(i*(0.05), (i+1)*(0.05));
+				tAP.AP = ThreadLocalRandom.current().nextDouble(i*(0.025), (i+1)*(0.025));
 				targetAPs.add(tAP);	
+				System.out.print(tAP.AP + " ");
 			}
 		}
 	    for (int j = 0; j <20; j++) {
 		    TargetAP tAP = new TargetAP();
 			tAP.bin = 0.95;
-			tAP.AP = ThreadLocalRandom.current().nextDouble(0.95, 1.00000000000000000000000001);
+			tAP.AP = ThreadLocalRandom.current().nextDouble(0.975, 1.00000000000000000000000001);
 			targetAPs.add(tAP);
+			System.out.print(tAP.AP + " ");
 		}
+	    System.out.println();
 	    
 	    
 	    FileWriter fw = new FileWriter("SimulatedRelevance_DPH_500_test.txt");
@@ -113,7 +116,7 @@ public class SimulatedRelevance {
    				SimAP.targetAP = targetAP.AP;
    				SimAP.targetAP = 1.0;
    				
-				baselineResultSet = baselineRanker.search();
+				//baselineResultSet = baselineRanker.search();
     			double precisionbaseline = cubeTest.getPrecision(5, topicId, baselineResultSet.docnos,baselineResultSet.scores);
     			double precisionbaseline10 = cubeTest.getPrecision(10, topicId, baselineResultSet.docnos,baselineResultSet.scores);
     			double precisionbaseline15 = cubeTest.getPrecision(15, topicId, baselineResultSet.docnos,baselineResultSet.scores);

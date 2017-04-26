@@ -278,7 +278,7 @@ public class SimAP {
 		
 		double smallestDiff = Math.abs(targetAP-currentAP);
 		int i = 0;
-		while (Math.abs(targetAP-currentAP) > 0.005 && i < 1000) {
+		while (Math.abs(targetAP-currentAP) > 0.001 && i < 1000) {
 		
 			
 			Pair pair = chooseSwap2(relevances, currentAP < targetAP) ;
