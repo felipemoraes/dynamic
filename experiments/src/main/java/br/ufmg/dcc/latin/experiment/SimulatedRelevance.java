@@ -166,10 +166,13 @@ public class SimulatedRelevance {
     			double precisionbaseline = cubeTest.getPrecision(1, topicId, accBaseLineResult);
     			double precisionbaseline10 = cubeTest.getPrecision(2, topicId, accBaseLineResult);
     			double precisionbaseline15 = cubeTest.getPrecision(3, topicId, accBaseLineResult);
+<<<<<<< HEAD
 =======
         		
 
 >>>>>>> 3ee5e595951903e0d537dfdbd7fe5c6e9e36db37
+=======
+>>>>>>> 747bebd67df2e467b5136db5e482c950906d6d37
     			
 
     			double recallbaseline = cubeTest.getRecall(500, topicId, baselineResultSet.scores, baselineResultSet.docnos);
@@ -179,6 +182,7 @@ public class SimulatedRelevance {
         			double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, accBaseLineResult);
 
 
+<<<<<<< HEAD
         			System.out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " +actbaseline 
         					+ " " +precisionbaseline
 <<<<<<< HEAD
@@ -186,6 +190,11 @@ public class SimulatedRelevance {
 =======
         					+ " " +recallbaseline + " " + precisionbaseline10 + " " + precisionbaseline15);
 >>>>>>> 3ee5e595951903e0d537dfdbd7fe5c6e9e36db37
+=======
+        			out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " +actbaseline 
+        					+ " " +precisionbaseline + " " + precisionbaseline10 + " " + precisionbaseline15
+        					+ " " +recallbaseline);
+>>>>>>> 747bebd67df2e467b5136db5e482c950906d6d37
 				}
         		
         		count++;
