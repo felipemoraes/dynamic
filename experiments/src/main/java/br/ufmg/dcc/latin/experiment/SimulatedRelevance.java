@@ -109,8 +109,8 @@ public class SimulatedRelevance {
     		int count = 0;
     		for (TargetAP targetAP : targetAPs) {
     			
-   				SimAP.targetAP = targetAP.AP;
-   				targetAP.AP = 0.1;
+   				//SimAP.targetAP = targetAP.AP;
+   				//targetAP.AP = 0.1;
    	
 				baselineResultSet = baselineRanker.search();
 				
