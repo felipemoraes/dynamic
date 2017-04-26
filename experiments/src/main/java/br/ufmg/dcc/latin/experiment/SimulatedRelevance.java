@@ -157,6 +157,8 @@ public class SimulatedRelevance {
         		
  
     			double precisionbaseline = cubeTest.getPrecision(1, topicId, accBaseLineResult);
+    			double precisionbaseline10 = cubeTest.getPrecision(2, topicId, accBaseLineResult);
+    			double precisionbaseline15 = cubeTest.getPrecision(3, topicId, accBaseLineResult);
     			
 
     			double recallbaseline = cubeTest.getRecall(100, topicId, baselineResultSet.scores, baselineResultSet.docnos);
@@ -168,7 +170,7 @@ public class SimulatedRelevance {
 
         			out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " +actbaseline 
         					+ " " +precisionbaseline
-        					+ " " +recallbaseline);
+        					+ " " +recallbaseline + " " +precisionbaseline10 +  " " + precisionbaseline15);
 				}
         		
         		count++;
