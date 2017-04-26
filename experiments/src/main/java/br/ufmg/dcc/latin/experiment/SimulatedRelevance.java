@@ -156,7 +156,6 @@ public class SimulatedRelevance {
     			}
         		
  
-        		
     			double precisionbaseline = cubeTest.getPrecision(1, topicId, accBaseLineResult);
     			double precisionbaseline10 = cubeTest.getPrecision(2, topicId, accBaseLineResult);
     			double precisionbaseline15 = cubeTest.getPrecision(3, topicId, accBaseLineResult);
