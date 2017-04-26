@@ -57,7 +57,8 @@ public class BaselineRanker {
 		
 		currentResultSet.scores = SimAP.apply(resultSet.docnos, resultSet.scores);
 		//currentResultSet.scores = resultSet.scores;
-		/*double[] sortedScores = new double[resultSet.docnos.length];
+		double[] sortedScores = new double[resultSet.docnos.length];
+		String[] sortedDocNos = new String[resultSet.docnos.length];
 		BooleanSelectedSet selected = new BooleanSelectedSet(resultSet.docnos.length);
 		for (int i = 0; i < resultSet.docnos.length; i++) {
 			double bestScore = Double.NEGATIVE_INFINITY;
@@ -71,12 +72,13 @@ public class BaselineRanker {
 					bestScore = currentResultSet.scores[j];
 				}
 			}
-			currentResultSet.docnos[i] = resultSet.docnos[best];
+			sortedDocNos[i] = resultSet.docnos[best];
 			sortedScores[i] = currentResultSet.scores[best];
 			selected.put(best);
 			
 		}
-		currentResultSet.scores = sortedScores;*/
+		currentResultSet.scores = sortedScores;
+		currentResultSet.docnos = sortedDocNos;
 		return currentResultSet;
 	}
 	
