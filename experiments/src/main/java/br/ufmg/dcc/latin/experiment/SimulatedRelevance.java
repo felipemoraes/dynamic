@@ -80,7 +80,7 @@ public class SimulatedRelevance {
 				targetAPs.add(tAP);	
 			}
 		}*/
-	    for (int j = 0; j <1; j++) {
+	    for (int j = 0; j <20; j++) {
 		    TargetAP tAP = new TargetAP();
 			tAP.bin = 0.95;
 			tAP.AP = ThreadLocalRandom.current().nextDouble(0.95, 1.00000000000000000000000001);
