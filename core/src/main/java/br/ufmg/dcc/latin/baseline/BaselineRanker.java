@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Random;
 
 import org.apache.commons.collections4.list.TreeList;
+import org.apache.commons.math3.distribution.LaplaceDistribution;
+import org.apache.commons.math3.stat.StatUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
@@ -32,6 +34,7 @@ import org.apache.lucene.util.BytesRef;
 import br.ufmg.dcc.latin.querying.BooleanSelectedSet;
 import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.simulation.SimAP;
+import br.ufmg.dcc.latin.user.TrecUser;
 
 
 public class BaselineRanker {
@@ -52,12 +55,69 @@ public class BaselineRanker {
 	
 	private ResultSet resultSet;
 	
+	private double sensitivity;
+	
 	public ResultSet search(){
 		
 		
-		currentResultSet.scores = SimAP.apply(resultSet.docnos, resultSet.scores);
+		ResultSet permutated = SimAP.apply(resultSet.docnos, resultSet.scores);
+		permutated.docids = new int[resultSet.docnos.length];
+		for (int j = 0; j < 100; j++) {
+			//System.out.println(permutated.docnos[j] + " " + permutated.scores[j]);
+		}
+		return permutated;
+	}
+	
+	public ResultSet searchPrecision(String topic){
+		
+		
+		double[] permutated = SimAP.applyPrecision(topic, resultSet.docnos, resultSet.scores);
 		//currentResultSet.scores = resultSet.scores;
-		/*double[] sortedScores = new double[resultSet.docnos.length];
+
+		BooleanSelectedSet selected = new BooleanSelectedSet(resultSet.docnos.length);
+		for (int i = 0; i < resultSet.docnos.length; i++) {
+			double bestScore = Double.NEGATIVE_INFINITY;
+			int best = -1;
+			for (int j = 0; j < resultSet.docnos.length; j++) {
+				if (selected.has(j)) {
+					continue;
+				}
+				if (permutated[j] > bestScore) {
+					best = j;
+					bestScore = permutated[j];
+				}
+			}
+
+			currentResultSet.docnos[i] = resultSet.docnos[best];
+			currentResultSet.scores[i] = permutated[best];
+			selected.put(best);
+			
+		}
+		return currentResultSet;
+
+	}
+	
+	
+	
+	public ResultSet search(double epsilon){
+		
+		
+		LaplaceDistribution dist = new LaplaceDistribution(0,sensitivity/epsilon);
+		
+		for (int i = 0; i < resultSet.docnos.length; i++) {
+			currentResultSet.scores[i]  += dist.sample();
+		}
+		double min = StatUtils.min(currentResultSet.scores);
+		if (min < 0) {
+			min *= -1;
+			for (int i = 0; i < resultSet.docnos.length; i++) {
+				currentResultSet.scores[i] += + min;
+			}
+		}
+		
+		//currentResultSet.scores = resultSet.scores;
+		double[] sortedScores = new double[resultSet.docnos.length];
+		String[] sortedDocNos = new String[resultSet.docnos.length];
 		BooleanSelectedSet selected = new BooleanSelectedSet(resultSet.docnos.length);
 		for (int i = 0; i < resultSet.docnos.length; i++) {
 			double bestScore = Double.NEGATIVE_INFINITY;
@@ -71,12 +131,13 @@ public class BaselineRanker {
 					bestScore = currentResultSet.scores[j];
 				}
 			}
-			currentResultSet.docnos[i] = resultSet.docnos[best];
+			sortedDocNos[i] = resultSet.docnos[best];
 			sortedScores[i] = currentResultSet.scores[best];
 			selected.put(best);
 			
 		}
-		currentResultSet.scores = sortedScores;*/
+		currentResultSet.scores = sortedScores;
+		currentResultSet.docnos = sortedDocNos;
 		return currentResultSet;
 	}
 	
@@ -219,6 +280,10 @@ public class BaselineRanker {
 		this.resultSet.docnos = docnos;
 		
 		
+		double min = StatUtils.min(scores);
+		double max = StatUtils.max(scores);
+		double deltaF = max - min;
+		sensitivity = deltaF;
 		return resultSet;
 	}
 

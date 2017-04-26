@@ -78,6 +78,7 @@ public class SimulatedRelevance {
 				tAP.bin = i*(0.05);
 				tAP.AP = ThreadLocalRandom.current().nextDouble(i*(0.05), (i+1)*(0.05));
 				targetAPs.add(tAP);	
+				
 			}
 		}
 	    for (int j = 0; j <20; j++) {
@@ -85,10 +86,11 @@ public class SimulatedRelevance {
 			tAP.bin = 0.95;
 			tAP.AP = ThreadLocalRandom.current().nextDouble(0.95, 1.00000000000000000000000001);
 			targetAPs.add(tAP);
+			
 		}
 	    
 	    
-	    FileWriter fw = new FileWriter("SimulatedRelevance_DPH_1000.txt");
+	    FileWriter fw = new FileWriter("SimulatedRelevance_DPH_500.txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    		
@@ -96,9 +98,9 @@ public class SimulatedRelevance {
 	    	String[] splitLine = line.split(" ",3);
 	    	
         	String topicId = splitLine[1];
-        	//if (!topicId.equals("DD16-1")){
-        	//	continue;
-        	//}
+        	if (!topicId.equals("DD16-2")){
+        		continue;
+        	}
         	
         	System.out.println(topicId);
         	TrecUser.topicId = topicId;
@@ -107,14 +109,18 @@ public class SimulatedRelevance {
     		ResultSet baselineResultSet = baselineRanker.search(query, index);
     		
     		int count = 0;
-    		trecUser.generateSubtopics(baselineResultSet.docnos);
+    		
     		for (TargetAP targetAP : targetAPs) {
     			
    				SimAP.targetAP = targetAP.AP;
+   				SimAP.targetAP = 0.01;
    				
 				baselineResultSet = baselineRanker.search();
+    			double precisionbaseline = cubeTest.getPrecision(5, topicId, baselineResultSet.docnos,baselineResultSet.scores);
+    			double precisionbaseline10 = cubeTest.getPrecision(10, topicId, baselineResultSet.docnos,baselineResultSet.scores);
+    			double precisionbaseline15 = cubeTest.getPrecision(15, topicId, baselineResultSet.docnos,baselineResultSet.scores);
 				
-				//trecUser.generateSubtopics(baselineResultSet.docnos);
+    			trecUser.generateSubtopics(baselineResultSet.docnos);
 				
 				
 			    FeedbackModeling feedbackModeling = new FeedbackModeling();
@@ -155,29 +161,38 @@ public class SimulatedRelevance {
         			reranker.update(feedbacks);
     			}
         		
+<<<<<<< HEAD
  
     			double precisionbaseline = cubeTest.getPrecision(1, topicId, accBaseLineResult);
     			double precisionbaseline10 = cubeTest.getPrecision(2, topicId, accBaseLineResult);
     			double precisionbaseline15 = cubeTest.getPrecision(3, topicId, accBaseLineResult);
+=======
+        		
+
+>>>>>>> 3ee5e595951903e0d537dfdbd7fe5c6e9e36db37
     			
 
-    			double recallbaseline = cubeTest.getRecall(100, topicId, baselineResultSet.scores, baselineResultSet.docnos);
+    			double recallbaseline = cubeTest.getRecall(500, topicId, baselineResultSet.scores, baselineResultSet.docnos);
         		for (int i = 0; i < 10; i++) {
         			double actxQuAD = cubeTest.getAverageCubeTest(i+1, topicId, accResultxQuAD);
         			double actPM2 = cubeTest.getAverageCubeTest(i+1, topicId, accResultPM2);
         			double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, accBaseLineResult);
 
 
-        			out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " +actbaseline 
+        			System.out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " +actbaseline 
         					+ " " +precisionbaseline
+<<<<<<< HEAD
         					+ " " +recallbaseline + " " +precisionbaseline10 +  " " + precisionbaseline15);
+=======
+        					+ " " +recallbaseline + " " + precisionbaseline10 + " " + precisionbaseline15);
+>>>>>>> 3ee5e595951903e0d537dfdbd7fe5c6e9e36db37
 				}
         		
         		count++;
         		if (count % 100 == 0) {
         			System.out.println(count);
         		}
-        		
+        		break;
     		}	
 	    }
 		br.close();

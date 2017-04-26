@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import br.ufmg.dcc.latin.querying.BooleanSelectedSet;
+import br.ufmg.dcc.latin.querying.ResultSet;
 import br.ufmg.dcc.latin.user.TrecUser;
 
 public class SimAP {
@@ -82,6 +84,24 @@ public class SimAP {
 		
 		double bestAP = computeAP(bestRels);
 		return bestAP;
+	}
+	
+	private static double computeBestPrecision(double[] relevances){
+		int countRels = 0;
+		for (int i = 0; i < relevances.length; i++) {
+			if (relevances[i]>0) {
+				
+				countRels++;
+			}
+
+		}
+		if (countRels > 5) {
+			return 1;
+		} else if (countRels > 0) {
+			return countRels/5;
+		}
+		
+		return 0;
 	}
 	
 	private static Pair chooseSwap(double[] relevances, boolean improve){
@@ -225,14 +245,294 @@ public class SimAP {
 	}
 	
 
-	public static double[] apply(String[] docnos,  double[] scores) {
+	public static ResultSet apply(String[] docnos,  double[] scores) {
 		
 		double[] relevances = TrecUser.get(docnos);
 		
 		double[] localScore = new double[scores.length];
 		
+		String[] localDocnos = new String[scores.length];
+
+		int[] auxIds = new int[scores.length];
+		
+		double[] auxLocalScore = new double[scores.length];
+		
+		String[] auxLocalDocnos = new String[scores.length];
+		
+		ResultSet permutated = new ResultSet();
+		
 		for (int i = 0; i < scores.length; i++) {
 			localScore[i] = scores[i];
+			localDocnos[i] = docnos[i];
+			auxIds[i] = i;
+			auxLocalDocnos[i] = docnos[i];
+			auxLocalScore[i] = scores[i];
+		}
+		
+		
+	    //  fisher_yates_shuffle( \@array ) : generate a random permutation
+		// of @array in place
+		for (int i = localScore.length-1; i >= 1; i--) {
+			int j = rand.nextInt(i+1);
+			
+			double aux = localScore[i];
+			localScore[i] = localScore[j];
+			localScore[j] = aux;
+
+			String auxDocno = localDocnos[i];
+			localDocnos[i] = localDocnos[j];
+			localDocnos[j] = auxDocno;
+			
+		}
+		BooleanSelectedSet selected = new BooleanSelectedSet(docnos.length);
+		for (int i = 0; i < localDocnos.length; i++) {
+			
+		
+			double bestScore = Double.NEGATIVE_INFINITY;
+			int best = -1;
+			for (int j = 0; j < localDocnos.length; j++) {
+				if (selected.has(j)) {
+					continue;
+				}
+				if (localScore[j] > bestScore) {
+					best = j;
+					bestScore = localScore[j];
+				}
+			}
+			
+			auxIds[i] = best;
+	
+			
+			selected.put(best);
+				
+		}
+		
+		for (int i = 0; i < localDocnos.length; i++) {
+			localDocnos[i] = auxLocalDocnos[auxIds[i]];
+			localScore[i] = auxLocalScore[auxIds[i]];
+		}
+
+		for (int i = 0; i < localDocnos.length; i++) {
+			auxLocalDocnos[i] = localDocnos[i];
+			auxLocalScore[i] = localScore[i];
+		}
+		
+
+		
+		relevances = TrecUser.get(localDocnos);
+
+		currentAP = computeAP(relevances);
+		
+		double bestAP = computeAP(relevances);
+		
+		double smallestDiff = Math.abs(targetAP-currentAP);
+		int i = 0;
+		while (Math.abs(targetAP-currentAP) > 0.005 && i < 1000) {
+		
+			
+			Pair pair = chooseSwap2(relevances, currentAP < targetAP) ;
+			 
+			if (pair.rj == -1) {
+				break;
+			}
+			
+			double aux = localScore[pair.ri];
+			localScore[pair.ri] = localScore[pair.rj];
+			localScore[pair.rj] = aux;
+			
+			
+			String auxDocno = localDocnos[pair.ri];
+			localDocnos[pair.ri] = localDocnos[pair.rj];
+			localDocnos[pair.rj] = auxDocno;
+			
+			aux = auxLocalScore[pair.ri];
+			auxLocalScore[pair.ri] = auxLocalScore[pair.rj];
+			auxLocalScore[pair.rj] = aux;
+			
+			
+			auxDocno = auxLocalDocnos[pair.ri];
+			auxLocalDocnos[pair.ri] = auxLocalDocnos[pair.rj];
+			auxLocalDocnos[pair.rj] = auxDocno;
+			
+			selected = new BooleanSelectedSet(docnos.length);
+			for (int k = 0; k < localDocnos.length; k++) {
+				
+			
+				double bestScore = Double.NEGATIVE_INFINITY;
+				int best = -1;
+				for (int j = 0; j < localDocnos.length; j++) {
+					if (selected.has(j)) {
+						continue;
+					}
+					if (localScore[j] > bestScore) {
+						best = j;
+						bestScore = localScore[j];
+					}
+				}
+				
+				auxIds[k] = best;
+				
+						
+				selected.put(best);
+
+			}
+			
+			for (int j = 0; j < localDocnos.length; j++) {
+				
+				localDocnos[j] = auxLocalDocnos[auxIds[j]];
+				localScore[j] = auxLocalScore[auxIds[j]];
+
+			}
+			
+			for (int j = 0; j < localDocnos.length; j++) {
+				auxLocalDocnos[j] = localDocnos[j];
+				auxLocalScore[j] = localScore[j];
+			}
+
+			relevances = TrecUser.get(localDocnos);
+			double candidateAP = computeAP(relevances);
+
+			
+			if (Math.abs(targetAP-candidateAP) < smallestDiff) {
+				smallestDiff = Math.abs(targetAP-candidateAP);
+				currentAP = candidateAP;
+			} else {
+				aux = localScore[pair.ri];
+				localScore[pair.ri] = localScore[pair.rj];
+				localScore[pair.rj] = aux;
+			
+				
+				auxDocno = localDocnos[pair.ri];
+				localDocnos[pair.ri] = localDocnos[pair.rj];
+				localDocnos[pair.rj] = auxDocno;
+				
+				aux = auxLocalScore[pair.ri];
+				auxLocalScore[pair.ri] = auxLocalScore[pair.rj];
+				auxLocalScore[pair.rj] = aux;
+				
+				
+				auxDocno = auxLocalDocnos[pair.ri];
+				auxLocalDocnos[pair.ri] = auxLocalDocnos[pair.rj];
+				auxLocalDocnos[pair.rj] = auxDocno;
+				
+				
+				selected = new BooleanSelectedSet(docnos.length);
+				for (int k = 0; k < localDocnos.length; k++) {
+					
+				
+					double bestScore = Double.NEGATIVE_INFINITY;
+					int best = -1;
+					for (int j = 0; j < localDocnos.length; j++) {
+						if (selected.has(j)) {
+							continue;
+						}
+						if (localScore[j] > bestScore) {
+							best = j;
+							bestScore = localScore[j];
+						}
+					}
+					
+					auxIds[k] = best;
+					
+			
+					
+					selected.put(best);
+						
+				}
+				
+				for (int j = 0; j < localDocnos.length; j++) {
+					localDocnos[j] = auxLocalDocnos[auxIds[j]];
+					localScore[j] = auxLocalScore[auxIds[j]];
+				}
+
+				for (int j = 0; j < localDocnos.length; j++) {
+					auxLocalDocnos[j] = localDocnos[j];
+					auxLocalScore[j] = localScore[j];
+				}
+				relevances = TrecUser.get(localDocnos);
+				
+				candidateAP = computeAP(relevances);
+				
+				
+			}
+			i++;
+			for (int j = 0; j < 20; j++) {
+				System.out.print(relevances[j] + " ");
+			}
+			System.out.println();
+			
+			if (bestAP == currentAP){
+				break;
+			}
+	
+			
+		}
+		
+		permutated.scores = localScore;
+		permutated.docnos = localDocnos;
+
+		
+
+		
+		return permutated;
+	}
+	
+
+	public static double computeAP(double[] relevances){
+		double averagePrecision = 0;
+		
+
+		for (int i = 0; i < relevances.length; i++) {
+			double precision = 0;
+			for (int j = 0; j <= i; j++) {
+				precision += relevances[j] > 0 ? 1 : 0;
+			}
+			precision /= (i+1);
+			averagePrecision = relevances[i] > 0 ? averagePrecision+precision : averagePrecision;
+			
+		}
+		averagePrecision /= relevances.length;
+		return averagePrecision;
+	}
+	
+	public static double computePrecision(String topic, String[] docnos, double[] scores,  double[] relevances){
+		double precision = 0;
+		
+			
+		for (int i = 0; i < 5; i++) {
+				
+			if (relevances[i] > 0) {
+
+				precision+=1;
+			}		
+		}
+
+		if (precision > 0) {
+			return precision/5;
+		}
+		return 0;	
+		
+	}
+	
+	
+	public static class Pair {
+		public int ri;
+		public int rj;
+	}
+
+
+
+	public static double[] applyPrecision(String topic, String[] docnos, double[] scores) {
+		
+		double[] relevances = TrecUser.get(docnos);
+		
+		double[] localScore = new double[scores.length];
+		
+	
+		
+		for (int i = 0; i < scores.length; i++) {
+			localScore[i] = scores[i];
+			
 		}
 		
 		
@@ -249,11 +549,14 @@ public class SimAP {
 			aux = relevances[i];
 			relevances[i] = relevances[j];
 			relevances[j] = aux;
+			
+
 		}
 
-		currentAP = computeAP(relevances);
+		currentAP = computePrecision(topic,docnos,localScore, relevances);
 		
-		double bestAP = computeBestAP(relevances);
+		double bestAP = computeBestPrecision(relevances);
+
 		
 		double smallestDiff = Math.abs(targetAP-currentAP);
 		int i = 0;
@@ -273,8 +576,9 @@ public class SimAP {
 			aux = relevances[pair.ri];
 			relevances[pair.ri] = relevances[pair.rj];
 			relevances[pair.rj] = aux;
+
 			
-			double candidateAP = computeAP(relevances);
+			double candidateAP = computePrecision(topic,docnos, localScore,relevances);
 			
 			
 			if (Math.abs(targetAP-candidateAP) < smallestDiff) {
@@ -284,76 +588,11 @@ public class SimAP {
 				aux = localScore[pair.ri];
 				localScore[pair.ri] = localScore[pair.rj];
 				localScore[pair.rj] = aux;
+				
 				aux = relevances[pair.ri];
 				relevances[pair.ri] = relevances[pair.rj];
 				relevances[pair.rj] = aux;	
-			}
-			i++;
-			
-			if (bestAP == currentAP){
-				break;
-			}
-		}
-		return localScore;
-	}
-	
-	public static double[] apply(int[] ids, double[] scores) {
-		
-		double[] localScores = new double[scores.length];
-		int[] localIds = new int[ids.length];
-		for (int i = 0; i < localScores.length; i++) {
-			localScores[i] = scores[i];
-			localIds[i] = ids[i];
-		}
-		
-	    //  fisher_yates_shuffle( \@array ) : generate a random permutation
-		// of @array in place
-		
-		for (int i = localScores.length-1; i >= 1; i--) {
-			int j = rand.nextInt(i+1);
-			double aux = localScores[i];
-			localScores[i] = localScores[j];
-			localScores[j] = aux;
-			int auxid = localIds[i];
-			localIds[i] =  localIds[j];
-			localIds[j] = auxid;
- 		}
-		
-		currentAP = computeAP(localScores);
-		
-		double bestAP = computeBestAP(localScores);
-		
-		double smallestDiff = Math.abs(targetAP-currentAP);
-		int i = 0;
-		while (Math.abs(targetAP-currentAP) > 0.005 && i < 1000) {
-			
-			Pair pair = chooseSwap2(localScores, currentAP < targetAP) ;
-			 
-			if (pair.rj == -1) {
-				break;
-			}
-			
-			double aux = localScores[pair.ri];
-			localScores[pair.ri] = localScores[pair.rj];
-			localScores[pair.rj] = aux;
-			
-			int auxid = localIds[pair.ri];
-			localIds[pair.ri] =  localIds[pair.rj];
-			localIds[pair.rj] = auxid;
 
-			double candidateAP = computeAP(localScores);
-			
-			if (Math.abs(targetAP-candidateAP) < smallestDiff) {
-				smallestDiff = Math.abs(targetAP-candidateAP);
-				currentAP = candidateAP;
-			} else {
-				aux = localScores[pair.ri];
-				localScores[pair.ri] = localScores[pair.rj];
-				localScores[pair.rj] = aux;
-				
-				auxid = localIds[pair.ri];
-				localIds[pair.ri] =  localIds[pair.rj];
-				localIds[pair.rj] = auxid;
 			}
 			i++;
 			
@@ -362,27 +601,9 @@ public class SimAP {
 			}
 			
 		}
-		return localScores;
-	}
-	
-	public static double computeAP(double[] relevances){
-		double averagePrecision = 0;
-		for (int i = 0; i < relevances.length; i++) {
-			double precision = 0;
-			for (int j = 0; j <= i; j++) {
-				precision += relevances[j] > 0 ? 1 : 0;
-			}
-			precision /= (i+1);
-			averagePrecision = relevances[i] > 0 ? averagePrecision+precision : averagePrecision;
-			
-		}
-		averagePrecision /= relevances.length;
-		return averagePrecision;
-	}
-	
-	public static class Pair {
-		public int ri;
-		public int rj;
+
+
+		return localScore;
 	}
 
 }

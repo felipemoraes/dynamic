@@ -166,9 +166,9 @@ public class TrecUser implements User {
 			int[] ids = subtopicsCoverageIndices.get(subtopicId);
 			double[] scores = new double[relevances.length];
 			
-			double[] localScores =  SimAP.apply(ids, subtopicsCoverageSorted.get(subtopicId));
+			//double[] localScores =  SimAP.apply(ids, subtopicsCoverageSorted.get(subtopicId));
 			
-		
+			double[] localScores = new double[0];
 			for (int i = 0; i < scores.length; i++) {
 				scores[ids[i]] = localScores[i];
 			}
@@ -391,6 +391,13 @@ public class TrecUser implements User {
 				relevances[i] += dist.sample();
 			}
 			
+			min = StatUtils.min(relevances);
+			if (min < 0) {
+				min *= -1;
+				for (int i = 0; i < relevances.length; i++) {
+					relevances[i] += min;
+				}
+			}
 			min = StatUtils.min(relevances);
 			max = StatUtils.max(relevances);
 			for (int i = 0; i < probs.length; i++) {

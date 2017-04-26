@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import br.ufmg.dcc.latin.querying.BooleanSelectedSet;
+import br.ufmg.dcc.latin.user.TrecUser;
 
 import java.util.Set;
 
@@ -251,29 +252,28 @@ public class CubeTest {
 		return ctAccu/time;
 	}
 	
-	public double getPrecision(int iteration, String topic, String[][] docnos){
+	public double getPrecision(int iteration, String topic, String[] docnos, double[] scores){
 		
 		double relevantsRetrieved = 0;
 		double retrieved = 0;
 		
-		for (int i = 0; i < iteration; i++) {
-			if (i > docnos.length){
-				break;
+		for (int i = 0; i < Math.min(docnos.length,iteration); i++) {
+
+			
+			
+				
+				
+			
+			
+			if (qrels.get(topic).containsKey(docnos[i])){
+				relevantsRetrieved++;
 			}
-			if (docnos[i] == null) {
-				continue;
-			}
-			for (int j = 0; j < docnos[i].length; j++) {
-				if (docnos[i][j] == null){
-					continue;
-				}
-				if (qrels.get(topic).containsKey(docnos[i][j])){
-					relevantsRetrieved++;
-				}
-				retrieved++;
-			}
+			retrieved++;
+
 			
 		}
+		
+		
 		if (relevantsRetrieved == 0) {
 			return 0;
 		}
@@ -288,15 +288,18 @@ public class CubeTest {
 		
 		double relevantsRetrieved = 0;
 		double relevants = qrels.get(topic).size();
-		iteration = Math.min(iteration, docnos.length);
-	
 
-		for (int i = 0; i < iteration; i++) {
+		for (int i = 0; i < Math.min(docnos.length,iteration); i++) {
+
 			if (qrels.get(topic).containsKey(docnos[i])){
 				relevantsRetrieved++;
 			}
+
 		
+			
 		}
+
+		
 		
 
 		if (relevantsRetrieved == 0) {
