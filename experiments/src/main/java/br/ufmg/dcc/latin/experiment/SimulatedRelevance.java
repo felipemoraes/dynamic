@@ -88,7 +88,7 @@ public class SimulatedRelevance {
 		}
 	    
 	    
-	    FileWriter fw = new FileWriter("SimulatedRelevance_DPH_500.txt");
+	    FileWriter fw = new FileWriter("SimulatedRelevance_DPH_500_test.txt");
 	    BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 	    		
@@ -113,7 +113,7 @@ public class SimulatedRelevance {
    				SimAP.targetAP = targetAP.AP;
    				//SimAP.targetAP = 0.2;
    				
-				baselineResultSet = baselineRanker.search();
+				//baselineResultSet = baselineRanker.search();
     			double precisionbaseline = cubeTest.getPrecision(5, topicId, baselineResultSet.docnos,baselineResultSet.scores);
     			double precisionbaseline10 = cubeTest.getPrecision(10, topicId, baselineResultSet.docnos,baselineResultSet.scores);
     			double precisionbaseline15 = cubeTest.getPrecision(15, topicId, baselineResultSet.docnos,baselineResultSet.scores);
@@ -179,6 +179,7 @@ public class SimulatedRelevance {
         		if (count % 100 == 0) {
         			System.out.println(count);
         		}
+        		break;
     		}	
 	    }
 		br.close();
