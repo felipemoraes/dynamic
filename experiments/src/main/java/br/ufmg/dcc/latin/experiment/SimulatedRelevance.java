@@ -72,14 +72,14 @@ public class SimulatedRelevance {
 	    SimAP.trecUser = trecUser;
 	    //List<TargetAP> targetAPs = loadTargetAPs();
 	    List<TargetAP> targetAPs = new ArrayList<TargetAP>();
-	    for (int i = 0; i < 19 ; i++) {
+	    /*for (int i = 0; i < 19 ; i++) {
 	    	for (int j = 0; j <1; j++) {
 				TargetAP tAP = new TargetAP();
 				tAP.bin = i*(0.05);
 				tAP.AP = ThreadLocalRandom.current().nextDouble(i*(0.05), (i+1)*(0.05));
 				targetAPs.add(tAP);	
 			}
-		}
+		}*/
 	    for (int j = 0; j <1; j++) {
 		    TargetAP tAP = new TargetAP();
 			tAP.bin = 0.95;
@@ -112,6 +112,7 @@ public class SimulatedRelevance {
    				SimAP.targetAP = targetAP.AP;
    				
 				baselineResultSet = baselineRanker.search();
+				
 				trecUser.generateSubtopics(baselineResultSet.docnos);
 				
 				

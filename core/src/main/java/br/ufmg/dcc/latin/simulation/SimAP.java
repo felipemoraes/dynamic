@@ -227,7 +227,7 @@ public class SimAP {
 
 	public static double[] apply(String[] docnos,  double[] scores) {
 		
-		double[] relevances = trecUser.get(docnos);
+		double[] relevances = TrecUser.get(docnos);
 		
 		double[] localScore = new double[scores.length];
 		

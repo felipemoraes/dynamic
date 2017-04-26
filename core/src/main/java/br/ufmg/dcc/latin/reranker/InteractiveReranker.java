@@ -183,6 +183,7 @@ public abstract class InteractiveReranker implements Reranker {
 		}
 		
 		int depth = Math.min(relevance.length, this.depth+selected.size());	
+		
 		// greedily diversify the top documents
 		int k = 0;
 		while(k < 5){
