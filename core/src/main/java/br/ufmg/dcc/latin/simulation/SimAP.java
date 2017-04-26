@@ -294,9 +294,9 @@ public class SimAP {
 				if (selected.has(j)) {
 					continue;
 				}
-				if (scores[j] > bestScore) {
+				if (localScore[j] > bestScore) {
 					best = j;
-					bestScore = scores[j];
+					bestScore = localScore[j];
 				}
 			}
 			
@@ -308,14 +308,16 @@ public class SimAP {
 		}
 		
 		for (int i = 0; i < localDocnos.length; i++) {
-			localDocnos[auxIds[i]] = auxLocalDocnos[auxIds[i]];
-			localScore[auxIds[i]] = auxLocalScore[auxIds[i]];
+			localDocnos[i] = auxLocalDocnos[auxIds[i]];
+			localScore[i] = auxLocalScore[auxIds[i]];
 		}
 
 		for (int i = 0; i < localDocnos.length; i++) {
 			auxLocalDocnos[i] = localDocnos[i];
 			auxLocalScore[i] = localScore[i];
 		}
+		
+
 		
 		relevances = TrecUser.get(localDocnos);
 
@@ -362,9 +364,9 @@ public class SimAP {
 					if (selected.has(j)) {
 						continue;
 					}
-					if (scores[j] > bestScore) {
+					if (localScore[j] > bestScore) {
 						best = j;
-						bestScore = scores[j];
+						bestScore = localScore[j];
 					}
 				}
 				
@@ -372,19 +374,21 @@ public class SimAP {
 				
 						
 				selected.put(best);
-					
+
 			}
 			
 			for (int j = 0; j < localDocnos.length; j++) {
-				localDocnos[auxIds[j]] = auxLocalDocnos[auxIds[j]];
-				localScore[auxIds[j]] = auxLocalScore[auxIds[j]];
-			}
+				
+				localDocnos[j] = auxLocalDocnos[auxIds[j]];
+				localScore[j] = auxLocalScore[auxIds[j]];
 
+			}
+			
 			for (int j = 0; j < localDocnos.length; j++) {
 				auxLocalDocnos[j] = localDocnos[j];
 				auxLocalScore[j] = localScore[j];
 			}
-			
+
 			relevances = TrecUser.get(localDocnos);
 			double candidateAP = computeAP(relevances);
 
@@ -422,23 +426,23 @@ public class SimAP {
 						if (selected.has(j)) {
 							continue;
 						}
-						if (scores[j] > bestScore) {
+						if (localScore[j] > bestScore) {
 							best = j;
-							bestScore = scores[j];
+							bestScore = localScore[j];
 						}
 					}
 					
 					auxIds[k] = best;
 					
 			
-							
+					
 					selected.put(best);
 						
 				}
 				
 				for (int j = 0; j < localDocnos.length; j++) {
-					localDocnos[auxIds[j]] = auxLocalDocnos[auxIds[j]];
-					localScore[auxIds[j]] = auxLocalScore[auxIds[j]];
+					localDocnos[j] = auxLocalDocnos[auxIds[j]];
+					localScore[j] = auxLocalScore[auxIds[j]];
 				}
 
 				for (int j = 0; j < localDocnos.length; j++) {
@@ -449,8 +453,13 @@ public class SimAP {
 				
 				candidateAP = computeAP(relevances);
 				
+				
 			}
 			i++;
+			for (int j = 0; j < 20; j++) {
+				System.out.print(relevances[j] + " ");
+			}
+			System.out.println();
 			
 			if (bestAP == currentAP){
 				break;
@@ -461,6 +470,7 @@ public class SimAP {
 		
 		permutated.scores = localScore;
 		permutated.docnos = localDocnos;
+
 		
 
 		

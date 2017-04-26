@@ -98,9 +98,9 @@ public class SimulatedRelevance {
 	    	String[] splitLine = line.split(" ",3);
 	    	
         	String topicId = splitLine[1];
-        	//if (!topicId.equals("DD16-2")){
-        	//	continue;
-        	//}
+        	if (!topicId.equals("DD16-2")){
+        		continue;
+        	}
         	
         	System.out.println(topicId);
         	TrecUser.topicId = topicId;
@@ -113,7 +113,7 @@ public class SimulatedRelevance {
     		for (TargetAP targetAP : targetAPs) {
     			
    				SimAP.targetAP = targetAP.AP;
-   				
+   				SimAP.targetAP = 0.01;
    				
 				baselineResultSet = baselineRanker.search();
     			double precisionbaseline = cubeTest.getPrecision(5, topicId, baselineResultSet.docnos,baselineResultSet.scores);
@@ -172,7 +172,7 @@ public class SimulatedRelevance {
         			double actbaseline = cubeTest.getAverageCubeTest(i+1, topicId, accBaseLineResult);
 
 
-        			out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " +actbaseline 
+        			System.out.println(topicId + " " + (i+1) + " " + targetAP.bin  + " " + SimAP.targetAP + " " + SimAP.currentAP + " " + actxQuAD + " " + actPM2 + " " +actbaseline 
         					+ " " +precisionbaseline
         					+ " " +recallbaseline + " " + precisionbaseline10 + " " + precisionbaseline15);
 				}
@@ -181,7 +181,7 @@ public class SimulatedRelevance {
         		if (count % 100 == 0) {
         			System.out.println(count);
         		}
-        		
+        		break;
     		}	
 	    }
 		br.close();

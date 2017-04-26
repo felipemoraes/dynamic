@@ -62,6 +62,9 @@ public class BaselineRanker {
 		
 		ResultSet permutated = SimAP.apply(resultSet.docnos, resultSet.scores);
 		permutated.docids = new int[resultSet.docnos.length];
+		for (int j = 0; j < 100; j++) {
+			//System.out.println(permutated.docnos[j] + " " + permutated.scores[j]);
+		}
 		return permutated;
 	}
 	
