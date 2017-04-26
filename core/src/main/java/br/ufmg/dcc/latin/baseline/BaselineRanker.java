@@ -76,6 +76,7 @@ public class BaselineRanker {
 			sortedScores[i] = currentResultSet.scores[best];
 			selected.put(best);
 			
+			
 		}
 		currentResultSet.scores = sortedScores;
 		currentResultSet.docnos = sortedDocNos;
