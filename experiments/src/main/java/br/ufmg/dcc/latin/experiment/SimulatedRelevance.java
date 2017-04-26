@@ -72,7 +72,7 @@ public class SimulatedRelevance {
 	    SimAP.trecUser = trecUser;
 	    //List<TargetAP> targetAPs = loadTargetAPs();
 	    List<TargetAP> targetAPs = new ArrayList<TargetAP>();
-	    for (int i = 18; i < 19 ; i++) {
+	    for (int i = 0; i < 19 ; i++) {
 	    	for (int j = 0; j <20; j++) {
 				TargetAP tAP = new TargetAP();
 				tAP.bin = i*(0.05);
