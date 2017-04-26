@@ -392,6 +392,13 @@ public class TrecUser implements User {
 			}
 			
 			min = StatUtils.min(relevances);
+			if (min < 0) {
+				min *= -1;
+				for (int i = 0; i < relevances.length; i++) {
+					relevances[i] += min;
+				}
+			}
+			min = StatUtils.min(relevances);
 			max = StatUtils.max(relevances);
 			for (int i = 0; i < probs.length; i++) {
 				relevances[i] = (relevances[i]-min)/(max-min);
