@@ -173,7 +173,7 @@ public class SimulatedRelevance {
         		if (count % 100 == 0) {
         			System.out.println(count);
         		}
-        		
+        		break;
     		}	
 	    }
 		br.close();
